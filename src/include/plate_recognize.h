@@ -1,0 +1,42 @@
+//////////////////////////////////////////////////////////////////////////
+// Name:	    plate_recognize Header
+// Version:		1.0
+// Date:	    2014-09-28
+// Author:	    liuruoze
+// Copyright:   liuruoze
+// Reference:	Mastering OpenCV with Practical Computer Vision Projects
+// Reference:	CSDN Bloger taotao1233
+// Desciption:
+// Defines CPlateRecognize
+//////////////////////////////////////////////////////////////////////////
+#ifndef __PLATE_RECOGNIZE_H__
+#define __PLATE_RECOGNIZE_H__
+
+#include "prep.h"
+#include "plate_detect.h"
+#include "chars_recognise.h"
+
+/*! \namespace easypr
+    Namespace where all the C++ EasyPR functionality resides
+*/
+namespace easypr {
+
+class CPlateRecognize 
+{
+public:
+	CPlateRecognize();
+
+	//! 车牌检测与字符识别
+	int plateRecognize(Mat, vector<string>& );
+
+private:
+	//！车牌检测
+	CPlateDetect* m_plateDetect;
+
+	//! 字符识别
+	CCharsRecognise* m_charsRecognise;
+};
+
+}	/* \namespace easypr  */
+
+#endif /* endif __PLATE_RECOGNITION_H__ */
