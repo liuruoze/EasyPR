@@ -29,6 +29,9 @@ public:
 	//! 字符分割与识别
 	int charsRecognise(Mat, String&);
 
+	//! 装载ANN模型
+	void LoadModel(string s);
+
 private:
 	//！字符分割
 	CCharsSegment* m_charsSegment;

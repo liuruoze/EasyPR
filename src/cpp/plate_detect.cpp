@@ -12,6 +12,11 @@ CPlateDetect::CPlateDetect()
 	m_plateJudge = new CPlateJudge();
 }
 
+void CPlateDetect::LoadModel(string s)
+{
+	m_plateJudge->LoadModel(s.c_str());
+}
+
 int CPlateDetect::plateDetect(Mat src, vector<Mat>& resultVec)
 {
 	//可能是车牌的图块集合

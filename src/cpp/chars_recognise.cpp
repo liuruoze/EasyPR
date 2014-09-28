@@ -12,6 +12,11 @@ CCharsRecognise::CCharsRecognise()
 	m_charsIdentify = new CCharsIdentify();
 }
 
+void CCharsRecognise::LoadModel(string s)
+{
+	m_charsIdentify->LoadModel(s.c_str());
+}
+
 int CCharsRecognise::charsRecognise(Mat plate, string& plateLicense)
 {
 	//车牌字符方块集合

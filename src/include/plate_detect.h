@@ -29,6 +29,9 @@ public:
 	//! 车牌定位与判断
 	int plateDetect(Mat, vector<Mat>&);
 
+	//! 装载SVM模型
+	void LoadModel(string s);
+
 private:
 	//！车牌定位
 	CPlateLocate* m_plateLocate;

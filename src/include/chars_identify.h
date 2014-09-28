@@ -39,6 +39,9 @@ public:
 	//! 装载ANN模型
 	void LoadModel();
 
+	//! 装载ANN模型
+	void LoadModel(string s);
+
 	//! 设置与读取模型路径
 	inline void setModelPath(string path){	m_path = path;	}
 	inline string getModelPath() const{	 return m_path;	}

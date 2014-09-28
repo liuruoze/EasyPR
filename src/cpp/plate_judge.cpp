@@ -18,6 +18,12 @@ void CPlateJudge::LoadModel()
 	svm.load(m_path.c_str(), "svm");
 }
 
+void CPlateJudge::LoadModel(string s)
+{
+	svm.clear();
+	svm.load(s.c_str(), "svm");
+}
+
 //! Ö±·½Í¼¾ùºâ
 Mat CPlateJudge::histeq(Mat in)
 {

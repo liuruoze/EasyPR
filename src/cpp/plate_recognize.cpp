@@ -12,6 +12,30 @@ CPlateRecognize::CPlateRecognize()
 	m_charsRecognise = new CCharsRecognise();
 }
 
+//! 装载SVM模型
+void CPlateRecognize::LoadSVM(string strSVM)
+{
+	m_plateDetect->LoadModel(strSVM.c_str());
+}
+
+//! 装载ANN模型
+void CPlateRecognize::LoadANN(string strANN)
+{
+	m_charsRecognise->LoadModel(strANN.c_str());
+}
+
+int CPlateRecognize::plateDetect(Mat src, vector<Mat>& resultVec)
+{
+	int result = m_plateDetect->plateDetect(src, resultVec);
+	return result;
+}
+
+int CPlateRecognize::charsRecognise(Mat plate, string& plateLicense)
+{
+	int result = m_charsRecognise->charsRecognise(plate, plateLicense);
+	return result;
+}
+
 int CPlateRecognize::plateRecognize(Mat src, vector<string>& plateVec)
 {
 	//车牌方块集合

@@ -66,6 +66,12 @@ void CCharsIdentify::LoadModel()
 	ann.load(m_path.c_str(), "ann");
 }
 
+void CCharsIdentify::LoadModel(string s)
+{
+	ann.clear();
+	ann.load(s.c_str(), "ann");
+}
+
 //create the accumulation histograms,img is a binary image, t is 水平或垂直
 Mat CCharsIdentify::ProjectedHistogram(Mat img, int t)
 {
