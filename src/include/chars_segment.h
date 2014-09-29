@@ -62,14 +62,36 @@ public:
 	//! 将Rect按位置从左到右进行排序
 	int SortRect(const vector<Rect>& vecRect, vector<Rect>& out);
 
+	//! 设置变量
+	inline void setLiuDingSize(int param){ m_LiuDingSize = param;}
+	inline void setColorThreshold(int param){ m_ColorThreshold = param;}
+
+	inline void setBluePercent(float param){ m_BluePercent = param;}
+	inline float getBluePercent() const { return m_BluePercent;}
+	inline void setWhitePercent(float param){ m_WhitePercent = param;}
+	inline float getWhitePercent() const { return m_WhitePercent;}
+
 	//! preprocessChar所用常量
 	static const int CHAR_SIZE = 20;
 	static const int HORIZONTAL = 1;
 	static const int VERTICAL = 0;
 
+	//! preprocessChar所用常量
+	static const int DEFAULT_LIUDING_SIZE = 7;
+	static const int DEFAULT_MAT_WIDTH = 136;
+	static const int DEFAULT_COLORTHRESHOLD = 150;
+
 private:
-	int m_NiuDingSize;
+	//！柳钉判断参数
+	int m_LiuDingSize;
+
+	//！车牌大小参数
 	int m_theMatWidth;
+
+	//！车牌颜色判断参数
+	int m_ColorThreshold;
+	float m_BluePercent;
+	float m_WhitePercent;
 };
 
 }	/* \namespace easypr  */

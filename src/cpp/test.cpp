@@ -25,10 +25,10 @@ int main()
 {
 	assert (test_plate_locate() == 0);
 	assert (test_plate_judge() == 0);
+	assert (test_plate_detect() == 0);
+
 	assert (test_chars_segment() == 0);
 	assert (test_chars_identify() == 0);
-
-	assert (test_plate_detect() == 0);
 	assert (test_chars_recognise() == 0);
 
 	assert (test_plate_recognize() == 0);
@@ -175,6 +175,7 @@ int test_chars_identify()
 	}
 	cout << "Identify Correct!" << endl;
 
+	cout << "Enter 1 for coninue:";
 	int a = 0;
 	cin >> a;
 
@@ -222,6 +223,7 @@ int test_chars_recognise()
 		cout << "charsRecognise: " << charsRecognise << endl;
 	}
 
+	cout << "Enter 1 for coninue:";
 	int a = 0;
 	cin >> a;
 
@@ -235,6 +237,18 @@ int test_plate_recognize()
 	Mat src = imread("image/plate_recognize.jpg");
 
 	CPlateRecognize pr;
+	pr.LoadANN("model/ann.xml");
+	pr.LoadSVM("model/svm.xml");
+
+	pr.setGaussianBlurSize(5);
+	pr.setMorphSizeWidth(17);
+
+	pr.setVerifyMin(3);
+	pr.setVerifyMax(20);
+
+	pr.setLiuDingSize(7);
+	pr.setColorThreshold(150);
+
 	vector<string> plateVec;
 
 	int result = pr.plateRecognize(src, plateVec);
@@ -247,6 +261,7 @@ int test_plate_recognize()
 		}
 	}
 
+	cout << "Enter 1 for coninue:";
 	int a = 0;
 	cin >> a;
 

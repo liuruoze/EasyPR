@@ -5,17 +5,20 @@
 */
 namespace easypr{
 
-#define HORIZONTAL    1
-#define VERTICAL    0
-
+const float DEFAULT_BLUEPERCEMT = 0.3; 
+const float	DEFAULT_WHITEPERCEMT = 0.1;
 
 CCharsSegment::CCharsSegment()
 {
-	cout << "CCharsSegment" << endl;
-	m_NiuDingSize = 7;
-	m_theMatWidth = 136;
-}
+	//cout << "CCharsSegment" << endl;
+	m_LiuDingSize = DEFAULT_LIUDING_SIZE;
+	m_theMatWidth = DEFAULT_MAT_WIDTH;
 
+	//！车牌颜色判断参数
+	m_ColorThreshold = DEFAULT_COLORTHRESHOLD;
+	m_BluePercent = DEFAULT_BLUEPERCEMT;
+	m_WhitePercent = DEFAULT_WHITEPERCEMT;
+}
 
 //! 字符尺寸验证
 bool CCharsSegment::verifySizes(Mat r){
@@ -84,7 +87,7 @@ Mat CCharsSegment::histeq(Mat in)
 
 //getPlateType
 //判断车牌的类型，1为蓝牌，2为黄牌，0为未知，默认蓝牌
-//通过像素中蓝色所占比例的多少来判断，大于0.5为蓝牌，否则为黄牌
+//通过像素中蓝色所占比例的多少来判断，大于0.3为蓝牌，否则为黄牌
 int CCharsSegment::getPlateType(Mat input)
 {
 	Mat img;
@@ -104,29 +107,23 @@ int CCharsSegment::getPlateType(Mat input)
 			int green = int(intensity.val[1]);
 			int red = int(intensity.val[2]);
 
-			if(blue > 150 && green > 10 && red > 10)
-			{			
+			if(blue > m_ColorThreshold && green > 10 && red > 10)		
 				countBlue++;
-			}
 
-			if(blue > 150 && green > 150 && red > 150)
-			{			
+			if(blue > m_ColorThreshold && green > m_ColorThreshold && red > m_ColorThreshold)			
 				countWhite++;
-			}
+
 		}	
 	}
 
 	double percentBlue = countBlue/nums;
 	double percentWhite = countWhite/nums;
 
-	if (percentBlue - 0.3 > 0 && percentWhite - 0.1 > 0)
-	{
+	if (percentBlue - m_BluePercent > 0 && percentWhite - m_WhitePercent > 0)
 		return 1;
-	}
 	else
-	{
 		return 2;
-	}
+
 	return 0;
 }
 
@@ -136,7 +133,7 @@ int CCharsSegment::getPlateType(Mat input)
 //X的推荐值为，可根据实际调整
 Mat CCharsSegment::clearLiuDing(Mat img)
 {
-	const int x = m_NiuDingSize;
+	const int x = m_LiuDingSize;
 	Mat jump = Mat::zeros(1, img.rows, CV_32F);
 	for(int i=0; i < img.rows; i++)
 	{
@@ -161,7 +158,7 @@ Mat CCharsSegment::clearLiuDing(Mat img)
 	return img;
 }
 
-//! 字符分割
+//! 字符分割与排序
 int CCharsSegment::charsSegment(Mat input, vector<Mat>& resultVec)
 {
 	if( !input.data )
@@ -198,7 +195,9 @@ int CCharsSegment::charsSegment(Mat input, vector<Mat>& resultVec)
 	vector<vector<Point> >::iterator itc= contours.begin();
 
 	vector<Rect> vecRect;
-	//Remove patch that are no inside limits of aspect ratio and area.    
+
+	//Remove patch that are no inside limits of aspect ratio and area.  
+	//将不符合特定尺寸的图块排除出去
 	while (itc != contours.end()) 
 	{
 		Rect mr = boundingRect(Mat(*itc));
@@ -214,20 +213,27 @@ int CCharsSegment::charsSegment(Mat input, vector<Mat>& resultVec)
 		return -1;
 
 	vector<Rect> sortedRect;
+	//对符合尺寸的图块按照从左到右进行排序
 	SortRect(vecRect, sortedRect);
 
 	int specIndex = 0;
+	//获得指示城市的特定Rect,如苏A的"A"
 	specIndex = GetSpecificRect(sortedRect);
 
+	//根据特定Rect向左反推出中文字符
+	//这样做的主要原因是根据findContours方法很难捕捉到中文字符的准确Rect，因此仅能
+	//退过特定算法来指定
 	Rect chineseRect;
 	if (specIndex < sortedRect.size())
 		chineseRect = GetChineseRect(sortedRect[specIndex]);
 	else
 		return -1;
 
+	//新建一个全新的排序Rect
+	//将中文字符Rect第一个加进来，因为它肯定是最左边的
+	//其余的Rect只按照顺序去6个，车牌只可能是7个字符！这样可以避免阴影导致的“1”字符
 	vector<Rect> newSortedRect;
 	newSortedRect.push_back(chineseRect);
-
 	RebuildRect(sortedRect, newSortedRect, specIndex);
 
 	if (newSortedRect.size() == 0)
@@ -237,7 +243,6 @@ int CCharsSegment::charsSegment(Mat input, vector<Mat>& resultVec)
 	{
 		Rect mr = newSortedRect[i];
 		Mat auxRoi(img_threshold, mr);
-
 		if (1)
 		{
 			auxRoi = preprocessChar(auxRoi);
@@ -292,8 +297,6 @@ int CCharsSegment::SortRect(const vector<Rect>& vecRect, vector<Rect>& out)
 	return 0;
 }
 
-
-
 //! 根据特殊车牌来构造猜测中文字符的位置和大小
 Rect CCharsSegment::GetChineseRect(const Rect rectSpe)
 {
@@ -310,7 +313,7 @@ Rect CCharsSegment::GetChineseRect(const Rect rectSpe)
 	return a;
 }
 
-//! 找出指示城市的字符的Rect，例如苏A7003X，就是A的位置
+//! 找出指示城市的字符的Rect，例如苏A7003X，就是"A"的位置
 int CCharsSegment::GetSpecificRect(const vector<Rect>& vecRect)
 {
 	vector<int> xpositions;

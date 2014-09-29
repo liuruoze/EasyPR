@@ -7,12 +7,12 @@ namespace easypr{
 
 CCharsRecognise::CCharsRecognise()
 {
-	cout << "CCharsRecognise" << endl;
+	//cout << "CCharsRecognise" << endl;
 	m_charsSegment = new CCharsSegment();
 	m_charsIdentify = new CCharsIdentify();
 }
 
-void CCharsRecognise::LoadModel(string s)
+void CCharsRecognise::LoadANN(string s)
 {
 	m_charsIdentify->LoadModel(s.c_str());
 }

@@ -5,19 +5,36 @@
 */
 namespace easypr{
 
+const float DEFAULT_ERROR = 0.6;
+const float DEFAULT_ASPECT = 3.75; 
+
+CPlateLocate::CPlateLocate()
+{
+	//cout << "CPlateLocate" << endl;
+	m_GaussianBlurSize = DEFAULT_GAUSSIANBLUR_SIZE;
+	m_MorphSizeWidth = DEFAULT_MORPH_SIZE_WIDTH;
+	m_MorphSizeHeight = DEFAULT_MORPH_SIZE_HEIGHT;
+
+	m_error = DEFAULT_ERROR;
+	m_aspect = DEFAULT_ASPECT;
+	m_verifyMin = DEFAULT_VERIFY_MIN;
+	m_verifyMax = DEFAULT_VERIFY_MAX;
+
+	m_angle = DEFAULT_ANGLE;
+}
+
 //! 对minAreaRect获得的最小外接矩形，用纵横比进行判断
 bool CPlateLocate::verifySizes(RotatedRect mr)
 {
-	float error = 0.6;
+	float error = m_error;
 	//Spain car plate size: 52x11 aspect 4,7272
 	//China car plate size: 440mm*140mm，aspect 3.142857
-	const float ASPECT = 3.75;
-	float aspect = ASPECT;
+	float aspect = m_aspect;
 	//Set a min and max area. All other patchs are discarded
 	//int min= 1*aspect*1; // minimum area
 	//int max= 2000*aspect*2000; // maximum area
-	int min= 44*14*3; // minimum area
-	int max= 44*14*20; // maximum area
+	int min= 44*14*m_verifyMin; // minimum area
+	int max= 44*14*m_verifyMax; // maximum area
 	//Get only patchs that match to a respect ratio.
 	float rmin= aspect-aspect*error;
 	float rmax= aspect+aspect*error;
@@ -70,7 +87,8 @@ int CPlateLocate::plateLocate(Mat src, vector<Mat>& resultVec)
 	{ return -1; }
 
 	//高斯均衡。Size中的数字影响车牌定位的效果。
-	GaussianBlur( src, src_blur, Size(GAUSSIANBLUR_SIZE, GAUSSIANBLUR_SIZE), 0, 0, BORDER_DEFAULT );
+	GaussianBlur( src, src_blur, Size(m_GaussianBlurSize, m_GaussianBlurSize), 
+		0, 0, BORDER_DEFAULT );
 
 	/// Convert it to gray
 	cvtColor( src_blur, src_gray, CV_RGB2GRAY );
@@ -96,7 +114,7 @@ int CPlateLocate::plateLocate(Mat src, vector<Mat>& resultVec)
 	threshold(grad, img_threshold, 0, 255, CV_THRESH_OTSU+CV_THRESH_BINARY);
 	//threshold(grad, img_threshold, 75, 255, CV_THRESH_BINARY);
 
-	Mat element = getStructuringElement(MORPH_RECT, Size(MORPH_SIZE_WIDTH, MORPH_SIZE_HEIGHT) );
+	Mat element = getStructuringElement(MORPH_RECT, Size(m_MorphSizeWidth, m_MorphSizeHeight) );
 	morphologyEx(img_threshold, img_threshold, CV_MOP_CLOSE, element);
 	
 	//Find 轮廓 of possibles plates
@@ -148,8 +166,8 @@ int CPlateLocate::plateLocate(Mat src, vector<Mat>& resultVec)
 				angle = 90 + angle;
 				swap(rect_size.width, rect_size.height);
 			}
-			//如果抓取的方块旋转超过30角度，则不是车牌，放弃处理
-			if (angle - 30 < 0 && angle + 30 > 0)
+			//如果抓取的方块旋转超过m_angle角度，则不是车牌，放弃处理
+			if (angle - m_angle < 0 && angle + m_angle > 0)
 			{
 				//Create and rotate image
 				Mat rotmat = getRotationMatrix2D(minRect.center, angle, 1);
@@ -164,11 +182,6 @@ int CPlateLocate::plateLocate(Mat src, vector<Mat>& resultVec)
 		}
 	}
 	return 0;
-}
-
-CPlateLocate::CPlateLocate()
-{
-	cout << "CPlateLocate" << endl;
 }
 
 }	/*! \namespace easypr*/

@@ -29,7 +29,7 @@ const int numAll = 54; /* 34+20=54 */
 
 CCharsIdentify::CCharsIdentify()
 {
-	cout << "CCharsIdentify" << endl;
+	//cout << "CCharsIdentify" << endl;
 	m_predictSize = 10;
 	m_path = "model/ann.xml";
 	LoadModel();

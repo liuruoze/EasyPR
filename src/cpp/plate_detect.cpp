@@ -7,12 +7,12 @@ namespace easypr{
 
 CPlateDetect::CPlateDetect()
 {
-	cout << "CPlateDetect" << endl;
+	//cout << "CPlateDetect" << endl;
 	m_plateLocate = new CPlateLocate();
 	m_plateJudge = new CPlateJudge();
 }
 
-void CPlateDetect::LoadModel(string s)
+void CPlateDetect::LoadSVM(string s)
 {
 	m_plateJudge->LoadModel(s.c_str());
 }

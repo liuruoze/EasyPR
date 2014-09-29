@@ -7,7 +7,7 @@ namespace easypr{
 
 CPlateJudge::CPlateJudge()
 {
-	cout << "CPlateJudge" << endl;
+	//cout << "CPlateJudge" << endl;
 	m_path = "model/svm.xml";
 	LoadModel();
 }
