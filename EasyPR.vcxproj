@@ -78,6 +78,7 @@
   <ItemGroup>
     <None Include="model\ann.xml" />
     <None Include="model\svm.xml" />
+    <None Include="train\训练说明.txt" />
     <None Include="关于版权.txt" />
   </ItemGroup>
   <ItemGroup>

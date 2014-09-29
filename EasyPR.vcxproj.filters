@@ -24,6 +24,7 @@
     <None Include="关于版权.txt">
       <Filter>资源文件</Filter>
     </None>
+    <None Include="train\训练说明.txt" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\cpp\chars_identify.cpp">
