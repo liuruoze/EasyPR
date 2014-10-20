@@ -15,17 +15,28 @@ EasyPR是一个中文的开源车牌识别系统。EasyPR的意思是Easy to do 
 
 ### 样例
 
-假设我们有如下的图片：
+假设我们有如下的原始图片：
 
 ![EasyPR 原始图片](image/plate_recognize.jpg)
 
-经过EasyPR的第一步处理PlateDetect以后：
+经过EasyPR的第一步处理车牌检测（PlateDetect）以后，我们获得了原始图片中仅包含车牌的图块：
 
 ![EasyPR 车牌](image/chars_segment.jpg)
 
-再经过EasyPR的第二部处理CharsRecognize以后：
+接着，我们对图块进行OCR过程，在EasyPR中，叫做字符识别（CharsRecognize）。我们得到了一个包含车牌颜色与字符的字符串：
 
-输出std::string类型的字符串：苏EUK722。
+“蓝牌：苏EUK722”
+
+上面的例子举的是一个蓝牌的私家车，如果换成黄牌的大货车：
+
+![EasyPR 原始图片](image/plate_detect.jpg)
+
+经过EasyPR的第一步处理车牌检测（PlateDetect）以后，我们获得了原始图片中仅包含车牌的图块：
+
+![EasyPR 原始图片](image/plate_recognize.jpg)
+
+
+
 
 
 ### 安装
