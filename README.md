@@ -8,10 +8,11 @@ EasyPR是一个中文的开源车牌识别系统，其目标是成为一个简�
 * 它能够识别中文，这是它的一个重要特点。
 * 它的识别率还可以，考虑到它还有很多待改进和优化的空间，这已经很不错了。
 
-### 样例
+教程
+
 在使用EasyPR前，请先阅读作者在博客园对EasyPR做的一系列的[介绍与开发教程](http://www.cnblogs.com/subconscious/p/3979988.html)。
 
-### 样例
+### 例子
 
 假设我们有如下的原始图片：
 
@@ -21,9 +22,9 @@ EasyPR是一个中文的开源车牌识别系统，其目标是成为一个简�
 
 ![EasyPR 车牌](doc/res/blue_plate.jpg)
 
-接着，我们对图块进行OCR过程，在EasyPR中，叫做字符识别（CharsRecognize）。我们得到了一个包含车牌颜色与字符的字符串：“蓝牌：苏EUK722”，如下图：
+接着，我们对图块进行OCR过程，在EasyPR中，叫做字符识别（CharsRecognize）。我们得到了一个包含车牌颜色与字符的字符串：
 
-![EasyPR 字符](doc/res/blue_chars.png.png)
+“蓝牌：苏EUK722”
 
 
 ### 安装
