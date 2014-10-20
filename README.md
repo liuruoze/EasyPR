@@ -16,7 +16,7 @@ EasyPR是一个中文的开源车牌识别系统。EasyPR的意思是Easy to do 
 ### 样例
 
 假设我们有如下的图片：
-![EasyPR 原始图片](image/plate_detect.jpg)
+![EasyPR 原始图片](image/plate_judge.jpg)
 
 经过EasyPR的第一步处理PlateDetect以后：
 
