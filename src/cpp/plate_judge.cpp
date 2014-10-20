@@ -54,6 +54,8 @@ int CPlateJudge::plateJudge(const vector<Mat>& inVec,
 	for (int j = 0; j < num; j++)
 	{
 		Mat inMat = inVec[j];
+
+		//通过色彩直方图进行预测
 		Mat p = histeq(inMat).reshape(1, 1);
 		p.convertTo(p, CV_32FC1);
 		int response = (int)svm.predict(p);

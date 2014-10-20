@@ -32,7 +32,7 @@ public:
 	bool verifySizes(RotatedRect mr);
 
 	//! 结果车牌显示
-	Mat showResultMat(Mat src, Size rect_size, Point2f center);
+	Mat showResultMat(Mat src, Size rect_size, Point2f center, int index);
 
 	//! 设置与读取变量
 	inline void setGaussianBlurSize(int param){ m_GaussianBlurSize = param;}
@@ -54,13 +54,15 @@ public:
 
 	inline void setJudgeAngle(int param){ m_angle = param;}
 
+	inline void setDebug(int param){ m_debug = param;}
+
 	//! PlateLocate所用常量
 	static const int DEFAULT_GAUSSIANBLUR_SIZE = 5;
 	static const int SOBEL_SCALE = 1;
 	static const int SOBEL_DELTA = 0;
 	static const int SOBEL_DDEPTH = CV_16S;
 	static const int SOBEL_X_WEIGHT = 1;
-	static const int SOBEL_Y_WEIGHT = 0;
+	static const int SOBEL_Y_WEIGHT = 0 ;
 	static const int DEFAULT_MORPH_SIZE_WIDTH = 17;
 	static const int DEFAULT_MORPH_SIZE_HEIGHT = 3;
 
@@ -75,6 +77,9 @@ public:
 
 	//! 角度判断所用常量
 	static const int DEFAULT_ANGLE = 30;
+
+	//! 是否开启调试模式常量，默认0代表关闭
+	static const int DEFAULT_DEBUG = 0;
 
 protected:
 	//! 高斯模糊所用变量
@@ -92,6 +97,9 @@ protected:
 
 	//! 角度判断所用变量
 	int m_angle;
+
+	//! 是否开启调试模式，0关闭，非0开启
+	int m_debug;
 };
 
 }	/*! \namespace easypr*/

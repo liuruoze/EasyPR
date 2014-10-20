@@ -21,6 +21,8 @@ CPlateLocate::CPlateLocate()
 	m_verifyMax = DEFAULT_VERIFY_MAX;
 
 	m_angle = DEFAULT_ANGLE;
+
+	m_debug = DEFAULT_DEBUG;
 }
 
 //! 对minAreaRect获得的最小外接矩形，用纵横比进行判断
@@ -57,15 +59,29 @@ bool CPlateLocate::verifySizes(RotatedRect mr)
 }
 
 //! 显示最终生成的车牌图像，便于判断是否成功进行了旋转。
-Mat CPlateLocate::showResultMat(Mat src, Size rect_size, Point2f center)
+Mat CPlateLocate::showResultMat(Mat src, Size rect_size, Point2f center, int index)
 {
 	Mat img_crop;
 	getRectSubPix(src, rect_size, center, img_crop);
+
+	if(m_debug)
+	{ 
+		stringstream ss(stringstream::in | stringstream::out);
+		ss << "tmp/debug_crop_" << index << ".jpg";
+		imwrite(ss.str(), img_crop);
+	}
 
 	Mat resultResized;
 	resultResized.create(HEIGHT, WIDTH, TYPE);
 
 	resize(img_crop, resultResized, resultResized.size(), 0, 0, INTER_CUBIC);
+
+	if(m_debug)
+	{ 
+		stringstream ss(stringstream::in | stringstream::out);
+		ss << "tmp/debug_resize_" << index << ".jpg";
+		imwrite(ss.str(), resultResized);
+	}
 
 	return resultResized;
 }
@@ -86,12 +102,26 @@ int CPlateLocate::plateLocate(Mat src, vector<Mat>& resultVec)
 	if( !src.data )
 	{ return -1; }
 
-	//高斯均衡。Size中的数字影响车牌定位的效果。
+	//高斯模糊。Size中的数字影响车牌定位的效果。
 	GaussianBlur( src, src_blur, Size(m_GaussianBlurSize, m_GaussianBlurSize), 
 		0, 0, BORDER_DEFAULT );
 
+	if(m_debug)
+	{ 
+		stringstream ss(stringstream::in | stringstream::out);
+		ss << "tmp/debug_GaussianBlur" << ".jpg";
+		imwrite(ss.str(), src_blur);
+	}
+
 	/// Convert it to gray
 	cvtColor( src_blur, src_gray, CV_RGB2GRAY );
+
+	if(m_debug)
+	{ 
+		stringstream ss(stringstream::in | stringstream::out);
+		ss << "tmp/debug_gray" << ".jpg";
+		imwrite(ss.str(), src_gray);
+	}
 
 	/// Generate grad_x and grad_y
 	Mat grad_x, grad_y;
@@ -110,19 +140,59 @@ int CPlateLocate::plateLocate(Mat src, vector<Mat>& resultVec)
 	/// Total Gradient (approximate)
 	addWeighted( abs_grad_x, SOBEL_X_WEIGHT, abs_grad_y, SOBEL_Y_WEIGHT, 0, grad );
 
+	//Laplacian( src_gray, grad_x, ddepth, 3, scale, delta, BORDER_DEFAULT );  
+	//convertScaleAbs( grad_x, grad );  
+
+
+	if(m_debug)
+	{ 
+		stringstream ss(stringstream::in | stringstream::out);
+		ss << "tmp/debug_Sobel" << ".jpg";
+		imwrite(ss.str(), grad);
+	}
+
 	Mat img_threshold;
 	threshold(grad, img_threshold, 0, 255, CV_THRESH_OTSU+CV_THRESH_BINARY);
 	//threshold(grad, img_threshold, 75, 255, CV_THRESH_BINARY);
 
+	if(m_debug)
+	{ 
+		stringstream ss(stringstream::in | stringstream::out);
+		ss << "tmp/debug_threshold" << ".jpg";
+		imwrite(ss.str(), img_threshold);
+	}
+
 	Mat element = getStructuringElement(MORPH_RECT, Size(m_MorphSizeWidth, m_MorphSizeHeight) );
 	morphologyEx(img_threshold, img_threshold, CV_MOP_CLOSE, element);
 	
+	if(m_debug)
+	{ 
+		stringstream ss(stringstream::in | stringstream::out);
+		ss << "tmp/debug_morphology" << ".jpg";
+		imwrite(ss.str(), img_threshold);
+	}
+
 	//Find 轮廓 of possibles plates
 	vector< vector< Point> > contours;
 	findContours(img_threshold,
 		contours, // a vector of contours
 		CV_RETR_EXTERNAL, // 提取外部轮廓
 		CV_CHAIN_APPROX_NONE); // all pixels of each contours
+
+	Mat result;
+	if(m_debug)
+	{ 
+		//// Draw blue contours on a white image
+		src.copyTo(result);
+		drawContours(result, contours,
+			-1, // draw all contours
+			Scalar(0,0,255), // in blue
+			1); // with a thickness of 1
+		stringstream ss(stringstream::in | stringstream::out);
+		ss << "tmp/debug_Contours" << ".jpg";
+		imwrite(ss.str(), result);
+	}
+
 
 	//Start to iterate to each contour founded
 	vector<vector<Point> >::iterator itc = contours.begin();
@@ -147,6 +217,7 @@ int CPlateLocate::plateLocate(Mat src, vector<Mat>& resultVec)
 		}
 	}
 
+	int k = 1;
 	for(int i=0; i< rects.size(); i++)
 	{
 		RotatedRect minRect = rects[i];
@@ -158,6 +229,14 @@ int CPlateLocate::plateLocate(Mat src, vector<Mat>& resultVec)
 			// 但是它也会误将更多正的车牌搞成倾斜！所以综合考虑，还是不使用这段代码。
 			// 2014-08-14,由于新到的一批图片中发现有很多车牌是倾斜的，因此决定再次尝试
 			// 这段代码。
+			if(m_debug)
+			{ 
+				Point2f rect_points[4]; 
+				minRect.points( rect_points );
+				for( int j = 0; j < 4; j++ )
+					line( result, rect_points[j], rect_points[(j+1)%4], Scalar(0,255,255), 1, 8 );
+			}
+
 			float r = (float)minRect.size.width / (float)minRect.size.height;
 			float angle = minRect.angle;
 			Size rect_size = minRect.size;
@@ -175,12 +254,20 @@ int CPlateLocate::plateLocate(Mat src, vector<Mat>& resultVec)
 				warpAffine(src, img_rotated, rotmat, src.size(), CV_INTER_CUBIC);
 
 				Mat resultMat;
-				resultMat = showResultMat(img_rotated, rect_size, minRect.center);
+				resultMat = showResultMat(img_rotated, rect_size, minRect.center, k++);
 
 				resultVec.push_back(resultMat);
 			}
 		}
 	}
+
+	if(m_debug)
+	{ 
+		stringstream ss(stringstream::in | stringstream::out);
+		ss << "tmp/debug_result" << ".jpg";
+		imwrite(ss.str(), result);
+	}
+
 	return 0;
 }
 

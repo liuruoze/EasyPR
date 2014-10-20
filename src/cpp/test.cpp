@@ -23,13 +23,13 @@ int test_plate_recognize();
 
 int main()
 {
-	assert (test_plate_locate() == 0);
-	assert (test_plate_judge() == 0);
-	assert (test_plate_detect() == 0);
+	//assert (test_plate_locate() == 0);
+	//assert (test_plate_judge() == 0);
+	//assert (test_plate_detect() == 0);
 
-	assert (test_chars_segment() == 0);
-	assert (test_chars_identify() == 0);
-	assert (test_chars_recognise() == 0);
+	//assert (test_chars_segment() == 0);
+	//assert (test_chars_identify() == 0);
+	//assert (test_chars_recognise() == 0);
 
 	assert (test_plate_recognize() == 0);
 
@@ -41,9 +41,13 @@ int test_plate_locate()
 	cout << "test_plate_locate" << endl;
 
 	Mat src = imread("image/plate_locate.jpg");
+	//Mat src = imread("image/baidu_image/test6.jpg");
 
 	vector<Mat> resultVec;
 	CPlateLocate plate;
+	plate.setDebug(1);
+	plate.setGaussianBlurSize(5);
+	plate.setMorphSizeWidth(17);
 
 	int result = plate.plateLocate(src, resultVec);
 	if (result == 0)
@@ -234,7 +238,8 @@ int test_plate_recognize()
 {
 	cout << "test_plate_recognize" << endl;
 
-	Mat src = imread("image/plate_recognize.jpg");
+	Mat src = imread("image/plate_locate.jpg");
+	//Mat src = imread("image/baidu_image/test6.jpg");
 
 	CPlateRecognize pr;
 	pr.LoadANN("model/ann.xml");
