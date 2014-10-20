@@ -27,14 +27,16 @@ Usage
 
 使用Git克隆一份拷贝到你本机或者直接下载zip压缩吧。使用vs2010或以上版本的IDE打开sln文件后，就可以看到本项目的所有目录。包含include文件夹下的所有头文件和cpp文件夹下的src文件。
 
-以下表格是本工程中所有文件的解释与关系。
-|Type | Elements
+以下表格是本工程中所有文件的解释与关系:
+
+|文件 | 解释
 |------|----------
-|Headings | `h1`, `h2`, `h3`, `h4`, `h5`, `h6`, `h7`, `h8`
-|Prose |  `p`, `div`, `blockquote`
-|Formatted | `pre`
-| Inline | `b`, `i`, `strong`, `em`, `tt`, `code`, `ins`, `del`, `sup`, `sub`, `kbd`, `samp`, `q`, `var`
-| Lists | `ol`, `ul`, `li`, `dl`, `dt`, `dd`
-| Tables | `table`, `thead`, `tbody`, `tfoot`, `tr`, `td`, `th`
-| Breaks | `br`, `hr`
-| Ruby (East Asian) | `ruby`, `rt`, `rp`
+| plate_locate |  车牌定位
+| plate_judge | 车牌判断
+| plate_detect | 车牌检测，是车牌定位与车牌判断功能的组合
+| chars_segment | `ol`, `ul`, `li`, `dl`, `dt`, `dd`
+| chars_identify | `table`, `thead`, `tbody`, `tfoot`, `tr`, `td`, `th`
+| chars_recognise | `br`, `hr`
+| plate_recognize | `ruby`, `rt`, `rp`
+| prep.h | `ruby`, `rt`, `rp`
+| test.cpp | `ruby`, `rt`, `rp`
