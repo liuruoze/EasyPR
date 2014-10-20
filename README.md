@@ -4,7 +4,7 @@ http://www.cnblogs.com/subconscious/p/3979988.html
 
 EasyPR是一个中文的开源车牌识别系统。EasyPR的意思是Easy to do Plate Recognition。EasyPR的目标是成为一个简单的，灵活的，准确的免费车牌识别引擎。
 
-**———— 车牌识别系统在大数据时代会有新的定义*
+**———— 大数据时代，车牌系统会有新的定义和挑战！**
 
 ### 特征
 
@@ -16,7 +16,7 @@ EasyPR是一个中文的开源车牌识别系统。EasyPR的意思是Easy to do 
 ### 样例
 
 假设我们有如下的图片：
-![EasyPR 原始图片](doc/image/plate_detect.jpg)
+![EasyPR 原始图片](image/plate_detect.jpg)
 
 经过EasyPR的第一步处理PlateDetect以后：
 
@@ -54,7 +54,7 @@ EasyPR不需要安装，开发者直接在其上做改动。如果想使用DLL�
 | plate_detect | 车牌检测，是车牌定位与车牌判断功能的组合
 | chars_segment | 字符分割
 | chars_identify | 字符鉴别
-| chars_recognise | 字符识别，是字符分割与字符鉴别的组合
-| plate_recognize | 接口类，是车牌检测与字符识别的子类
+| chars_recognise | 字符识别，是字符分割与字符鉴别功能的组合
+| plate_recognize | 车牌识别，是车牌检测与字符识别的共有子类
 | prep.h | 预包含头文件
-| test.cpp | 测试代码
+| test.cpp | 测试
