@@ -71,6 +71,9 @@ public:
 	inline void setWhitePercent(float param){ m_WhitePercent = param;}
 	inline float getWhitePercent() const { return m_WhitePercent;}
 
+	//! 是否开启调试模式常量，默认0代表关闭
+	static const int DEFAULT_DEBUG = 0;
+
 	//! preprocessChar所用常量
 	static const int CHAR_SIZE = 20;
 	static const int HORIZONTAL = 1;
@@ -80,6 +83,8 @@ public:
 	static const int DEFAULT_LIUDING_SIZE = 7;
 	static const int DEFAULT_MAT_WIDTH = 136;
 	static const int DEFAULT_COLORTHRESHOLD = 150;
+
+	inline void setDebug(int param){ m_debug = param;}
 
 private:
 	//！柳钉判断参数
@@ -92,6 +97,9 @@ private:
 	int m_ColorThreshold;
 	float m_BluePercent;
 	float m_WhitePercent;
+
+	//! 是否开启调试模式，0关闭，非0开启
+	int m_debug;
 };
 
 }	/* \namespace easypr  */

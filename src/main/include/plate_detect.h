@@ -32,6 +32,9 @@ public:
 	//! 装载SVM模型
 	void LoadSVM(string s);
 
+	//! 生活模式与工业模式切换
+	inline void setPDLifemode(bool param){m_plateLocate->setLifemode(param);}
+
 	//! 设置与读取变量
 	inline void setGaussianBlurSize(int param){	m_plateLocate->setGaussianBlurSize(param);}
 	inline int getGaussianBlurSize() const{	return m_plateLocate->getGaussianBlurSize();}

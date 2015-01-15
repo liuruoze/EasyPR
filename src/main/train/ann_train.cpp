@@ -43,6 +43,8 @@ const int numAll = 54; /* 34+20=54 */
 const int numNeurons = 20;
 const int predictSize = 10;
 
+void getFiles(string path, vector<string>& files);
+
 //create the accumulation histograms,img is a binary image, t is 水平或垂直
 Mat ProjectedHistogram(Mat img, int t)
 {
@@ -99,33 +101,6 @@ Mat features(Mat in, int sizeData){
 	//if(DEBUG)
 	//	cout << out << "\n===========================================\n";
 	return out;
-}
-
-void getFiles(string path, vector<string>& files )
-{
-	//文件句柄
-	long   hFile   =   0;
-	//文件信息
-	struct _finddata_t fileinfo;
-	string p;
-	if((hFile = _findfirst(p.assign(path).append("\\*").c_str(),&fileinfo)) !=  -1)
-	{
-		do
-		{
-			//如果是目录,迭代之
-			//如果不是,加入列表
-			if((fileinfo.attrib &  _A_SUBDIR))
-			{
-				if(strcmp(fileinfo.name,".") != 0  &&  strcmp(fileinfo.name,"..") != 0)
-					getFiles( p.assign(path).append("\\").append(fileinfo.name), files );
-			}
-			else
-			{
-				files.push_back(p.assign(path).append("\\").append(fileinfo.name) );
-			}
-		}while(_findnext(hFile, &fileinfo)  == 0);
-		_findclose(hFile);
-	}
 }
 
 void annTrain(Mat TrainData, Mat classes, int nNeruns)
@@ -287,7 +262,7 @@ void saveModel(int _predictsize, int _neurons)
 	ann.write(*fsTo, "ann");
 }
 
-int main()
+int annMain()
 {
 	cout << "To be begin." << endl;
 

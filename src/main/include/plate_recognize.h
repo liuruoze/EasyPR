@@ -29,6 +29,12 @@ public:
 	//! 车牌检测与字符识别
 	int plateRecognize(Mat, vector<string>&);
 
+	//! 生活模式与工业模式切换
+	inline void setLifemode(bool param)
+	{
+		CPlateDetect::setPDLifemode(param);
+	}
+
 	////! 车牌定位与判断
 	//int plateDetect(Mat, vector<Mat>&);
 

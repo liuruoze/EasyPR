@@ -47,7 +47,7 @@ public:
 	inline string getModelPath() const{	 return m_path;	}
 
 private:
-	//！使用的SVM模型
+	//！使用的ANN模型
 	CvANN_MLP ann;
 
 	//! 模型存储路径

@@ -25,6 +25,33 @@ CPlateLocate::CPlateLocate()
 	m_debug = DEFAULT_DEBUG;
 }
 
+//! 生活模式与工业模式切换
+//! 如果为真，则设置各项参数为定位生活场景照片（如百度图片）的参数，否则恢复默认值。
+void CPlateLocate::setLifemode(bool param)
+{
+	if(param == true)
+	{
+		setGaussianBlurSize(5);
+		setMorphSizeWidth(9);
+		setMorphSizeHeight(3);
+		setVerifyError(0.9);
+		setVerifyAspect(4);
+		setVerifyMin(1);
+		setVerifyMax(30);
+	} 
+	else
+	{
+		setGaussianBlurSize(DEFAULT_GAUSSIANBLUR_SIZE);
+		setMorphSizeWidth(DEFAULT_MORPH_SIZE_WIDTH);
+		setMorphSizeHeight(DEFAULT_MORPH_SIZE_HEIGHT);
+		setVerifyError(DEFAULT_ERROR);
+		setVerifyAspect(DEFAULT_ASPECT);
+		setVerifyMin(DEFAULT_VERIFY_MIN);
+		setVerifyMax(DEFAULT_VERIFY_MAX);
+	}
+}
+
+
 //! 对minAreaRect获得的最小外接矩形，用纵横比进行判断
 bool CPlateLocate::verifySizes(RotatedRect mr)
 {
@@ -163,7 +190,7 @@ int CPlateLocate::plateLocate(Mat src, vector<Mat>& resultVec)
 	}
 
 	Mat element = getStructuringElement(MORPH_RECT, Size(m_MorphSizeWidth, m_MorphSizeHeight) );
-	morphologyEx(img_threshold, img_threshold, CV_MOP_CLOSE, element);
+	morphologyEx(img_threshold, img_threshold, MORPH_CLOSE, element);
 	
 	if(m_debug)
 	{ 

@@ -82,24 +82,30 @@
     <None Include="关于版权.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\cpp\chars_identify.cpp" />
-    <ClCompile Include="src\cpp\chars_recognise.cpp" />
-    <ClCompile Include="src\cpp\chars_segment.cpp" />
-    <ClCompile Include="src\cpp\plate_detect.cpp" />
-    <ClCompile Include="src\cpp\plate_judge.cpp" />
-    <ClCompile Include="src\cpp\plate_locate.cpp" />
-    <ClCompile Include="src\cpp\plate_recognize.cpp" />
-    <ClCompile Include="src\cpp\test.cpp" />
+    <ClCompile Include="src\main\easypr\data_prepare.cpp" />
+    <ClCompile Include="src\main\easypr\data_proc.cpp" />
+    <ClCompile Include="src\main\easypr\easypr_main.cpp" />
+    <ClCompile Include="src\main\core\chars_identify.cpp" />
+    <ClCompile Include="src\main\core\chars_recognise.cpp" />
+    <ClCompile Include="src\main\core\chars_segment.cpp" />
+    <ClCompile Include="src\main\core\plate_detect.cpp" />
+    <ClCompile Include="src\main\core\plate_judge.cpp" />
+    <ClCompile Include="src\main\core\plate_locate.cpp" />
+    <ClCompile Include="src\main\core\plate_recognize.cpp" />
+    <ClCompile Include="src\main\easypr\easypr_test.cpp" />
+    <ClCompile Include="src\main\train\ann_train.cpp" />
+    <ClCompile Include="src\main\train\svm_train.cpp" />
+    <ClCompile Include="src\main\util\util.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\include\chars_identify.h" />
-    <ClInclude Include="src\include\chars_recognise.h" />
-    <ClInclude Include="src\include\chars_segment.h" />
-    <ClInclude Include="src\include\plate_detect.h" />
-    <ClInclude Include="src\include\plate_judge.h" />
-    <ClInclude Include="src\include\plate_locate.h" />
-    <ClInclude Include="src\include\plate_recognize.h" />
-    <ClInclude Include="src\include\prep.h" />
+    <ClInclude Include="src\main\include\chars_identify.h" />
+    <ClInclude Include="src\main\include\chars_recognise.h" />
+    <ClInclude Include="src\main\include\chars_segment.h" />
+    <ClInclude Include="src\main\include\plate_detect.h" />
+    <ClInclude Include="src\main\include\plate_judge.h" />
+    <ClInclude Include="src\main\include\plate_locate.h" />
+    <ClInclude Include="src\main\include\plate_recognize.h" />
+    <ClInclude Include="src\main\include\prep.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

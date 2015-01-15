@@ -46,7 +46,7 @@ Mat CPlateJudge::histeq(Mat in)
 }
 
 
-//! 使用色彩图进行SVM判断
+//! 使用彩色图进行SVM判断
 int CPlateJudge::plateJudge(const vector<Mat>& inVec,
 								  vector<Mat>& resultVec)
 {
@@ -55,7 +55,7 @@ int CPlateJudge::plateJudge(const vector<Mat>& inVec,
 	{
 		Mat inMat = inVec[j];
 
-		//通过色彩直方图进行预测
+		//通过直方图均衡化后的彩色图进行预测
 		Mat p = histeq(inMat).reshape(1, 1);
 		p.convertTo(p, CV_32FC1);
 		int response = (int)svm.predict(p);

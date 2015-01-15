@@ -34,6 +34,9 @@ public:
 	//! 结果车牌显示
 	Mat showResultMat(Mat src, Size rect_size, Point2f center, int index);
 
+	//! 生活模式与工业模式切换
+	void setLifemode(bool param);
+
 	//! 设置与读取变量
 	inline void setGaussianBlurSize(int param){ m_GaussianBlurSize = param;}
 	inline int getGaussianBlurSize() const{ return m_GaussianBlurSize;}
@@ -54,6 +57,7 @@ public:
 
 	inline void setJudgeAngle(int param){ m_angle = param;}
 
+	//! 是否开启调试模式
 	inline void setDebug(int param){ m_debug = param;}
 
 	//! PlateLocate所用常量

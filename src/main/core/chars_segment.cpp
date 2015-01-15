@@ -18,6 +18,8 @@ CCharsSegment::CCharsSegment()
 	m_ColorThreshold = DEFAULT_COLORTHRESHOLD;
 	m_BluePercent = DEFAULT_BLUEPERCEMT;
 	m_WhitePercent = DEFAULT_WHITEPERCEMT;
+
+	m_debug = DEFAULT_DEBUG;
 }
 
 //! 字符尺寸验证
@@ -179,8 +181,23 @@ int CCharsSegment::charsSegment(Mat input, vector<Mat>& resultVec)
 		threshold(input, img_threshold, 10, 255, CV_THRESH_OTSU+CV_THRESH_BINARY_INV);
 	}
 
+	if(m_debug)
+	{ 
+		stringstream ss(stringstream::in | stringstream::out);
+		ss << "tmp/debug_char_threshold" << ".jpg";
+		imwrite(ss.str(), img_threshold);
+	}
+
 	//去除车牌上方的柳钉以及下方的横线等干扰
 	clearLiuDing(img_threshold);
+
+
+	if(m_debug)
+	{ 
+		stringstream ss(stringstream::in | stringstream::out);
+		ss << "tmp/debug_char_clearLiuDing" << ".jpg";
+		imwrite(ss.str(), img_threshold);
+	}
 
 	Mat img_contours;
 	img_threshold.copyTo(img_contours);
@@ -243,6 +260,14 @@ int CCharsSegment::charsSegment(Mat input, vector<Mat>& resultVec)
 	{
 		Rect mr = newSortedRect[i];
 		Mat auxRoi(img_threshold, mr);
+
+		if(m_debug)
+		{ 
+			stringstream ss(stringstream::in | stringstream::out);
+			ss << "tmp/debug_char_auxRoi" << i <<".jpg";
+			imwrite(ss.str(), auxRoi);
+		}
+
 		if (1)
 		{
 			auxRoi = preprocessChar(auxRoi);

@@ -14,40 +14,109 @@ int test_plate_locate();
 int test_plate_judge();
 int test_chars_segment();
 int test_chars_identify();
-
 int test_plate_detect();
 int test_chars_recognise();
-
 int test_plate_recognize();
+int testMain();
 
+const string testOption[] = 
+	{
+		"1. test plate_locate(车牌定位);"		/* 车牌定位 */,
+		"2. test plate_judge(车牌判断);"		/* 车牌判断 */,  
+		"3. test plate_detect(车牌检测);"		/* 车牌检测（包含车牌定位与车牌判断） */, 
+		"4. test chars_segment(字符分隔);"		/* 字符分隔 */, 
+		"5. test chars_identify(字符鉴别);"		/* 字符鉴别 */,  
+		"6. test chars_recognise(字符识别);"		/* 字符识别（包含字符分隔与字符鉴别） */,
+		"7. test plate_recognize(车牌识别);"		/* 车牌识别 */, 
+		"8. test all(测试全部);"		/* 以上全部 */,
+		"9. test exit(退出);"		/* 退出 */,
+	};
 
-int main()
+const int testOptionCount = 9;
+
+int testMain()
 {
-	//assert (test_plate_locate() == 0);
-	//assert (test_plate_judge() == 0);
-	//assert (test_plate_detect() == 0);
+	bool isExit = false;
+	while (isExit != true)
+	{
+		stringstream selectOption(stringstream::in | stringstream::out);
+		selectOption << "EasyPR Test:"<< endl;
+		for(int i = 0; i < testOptionCount; i++)
+		{
+			selectOption << testOption[i] << endl;
+		}
 
-	//assert (test_chars_segment() == 0);
-	//assert (test_chars_identify() == 0);
-	//assert (test_chars_recognise() == 0);
+		cout << "////////////////////////////////////"<< endl;
+		cout << selectOption.str();
+		cout << "////////////////////////////////////"<< endl;
+		cout << "请选择一项操作:";
 
-	assert (test_plate_recognize() == 0);
+		int select = -1;
+		bool isRepeat = true;
+		while (isRepeat)
+		{
+			cin >> select;
+			isRepeat = false;
+			switch (select)
+			{
+			case 1:
+				assert (test_plate_locate() == 0);
+				break;
+			case 2:
+				assert (test_plate_judge() == 0);
+				break;
+			case 3:
+				assert (test_plate_detect() == 0);
+				break;
+			case 4:
+				assert (test_chars_segment() == 0);
+				break;
+			case 5:
+				assert (test_chars_identify() == 0);
+				break;
+			case 6:
+				assert (test_chars_recognise() == 0);
+				break;
+			case 7:
+				assert (test_plate_recognize() == 0);
+				break;
+			case 8:
+				assert (test_plate_locate() == 0);
+				assert (test_plate_judge() == 0);
+				assert (test_plate_detect() == 0);
+
+				assert (test_chars_segment() == 0);
+				assert (test_chars_identify() == 0);
+				assert (test_chars_recognise() == 0);
+
+				assert (test_plate_recognize() == 0);
+				break;
+			case 9:
+				isExit = true;
+				break;
+			default:
+				cout << "输入错误，请重新输入:";
+				isRepeat = true;
+				break;
+			}
+		}
+	}
 
 	return 0;
 }
+
 
 int test_plate_locate()
 {
 	cout << "test_plate_locate" << endl;
 
-	Mat src = imread("image/plate_locate.jpg");
-	//Mat src = imread("image/baidu_image/test6.jpg");
+	//Mat src = imread("image/plate_judge.jpg");
+	Mat src = imread("image/baidu_image/test1.jpg");
 
 	vector<Mat> resultVec;
 	CPlateLocate plate;
 	plate.setDebug(1);
-	plate.setGaussianBlurSize(5);
-	plate.setMorphSizeWidth(17);
+	plate.setLifemode(true);
 
 	int result = plate.plateLocate(src, resultVec);
 	if (result == 0)
@@ -191,10 +260,12 @@ int test_plate_detect()
 {
 	cout << "test_plate_detect" << endl;
 
-	Mat src = imread("image/plate_detect.jpg");
+	//Mat src = imread("image/plate_detect.jpg");
+	Mat src = imread("image/baidu_image/test1.jpg");
 
 	vector<Mat> resultVec;
 	CPlateDetect pd;
+	pd.setPDLifemode(true);
 
 	int result = pd.plateDetect(src, resultVec);
 	if (result == 0)
@@ -238,21 +309,14 @@ int test_plate_recognize()
 {
 	cout << "test_plate_recognize" << endl;
 
-	Mat src = imread("image/plate_locate.jpg");
-	//Mat src = imread("image/baidu_image/test6.jpg");
+	//Mat src = imread("image/plate_locate.jpg");
+	Mat src = imread("image/baidu_image/test1.jpg");
 
 	CPlateRecognize pr;
 	pr.LoadANN("model/ann.xml");
 	pr.LoadSVM("model/svm.xml");
 
-	pr.setGaussianBlurSize(5);
-	pr.setMorphSizeWidth(17);
-
-	pr.setVerifyMin(3);
-	pr.setVerifyMax(20);
-
-	pr.setLiuDingSize(7);
-	pr.setColorThreshold(150);
+	pr.setLifemode(true);
 
 	vector<string> plateVec;
 
