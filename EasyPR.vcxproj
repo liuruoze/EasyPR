@@ -96,6 +96,7 @@
     <ClCompile Include="src\main\train\ann_train.cpp" />
     <ClCompile Include="src\main\train\svm_train.cpp" />
     <ClCompile Include="src\main\util\util.cpp" />
+    <ClCompile Include="src\test\core\test_plate_recognize.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\main\include\chars_identify.h" />

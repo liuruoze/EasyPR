@@ -69,6 +69,9 @@
     <ClCompile Include="src\main\util\util.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="src\test\core\test_plate_recognize.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\main\include\chars_identify.h">
