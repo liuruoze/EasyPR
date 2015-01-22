@@ -94,7 +94,7 @@ Mat CPlateLocate::showResultMat(Mat src, Size rect_size, Point2f center, int ind
 	if(m_debug)
 	{ 
 		stringstream ss(stringstream::in | stringstream::out);
-		ss << "tmp/debug_crop_" << index << ".jpg";
+		ss << "image/tmp/debug_crop_" << index << ".jpg";
 		imwrite(ss.str(), img_crop);
 	}
 
@@ -106,7 +106,7 @@ Mat CPlateLocate::showResultMat(Mat src, Size rect_size, Point2f center, int ind
 	if(m_debug)
 	{ 
 		stringstream ss(stringstream::in | stringstream::out);
-		ss << "tmp/debug_resize_" << index << ".jpg";
+		ss << "image/tmp/debug_resize_" << index << ".jpg";
 		imwrite(ss.str(), resultResized);
 	}
 
@@ -136,7 +136,7 @@ int CPlateLocate::plateLocate(Mat src, vector<Mat>& resultVec)
 	if(m_debug)
 	{ 
 		stringstream ss(stringstream::in | stringstream::out);
-		ss << "tmp/debug_GaussianBlur" << ".jpg";
+		ss << "image/tmp/debug_GaussianBlur" << ".jpg";
 		imwrite(ss.str(), src_blur);
 	}
 
@@ -146,7 +146,7 @@ int CPlateLocate::plateLocate(Mat src, vector<Mat>& resultVec)
 	if(m_debug)
 	{ 
 		stringstream ss(stringstream::in | stringstream::out);
-		ss << "tmp/debug_gray" << ".jpg";
+		ss << "image/tmp/debug_gray" << ".jpg";
 		imwrite(ss.str(), src_gray);
 	}
 
@@ -174,7 +174,7 @@ int CPlateLocate::plateLocate(Mat src, vector<Mat>& resultVec)
 	if(m_debug)
 	{ 
 		stringstream ss(stringstream::in | stringstream::out);
-		ss << "tmp/debug_Sobel" << ".jpg";
+		ss << "image/tmp/debug_Sobel" << ".jpg";
 		imwrite(ss.str(), grad);
 	}
 
@@ -185,7 +185,7 @@ int CPlateLocate::plateLocate(Mat src, vector<Mat>& resultVec)
 	if(m_debug)
 	{ 
 		stringstream ss(stringstream::in | stringstream::out);
-		ss << "tmp/debug_threshold" << ".jpg";
+		ss << "image/tmp/debug_threshold" << ".jpg";
 		imwrite(ss.str(), img_threshold);
 	}
 
@@ -195,7 +195,7 @@ int CPlateLocate::plateLocate(Mat src, vector<Mat>& resultVec)
 	if(m_debug)
 	{ 
 		stringstream ss(stringstream::in | stringstream::out);
-		ss << "tmp/debug_morphology" << ".jpg";
+		ss << "image/tmp/debug_morphology" << ".jpg";
 		imwrite(ss.str(), img_threshold);
 	}
 
@@ -216,7 +216,7 @@ int CPlateLocate::plateLocate(Mat src, vector<Mat>& resultVec)
 			Scalar(0,0,255), // in blue
 			1); // with a thickness of 1
 		stringstream ss(stringstream::in | stringstream::out);
-		ss << "tmp/debug_Contours" << ".jpg";
+		ss << "image/tmp/debug_Contours" << ".jpg";
 		imwrite(ss.str(), result);
 	}
 
@@ -291,7 +291,7 @@ int CPlateLocate::plateLocate(Mat src, vector<Mat>& resultVec)
 	if(m_debug)
 	{ 
 		stringstream ss(stringstream::in | stringstream::out);
-		ss << "tmp/debug_result" << ".jpg";
+		ss << "image/tmp/debug_result" << ".jpg";
 		imwrite(ss.str(), result);
 	}
 

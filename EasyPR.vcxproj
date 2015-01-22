@@ -86,6 +86,7 @@
     <ClCompile Include="src\core\chars_segment.cpp" />
     <ClCompile Include="src\core\features.cpp" />
     <ClCompile Include="src\experiment\hist_test.cpp" />
+    <ClCompile Include="src\train\ann_train.cpp" />
     <ClCompile Include="src\train\svm_train.cpp" />
     <ClCompile Include="src\util\mc_data_prepare.cpp" />
     <ClCompile Include="src\experiment\hog_test.cpp" />

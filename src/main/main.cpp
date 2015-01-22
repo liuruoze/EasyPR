@@ -68,7 +68,7 @@ int main()
 				// TODO
 				break;
 			case 5:
-				// TODO;
+				// 开放团队;
 				break;
 			case 6:
 				// 感谢名单

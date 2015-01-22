@@ -80,6 +80,9 @@
     <ClCompile Include="src\train\svm_train.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="src\train\ann_train.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\include\chars_identify.h">
