@@ -24,78 +24,92 @@
     <None Include="关于版权.txt">
       <Filter>资源文件</Filter>
     </None>
-    <None Include="train\训练说明.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\main\easypr\data_prepare.cpp">
+    <ClCompile Include="src\main\main.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="src\main\easypr\easypr_main.cpp">
+    <ClCompile Include="src\experiment\ycbcr_test.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="src\main\easypr\data_proc.cpp">
+    <ClCompile Include="src\experiment\sift_test.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="src\main\easypr\easypr_test.cpp">
+    <ClCompile Include="src\experiment\hist_test.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="src\main\core\chars_identify.cpp">
+    <ClCompile Include="src\experiment\hog_test.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="src\main\core\chars_recognise.cpp">
+    <ClCompile Include="src\util\util.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="src\main\core\chars_segment.cpp">
+    <ClCompile Include="src\util\mc_data_prepare.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="src\main\core\plate_detect.cpp">
+    <ClCompile Include="src\util\learn_prepare.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="src\main\core\plate_judge.cpp">
+    <ClCompile Include="src\core\chars_identify.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="src\main\core\plate_locate.cpp">
+    <ClCompile Include="src\core\chars_recognise.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="src\main\core\plate_recognize.cpp">
+    <ClCompile Include="src\core\chars_segment.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="src\main\train\ann_train.cpp">
+    <ClCompile Include="src\core\plate_detect.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="src\main\train\svm_train.cpp">
+    <ClCompile Include="src\core\plate_judge.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="src\main\util\util.cpp">
+    <ClCompile Include="src\core\plate_locate.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="src\test\core\test_plate_recognize.cpp">
+    <ClCompile Include="src\core\plate_recognize.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\features.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\main\test.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\train\svm_train.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\main\include\chars_identify.h">
+    <ClInclude Include="src\include\chars_identify.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="src\main\include\chars_recognise.h">
+    <ClInclude Include="src\include\chars_recognise.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="src\main\include\chars_segment.h">
+    <ClInclude Include="src\include\chars_segment.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="src\main\include\plate_detect.h">
+    <ClInclude Include="src\include\plate_detect.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="src\main\include\plate_judge.h">
+    <ClInclude Include="src\include\plate_judge.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="src\main\include\plate_locate.h">
+    <ClInclude Include="src\include\plate_locate.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="src\main\include\plate_recognize.h">
+    <ClInclude Include="src\include\plate_recognize.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="src\main\include\prep.h">
+    <ClInclude Include="src\include\prep.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\include\util.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\include\features.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

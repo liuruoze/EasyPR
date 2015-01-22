@@ -47,11 +47,11 @@
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
-      <PrecompiledHeader>
-      </PrecompiledHeader>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PrecompiledHeaderFile>stdafx.h</PrecompiledHeaderFile>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -78,35 +78,39 @@
   <ItemGroup>
     <None Include="model\ann.xml" />
     <None Include="model\svm.xml" />
-    <None Include="train\训练说明.txt" />
     <None Include="关于版权.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\main\easypr\data_prepare.cpp" />
-    <ClCompile Include="src\main\easypr\data_proc.cpp" />
-    <ClCompile Include="src\main\easypr\easypr_main.cpp" />
-    <ClCompile Include="src\main\core\chars_identify.cpp" />
-    <ClCompile Include="src\main\core\chars_recognise.cpp" />
-    <ClCompile Include="src\main\core\chars_segment.cpp" />
-    <ClCompile Include="src\main\core\plate_detect.cpp" />
-    <ClCompile Include="src\main\core\plate_judge.cpp" />
-    <ClCompile Include="src\main\core\plate_locate.cpp" />
-    <ClCompile Include="src\main\core\plate_recognize.cpp" />
-    <ClCompile Include="src\main\easypr\easypr_test.cpp" />
-    <ClCompile Include="src\main\train\ann_train.cpp" />
-    <ClCompile Include="src\main\train\svm_train.cpp" />
-    <ClCompile Include="src\main\util\util.cpp" />
-    <ClCompile Include="src\test\core\test_plate_recognize.cpp" />
+    <ClCompile Include="src\core\chars_identify.cpp" />
+    <ClCompile Include="src\core\chars_recognise.cpp" />
+    <ClCompile Include="src\core\chars_segment.cpp" />
+    <ClCompile Include="src\core\features.cpp" />
+    <ClCompile Include="src\experiment\hist_test.cpp" />
+    <ClCompile Include="src\train\svm_train.cpp" />
+    <ClCompile Include="src\util\mc_data_prepare.cpp" />
+    <ClCompile Include="src\experiment\hog_test.cpp" />
+    <ClCompile Include="src\main\main.cpp" />
+    <ClCompile Include="src\main\test.cpp" />
+    <ClCompile Include="src\core\plate_detect.cpp" />
+    <ClCompile Include="src\core\plate_judge.cpp" />
+    <ClCompile Include="src\core\plate_locate.cpp" />
+    <ClCompile Include="src\core\plate_recognize.cpp" />
+    <ClCompile Include="src\experiment\sift_test.cpp" />
+    <ClCompile Include="src\util\learn_prepare.cpp" />
+    <ClCompile Include="src\util\util.cpp" />
+    <ClCompile Include="src\experiment\ycbcr_test.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\main\include\chars_identify.h" />
-    <ClInclude Include="src\main\include\chars_recognise.h" />
-    <ClInclude Include="src\main\include\chars_segment.h" />
-    <ClInclude Include="src\main\include\plate_detect.h" />
-    <ClInclude Include="src\main\include\plate_judge.h" />
-    <ClInclude Include="src\main\include\plate_locate.h" />
-    <ClInclude Include="src\main\include\plate_recognize.h" />
-    <ClInclude Include="src\main\include\prep.h" />
+    <ClInclude Include="src\include\chars_identify.h" />
+    <ClInclude Include="src\include\chars_recognise.h" />
+    <ClInclude Include="src\include\chars_segment.h" />
+    <ClInclude Include="src\include\features.h" />
+    <ClInclude Include="src\include\plate_detect.h" />
+    <ClInclude Include="src\include\plate_judge.h" />
+    <ClInclude Include="src\include\plate_locate.h" />
+    <ClInclude Include="src\include\plate_recognize.h" />
+    <ClInclude Include="src\include\prep.h" />
+    <ClInclude Include="src\include\util.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
