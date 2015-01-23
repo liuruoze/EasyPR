@@ -59,7 +59,7 @@ int main()
 				testMain();
 				break;
 			case 2:
-				// TODO
+				acurayTest();
 				break;
 			case 3:
 				svmMain();

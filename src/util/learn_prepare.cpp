@@ -20,8 +20,6 @@ char * notlabelPath = "F:/data/easypr-data/notlabel";
 char * hasPaltePath = "F:/data/easypr-data/learn/hasPlate/";
 char * noPlatePath = "F:/data/easypr-data/learn/noPlate/";
 
-void getPlateLicense(const string& filepath, string& plateLicense);
-
 //! ¶ÁÈ¡not label data£¬Éú³Élearn data
 void label_data()
 {

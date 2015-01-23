@@ -45,6 +45,8 @@ int CPlateRecognize::plateRecognize(Mat src, vector<string>& licenseVec)
 	if (resultPD == 0)
 	{
 		int num = plateVec.size();
+
+		int resultCR = 0;
 		for (int j = 0; j < num; j++)
 		{
 			Mat plate = plateVec[j];

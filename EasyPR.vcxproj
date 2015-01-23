@@ -85,11 +85,12 @@
     <ClCompile Include="src\core\chars_recognise.cpp" />
     <ClCompile Include="src\core\chars_segment.cpp" />
     <ClCompile Include="src\core\features.cpp" />
+    <ClCompile Include="src\test\accuracy_test.cpp" />
     <ClCompile Include="src\train\ann_train.cpp" />
     <ClCompile Include="src\train\svm_train.cpp" />
     <ClCompile Include="src\util\mc_data_prepare.cpp" />
     <ClCompile Include="src\main\main.cpp" />
-    <ClCompile Include="src\main\test.cpp" />
+    <ClCompile Include="src\test\test.cpp" />
     <ClCompile Include="src\core\plate_detect.cpp" />
     <ClCompile Include="src\core\plate_judge.cpp" />
     <ClCompile Include="src\core\plate_locate.cpp" />

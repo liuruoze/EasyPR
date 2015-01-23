@@ -52,3 +52,26 @@ void SplitString(const string& s, vector<string>& v, const string& c)
 		v.push_back(s.substr(pos1));
 }
 
+
+//! 通过文件夹名称获取文件名，不包括后缀
+void getFileName(const string& filepath, string& name)
+{
+	vector<string> spilt_path;
+	SplitString(filepath, spilt_path, "\\");
+
+	int spiltsize = spilt_path.size();
+	string filename = "";
+	if (spiltsize != 0)
+	{
+		filename = spilt_path[spiltsize-1];
+
+		vector<string> spilt_name;
+		SplitString(filename, spilt_name, ".");
+
+		int name_size = spilt_name.size();
+		if (name_size != 0)
+		{
+			name = spilt_name[0];
+		}
+	}
+}

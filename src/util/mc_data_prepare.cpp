@@ -186,6 +186,7 @@ void getPlateLicense(const string& filepath, string& plateLicense)
 	}
 }
 
+
 //! MC：将rawdata截取部分数据到learndata中
 void getLearnData()
 {

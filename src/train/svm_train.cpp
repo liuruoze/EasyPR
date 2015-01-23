@@ -370,12 +370,12 @@ int svmTrain(bool dividePrepared = true, bool trainPrepared = true,
 
 		cout << "Svm generate done!" << endl;
 
-		FileStorage fsTo("train/model/svm.xml", cv::FileStorage::WRITE);
+		FileStorage fsTo("train/svm.xml", cv::FileStorage::WRITE);
 		svm.write(*fsTo, "svm");
 	}
 	else
 	{
-		string path = "train/model/svm.xml";
+		string path = "train/svm.xml";
 		svm.load(path.c_str(), "svm");
 	}
 
