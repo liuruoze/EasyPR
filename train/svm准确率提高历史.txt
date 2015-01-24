@@ -1,0 +1,23 @@
+EasyPR 1.0:
+svm liner
+precise: 0.786207
+recall: 0.844444
+Fsocre: 0.814286
+
+EasyPR 1.1:
+svm liner
+precise: 0.96798
+recall: 0.933492
+Fsocre: 0.950423
+
+EasyPR 1.1:
+svm liner:
+precise: 0.968974
+recall: 0.964371
+Fsocre: 0.966667
+
+EasyPR 1.1:
+svm rbf(histom feature):
+precise: 0.997596
+recall: 0.985748
+Fsocre: 0.991637

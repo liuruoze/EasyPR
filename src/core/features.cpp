@@ -97,6 +97,7 @@ void getHistogramFeatures(const Mat& image, Mat& features)
 {
 	Mat grayImage;
 	cvtColor(image, grayImage, CV_RGB2GRAY);
+	//grayImage = histeq(grayImage);
 	Mat img_threshold;
 	threshold(grayImage, img_threshold, 0, 255, CV_THRESH_OTSU+CV_THRESH_BINARY);
 	features = getTheFeatures(img_threshold);

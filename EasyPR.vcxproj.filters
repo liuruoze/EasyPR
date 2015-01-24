@@ -26,9 +26,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\main\main.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="src\util\util.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
@@ -62,16 +59,25 @@
     <ClCompile Include="src\core\features.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="src\train\svm_train.cpp">
+    <ClCompile Include="src\test\test.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\test\accuracy_test.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\util\general_test_prepare.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\util\deface.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\main.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="src\train\ann_train.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="src\test\test.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="src\test\accuracy_test.cpp">
+    <ClCompile Include="src\train\svm_train.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

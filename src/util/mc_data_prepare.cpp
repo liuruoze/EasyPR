@@ -14,7 +14,7 @@
 using namespace std;
 using namespace cv;
 
-const int LEARANDATA_COUNT = 1100;
+const int LEARANDATA_COUNT = 1000;
 
 void getFiles( string path, vector<string>& files );
 void SplitString(const string& s, vector<string>& v, const string& c);
