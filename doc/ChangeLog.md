@@ -48,7 +48,7 @@ EasyPR版本更新
 
 ![levenshtein1](res/levenshtein1.jpg) ![levenshtein2](res/levenshtein2.jpg) ![levenshtein3](res/levenshtein3.jpg)
 
-![levenshteinAll](res/levenshteinAll.jpg)
+![levenshteinAll](res/levenshteinAll.JPG)
 
 * 大幅增加训练数据。SVM训练数据中增加了近千张新数据(未经直方图均衡化的车牌图片和非车牌图片)。
 
