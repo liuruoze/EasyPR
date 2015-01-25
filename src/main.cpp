@@ -173,7 +173,7 @@ int acurayTestMain()
 
 const string svm_option[] = 
 	{
-		"1. 生成learndata;"	,
+		"1. 生成learndata(调整代码到你的环境后再用);"	,
 		"2. 标签learndata;"		,
 		"3. 车牌检测(not divide and train);"		,
 		"4. 车牌检测(not train);"		,

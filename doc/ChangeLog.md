@@ -22,31 +22,31 @@ EasyPR版本更新
 
 * 增加了批量测试功能，这个功能可供测试EasyPR在多幅图片上的整体表现效果。
 
-![批量测试](doc/res/batch_operation.jpg)
+![批量测试](res/batch_operation.jpg)
 
 * 引入了GDTS(General Data Test Set，通用数据测试集)这个概念，作为EasyPR准确率的评测数据集。
 
-![GDTS](doc/res/general_test.jpg)
+![GDTS](res/general_test.jpg)
 
-* 为了确保GDTS的数据仅用于非商业目的，引入了新的[GDSL协议](images/GDSL.txt)。
+* 为了确保GDTS的数据仅用于非商业目的，引入了新的[GDSL协议](../images/GDSL.txt)。
 
-![GDSL](doc/res/gdsl.jpg)
+![GDSL](res/gdsl.jpg)
 
 * 完善SVM训练功能。提供了一个方便简单的训练窗口。这些增加的功能是为了配合即将推出的SVM开发详解这篇文章。
 
-![SVM训练](doc/res/svm_train.jpg)
+![SVM训练](res/svm_train.jpg)
 
 * 强化SVM模型验证。使用了三个新的数据集概念，即learn data，train data，test data。
 
-![SVM训练集](doc/res/svm_data.jpg)
+![SVM训练集](res/svm_data.jpg)
 
 * 新增评价指标。引入Precise，Recall，FSocre三个指标这三个指标作为SVM模型准确率评判的参数与改善的依据。
 
-![SVM指标](doc/res/svm_rate.jpg)
+![SVM指标](res/svm_rate.jpg)
 
 * 新增整体指标。引入levenshtein距离作为EasyPR整体识别准确率误差的评判参数与改善依据。
 
-![levenshtein](doc/res/levenshtein.jpg)
+![levenshtein](res/levenshtein.jpg)
 
 * 大幅增加训练数据。SVM训练数据中增加了近千张新数据(未经直方图均衡化的车牌图片和非车牌图片)。
 
