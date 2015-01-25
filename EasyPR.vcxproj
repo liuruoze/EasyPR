@@ -94,6 +94,7 @@
     <ClCompile Include="src\train\svm_train.cpp" />
     <ClCompile Include="src\util\deface.cpp" />
     <ClCompile Include="src\util\general_test_prepare.cpp" />
+    <ClCompile Include="src\util\generate_gdts.cpp" />
     <ClCompile Include="src\util\mc_data_prepare.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\test\test.cpp" />

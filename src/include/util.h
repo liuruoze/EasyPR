@@ -56,5 +56,8 @@ int general_test();
 //	EasyPR开源项目非常注重保护图片中驾驶人的隐私
 int deface();
 
+/// generate_gdts.cpp中方法
+int generate_gdts();
+
 #endif
 /* endif __UTIL_H__ */

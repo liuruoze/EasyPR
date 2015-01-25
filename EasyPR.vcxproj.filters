@@ -69,9 +69,6 @@
     <ClCompile Include="src\test\accuracy_test.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="src\util\general_test_prepare.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="src\util\deface.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
@@ -82,6 +79,12 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="src\train\svm_train.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\util\generate_gdts.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\util\general_test_prepare.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

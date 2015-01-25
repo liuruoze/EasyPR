@@ -19,7 +19,7 @@ int acurayTest(const string& test_path)
 
 	pr.LoadANN("model/ann.xml");
 	pr.LoadSVM("model/svm.xml");
-	pr.setLifemode(true);
+	//pr.setLifemode(true);
 
 	int size = files.size();
 	//int size = 200;
@@ -147,13 +147,15 @@ int acurayTest(const string& test_path)
 	cout << "正确率统计:"  << endl;
 	cout << "总图片数:" << count_all << "张,  ";
 	cout << "未识别图片:" << count_norecogin << "张,  ";
-	cout << "报错数:" << count_err << "张  " << endl;
 
 	float count_recogin = count_all - (count_err + count_norecogin);
+	float count_rate  = count_recogin / count_all * 100;
+	cout << "识别率:" << count_rate << "%  " << endl;
+
 	diff_avg = diff_all / count_recogin;
 	match_rate = match_count/ count_recogin * 100;
 
-	cout << "平均字符差距:" << diff_avg << "个,  ";
+	cout << "平均字距:" << diff_avg << "个,  ";
 	cout << "完全匹配数:" << match_count << "张,  ";
 	cout << "完全匹配率:" << match_rate << "%  " << endl;
 	cout << endl;

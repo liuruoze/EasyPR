@@ -69,52 +69,6 @@ int deface()
     }
     **/
 
-	////获取该路径下的所有文件
-	vector<string> files;
-	getFiles("F:/data/easypr-data/qq/private/light", files);
-
-	int size = files.size();
-	if (0 == size)
-	{
-		cout << "No File Found!" << endl;
-		return 0;
-	}
-
-	cout << "Begin to mask face!" << endl;
-	for (int i = 0; i < size; i++)
-	{
-		string filepath = files[i].c_str();
-		cout << "------------------" << endl;
-
-		// EasyPR开始判断车牌
-		Mat img = imread(filepath);
-		if (img.empty()) 
-            continue;
-
-		Mat maskimg;
-        maskimg = detectAndMaskFace(img, cascade, 1.5);
-		
-		if (1)
-		{
-			stringstream ss(stringstream::in | stringstream::out);
-
-			string writePath = "F:/data/easypr-data/deface/";
-			vector<string> spilt_path;
-			SplitString(filepath, spilt_path, "\\");
-
-			int spiltsize = spilt_path.size();
-			string filename = "";
-			string newfilepath = "";
-			if (spiltsize != 0)
-			{
-				filename = spilt_path[spiltsize-1];
-				newfilepath = writePath + filename;
-			}
-			ss << newfilepath;
-			imwrite(ss.str(), maskimg);
-		}
-	}
-
     return 0;
 }
 

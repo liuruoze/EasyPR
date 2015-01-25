@@ -26,12 +26,13 @@ const string option[] =
 		"2. 批量测试;"		,
 		"3. SVM训练;"		,
 		"4. ANN训练(未开放);"		,
-		"5. 开发团队;"		,
-		"6. 感谢名单;"		,
-		"7. 退出;"			,  
+		"5. GDTS生成;"		,
+		"6. 开发团队;"		,
+		"7. 感谢名单;"		,
+		"8. 退出;"			,  
 	};
 
-const int optionCount = 7;
+const int optionCount = 8;
 
 int main()
 {
@@ -69,10 +70,11 @@ int main()
 				break;
 			case 4:
 				// TODO
-				// general_test();
-				 deface();
 				break;
 			case 5:
+				generate_gdts();
+				break;
+			case 6:
 				// 开发团队;
 				cout << endl;
 				cout << "我们EasyPR团队目前有一个5人左右的小组在进行EasyPR后续版本的开发工作。" << endl;
@@ -81,7 +83,7 @@ int main()
 				cout << "如果你觉得自己符合条件，请发邮件到地址(easypr_dev@163.com)，期待你的加入！" << endl;
 				cout << endl;
 				break;
-			case 6:
+			case 7:
 				// 感谢名单
 				cout << endl;
 				cout << "本项目在建设过程中，受到了很多人的帮助，其中以下是对本项目做出突出贡献的" << endl;
@@ -90,7 +92,7 @@ int main()
 				cout << "还有很多的同学对本项目也给予了鼓励与支持，在此也一并表示真诚的谢意！" << endl;
 				cout << endl;
 				break;
-			case 7:
+			case 8:
 				isExit = true;
 				break;
 			default:
