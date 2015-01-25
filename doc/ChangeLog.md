@@ -22,13 +22,13 @@ EasyPR版本更新
 
 * 增加了批量测试功能，这个功能可供测试EasyPR在多幅图片上的整体表现效果。
 
-![批量测试](res/batch_operation.jpg)
+![批量测试](res/batch_operation.jpg) ![批量测试结果](res/batch_result.png)
 
 * 引入了GDTS(General Data Test Set，通用数据测试集)这个概念，作为EasyPR准确率的评测数据集。
 
 ![GDTS](res/general_test.jpg)
 
-* 为了确保GDTS的数据仅用于非商业目的，引入了新的[GDSL协议](../images/GDSL.txt)。
+* 为了确保GDTS的数据仅用于非商业目的，引入了新的[GDSL协议](../image/GDSL.txt)。
 
 ![GDSL](res/gdsl.jpg)
 
@@ -46,7 +46,9 @@ EasyPR版本更新
 
 * 新增整体指标。引入levenshtein距离作为EasyPR整体识别准确率误差的评判参数与改善依据。
 
-![levenshtein](res/levenshtein.jpg)
+![levenshtein1](res/levenshtein1.jpg) ![levenshtein2](res/levenshtein2.jpg) ![levenshtein3](res/levenshtein3.jpg)
+
+![levenshteinAll](res/levenshteinAll.jpg)
 
 * 大幅增加训练数据。SVM训练数据中增加了近千张新数据(未经直方图均衡化的车牌图片和非车牌图片)。
 
