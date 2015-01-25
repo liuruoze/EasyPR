@@ -19,7 +19,7 @@ int acurayTest(const string& test_path)
 
 	pr.LoadANN("model/ann.xml");
 	pr.LoadSVM("model/svm.xml");
-	//pr.setLifemode(true);
+	pr.setLifemode(true);
 
 	int size = files.size();
 	//int size = 200;

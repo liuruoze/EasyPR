@@ -60,6 +60,9 @@ public:
 	//! 是否开启调试模式
 	inline void setDebug(int param){ m_debug = param;}
 
+	//! 获取调试模式状态
+	inline int getDebug(){ return m_debug;}
+
 	//! PlateLocate所用常量
 	static const int DEFAULT_GAUSSIANBLUR_SIZE = 5;
 	static const int SOBEL_SCALE = 1;

@@ -36,6 +36,13 @@ public:
 		CPlateDetect::setPDLifemode(param);
 	}
 
+	//! 是否开启调试模式
+	inline void setDebug(int param)
+	{ 
+		CPlateDetect::setPDDebug(param);
+		CCharsRecognise::setCRDebug(param);
+	}
+
 	////! 车牌定位与判断
 	//int plateDetect(Mat, vector<Mat>&);
 

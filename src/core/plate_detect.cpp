@@ -28,9 +28,25 @@ int CPlateDetect::plateDetect(Mat src, vector<Mat>& resultVec)
 		return -1;
 
 	int resultJu = m_plateJudge->plateJudge(matVec, resultVec);
+		
+	if(getPDDebug())
+	{ 
+		int size = resultVec.size();
+		for (int i = 0; i < size; i++)
+		{
+			Mat img = resultVec[i];
+			if(1)
+			{
+				stringstream ss(stringstream::in | stringstream::out);
+				ss << "image/tmp/plate_judge_result_" << i << ".jpg";
+				imwrite(ss.str(), img);
+			}
+		}
+	}	
+
 
 	if (0 != resultJu)
-		return -1;
+		return -2;
 
 	return 0;
 }

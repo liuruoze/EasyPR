@@ -36,6 +36,12 @@ public:
 	//! 生活模式与工业模式切换
 	inline void setPDLifemode(bool param){m_plateLocate->setLifemode(param);}
 
+	//! 是否开启调试模式
+	inline void setPDDebug(int param){ m_plateLocate->setDebug(param);}
+
+	//! 获取调试模式状态
+	inline int getPDDebug(){ return m_plateLocate->getDebug();}
+
 	//! 设置与读取变量
 	inline void setGaussianBlurSize(int param){	m_plateLocate->setGaussianBlurSize(param);}
 	inline int getGaussianBlurSize() const{	return m_plateLocate->getGaussianBlurSize();}

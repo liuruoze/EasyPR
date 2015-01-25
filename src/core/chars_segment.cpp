@@ -114,7 +114,6 @@ int CCharsSegment::getPlateType(Mat input)
 
 			if(blue > m_ColorThreshold && green > m_ColorThreshold && red > m_ColorThreshold)			
 				countWhite++;
-
 		}	
 	}
 
@@ -164,7 +163,7 @@ Mat CCharsSegment::clearLiuDing(Mat img)
 int CCharsSegment::charsSegment(Mat input, vector<Mat>& resultVec)
 {
 	if( !input.data )
-	{ return -1; }
+	{ return -3; }
 
 	//判断车牌颜色以此确认threshold方法
 	int plateType = getPlateType(input);
@@ -173,18 +172,14 @@ int CCharsSegment::charsSegment(Mat input, vector<Mat>& resultVec)
 	//Threshold input image
 	Mat img_threshold;
 	if (1 == plateType)
-	{
 		threshold(input, img_threshold, 10, 255, CV_THRESH_OTSU+CV_THRESH_BINARY);
-	} 
 	else 
-	{
 		threshold(input, img_threshold, 10, 255, CV_THRESH_OTSU+CV_THRESH_BINARY_INV);
-	}
 
 	if(m_debug)
 	{ 
 		stringstream ss(stringstream::in | stringstream::out);
-		ss << "tmp/debug_char_threshold" << ".jpg";
+		ss << "image/tmp/debug_char_threshold" << ".jpg";
 		imwrite(ss.str(), img_threshold);
 	}
 
@@ -195,7 +190,7 @@ int CCharsSegment::charsSegment(Mat input, vector<Mat>& resultVec)
 	if(m_debug)
 	{ 
 		stringstream ss(stringstream::in | stringstream::out);
-		ss << "tmp/debug_char_clearLiuDing" << ".jpg";
+		ss << "image/tmp/debug_char_clearLiuDing" << ".jpg";
 		imwrite(ss.str(), img_threshold);
 	}
 
@@ -227,7 +222,7 @@ int CCharsSegment::charsSegment(Mat input, vector<Mat>& resultVec)
 	}
 	
 	if (vecRect.size() == 0)
-		return -1;
+		return -3;
 
 	vector<Rect> sortedRect;
 	//对符合尺寸的图块按照从左到右进行排序
@@ -237,6 +232,17 @@ int CCharsSegment::charsSegment(Mat input, vector<Mat>& resultVec)
 	//获得指示城市的特定Rect,如苏A的"A"
 	specIndex = GetSpecificRect(sortedRect);
 
+	if(m_debug)
+	{ 
+		if (specIndex < sortedRect.size())
+		{
+			Mat specMat(img_threshold, sortedRect[specIndex]);
+			stringstream ss(stringstream::in | stringstream::out);
+			ss << "image/tmp/debug_specMat" <<".jpg";
+			imwrite(ss.str(), specMat);
+		}
+	}
+
 	//根据特定Rect向左反推出中文字符
 	//这样做的主要原因是根据findContours方法很难捕捉到中文字符的准确Rect，因此仅能
 	//退过特定算法来指定
@@ -244,7 +250,16 @@ int CCharsSegment::charsSegment(Mat input, vector<Mat>& resultVec)
 	if (specIndex < sortedRect.size())
 		chineseRect = GetChineseRect(sortedRect[specIndex]);
 	else
-		return -1;
+		return -3;
+
+	if(m_debug)
+	{ 
+		Mat chineseMat(img_threshold, chineseRect);
+		stringstream ss(stringstream::in | stringstream::out);
+		ss << "image/tmp/debug_chineseMat" <<".jpg";
+		imwrite(ss.str(), chineseMat);
+	}
+
 
 	//新建一个全新的排序Rect
 	//将中文字符Rect第一个加进来，因为它肯定是最左边的
@@ -254,23 +269,22 @@ int CCharsSegment::charsSegment(Mat input, vector<Mat>& resultVec)
 	RebuildRect(sortedRect, newSortedRect, specIndex);
 
 	if (newSortedRect.size() == 0)
-		return -1;
+		return -3;
 
 	for (int i = 0; i < newSortedRect.size(); i++)
 	{
 		Rect mr = newSortedRect[i];
 		Mat auxRoi(img_threshold, mr);
 
-		if(m_debug)
-		{ 
-			stringstream ss(stringstream::in | stringstream::out);
-			ss << "tmp/debug_char_auxRoi" << i <<".jpg";
-			imwrite(ss.str(), auxRoi);
-		}
-
 		if (1)
 		{
 			auxRoi = preprocessChar(auxRoi);
+			if(m_debug)
+			{ 
+				stringstream ss(stringstream::in | stringstream::out);
+				ss << "image/tmp/debug_char_auxRoi_" << i <<".jpg";
+				imwrite(ss.str(), auxRoi);
+			}
 			resultVec.push_back(auxRoi);
 		}
 	}

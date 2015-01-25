@@ -33,19 +33,22 @@ public:
 	//! 装载ANN模型
 	void LoadANN(string s);
 
+	//! 是否开启调试模式
+	inline void setCRDebug(int param){ m_charsSegment->setDebug(param);}
+
+	//! 获取调试模式状态
+	inline int getCRDebug(){ return m_charsSegment->getDebug();}
+
+
 	//! 获得车牌颜色
 	inline string getPlateType(Mat input) const
 	{
 		string color = "未知";
 		int result = m_charsSegment->getPlateType(input);
 		if (1 == result)
-		{
 			color = "蓝牌";
-		}
 		if (2 == result)
-		{
 			color = "黄牌";
-		}
 		return color;
 	}
 

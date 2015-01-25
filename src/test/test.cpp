@@ -115,8 +115,7 @@ int test_plate_locate()
 {
 	cout << "test_plate_locate" << endl;
 
-	//Mat src = imread("image/plate_judge.jpg");
-	Mat src = imread("image/1.png");
+	Mat src = imread("image/plate_locate.jpg");
 
 	vector<Mat> resultVec;
 	CPlateLocate plate;
@@ -142,7 +141,7 @@ int test_plate_judge()
 {
 	cout << "test_plate_judge" << endl;
 
-	Mat src = imread("image/1.png");
+	Mat src = imread("image/plate_judge.jpg");
 
 	//可能是车牌的图块集合
 	vector<Mat> matVec;
@@ -327,6 +326,7 @@ int test_plate_recognize()
 	pr.LoadSVM("model/svm.xml");
 
 	pr.setLifemode(true);
+	pr.setDebug(true);
 
 	vector<string> plateVec;
 
@@ -339,6 +339,9 @@ int test_plate_recognize()
 			cout << "plateRecognize: " << plateVec[j] << endl;			
 		}
 	}
+
+	if (result != 0)
+		cout << "result:" << result << endl;
 
 	cout << "Enter 1 for coninue:";
 	int a = 0;

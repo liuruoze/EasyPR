@@ -84,7 +84,11 @@ public:
 	static const int DEFAULT_MAT_WIDTH = 136;
 	static const int DEFAULT_COLORTHRESHOLD = 150;
 
+	//! 是否开启调试模式
 	inline void setDebug(int param){ m_debug = param;}
+
+	//! 获取调试模式状态
+	inline int getDebug(){ return m_debug;}
 
 private:
 	//！柳钉判断参数
