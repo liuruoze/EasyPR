@@ -24,6 +24,10 @@
     <None Include="关于版权.txt">
       <Filter>资源文件</Filter>
     </None>
+    <None Include="image\图片捐赠.txt" />
+    <None Include="image\免责声明.txt" />
+    <None Include="image\使用说明.txt" />
+    <None Include="image\版权声明.txt" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\util\util.cpp">

@@ -76,6 +76,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <None Include="image\使用说明.txt" />
+    <None Include="image\免责声明.txt" />
+    <None Include="image\图片捐赠.txt" />
+    <None Include="image\版权声明.txt" />
     <None Include="model\ann.xml" />
     <None Include="model\svm.xml" />
     <None Include="关于版权.txt" />

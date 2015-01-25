@@ -146,8 +146,8 @@ int acurayTest(const string& test_path)
 	cout << endl;
 	cout << "正确率统计:"  << endl;
 	cout << "总图片数:" << count_all << "张,  ";
-	cout << "错误数:" << count_err << "张,  ";
-	cout << "未识别图片:" << count_norecogin << "张  " << endl;
+	cout << "未识别图片:" << count_norecogin << "张,  ";
+	cout << "报错数:" << count_err << "张  " << endl;
 
 	float count_recogin = count_all - (count_err + count_norecogin);
 	diff_avg = diff_all / count_recogin;
