@@ -1,39 +1,98 @@
+#if defined (WIN32) || defined (_WIN32)
 #include <windows.h>
+#endif
+
 #include <iostream>
 #include <cstdlib>
+
+#if defined (WIN32) || defined (_WIN32)
 #include <io.h>
+#elif defined (linux) || defined (__linux__)
+#include <sys/io.h>
+#include <sys/stat.h>
+#include <sys/types.h>
+
+#include <dirent.h>
+#include <time.h>
+#include <cstring>
+#endif
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <vector>
 
 using namespace std;
 
+#if defined (WIN32) || defined (_WIN32)
+
 void getFiles(string path, vector<string>& files)
 {
-	//文件句柄
-	long   hFile   =   0;
-	//文件信息
-	struct _finddata_t fileinfo;
-	string p;
-	if((hFile = _findfirst(p.assign(path).append("\\*").c_str(),&fileinfo)) !=  -1)
-	{
-		do
-		{
-			//如果是目录,迭代之
-			//如果不是,加入列表
-			if((fileinfo.attrib &  _A_SUBDIR))
-			{
-				if(strcmp(fileinfo.name,".") != 0  &&  strcmp(fileinfo.name,"..") != 0)
-					getFiles( p.assign(path).append("\\").append(fileinfo.name), files );
-			}
-			else
-			{
-				files.push_back(p.assign(path).append("\\").append(fileinfo.name) );
-			}
-		}while(_findnext(hFile, &fileinfo)  == 0);
-		_findclose(hFile);
-	}
+    //文件句柄
+    long   hFile   =   0;
+    //文件信息
+    struct _finddata_t fileinfo;
+    string p;
+    if((hFile = _findfirst(p.assign(path).append("\\*").c_str(),&fileinfo)) !=  -1)
+    {
+        do
+        {
+            //如果是目录,迭代之
+            //如果不是,加入列表
+            if((fileinfo.attrib &  _A_SUBDIR))
+            {
+                if(strcmp(fileinfo.name,".") != 0  &&  strcmp(fileinfo.name,"..") != 0)
+                    getFiles( p.assign(path).append("\\").append(fileinfo.name), files );
+            }
+            else
+            {
+                files.push_back(p.assign(path).append("\\").append(fileinfo.name) );
+            }
+        }while(_findnext(hFile, &fileinfo)  == 0);
+        _findclose(hFile);
+    }
 }
+
+#elif defined (linux) || defined (__linux__)
+
+void getFiles(string path, vector<string>& files) {
+    DIR *dirp = opendir(path.c_str());
+    if (dirp) {
+        struct stat st;
+        struct dirent *dir;
+        char fullpath[512];
+        while ((dir = readdir(dirp)) != NULL) {
+            if (!strcmp(dir->d_name, ".") ||
+                !strcmp(dir->d_name, "..")) {
+                continue;
+            }
+
+            sprintf(fullpath, "%s/%s", path.c_str(), dir->d_name);
+
+            if (lstat(fullpath, &st) < 0) {
+                //perror("lstat");
+                continue;
+            }
+
+            if (S_ISDIR(st.st_mode)) {
+                getFiles(fullpath, files);
+            } else {
+                files.push_back(fullpath);
+            }
+        }
+    }
+    closedir(dirp);
+}
+
+double GetTickCount() {
+    struct timespec ts;
+
+    clock_gettime(CLOCK_MONOTONIC, &ts);
+
+    return (ts.tv_sec * 1e3 + ts.tv_nsec / 1e6);
+}
+
+#endif
+
 
 //C++的spilt函数
 void SplitString(const string& s, vector<string>& v, const string& c)

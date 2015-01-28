@@ -5,6 +5,11 @@
 //C++的获取文件夹函数
 void getFiles(string path, vector<string>& files);
 
+//Linux下的GetTickCount函数
+#if defined (linux) || defined (__linux__)
+double GetTickCount();
+#endif
+
 //C++的spilt函数
 void SplitString(const string& s, vector<string>& v, const string& c);
 

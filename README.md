@@ -49,6 +49,32 @@ EasyPR是基于opencv2.4.8版本开发的，2.4.8以上的版本应该可以兼�
 
 “蓝牌：苏EUK722”
 
+### 编译(Linux)
+
+#### 依赖
+
+* gcc 4.8 或以上
+* cmake 2.6 或以上
+* opencv 2.4.8 或以上
+
+##### 编译opencv
+
+此过程需要较长时间，请耐心等待。
+
+```
+$ cd opencv/
+$ cmake .
+$ make
+$ make install
+```
+
+##### 编译EasyPR
+
+```
+$ cd EasyPR/
+$ cmake .
+$ make
+```
 
 ### 安装
 

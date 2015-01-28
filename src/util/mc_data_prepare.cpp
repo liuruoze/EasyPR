@@ -5,7 +5,13 @@
 
 #include <iostream>
 #include <cstdlib>
+
+#if defined (WIN32) || defined (_WIN32)
 #include <io.h>
+#elif defined (linux) || defined (__linux__)
+#include <sys/io.h>
+#endif
+
 #include <opencv/cv.h>
 #include <opencv/highgui.h>
 #include <opencv/cvaux.h>

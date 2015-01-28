@@ -5,11 +5,20 @@
 #include "opencv2/ml/ml.hpp"
 #include "opencv2/highgui/highgui.hpp"
 
+#if defined (WIN32) || defined (_WIN32)
 #include <windows.h>
+#endif
+
 #include <vector>
 #include <iostream>
 #include <cstdlib>
+
+#if defined (WIN32) || defined (_WIN32)
 #include <io.h>
+#elif defined (linux) || defined (__linux__)
+#include <sys/io.h>
+#endif
+
 #include <stdlib.h>
 #include <stdio.h>
 
@@ -223,10 +232,10 @@ void saveModel(int _predictsize, int _neurons)
 	cout << "Begin to saveModelChar predictSize:" << _predictsize 
 		<< " neurons:" << _neurons << endl;
 
-	double start = GetTickCount();  
-	annTrain(TrainingData, Classes, _neurons);
-	double end = GetTickCount();  
-	cout << "GetTickCount:" << (end-start)/1000 << endl;  
+    double start = GetTickCount();
+    annTrain(TrainingData, Classes, _neurons);
+    double end = GetTickCount();
+    cout << "GetTickCount:" << (end-start)/1000 << endl;
 
 	cout << "End the saveModelChar" << endl;
 
