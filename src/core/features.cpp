@@ -1,6 +1,6 @@
-// Õâ¸öÎÄ¼ş¶¨ÒåÁËEasyPRÀïËùÓĞÌØÕ÷Éú³ÉµÄº¯Êı
-// ËùÊôÃüÃû¿Õ¼äÎªeasypr
-// Õâ¸ö²¿·ÖÖĞµÄÌØÕ÷ÓÉeasyprµÄ¿ª·¢ÕßĞŞ¸Ä
+// è¿™ä¸ªæ–‡ä»¶å®šä¹‰äº†EasyPRé‡Œæ‰€æœ‰ç‰¹å¾ç”Ÿæˆçš„å‡½æ•°
+// æ‰€å±å‘½åç©ºé—´ä¸ºeasypr
+// è¿™ä¸ªéƒ¨åˆ†ä¸­çš„ç‰¹å¾ç”±easyprçš„å¼€å‘è€…ä¿®æ”¹
 
 #include "../include/prep.h"
 #include "../include/features.h"
@@ -10,7 +10,7 @@
 */
 namespace easypr {
 
-//! Ö±·½Í¼¾ùºâ
+//! ç›´æ–¹å›¾å‡è¡¡
 Mat histeq(Mat in)
 {
 	Mat out(in.size(), in.type());
@@ -31,7 +31,7 @@ Mat histeq(Mat in)
 	return out;
 }
 
-// £¡»ñÈ¡´¹Ö±ºÍË®Æ½·½ÏòÖ±·½Í¼
+// ï¼è·å–å‚ç›´å’Œæ°´å¹³æ–¹å‘ç›´æ–¹å›¾
 Mat ProjectedHistogram(Mat img, int t)
 {
 	int sz=(t)?img.rows:img.cols;
@@ -39,7 +39,7 @@ Mat ProjectedHistogram(Mat img, int t)
 
 	for(int j=0; j<sz; j++){
 		Mat data=(t)?img.row(j):img.col(j);
-		mhist.at<float>(j)=countNonZero(data);	//Í³¼ÆÕâÒ»ĞĞ»òÒ»ÁĞÖĞ£¬·ÇÁãÔªËØµÄ¸öÊı£¬²¢±£´æµ½mhistÖĞ
+		mhist.at<float>(j)=countNonZero(data);	//ç»Ÿè®¡è¿™ä¸€è¡Œæˆ–ä¸€åˆ—ä¸­ï¼Œéé›¶å…ƒç´ çš„ä¸ªæ•°ï¼Œå¹¶ä¿å­˜åˆ°mhistä¸­
 	}
 
 	//Normalize histogram
@@ -47,13 +47,13 @@ Mat ProjectedHistogram(Mat img, int t)
 	minMaxLoc(mhist, &min, &max);
 
 	if(max>0)
-		mhist.convertTo(mhist,-1 , 1.0f/max, 0);//ÓÃmhistÖ±·½Í¼ÖĞµÄ×î´óÖµ£¬¹éÒ»»¯Ö±·½Í¼
+		mhist.convertTo(mhist,-1 , 1.0f/max, 0);//ç”¨mhistç›´æ–¹å›¾ä¸­çš„æœ€å¤§å€¼ï¼Œå½’ä¸€åŒ–ç›´æ–¹å›¾
 
 	return mhist;
 }
 
 
-//! »ñµÃ³µÅÆµÄÌØÕ÷Êı
+//! è·å¾—è½¦ç‰Œçš„ç‰¹å¾æ•°
 Mat getTheFeatures(Mat in)
 {
 	const int VERTICAL = 0;
@@ -68,7 +68,7 @@ Mat getTheFeatures(Mat in)
 
 	Mat out = Mat::zeros(1, numCols, CV_32F);
 
-	//Asign values to feature,Ñù±¾ÌØÕ÷ÎªË®Æ½¡¢´¹Ö±Ö±·½Í¼
+	//Asign values to feature,æ ·æœ¬ç‰¹å¾ä¸ºæ°´å¹³ã€å‚ç›´ç›´æ–¹å›¾
 	int j=0;
 	for(int i=0; i<vhist.cols; i++)
 	{
@@ -84,15 +84,15 @@ Mat getTheFeatures(Mat in)
 	return out;
 }
 
-// ! EasyPRµÄgetFeatures»Øµ÷º¯Êı
-// £¡±¾º¯ÊıÊÇÉú³ÉÖ±·½Í¼¾ùºâÌØÕ÷µÄ»Øµ÷º¯Êı
+// ! EasyPRçš„getFeatureså›è°ƒå‡½æ•°
+// ï¼æœ¬å‡½æ•°æ˜¯ç”Ÿæˆç›´æ–¹å›¾å‡è¡¡ç‰¹å¾çš„å›è°ƒå‡½æ•°
 void getHisteqFeatures(const Mat& image, Mat& features)
 {
 	features = histeq(image);
 }
 
-// ! EasyPRµÄgetFeatures»Øµ÷º¯Êı
-// £¡±¾º¯ÊıÊÇ»ñÈ¡´¹Ö±ºÍË®Æ½µÄÖ±·½Í¼Í¼Öµ
+// ! EasyPRçš„getFeatureså›è°ƒå‡½æ•°
+// ï¼æœ¬å‡½æ•°æ˜¯è·å–å‚ç›´å’Œæ°´å¹³çš„ç›´æ–¹å›¾å›¾å€¼
 void getHistogramFeatures(const Mat& image, Mat& features)
 {
 	Mat grayImage;
@@ -104,20 +104,20 @@ void getHistogramFeatures(const Mat& image, Mat& features)
 }
 
 
-// ! EasyPRµÄgetFeatures»Øµ÷º¯Êı
-// £¡±¾º¯ÊıÊÇ»ñÈ¡SITFÌØÕ÷×Ó
+// ! EasyPRçš„getFeatureså›è°ƒå‡½æ•°
+// ï¼æœ¬å‡½æ•°æ˜¯è·å–SITFç‰¹å¾å­
 // ! 
 void getSIFTFeatures(const Mat& image, Mat& features)
 {
-	//´ıÍêÉÆ
+	//å¾…å®Œå–„
 }
 
 
-// ! EasyPRµÄgetFeatures»Øµ÷º¯Êı
-// £¡±¾º¯ÊıÊÇ»ñÈ¡HOGÌØÕ÷×Ó
+// ! EasyPRçš„getFeatureså›è°ƒå‡½æ•°
+// ï¼æœ¬å‡½æ•°æ˜¯è·å–HOGç‰¹å¾å­
 void getHOGFeatures(const Mat& image, Mat& features)
 {
-	//´ıÍêÉÆ
+	//å¾…å®Œå–„
 }
 
 }	/* \namespace easypr  */

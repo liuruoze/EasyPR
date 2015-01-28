@@ -1,41 +1,100 @@
+#if defined (WIN32) || defined (_WIN32)
 #include <windows.h>
+#endif
+
 #include <iostream>
 #include <cstdlib>
+
+#if defined (WIN32) || defined (_WIN32)
 #include <io.h>
+#elif defined (linux) || defined (__linux__)
+#include <sys/io.h>
+#include <sys/stat.h>
+#include <sys/types.h>
+
+#include <dirent.h>
+#include <time.h>
+#include <cstring>
+#endif
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <vector>
 
 using namespace std;
 
+#if defined (WIN32) || defined (_WIN32)
+
 void getFiles(string path, vector<string>& files)
 {
-	//ÎÄ¼ş¾ä±ú
-	long   hFile   =   0;
-	//ÎÄ¼şĞÅÏ¢
-	struct _finddata_t fileinfo;
-	string p;
-	if((hFile = _findfirst(p.assign(path).append("\\*").c_str(),&fileinfo)) !=  -1)
-	{
-		do
-		{
-			//Èç¹ûÊÇÄ¿Â¼,µü´úÖ®
-			//Èç¹û²»ÊÇ,¼ÓÈëÁĞ±í
-			if((fileinfo.attrib &  _A_SUBDIR))
-			{
-				if(strcmp(fileinfo.name,".") != 0  &&  strcmp(fileinfo.name,"..") != 0)
-					getFiles( p.assign(path).append("\\").append(fileinfo.name), files );
-			}
-			else
-			{
-				files.push_back(p.assign(path).append("\\").append(fileinfo.name) );
-			}
-		}while(_findnext(hFile, &fileinfo)  == 0);
-		_findclose(hFile);
-	}
+    //æ–‡ä»¶å¥æŸ„
+    long   hFile   =   0;
+    //æ–‡ä»¶ä¿¡æ¯
+    struct _finddata_t fileinfo;
+    string p;
+    if((hFile = _findfirst(p.assign(path).append("\\*").c_str(),&fileinfo)) !=  -1)
+    {
+        do
+        {
+            //å¦‚æœæ˜¯ç›®å½•,è¿­ä»£ä¹‹
+            //å¦‚æœä¸æ˜¯,åŠ å…¥åˆ—è¡¨
+            if((fileinfo.attrib &  _A_SUBDIR))
+            {
+                if(strcmp(fileinfo.name,".") != 0  &&  strcmp(fileinfo.name,"..") != 0)
+                    getFiles( p.assign(path).append("\\").append(fileinfo.name), files );
+            }
+            else
+            {
+                files.push_back(p.assign(path).append("\\").append(fileinfo.name) );
+            }
+        }while(_findnext(hFile, &fileinfo)  == 0);
+        _findclose(hFile);
+    }
 }
 
-//C++µÄspiltº¯Êı
+#elif defined (linux) || defined (__linux__)
+
+void getFiles(string path, vector<string>& files) {
+    DIR *dirp = opendir(path.c_str());
+    if (dirp) {
+        struct stat st;
+        struct dirent *dir;
+        char fullpath[512];
+        while ((dir = readdir(dirp)) != NULL) {
+            if (!strcmp(dir->d_name, ".") ||
+                !strcmp(dir->d_name, "..")) {
+                continue;
+            }
+
+            sprintf(fullpath, "%s/%s", path.c_str(), dir->d_name);
+
+            if (lstat(fullpath, &st) < 0) {
+                //perror("lstat");
+                continue;
+            }
+
+            if (S_ISDIR(st.st_mode)) {
+                getFiles(fullpath, files);
+            } else {
+                files.push_back(fullpath);
+            }
+        }
+    }
+    closedir(dirp);
+}
+
+double GetTickCount() {
+    struct timespec ts;
+
+    clock_gettime(CLOCK_MONOTONIC, &ts);
+
+    return (ts.tv_sec * 1e3 + ts.tv_nsec / 1e6);
+}
+
+#endif
+
+
+//C++çš„spiltå‡½æ•°
 void SplitString(const string& s, vector<string>& v, const string& c)
 {
 	std::string::size_type pos1, pos2;
@@ -53,7 +112,7 @@ void SplitString(const string& s, vector<string>& v, const string& c)
 }
 
 
-//! Í¨¹ıÎÄ¼ş¼ĞÃû³Æ»ñÈ¡ÎÄ¼şÃû£¬²»°üÀ¨ºó×º
+//! é€šè¿‡æ–‡ä»¶å¤¹åç§°è·å–æ–‡ä»¶åï¼Œä¸åŒ…æ‹¬åç¼€
 void getFileName(const string& filepath, string& name)
 {
 	vector<string> spilt_path;

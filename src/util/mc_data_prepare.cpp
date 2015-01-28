@@ -1,11 +1,17 @@
 // mc_data_prepare.cpp : 
-// Êı¾İÔ¤´¦ÀíµÄ³ÌĞò£¬Ö÷Òª×öÒÔÏÂÁ½¼şÊÂ
-// 1.¶ÁÈ¡Ô­ÉúÊı¾İ rawdata£¬Õâ¿ÉÄÜÓĞÊı°ÙÍòÕÅ
-// 2.Ëæ»ú/Ñ¡ÔñĞÔµØÑ¡È¡²¿·ÖÊı¾İ³ÉÎªlearndata£¬Õâ¸ö¸ù¾İ²ÎÊıÉèÖÃ£¬Ò»°ãÉèÖÃÎª1000£¬10000£¬»òÕß1°ÙÍò
+// æ•°æ®é¢„å¤„ç†çš„ç¨‹åºï¼Œä¸»è¦åšä»¥ä¸‹ä¸¤ä»¶äº‹
+// 1.è¯»å–åŸç”Ÿæ•°æ® rawdataï¼Œè¿™å¯èƒ½æœ‰æ•°ç™¾ä¸‡å¼ 
+// 2.éšæœº/é€‰æ‹©æ€§åœ°é€‰å–éƒ¨åˆ†æ•°æ®æˆä¸ºlearndataï¼Œè¿™ä¸ªæ ¹æ®å‚æ•°è®¾ç½®ï¼Œä¸€èˆ¬è®¾ç½®ä¸º1000ï¼Œ10000ï¼Œæˆ–è€…1ç™¾ä¸‡
 
 #include <iostream>
 #include <cstdlib>
+
+#if defined (WIN32) || defined (_WIN32)
 #include <io.h>
+#elif defined (linux) || defined (__linux__)
+#include <sys/io.h>
+#endif
+
 #include <opencv/cv.h>
 #include <opencv/highgui.h>
 #include <opencv/cvaux.h>
@@ -19,65 +25,65 @@ const int LEARANDATA_COUNT = 1000;
 void getFiles( string path, vector<string>& files );
 void SplitString(const string& s, vector<string>& v, const string& c);
 
-//! Ê¡·İ¶ÔÓ¦map
+//! çœä»½å¯¹åº”map
 map<string, string> mc_map;
 
 void Code2Province(const string& code, string& province)
 {
 	if (mc_map.empty())
 	{
-		mc_map.insert(pair<string, string>("E00","Î´Ê¶±ğ"));
-		mc_map.insert(pair<string, string>("A01","¾©"));
-		mc_map.insert(pair<string, string>("A02","½ò"));
-		mc_map.insert(pair<string, string>("A03","»¦"));
-		mc_map.insert(pair<string, string>("A04","Óå"));
-		mc_map.insert(pair<string, string>("B01","¹ğ"));
-		mc_map.insert(pair<string, string>("B02","ÃÉ"));
-		mc_map.insert(pair<string, string>("B03","Äş"));
-		mc_map.insert(pair<string, string>("B04","ĞÂ"));
-		mc_map.insert(pair<string, string>("B05","²Ø"));
-		mc_map.insert(pair<string, string>("S01","Íî"));
-		mc_map.insert(pair<string, string>("S02","Ãö"));
-		mc_map.insert(pair<string, string>("S03","ÔÁ"));
-		mc_map.insert(pair<string, string>("S04","¸Ê"));
-		mc_map.insert(pair<string, string>("S05","¹ó"));
-		mc_map.insert(pair<string, string>("S06","¶õ"));
-		mc_map.insert(pair<string, string>("S07","¼½"));
-		mc_map.insert(pair<string, string>("S08","ºÚ"));
-		mc_map.insert(pair<string, string>("S09","Ïæ"));
-		mc_map.insert(pair<string, string>("S10","Ô¥"));
-		mc_map.insert(pair<string, string>("S11","Çí"));
-		mc_map.insert(pair<string, string>("S12","¼ª"));
-		mc_map.insert(pair<string, string>("S13","ËÕ"));
-		mc_map.insert(pair<string, string>("S14","¸Ó"));
-		mc_map.insert(pair<string, string>("S15","ÁÉ"));
-		mc_map.insert(pair<string, string>("S16","Çà"));
-		mc_map.insert(pair<string, string>("S17","´¨"));
-		mc_map.insert(pair<string, string>("S18","Â³"));
-		mc_map.insert(pair<string, string>("S19","ÉÂ"));
-		mc_map.insert(pair<string, string>("S20","½ú"));
-		mc_map.insert(pair<string, string>("S21","ÔÆ"));
-		mc_map.insert(pair<string, string>("S22","Õã"));
-		mc_map.insert(pair<string, string>("J01","¾ü"));
-		mc_map.insert(pair<string, string>("J02","º£"));
-		mc_map.insert(pair<string, string>("J03","¿Õ"));
-		mc_map.insert(pair<string, string>("J04","±±"));
-		mc_map.insert(pair<string, string>("J05","³É"));
-		mc_map.insert(pair<string, string>("J06","¹ã"));
-		mc_map.insert(pair<string, string>("J07","¼Ã"));
-		mc_map.insert(pair<string, string>("J08","À¼"));
-		mc_map.insert(pair<string, string>("J09","ÄÏ"));
-		mc_map.insert(pair<string, string>("J10","Éò"));
+		mc_map.insert(pair<string, string>("E00","æœªè¯†åˆ«"));
+		mc_map.insert(pair<string, string>("A01","äº¬"));
+		mc_map.insert(pair<string, string>("A02","æ´¥"));
+		mc_map.insert(pair<string, string>("A03","æ²ª"));
+		mc_map.insert(pair<string, string>("A04","æ¸"));
+		mc_map.insert(pair<string, string>("B01","æ¡‚"));
+		mc_map.insert(pair<string, string>("B02","è’™"));
+		mc_map.insert(pair<string, string>("B03","å®"));
+		mc_map.insert(pair<string, string>("B04","æ–°"));
+		mc_map.insert(pair<string, string>("B05","è—"));
+		mc_map.insert(pair<string, string>("S01","çš–"));
+		mc_map.insert(pair<string, string>("S02","é—½"));
+		mc_map.insert(pair<string, string>("S03","ç²¤"));
+		mc_map.insert(pair<string, string>("S04","ç”˜"));
+		mc_map.insert(pair<string, string>("S05","è´µ"));
+		mc_map.insert(pair<string, string>("S06","é„‚"));
+		mc_map.insert(pair<string, string>("S07","å†€"));
+		mc_map.insert(pair<string, string>("S08","é»‘"));
+		mc_map.insert(pair<string, string>("S09","æ¹˜"));
+		mc_map.insert(pair<string, string>("S10","è±«"));
+		mc_map.insert(pair<string, string>("S11","ç¼"));
+		mc_map.insert(pair<string, string>("S12","å‰"));
+		mc_map.insert(pair<string, string>("S13","è‹"));
+		mc_map.insert(pair<string, string>("S14","èµ£"));
+		mc_map.insert(pair<string, string>("S15","è¾½"));
+		mc_map.insert(pair<string, string>("S16","é’"));
+		mc_map.insert(pair<string, string>("S17","å·"));
+		mc_map.insert(pair<string, string>("S18","é²"));
+		mc_map.insert(pair<string, string>("S19","é™•"));
+		mc_map.insert(pair<string, string>("S20","æ™‹"));
+		mc_map.insert(pair<string, string>("S21","äº‘"));
+		mc_map.insert(pair<string, string>("S22","æµ™"));
+		mc_map.insert(pair<string, string>("J01","å†›"));
+		mc_map.insert(pair<string, string>("J02","æµ·"));
+		mc_map.insert(pair<string, string>("J03","ç©º"));
+		mc_map.insert(pair<string, string>("J04","åŒ—"));
+		mc_map.insert(pair<string, string>("J05","æˆ"));
+		mc_map.insert(pair<string, string>("J06","å¹¿"));
+		mc_map.insert(pair<string, string>("J07","æµ"));
+		mc_map.insert(pair<string, string>("J08","å…°"));
+		mc_map.insert(pair<string, string>("J09","å—"));
+		mc_map.insert(pair<string, string>("J10","æ²ˆ"));
 	}
 
 	if (mc_map.count(code))
 		province = mc_map[code];
 	else
-		province = "ÎŞ";
+		province = "æ— ";
 }
 
 
-//MC£ºÇĞÈ¥ÉÏ²¿Óëµ×²¿¸ÉÈÅµÄÏ¸½Ú
+//MCï¼šåˆ‡å»ä¸Šéƒ¨ä¸åº•éƒ¨å¹²æ‰°çš„ç»†èŠ‚
 Mat cutBottom(Mat img)
 {
 	int width = img.size().width;
@@ -87,7 +93,7 @@ Mat cutBottom(Mat img)
 	return dst;
 }
 
-//MC£ºfilepathÊ¾Àı£ºF:\data\easypr-data\learndata\20150110132005-210028-S18-H3952K.jpg
+//MCï¼šfilepathç¤ºä¾‹ï¼šF:\data\easypr-data\learndata\20150110132005-210028-S18-H3952K.jpg
 bool isNotNight(const string& filepath)
 {
 	vector<string> spilt_path;
@@ -110,8 +116,8 @@ bool isNotNight(const string& filepath)
 				datestr = spilt_name[0];
 				if (datestr != "")
 				{
-					//"20150110132005", Ê±¼äÔÚµÚ6£¬7¸öÎ»ÖÃ
-					//½«ÔçÉÏ10µãµ½ÏÂÎç2µãµÄÍ¼Æ¬½ØÈ¡³öÀ´
+					//"20150110132005", æ—¶é—´åœ¨ç¬¬6ï¼Œ7ä¸ªä½ç½®
+					//å°†æ—©ä¸Š10ç‚¹åˆ°ä¸‹åˆ2ç‚¹çš„å›¾ç‰‡æˆªå–å‡ºæ¥
 					string hourstr = datestr.substr(8, 2);
 					if ( hourstr <= "14" && hourstr >= "10")
 						return true;	
@@ -123,7 +129,7 @@ bool isNotNight(const string& filepath)
 	return false;
 }
 
-//! MC£º½«rawdataµÄÎÄ¼ş»»¸öÂ·¾¶µ½learndataÀï
+//! MCï¼šå°†rawdataçš„æ–‡ä»¶æ¢ä¸ªè·¯å¾„åˆ°learndataé‡Œ
 bool getNewPath(const string& filepath, string& newfilepath)
 {
 	string writePath = "F:/data/easypr-data/learndata/";
@@ -142,7 +148,7 @@ bool getNewPath(const string& filepath, string& newfilepath)
 }
 
 
-//! MC£ºÍ¨¹ıfilepath»ñÈ¡³µÅÆºÅÂë
+//! MCï¼šé€šè¿‡filepathè·å–è½¦ç‰Œå·ç 
 void getPlateLicense(const string& filepath, string& plateLicense)
 {
 	vector<string> spilt_path;
@@ -164,10 +170,10 @@ void getPlateLicense(const string& filepath, string& plateLicense)
 			string provinceStr = "";
 			if (name_size != 0)
 			{
-				// plateStrÊÇ×îºóÒ»¸ö×Ö·û´®£¬°üÀ¨ºóÃæµÄ".jpg"
+				// plateStræ˜¯æœ€åä¸€ä¸ªå­—ç¬¦ä¸²ï¼ŒåŒ…æ‹¬åé¢çš„".jpg"
 				plateStr = spilt_name[name_size-1];
 
-				// ½«".jpg"È¥µô
+				// å°†".jpg"å»æ‰
 				vector<string> spilt_plate;
 				SplitString(plateStr, spilt_plate, ".");
 				int plate_size = spilt_plate.size();
@@ -177,7 +183,7 @@ void getPlateLicense(const string& filepath, string& plateLicense)
 					rawplate = spilt_plate[0];
 				}
 
-				// provinceStrÊÇµ¹ÊıµÚ¶ş¸ö×Ö·û´®£¬Ö÷ÒªÊÇ"S13"´ú±í"ËÕ"
+				// provinceStræ˜¯å€’æ•°ç¬¬äºŒä¸ªå­—ç¬¦ä¸²ï¼Œä¸»è¦æ˜¯"S13"ä»£è¡¨"è‹"
 				provinceCode = spilt_name[name_size-2];
 				Code2Province(provinceCode, provinceStr);
 				plateLicense = provinceStr + rawplate;
@@ -187,12 +193,12 @@ void getPlateLicense(const string& filepath, string& plateLicense)
 }
 
 
-//! MC£º½«rawdata½ØÈ¡²¿·ÖÊı¾İµ½learndataÖĞ
+//! MCï¼šå°†rawdataæˆªå–éƒ¨åˆ†æ•°æ®åˆ°learndataä¸­
 void getLearnData()
 {
 	char * filePath = "F:/data/easypr-data/rawdata";
 
-	////»ñÈ¡¸ÃÂ·¾¶ÏÂµÄËùÓĞÎÄ¼ş
+	////è·å–è¯¥è·¯å¾„ä¸‹çš„æ‰€æœ‰æ–‡ä»¶
 	vector<string> files;
 	getFiles(filePath, files );
 
@@ -200,11 +206,11 @@ void getLearnData()
 	if (0 == size)
 		cout << "No File Found in rawdata!" << endl;
 
-	////Ëæ»úÅÅÁĞrawdata
+	////éšæœºæ’åˆ—rawdata
 	srand(unsigned(time(NULL)));
 	random_shuffle(files.begin(), files.end());
 
-	////Ñ¡È¡Ç°LEARANDATA_COUNT¸örawdataÊı¾İ×÷Îªlearndata
+	////é€‰å–å‰LEARANDATA_COUNTä¸ªrawdataæ•°æ®ä½œä¸ºlearndata
 	int boundry = LEARANDATA_COUNT;
 	int count = 0;
 	cout << "Save learndata!" << endl;
@@ -213,15 +219,15 @@ void getLearnData()
 		cout << files[i].c_str() << endl;
 		string filepath = files[i].c_str();
 
-		//Ö»´¦Àí°×ÌìµÄÊı¾İ
+		//åªå¤„ç†ç™½å¤©çš„æ•°æ®
 		if (isNotNight(filepath)!=true)
 			continue;
 
-		//¶ÁÈ¡Êı¾İ£¬²¢¶ÔÍ¼Æ¬½øĞĞÔ¤´¦Àí
+		//è¯»å–æ•°æ®ï¼Œå¹¶å¯¹å›¾ç‰‡è¿›è¡Œé¢„å¤„ç†
 		Mat img = imread(filepath);
 		img = cutBottom(img);
 
-		//´æ´¢Â·¾¶Ìæ»»ÎªĞÂµÄ
+		//å­˜å‚¨è·¯å¾„æ›¿æ¢ä¸ºæ–°çš„
 		string newfilepath = "";
 		getNewPath(filepath, newfilepath);
 
@@ -238,13 +244,13 @@ void getLearnData()
 	}
 }
 
-//! ½«ÎÄ¼şÃû³ÆÌæ»»£¬ÖØµãÊÇMCµÄcodeÌæ»»Îªprovince
+//! å°†æ–‡ä»¶åç§°æ›¿æ¢ï¼Œé‡ç‚¹æ˜¯MCçš„codeæ›¿æ¢ä¸ºprovince
 void changeFileName()
 {
 	//char * filePath = "F:/data/easypr-data/learndata";
 	char * filePath = "F:/data/PlateLocate/pic1";
 
-	////»ñÈ¡¸ÃÂ·¾¶ÏÂµÄËùÓĞÎÄ¼ş
+	////è·å–è¯¥è·¯å¾„ä¸‹çš„æ‰€æœ‰æ–‡ä»¶
 	vector<string> files;
 	getFiles(filePath, files );
 
@@ -257,7 +263,7 @@ void changeFileName()
 		cout << files[i].c_str() << endl;
 		string filepath = files[i].c_str();
 
-		//¶ÁÈ¡Êı¾İ£¬²¢¶ÔÍ¼Æ¬½øĞĞÔ¤´¦Àí
+		//è¯»å–æ•°æ®ï¼Œå¹¶å¯¹å›¾ç‰‡è¿›è¡Œé¢„å¤„ç†
 		Mat img = imread(filepath);
 		img = cutBottom(img);
 

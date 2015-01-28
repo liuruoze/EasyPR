@@ -25,19 +25,19 @@ class CPlateLocate
 public:
 	CPlateLocate();
 
-	//! ³µÅÆ¶¨Î»
+	//! è½¦ç‰Œå®šä½
 	int plateLocate(Mat, vector<Mat>& );
 
-	//! ³µÅÆµÄ³ß´çÑéÖ¤
+	//! è½¦ç‰Œçš„å°ºå¯¸éªŒè¯
 	bool verifySizes(RotatedRect mr);
 
-	//! ½á¹û³µÅÆÏÔÊ¾
+	//! ç»“æœè½¦ç‰Œæ˜¾ç¤º
 	Mat showResultMat(Mat src, Size rect_size, Point2f center, int index);
 
-	//! Éú»îÄ£Ê½Óë¹¤ÒµÄ£Ê½ÇĞ»»
+	//! ç”Ÿæ´»æ¨¡å¼ä¸å·¥ä¸šæ¨¡å¼åˆ‡æ¢
 	void setLifemode(bool param);
 
-	//! ÉèÖÃÓë¶ÁÈ¡±äÁ¿
+	//! è®¾ç½®ä¸è¯»å–å˜é‡
 	inline void setGaussianBlurSize(int param){ m_GaussianBlurSize = param;}
 	inline int getGaussianBlurSize() const{ return m_GaussianBlurSize;}
 
@@ -57,13 +57,13 @@ public:
 
 	inline void setJudgeAngle(int param){ m_angle = param;}
 
-	//! ÊÇ·ñ¿ªÆôµ÷ÊÔÄ£Ê½
+	//! æ˜¯å¦å¼€å¯è°ƒè¯•æ¨¡å¼
 	inline void setDebug(int param){ m_debug = param;}
 
-	//! »ñÈ¡µ÷ÊÔÄ£Ê½×´Ì¬
+	//! è·å–è°ƒè¯•æ¨¡å¼çŠ¶æ€
 	inline int getDebug(){ return m_debug;}
 
-	//! PlateLocateËùÓÃ³£Á¿
+	//! PlateLocateæ‰€ç”¨å¸¸é‡
 	static const int DEFAULT_GAUSSIANBLUR_SIZE = 5;
 	static const int SOBEL_SCALE = 1;
 	static const int SOBEL_DELTA = 0;
@@ -73,39 +73,39 @@ public:
 	static const int DEFAULT_MORPH_SIZE_WIDTH = 17;
 	static const int DEFAULT_MORPH_SIZE_HEIGHT = 3;
 
-	//! showResultMatËùÓÃ³£Á¿
+	//! showResultMatæ‰€ç”¨å¸¸é‡
 	static const int WIDTH = 136;
 	static const int HEIGHT = 36;
 	static const int TYPE = CV_8UC3;
 	
-	//! verifySizeËùÓÃ³£Á¿
+	//! verifySizeæ‰€ç”¨å¸¸é‡
 	static const int DEFAULT_VERIFY_MIN = 3;
 	static const int DEFAULT_VERIFY_MAX = 20;
 
-	//! ½Ç¶ÈÅĞ¶ÏËùÓÃ³£Á¿
+	//! è§’åº¦åˆ¤æ–­æ‰€ç”¨å¸¸é‡
 	static const int DEFAULT_ANGLE = 30;
 
-	//! ÊÇ·ñ¿ªÆôµ÷ÊÔÄ£Ê½³£Á¿£¬Ä¬ÈÏ0´ú±í¹Ø±Õ
+	//! æ˜¯å¦å¼€å¯è°ƒè¯•æ¨¡å¼å¸¸é‡ï¼Œé»˜è®¤0ä»£è¡¨å…³é—­
 	static const int DEFAULT_DEBUG = 0;
 
 protected:
-	//! ¸ßË¹Ä£ºıËùÓÃ±äÁ¿
+	//! é«˜æ–¯æ¨¡ç³Šæ‰€ç”¨å˜é‡
 	int m_GaussianBlurSize;
 
-	//! Á¬½Ó²Ù×÷ËùÓÃ±äÁ¿
+	//! è¿æ¥æ“ä½œæ‰€ç”¨å˜é‡
 	int m_MorphSizeWidth;
 	int m_MorphSizeHeight;
 
-	//! verifySizeËùÓÃ±äÁ¿
+	//! verifySizeæ‰€ç”¨å˜é‡
 	float m_error;
 	float m_aspect;
 	int m_verifyMin;
 	int m_verifyMax;
 
-	//! ½Ç¶ÈÅĞ¶ÏËùÓÃ±äÁ¿
+	//! è§’åº¦åˆ¤æ–­æ‰€ç”¨å˜é‡
 	int m_angle;
 
-	//! ÊÇ·ñ¿ªÆôµ÷ÊÔÄ£Ê½£¬0¹Ø±Õ£¬·Ç0¿ªÆô
+	//! æ˜¯å¦å¼€å¯è°ƒè¯•æ¨¡å¼ï¼Œ0å…³é—­ï¼Œé0å¼€å¯
 	int m_debug;
 };
 

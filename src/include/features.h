@@ -6,31 +6,31 @@
 */
 namespace easypr {
 
-//! Ö±·½Í¼¾ùºâ
+//! ç›´æ–¹å›¾å‡è¡¡
 Mat histeq(Mat in);
 
-// £¡»ñÈ¡´¹Ö±ºÍË®Æ½·½ÏòÖ±·½Í¼
+// ï¼è·å–å‚ç›´å’Œæ°´å¹³æ–¹å‘ç›´æ–¹å›¾
 Mat ProjectedHistogram(Mat img, int t);
 
-//! »ñµÃ³µÅÆµÄÌØÕ÷Êı
+//! è·å¾—è½¦ç‰Œçš„ç‰¹å¾æ•°
 Mat getTheFeatures(Mat in);
 
-// ! EasyPRµÄgetFeatures»Øµ÷º¯Êı
-// £¡ÓÃÓÚ´Ó³µÅÆµÄimageÉú³ÉsvmµÄÑµÁ·ÌØÕ÷features
+// ! EasyPRçš„getFeatureså›è°ƒå‡½æ•°
+// ï¼ç”¨äºä»è½¦ç‰Œçš„imageç”Ÿæˆsvmçš„è®­ç»ƒç‰¹å¾features
 typedef void(*svmCallback)(const Mat& image, Mat& features);
 
-// ! EasyPRµÄgetFeatures»Øµ÷º¯Êı
-// £¡±¾º¯ÊıÊÇÉú³ÉÖ±·½Í¼¾ùºâÌØÕ÷µÄ»Øµ÷º¯Êı
+// ! EasyPRçš„getFeatureså›è°ƒå‡½æ•°
+// ï¼æœ¬å‡½æ•°æ˜¯ç”Ÿæˆç›´æ–¹å›¾å‡è¡¡ç‰¹å¾çš„å›è°ƒå‡½æ•°
 void getHisteqFeatures(const Mat& image, Mat& features);
 
-// ! EasyPRµÄgetFeatures»Øµ÷º¯Êı
-// £¡±¾º¯ÊıÊÇ»ñÈ¡´¹Ö±ºÍË®Æ½µÄÖ±·½Í¼Í¼Öµ
+// ! EasyPRçš„getFeatureså›è°ƒå‡½æ•°
+// ï¼æœ¬å‡½æ•°æ˜¯è·å–å‚ç›´å’Œæ°´å¹³çš„ç›´æ–¹å›¾å›¾å€¼
 void getHistogramFeatures(const Mat& image, Mat& features);
 
-// £¡±¾º¯ÊıÊÇ»ñÈ¡SIFTÌØÕ÷×Ó
+// ï¼æœ¬å‡½æ•°æ˜¯è·å–SIFTç‰¹å¾å­
 void getSIFTFeatures(const Mat& image, Mat& features);
 
-// £¡±¾º¯ÊıÊÇ»ñÈ¡HOGÌØÕ÷×Ó
+// ï¼æœ¬å‡½æ•°æ˜¯è·å–HOGç‰¹å¾å­
 void getHOGFeatures(const Mat& image, Mat& features);
 
 
