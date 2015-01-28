@@ -10,17 +10,17 @@ using namespace std;
 
 void getFiles(string path, vector<string>& files)
 {
-	//ÎÄ¼ş¾ä±ú
+	//æ–‡ä»¶å¥æŸ„
 	long   hFile   =   0;
-	//ÎÄ¼şĞÅÏ¢
+	//æ–‡ä»¶ä¿¡æ¯
 	struct _finddata_t fileinfo;
 	string p;
 	if((hFile = _findfirst(p.assign(path).append("\\*").c_str(),&fileinfo)) !=  -1)
 	{
 		do
 		{
-			//Èç¹ûÊÇÄ¿Â¼,µü´úÖ®
-			//Èç¹û²»ÊÇ,¼ÓÈëÁĞ±í
+			//å¦‚æœæ˜¯ç›®å½•,è¿­ä»£ä¹‹
+			//å¦‚æœä¸æ˜¯,åŠ å…¥åˆ—è¡¨
 			if((fileinfo.attrib &  _A_SUBDIR))
 			{
 				if(strcmp(fileinfo.name,".") != 0  &&  strcmp(fileinfo.name,"..") != 0)
@@ -35,7 +35,7 @@ void getFiles(string path, vector<string>& files)
 	}
 }
 
-//C++µÄspiltº¯Êı
+//C++çš„spiltå‡½æ•°
 void SplitString(const string& s, vector<string>& v, const string& c)
 {
 	std::string::size_type pos1, pos2;
@@ -53,7 +53,7 @@ void SplitString(const string& s, vector<string>& v, const string& c)
 }
 
 
-//! Í¨¹ıÎÄ¼ş¼ĞÃû³Æ»ñÈ¡ÎÄ¼şÃû£¬²»°üÀ¨ºó×º
+//! é€šè¿‡æ–‡ä»¶å¤¹åç§°è·å–æ–‡ä»¶åï¼Œä¸åŒ…æ‹¬åç¼€
 void getFileName(const string& filepath, string& name)
 {
 	vector<string> spilt_path;
