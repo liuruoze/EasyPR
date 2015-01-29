@@ -28,7 +28,7 @@ int generate_gdts()
 	// 获取人脸识别文件
 	CascadeClassifier cascade;
     //string cascadeName="/Users/zhoushiwei/Dropbox/Avatar/SDMLIB/haarcascade_frontalface_alt2.xml";
-	string cascadeName="model/haarcascade_frontalface_default.xml";
+	string cascadeName="model/haarcascade_frontalface_alt_tree.xml";
 
 	////获取该路径下的所有文件
 	vector<string> files;

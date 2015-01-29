@@ -9,6 +9,14 @@ EasyPR是一个中文的开源车牌识别系统，其目标是成为一个简�
 * 它能够识别中文。例如车牌为苏EUK722的图片，它可以准确地输出std:string类型的"苏EUK722"的结果。
 * 它的识别率较高。图片清晰情况下，车牌检测与字符识别可以达到90%以上的精度。
 
+### 版本
+
+EasyPR目前除了windows版以外，还有以下几个版本：
+
+* **android版** 由goldriver开发，地址在[这里](https://github.com/linuxxx/EasyPR_Android)，感谢goldriver同学。
+* **linux版** 由Micooz开发，地址在[这里](https://github.com/Micooz/EasyPR)，感谢Micooz同学。
+* **ios版** 正在开发中。
+
 ### 更新
 
 目前EasyPR的版本是1.1，相比上一个版本，有以下更新。可以在[ChangeLog](doc/ChangeLog.md)中找到更多信息：
