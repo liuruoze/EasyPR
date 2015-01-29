@@ -27,32 +27,32 @@ class CCharsRecognise
 public:
 	CCharsRecognise();
 
-	//! å­—ç¬¦åˆ†å‰²ä¸è¯†åˆ«
+	//! ×Ö·û·Ö¸îÓëÊ¶±ğ
 	int charsRecognise(Mat, String&);
 
-	//! è£…è½½ANNæ¨¡å‹
+	//! ×°ÔØANNÄ£ĞÍ
 	void LoadANN(string s);
 
-	//! æ˜¯å¦å¼€å¯è°ƒè¯•æ¨¡å¼
+	//! ÊÇ·ñ¿ªÆôµ÷ÊÔÄ£Ê½
 	inline void setCRDebug(int param){ m_charsSegment->setDebug(param);}
 
-	//! è·å–è°ƒè¯•æ¨¡å¼çŠ¶æ€
+	//! »ñÈ¡µ÷ÊÔÄ£Ê½×´Ì¬
 	inline int getCRDebug(){ return m_charsSegment->getDebug();}
 
 
-	//! è·å¾—è½¦ç‰Œé¢œè‰²
+	//! »ñµÃ³µÅÆÑÕÉ«
 	inline string getPlateType(Mat input) const
 	{
-		string color = "æœªçŸ¥";
+		string color = "Î´Öª";
 		int result = m_charsSegment->getPlateType(input);
 		if (1 == result)
-			color = "è“ç‰Œ";
+			color = "À¶ÅÆ";
 		if (2 == result)
-			color = "é»„ç‰Œ";
+			color = "»ÆÅÆ";
 		return color;
 	}
 
-	//! è®¾ç½®å˜é‡
+	//! ÉèÖÃ±äÁ¿
 	inline void setLiuDingSize(int param){ m_charsSegment->setLiuDingSize(param);}
 	inline void setColorThreshold(int param){ m_charsSegment->setColorThreshold(param);}
 	inline void setBluePercent(float param){ m_charsSegment->setBluePercent(param);}
@@ -61,10 +61,10 @@ public:
 	inline float getWhitePercent() const { return m_charsSegment->getWhitePercent();}
 
 private:
-	//ï¼å­—ç¬¦åˆ†å‰²
+	//£¡×Ö·û·Ö¸î
 	CCharsSegment* m_charsSegment;
 
-	//! å­—ç¬¦è¯†åˆ«
+	//! ×Ö·ûÊ¶±ğ
 	CCharsIdentify* m_charsIdentify;
 };
 

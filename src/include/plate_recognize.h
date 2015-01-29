@@ -27,39 +27,39 @@ class CPlateRecognize : public CPlateDetect, public CCharsRecognise
 public:
 	CPlateRecognize();
 
-	//! è½¦ç‰Œæ£€æµ‹ä¸å­—ç¬¦è¯†åˆ«
+	//! ³µÅÆ¼ì²âÓë×Ö·ûÊ¶±ğ
 	int plateRecognize(Mat, vector<string>&);
 
-	//! ç”Ÿæ´»æ¨¡å¼ä¸å·¥ä¸šæ¨¡å¼åˆ‡æ¢
+	//! Éú»îÄ£Ê½Óë¹¤ÒµÄ£Ê½ÇĞ»»
 	inline void setLifemode(bool param)
 	{
 		CPlateDetect::setPDLifemode(param);
 	}
 
-	//! æ˜¯å¦å¼€å¯è°ƒè¯•æ¨¡å¼
+	//! ÊÇ·ñ¿ªÆôµ÷ÊÔÄ£Ê½
 	inline void setDebug(int param)
 	{ 
 		CPlateDetect::setPDDebug(param);
 		CCharsRecognise::setCRDebug(param);
 	}
 
-	////! è½¦ç‰Œå®šä½ä¸åˆ¤æ–­
+	////! ³µÅÆ¶¨Î»ÓëÅĞ¶Ï
 	//int plateDetect(Mat, vector<Mat>&);
 
-	////! å­—ç¬¦åˆ†å‰²ä¸è¯†åˆ«
+	////! ×Ö·û·Ö¸îÓëÊ¶±ğ
 	//int charsRecognise(Mat, String&);
 
-	////! è£…è½½SVM
+	////! ×°ÔØSVM
 	//void LoadSVM(string s);
 
-	////! è£…è½½ANNæ¨¡å‹
+	////! ×°ÔØANNÄ£ĞÍ
 	//void LoadANN(string s);
 
 private:
-	////ï¼è½¦ç‰Œæ£€æµ‹
+	////£¡³µÅÆ¼ì²â
 	//CPlateDetect* m_plateDetect;
 
-	////! å­—ç¬¦è¯†åˆ«
+	////! ×Ö·ûÊ¶±ğ
 	//CCharsRecognise* m_charsRecognise;
 };
 

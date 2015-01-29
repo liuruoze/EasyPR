@@ -1,7 +1,7 @@
-//	ç”ŸæˆGDTSçš„æ–‡ä»¶
-//	åœ¨æèµ æ•°æ®åˆ°GDTSæ•°æ®é›†é‡Œï¼Œè¯·å…ˆç”¨è¿™é‡Œçš„æ–¹æ³•å¯¹å›¾åƒè¿›è¡Œé¢„å¤„ç†
-//	EasyPRå¼€æºé¡¹ç›®éå¸¸æ³¨é‡ä¿æŠ¤åŸå§‹å›¾ç‰‡çš„ç‰ˆæƒ
-//  æ‰€æœ‰çš„æèµ æ•°æ®é€šè¿‡GDSLåè®®è¿›è¡Œçº¦å®šï¼Œä¿è¯ä½¿ç”¨äººä»…ç”¨äºéå•†ä¸šæ€§ç›®çš„
+//	Éú³ÉGDTSµÄÎÄ¼ş
+//	ÔÚ¾èÔùÊı¾İµ½GDTSÊı¾İ¼¯Àï£¬ÇëÏÈÓÃÕâÀïµÄ·½·¨¶ÔÍ¼Ïñ½øĞĞÔ¤´¦Àí
+//	EasyPR¿ªÔ´ÏîÄ¿·Ç³£×¢ÖØ±£»¤Ô­Ê¼Í¼Æ¬µÄ°æÈ¨
+//  ËùÓĞµÄ¾èÔùÊı¾İÍ¨¹ıGDSLĞ­Òé½øĞĞÔ¼¶¨£¬±£Ö¤Ê¹ÓÃÈË½öÓÃÓÚ·ÇÉÌÒµĞÔÄ¿µÄ
 
 #include "../include/plate_recognize.h"
 #include "../include/util.h"
@@ -9,15 +9,15 @@
 
 using namespace easypr;
 
-// TODO å°†ä¸‹é¢çš„è·¯å¾„æ”¹æˆä½ çš„åŸå§‹å›¾ç‰‡è·¯å¾„
-// å›¾ç‰‡ä¸è¦å¤šï¼Œ10-30å¼ å°±è¶³å¤Ÿäº†ï¼ŒEasyPRå¯¹GDTSæ•°æ®é›†çš„ä½¿ç”¨ä¸ä»¥é‡ä¸ºä¸»è¦æŒ‡æ ‡
-// åªè¦è¿™äº›å›¾ç‰‡è¶³å¤Ÿåæ˜ ä½ æ•°æ®é›†çš„ä¸»è¦ç‰¹å¾å³å¯
+// TODO ½«ÏÂÃæµÄÂ·¾¶¸Ä³ÉÄãµÄÔ­Ê¼Í¼Æ¬Â·¾¶
+// Í¼Æ¬²»Òª¶à£¬10-30ÕÅ¾Í×ã¹»ÁË£¬EasyPR¶ÔGDTSÊı¾İ¼¯µÄÊ¹ÓÃ²»ÒÔÁ¿ÎªÖ÷ÒªÖ¸±ê
+// Ö»ÒªÕâĞ©Í¼Æ¬×ã¹»·´Ó³ÄãÊı¾İ¼¯µÄÖ÷ÒªÌØÕ÷¼´¿É
 const string src_path = "F:/data/easypr-data/tmp-1";
 
-// TODO å°†ä¸‹é¢çš„è·¯å¾„æ”¹æˆä½ å¸Œæœ›ç”Ÿæˆæèµ ç»™GDTSæ•°æ®å­˜æ”¾çš„æ–°è·¯å¾„
+// TODO ½«ÏÂÃæµÄÂ·¾¶¸Ä³ÉÄãÏ£ÍûÉú³É¾èÔù¸øGDTSÊı¾İ´æ·ÅµÄĞÂÂ·¾¶
 const string dst_path = "F:/data/easypr-data/tmp-2";
 
-// EasyPRçš„å›¾åƒé¢„å¤„ç†å‡½æ•°ï¼Œè¿›è¡Œæ¨¡ç³ŠåŒ–ä¸è£å‰ªåŒ–å¤„ç†
+// EasyPRµÄÍ¼ÏñÔ¤´¦Àíº¯Êı£¬½øĞĞÄ£ºı»¯Óë²Ã¼ô»¯´¦Àí
 Mat imageProcess(Mat src);
 
 Mat detectAndMaskFace(Mat& img, CascadeClassifier& cascade,
@@ -25,12 +25,12 @@ Mat detectAndMaskFace(Mat& img, CascadeClassifier& cascade,
 
 int generate_gdts()
 {
-	// è·å–äººè„¸è¯†åˆ«æ–‡ä»¶
+	// »ñÈ¡ÈËÁ³Ê¶±ğÎÄ¼ş
 	CascadeClassifier cascade;
     //string cascadeName="/Users/zhoushiwei/Dropbox/Avatar/SDMLIB/haarcascade_frontalface_alt2.xml";
 	string cascadeName="model/haarcascade_frontalface_default.xml";
 
-	////è·å–è¯¥è·¯å¾„ä¸‹çš„æ‰€æœ‰æ–‡ä»¶
+	////»ñÈ¡¸ÃÂ·¾¶ÏÂµÄËùÓĞÎÄ¼ş
 	vector<string> files;
 	getFiles(src_path, files);
 	int size = files.size();
@@ -49,16 +49,16 @@ int generate_gdts()
 		cout << "------------------" << endl;
 		cout << filepath << endl;
 
-		// EasyPRè¯»å–åŸå›¾ç‰‡
+		// EasyPR¶ÁÈ¡Ô­Í¼Æ¬
 		Mat src = imread(filepath);
 
-		// EasyPRå¼€å§‹å¯¹å›¾ç‰‡è¿›è¡Œæ¨¡ç³ŠåŒ–ä¸è£å‰ªåŒ–å¤„ç†
+		// EasyPR¿ªÊ¼¶ÔÍ¼Æ¬½øĞĞÄ£ºı»¯Óë²Ã¼ô»¯´¦Àí
 		Mat img = imageProcess(src);
 
-		// EasyPRå¼€å§‹å¯¹å›¾ç‰‡è¿›è¡Œäººè„¸è¯†åˆ«å¤„ç†
+		// EasyPR¿ªÊ¼¶ÔÍ¼Æ¬½øĞĞÈËÁ³Ê¶±ğ´¦Àí
 		Mat dst = detectAndMaskFace(img, cascade, 1.5);
 
-		// å°†å›¾ç‰‡å¯¼å‡ºåˆ°æ–°è·¯å¾„
+		// ½«Í¼Æ¬µ¼³öµ½ĞÂÂ·¾¶
 		vector<string> spilt_path;
 		SplitString(filepath, spilt_path, "\\");
 		int spiltsize = spilt_path.size();
@@ -110,7 +110,7 @@ int generate_gdts()
 
 
 
-// EasyPRçš„å›¾åƒé¢„å¤„ç†å‡½æ•°ï¼Œè¿›è¡Œæ¨¡ç³ŠåŒ–ä¸è£å‰ªåŒ–å¤„ç†
+// EasyPRµÄÍ¼ÏñÔ¤´¦Àíº¯Êı£¬½øĞĞÄ£ºı»¯Óë²Ã¼ô»¯´¦Àí
 Mat imageProcess(Mat img)
 {
 	int width = img.size().width;

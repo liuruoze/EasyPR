@@ -19,7 +19,7 @@ void CPlateDetect::LoadSVM(string s)
 
 int CPlateDetect::plateDetect(Mat src, vector<Mat>& resultVec)
 {
-	//鍙兘鏄溅鐗岀殑鍥惧潡闆嗗悎
+	//可能是车牌的图块集合
 	vector<Mat> matVec;
 
 	int resultLo = m_plateLocate->plateLocate(src, matVec);

@@ -2,22 +2,17 @@
 #ifndef __UTIL_H__
 #define __UTIL_H__
 
-//C++çš„è·å–æ–‡ä»¶å¤¹å‡½æ•°
+//C++µÄ»ñÈ¡ÎÄ¼ş¼Ğº¯Êı
 void getFiles(string path, vector<string>& files);
 
-//Linuxä¸‹çš„GetTickCountå‡½æ•°
-#if defined (linux) || defined (__linux__)
-double GetTickCount();
-#endif
-
-//C++çš„spiltå‡½æ•°
+//C++µÄspiltº¯Êı
 void SplitString(const string& s, vector<string>& v, const string& c);
 
-//C++çš„ä»æ–‡ä»¶è·¯å¾„åç§°åˆ°æ–‡ä»¶åç§°ï¼ˆä¸åŒ…æ‹¬åç¼€ï¼‰çš„æ–¹æ³•
+//C++µÄ´ÓÎÄ¼şÂ·¾¶Ãû³Æµ½ÎÄ¼şÃû³Æ£¨²»°üÀ¨ºó×º£©µÄ·½·¨
 void getFileName(const string& filepath, string& name);
 
-//! levenshteinè·ç¦»ï¼Œç”¨äºè®¡ç®—ä¸¤ä¸ªè½¦ç‰Œçš„è·ç¦»
-//ï¼EasyPRä¸­ç”¨levenshteinè·ç¦»è¡¡é‡è½¦ç‰Œè¯†åˆ«ä¸çœŸå®è½¦ç‰Œçš„è¯¯å·®
+//! levenshtein¾àÀë£¬ÓÃÓÚ¼ÆËãÁ½¸ö³µÅÆµÄ¾àÀë
+//£¡EasyPRÖĞÓÃlevenshtein¾àÀëºâÁ¿³µÅÆÊ¶±ğÓëÕæÊµ³µÅÆµÄÎó²î
 template<class T>
 unsigned int levenshtein_distance(const T &s1, const T & s2) {
 	const size_t len1 = s1.size(), len2 = s2.size();
@@ -36,32 +31,32 @@ unsigned int levenshtein_distance(const T &s1, const T & s2) {
 }
 
 
-/// test.cppä¸­æ–¹æ³•
+/// test.cppÖĞ·½·¨
 int testMain();
 
-/// accuracy_test.cppä¸­æ–¹æ³•
+/// accuracy_test.cppÖĞ·½·¨
 int acurayTest(const string&);
 
-/// mc_data_prepare.cppä¸­æ–¹æ³•
+/// mc_data_prepare.cppÖĞ·½·¨
 void getLearnData();
 void Code2Province(const string& code, string& province);
 void changeFileName();
 void getPlateLicense(const string& filepath, string& plateLicense);
 
-/// learn_prepare.cppä¸­æ–¹æ³•
+/// learn_prepare.cppÖĞ·½·¨
 void label_data();
 
-/// general_test_prepare.cppä¸­æ–¹æ³•
+/// general_test_prepare.cppÖĞ·½·¨
 int general_test();
 
 
-//	deface.cppä¸­æ–¹æ³•
-//	åäººè„¸è¯†åˆ«å‡½æ•°
-//	åœ¨å‘å¸ƒæ•°æ®åˆ°general_testæ•°æ®é›†é‡Œï¼Œè¯·å…ˆç”¨è¿™é‡Œçš„æ–¹æ³•å¯¹å›¾åƒè¿›è¡Œå¤„ç†
-//	EasyPRå¼€æºé¡¹ç›®éå¸¸æ³¨é‡ä¿æŠ¤å›¾ç‰‡ä¸­é©¾é©¶äººçš„éšç§
+//	deface.cppÖĞ·½·¨
+//	·´ÈËÁ³Ê¶±ğº¯Êı
+//	ÔÚ·¢²¼Êı¾İµ½general_testÊı¾İ¼¯Àï£¬ÇëÏÈÓÃÕâÀïµÄ·½·¨¶ÔÍ¼Ïñ½øĞĞ´¦Àí
+//	EasyPR¿ªÔ´ÏîÄ¿·Ç³£×¢ÖØ±£»¤Í¼Æ¬ÖĞ¼İÊ»ÈËµÄÒşË½
 int deface();
 
-/// generate_gdts.cppä¸­æ–¹æ³•
+/// generate_gdts.cppÖĞ·½·¨
 int generate_gdts();
 
 #endif
