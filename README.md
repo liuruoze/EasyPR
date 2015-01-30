@@ -13,8 +13,8 @@ EasyPR是一个中文的开源车牌识别系统，其目标是成为一个简�
 
 EasyPR目前除了windows版以外，还有以下几个版本：
 
-* **android**:  EasyPR的android版本。由goldriver开发，地址在[linuxxx/EasyPR_Android](https://github.com/linuxxx/EasyPR_Android)（感谢goldriver同学）。
-* **linux**:    EasyPR的linux版本。由Micooz开发，地址在[Micooz/EasyPR/tree/linux-devv](https://github.com/Micooz/EasyPR/tree/linux-dev)（感谢Micooz同学）。
+* **android**:  EasyPR的android版本。由goldriver开发，地址在[EasyPR_Android](https://github.com/linuxxx/EasyPR_Android)（感谢goldriver同学）。
+* **linux**:    EasyPR的linux版本。由Micooz开发，地址在[linux-dev](https://github.com/Micooz/EasyPR/tree/linux-dev)（感谢Micooz同学）。
 * **ios**:      正在开发中。
 
 ### 更新
