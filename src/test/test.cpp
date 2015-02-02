@@ -319,7 +319,7 @@ int test_plate_recognize()
 	cout << "test_plate_recognize" << endl;
 
 	//Mat src = imread("image/plate_locate.jpg");
-	Mat src = imread("image/test.jpg");
+	Mat src = imread("image/ÔÁB3RS91.jpg");
 
 	CPlateRecognize pr;
 	pr.LoadANN("model/ann.xml");

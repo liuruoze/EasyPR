@@ -11,16 +11,23 @@ EasyPR是一个中文的开源车牌识别系统，其目标是成为一个简�
 
 ### 版本
 
-EasyPR目前除了windows版以外，还有以下几个版本：
+EasyPR最开始是发布在[GitHub](https://github.com/liuruoze/EasyPR)上的，然后在国内的[oschina](http://git.oschina.net/easypr/EasyPR)上也部署了一份镜像。
+相关的issue欢迎在GitHub上统一提交。目前除了windows版本以外，还有以下其他平台的版本：
 
-* **android**:  EasyPR的android版本。由goldriver开发，地址在[EasyPR_Android](https://github.com/linuxxx/EasyPR_Android)（感谢goldriver同学）。
-* **linux**:    EasyPR的linux版本。由Micooz开发，地址在[linux-dev](https://github.com/Micooz/EasyPR/tree/linux-dev)（感谢Micooz同学）。
-* **ios**:      正在开发中。
+|版本 | 开发者 | 地址
+|------|-------|-------
+| android |  goldriver  |  [linuxxx/EasyPR_Android](https://github.com/linuxxx/EasyPR_Android)
+| linux | Micooz  |  [Micooz/EasyPR/tree/linux-dev](https://github.com/Micooz/EasyPR/tree/linux-dev)
+| ios | zhoushiwei |  [zhoushiwei/EasyPR-iOS](https://github.com/zhoushiwei/EasyPR-iOS)
+| mac | zhoushiwei | [zhoushiwei/EasyPR](https://github.com/zhoushiwei/EasyPR)
+| c# | 招聘中 |   
+
+感谢以上所有开发者的努力！
 
 ### 更新
 
-目前EasyPR的版本是1.1，相比上一个版本，有以下更新。可以在[ChangeLog](doc/ChangeLog.md)中找到更多信息：
-（这次的更新内容较多，为了跟你现有的项目和代码不冲突，请谨慎选择全部更新，最好新起一个目录试试新增的功能和内容）：
+目前EasyPR的版本是1.1，相比上一个版本，有以下更新。可以在[ChangeLog](doc/ChangeLog.md)中找到更多信息。
+目前版本的EasyPR在车牌定位上还不够鲁棒，在下个版本中计划对定位做个完善与升级。
 
 * 新的SVM模型。新模型使用rbf核替代了liner核，在车牌判断的准确率提升了8个百分点。
 * 新增两个特征提取方法。并提供了相关的回调函数接口。
@@ -129,7 +136,7 @@ EasyPR不需要安装，开发者直接在其上做改动。如果想使用DLL�
 
 ### 鸣谢
 
-taotao1233，唐大侠，jsxyhelu，如果有一天，学习奋斗，袁承志，圣城小石匠，
+taotao1233，唐大侠，jsxyhelu，如果有一天(zhoushiwei)，学习奋斗，袁承志，圣城小石匠，goldriver，Micooz，梦里时光，Rain Wang
 
 
 

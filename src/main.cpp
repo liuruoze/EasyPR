@@ -72,7 +72,7 @@ int main()
 				// TODO
 				break;
 			case 5:
-				generate_gdts();
+				general_test();
 				break;
 			case 6:
 				// 开发团队;
@@ -88,7 +88,7 @@ int main()
 				cout << endl;
 				cout << "本项目在建设过程中，受到了很多人的帮助，其中以下是对本项目做出突出贡献的" << endl;
 				cout << "(贡献包括有益建议，代码调优，数据提供等等,排名按时间顺序)：" << endl;
-				cout << "taotao1233, 唐大侠，jsxyhelu，如果有一天，学习奋斗，袁承志，圣城小石匠，" << endl;
+				cout << "taotao1233，唐大侠，jsxyhelu，如果有一天(zhoushiwei)，学习奋斗，袁承志，圣城小石匠，goldriver，Micooz，梦里时光，Rain Wang，" << endl;
 				cout << "还有很多的同学对本项目也给予了鼓励与支持，在此也一并表示真诚的谢意！" << endl;
 				cout << endl;
 				break;
