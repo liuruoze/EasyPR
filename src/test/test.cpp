@@ -132,6 +132,7 @@ int test_plate_locate()
 			imshow("plate_locate", resultMat);
 			waitKey(0);
 		}
+        destroyWindow("plate_locate");
 	}
 
 	return result;
@@ -168,6 +169,7 @@ int test_plate_judge()
 			imshow("plate_judge", resultMat);
 			waitKey(0);
 		}
+        destroyWindow("plate_judge");
 	}
 
 	CPlateJudge ju;
@@ -186,6 +188,7 @@ int test_plate_judge()
 			imshow("plate_judge", resultMat);
 			waitKey(0);
 		}
+        destroyWindow("plate_judge");
 	}
 
 	return resultJu;
@@ -210,6 +213,7 @@ int test_chars_segment()
 			imshow("chars_segment", resultMat);
 			waitKey(0);
 		}
+        destroyWindow("chars_segment");
 	}
 
 	return result;
@@ -257,10 +261,6 @@ int test_chars_identify()
 	}
 	cout << "Identify Correct!" << endl;
 
-	cout << "Enter 1 for coninue:";
-	int a = 0;
-	cin >> a;
-
 	return result;
 }
 
@@ -286,6 +286,7 @@ int test_plate_detect()
 			imshow("plate_detect", resultMat);
 			waitKey(0);
 		}
+        destroyWindow("plate_detect");
 	}
 
 	return result;
@@ -306,10 +307,6 @@ int test_chars_recognise()
 	{
 		cout << "charsRecognise: " << charsRecognise << endl;
 	}
-
-	cout << "Enter 1 for coninue:";
-	int a = 0;
-	cin >> a;
 
 	return result;
 }
@@ -342,10 +339,6 @@ int test_plate_recognize()
 
 	if (result != 0)
 		cout << "result:" << result << endl;
-
-	cout << "Enter 1 for coninue:";
-	int a = 0;
-	cin >> a;
 
 	return result;
 }
