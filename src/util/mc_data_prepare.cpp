@@ -190,16 +190,17 @@ void getPlateLicense(const string& filepath, string& plateLicense)
 //! MC：将rawdata截取部分数据到learndata中
 void getLearnData()
 {
-	char * filePath = "F:/data/easypr-data/rawdata";
+	const char * filePath = "F:/data/easypr-data/rawdata";
 
 	////获取该路径下的所有文件
 	vector<string> files;
 	getFiles(filePath, files );
 
 	int size = files.size();
-	if (0 == size)
-		cout << "No File Found in rawdata!" << endl;
-
+    if (0 == size) {
+		cout << "File not found in " << filePath << endl;
+        return;
+    }
 	////随机排列rawdata
 	srand(unsigned(time(NULL)));
 	random_shuffle(files.begin(), files.end());
@@ -207,7 +208,7 @@ void getLearnData()
 	////选取前LEARANDATA_COUNT个rawdata数据作为learndata
 	int boundry = LEARANDATA_COUNT;
 	int count = 0;
-	cout << "Save learndata!" << endl;
+	cout << "Learndata saved!" << endl;
 	for (int i = 0; i < size; i++)
 	{
 		cout << files[i].c_str() << endl;
