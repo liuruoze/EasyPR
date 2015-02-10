@@ -92,6 +92,7 @@
     <ClCompile Include="src\test\accuracy_test.cpp" />
     <ClCompile Include="src\train\ann_train.cpp" />
     <ClCompile Include="src\train\svm_train.cpp" />
+    <ClCompile Include="src\util\CParser.cpp" />
     <ClCompile Include="src\util\deface.cpp" />
     <ClCompile Include="src\util\general_test_prepare.cpp" />
     <ClCompile Include="src\util\generate_gdts.cpp" />
@@ -109,6 +110,7 @@
     <ClInclude Include="src\include\chars_identify.h" />
     <ClInclude Include="src\include\chars_recognise.h" />
     <ClInclude Include="src\include\chars_segment.h" />
+    <ClInclude Include="src\include\CParser.h" />
     <ClInclude Include="src\include\features.h" />
     <ClInclude Include="src\include\plate_detect.h" />
     <ClInclude Include="src\include\plate_judge.h" />
