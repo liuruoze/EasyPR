@@ -77,7 +77,7 @@ int CPlateJudge::plateJudge(const vector<Mat>& inVec,
 	for (int j = 0; j < num; j++)
 	{
 		Mat inMat = inVec[j];
-
+		
 		int response = -1;
 		plateJudge(inMat, response);
 

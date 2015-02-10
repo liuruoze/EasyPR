@@ -71,8 +71,9 @@ int main()
 			case 4:
 				// TODO
 				break;
-			case 5:
-				general_test();
+			case 5:				
+				//general_test();
+				generate_gdts();
 				break;
 			case 6:
 				// 开发团队;

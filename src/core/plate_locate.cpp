@@ -89,6 +89,7 @@ bool CPlateLocate::verifySizes(RotatedRect mr)
 Mat CPlateLocate::showResultMat(Mat src, Size rect_size, Point2f center, int index)
 {
 	Mat img_crop;
+
 	getRectSubPix(src, rect_size, center, img_crop);
 
 	if(m_debug)
@@ -278,8 +279,25 @@ int CPlateLocate::plateLocate(Mat src, vector<Mat>& resultVec)
 				//Create and rotate image
 				Mat rotmat = getRotationMatrix2D(minRect.center, angle, 1);
 				Mat img_rotated;
+
+				/*if(m_debug)
+				{ 
+					stringstream ss(stringstream::in | stringstream::out);
+					ss << "image/tmp/needRotate" << i << ".jpg";
+					imwrite(ss.str(), result);
+				}*/
+
 				warpAffine(src, img_rotated, rotmat, src.size(), CV_INTER_CUBIC);
 
+				/*if(m_debug)
+				{ 
+					stringstream ss(stringstream::in | stringstream::out);
+					ss << "image/tmp/img_rotated" << i << ".jpg";
+					imwrite(ss.str(), result);
+				}*/
+
+
+				//Mat resultMat(img_rotated, minRect);
 				Mat resultMat;
 				resultMat = showResultMat(img_rotated, rect_size, minRect.center, k++);
 

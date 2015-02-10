@@ -11,13 +11,16 @@ using namespace easypr;
 extern const string GENERAL_TEST_PATH;
 
 // TODO 将下面的路径改成你的
-const string your_data_path = "F:/data/easypr-data/tmp-3";
+const string src_path = "F:/data/easypr-data/tmp-5";
+
+// TODO 将下面的路径改成你的
+const string dst_path = "F:/data/easypr-data/tmp-6";
 
 int general_test()
 {
 	////获取该路径下的所有文件
 	vector<string> files;
-	getFiles(your_data_path, files);
+	getFiles(src_path, files);
 
 	CPlateLocate lo;
 	CPlateJudge ju;
@@ -69,7 +72,7 @@ int general_test()
 				if (size == 2)
 				{
 					stringstream ss(stringstream::in | stringstream::out);
-					ss << "F:/data/easypr-data/tmp-4" << "/" << spilt_plate[size-1] << ".jpg";
+					ss << dst_path << "/" << spilt_plate[size-1] << ".jpg";
 					imwrite(ss.str(), src);
 				}
 			}
