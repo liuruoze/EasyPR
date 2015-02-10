@@ -11,7 +11,7 @@ using namespace easypr;
 extern const string GENERAL_TEST_PATH;
 
 // TODO 将下面的路径改成你的
-const string your_data_path = "F:/data/easypr-data/tmp-2";
+const string your_data_path = "F:/data/easypr-data/tmp-3";
 
 int general_test()
 {

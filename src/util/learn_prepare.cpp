@@ -31,11 +31,11 @@ void label_data()
 	CPlateJudge ju;
 
 	int size = files.size();
-	//int size = 200;
 
-	if (0 == size)
-		cout << "No File Found in notlabelPath!" << endl;
-
+    if (0 == size) {
+		cout << "File not found in " << notlabelPath << endl;
+        return;
+    }
 	cout << "Automatic label all the data!" << endl;
 
 	for (int i = 0; i < size; i++)
