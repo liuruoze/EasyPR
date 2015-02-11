@@ -186,3 +186,9 @@ UpgradeLog*.htm
 
 # Microsoft Fakes
 FakesAssemblies/
+
+# idea IDE
+.idea/
+
+# XCode IDE
+EasyPR.xcodeproj/
