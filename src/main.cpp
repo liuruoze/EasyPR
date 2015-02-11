@@ -1,11 +1,13 @@
 #include "include/plate_recognize.h"
 #include "include/util.h"
 #include "include/features.h"
+#include "include/CParser.h"
 
 using namespace easypr;
 
 int svmMain();
 int acurayTestMain();
+void cmdMain(int argc, char *argv[]);
 
 namespace easypr {
 
@@ -34,8 +36,14 @@ const string option[] =
 
 const int optionCount = 8;
 
-int main()
+int main(int argc, char *argv[])
 {
+    if (argc > 1) {
+        //enable command line option
+        cmdMain(argc, argv);
+        return 0;
+    }
+
 	bool isExit = false;
 	while (isExit != true)
 	{
@@ -71,8 +79,9 @@ int main()
 			case 4:
 				// TODO
 				break;
-			case 5:
-				general_test();
+			case 5:				
+				//general_test();
+				generate_gdts();
 				break;
 			case 6:
 				// å¼€å‘å›¢é˜Ÿ;
@@ -242,3 +251,183 @@ int svmMain()
 
 // SVM è®­ç»ƒå‘½ä»¤è¡Œ 
 ////////////////////////////////////////////////////////////
+
+// command line option support
+
+// the function declaration to be used,
+// owing to the modules of the current EasyPR is separated, this is only temporary.
+
+int test_plate_locate();
+int test_plate_judge();
+int test_chars_segment();
+int test_chars_identify();
+int test_plate_detect();
+int test_chars_recognise();
+int test_plate_recognize();
+
+void cmdMain(int argc, char *argv[])
+{
+    const char *help[] = {
+        "EasyPR Usage:                                             ",
+        "--help                 [ -h   ]    ÏÔÊ¾°ïÖú                ",
+        "²âÊÔÄ£¿é                                                   ",
+        "--test_plate_locate    [ -tpl ]    ³µÅÆ¶¨Î»                ",
+        "--test_plate_judge     [ -tpj ]    ³µÅÆÅĞ¶Ï                ",
+        "--test_plate_detect    [ -tpd ]    ³µÅÆ¼ì²â                ",
+        "--test_chars_segment   [ -tcs ]    ×Ö·û·Ö¸ô                ",
+        "--test_chars_identify  [ -tci ]    ×Ö·û¼ø±ğ                ",
+        "--test_chars_recognize [ -tcr ]    ×Ö·ûÊ¶±ğ                ",
+        "--test_plate_recognize [ -tpr ]    ³µÅÆÊ¶±ğ                ",
+        "--test_all             [ -ta  ]    ²âÊÔÈ«²¿                ",
+        "--general_test         [ -gt  ]    ÅúÁ¿²âÊÔ-general_test   ",
+        "--native_test          [ -nt  ]    ÅúÁ¿²âÊÔ-native_test    ",
+        "SVMÑµÁ·",
+        "--svm_gen_learndata    [ -sgl ]    Éú³ÉLearndata           ",
+        "--svm_tag_learndata    [ -stl ]    ±êÇ©Learndata           ",
+        "--svm_detect           [ -sd  ]    ³µÅÆ¼ì²â£¬¿ÉÉèÖÃ-v»ò-t    ",
+        "--svm_divide           [ -v   ]    ÆôÓÃ·Ö¸î                ",
+        "--svm_train            [ -t   ]    ÆôÓÃÑµÁ·                ",
+        "ANNÑµÁ·£¨Î´¿ª·Å£©                                           ",
+        "GDTSÉú³É                                                   ",
+        "--gdts                 [ -gts  ]   GDTSÉú³É                ",
+        "--group                            ¿ª·¢ÍÅ¶Ó                ",
+        "--thanks                           ¸ĞĞ»Ãûµ¥                ",
+        "                                                          ",
+        "Examples:                                                 ",
+        "   $ ./EasyPR --test_plate_locate                         ",
+        "Will do the same as followings:                           ",
+        "   $ ./EasyPR -tpl                                        ",
+        "   $ ./EasyPR -t -p -l                                    ",
+        "   $ ./EasyPR -ptl                                        ",
+        "   $ ./EasyPR -p -l -t                                    ",
+        NULL
+    };
+    
+    CParser parser(argc, argv);
+    
+    try {
+
+        do {
+            if (parser.has_or(2, "help", "h") /* || argc < 2 */) {
+                int i = 0;
+                while (help[i]) {
+                    cout << help[i++] << endl;
+                }
+                break;
+            }
+            
+            // tests
+            
+            if (parser.has_or(2, "test_plate_locate", "-tpl")) {
+                cout << (test_plate_locate() == 0 ? "passed" : "failed");
+                break;
+            }
+            
+            if (parser.has_or(2, "test_plate_judge", "-tpj")) {
+                cout << (test_plate_judge() == 0 ? "passed" : "failed");
+                break;
+            }
+            
+            if (parser.has_or(2, "test_plate_detect", "-tpd")) {
+                cout << (test_plate_detect() == 0 ? "passed" : "failed");
+                break;
+            }
+            
+            if (parser.has_or(2, "test_chars_segment", "-tcs")) {
+                cout << (test_chars_segment() == 0 ? "passed" : "failed");
+                break;
+            }
+            
+            if (parser.has_or(2, "test_chars_identify", "-tci")) {
+                cout << (test_chars_identify() == 0 ? "passed" : "failed");
+                break;
+            }
+            
+            if (parser.has_or(2, "test_chars_recognize", "-tcr")) {
+                cout << (test_chars_recognise() == 0 ? "passed" : "failed");
+                break;
+            }
+            
+            if (parser.has_or(2, "test_plate_recognize", "-tpr")) {
+                cout << (test_plate_recognize() == 0 ? "passed" : "failed");
+                break;
+            }
+            
+            if (parser.has_or(2, "test_all", "-ta")) {
+                cout << "test_plate_locate "    << (test_plate_locate()    == 0 ? "passed" : "failed") << endl;
+                cout << "test_plate_judge "     << (test_plate_judge()     == 0 ? "passed" : "failed") << endl;
+                cout << "test_chars_segment "   << (test_chars_segment()   == 0 ? "passed" : "failed") << endl;
+                cout << "test_chars_identify "  << (test_chars_identify()  == 0 ? "passed" : "failed") << endl;
+                cout << "test_plate_detect "    << (test_plate_detect()    == 0 ? "passed" : "failed") << endl;
+                cout << "test_chars_recognize " << (test_chars_recognise() == 0 ? "passed" : "failed") << endl;
+                cout << "test_plate_recognize " << (test_plate_recognize() == 0 ? "passed" : "failed") << endl;
+                cout << "test_plate_locate "    << (test_plate_locate()    == 0 ? "passed" : "failed") << endl;
+                break;
+            }
+            
+            // batch testing
+            
+            if (parser.has_or(2, "general_test", "-gt")) {
+                acurayTest(GENERAL_TEST_PATH);
+                break;
+            }
+            
+            if (parser.has_or(2, "native_test", "-nt")) {
+                acurayTest(NATIVE_TEST_PATH);
+                break;
+            }
+            
+            // svm trains
+            
+            if (parser.has_or(2, "svm_gen_learndata", "-sgl")) {
+                getLearnData();
+                break;
+            }
+            
+            if (parser.has_or(2, "svm_tag_learndata", "-stl")) {
+                label_data();
+                break;
+            }
+            
+            if (parser.has_or(2, "svm_detect", "-sd")) {
+                svmTrain(parser.has_or(2, "v", "svm_divide"), parser.has_or(2, "t", "svm_train"));
+                break;
+            }
+
+            // GDTS
+            
+            if (parser.has_or(2, "gdts", "gts")) {
+                general_test();
+                break;
+            }
+            
+            // 
+            
+            if (parser.has("group")) {
+                // ¿ª·¢ÍÅ¶Ó;
+				cout << endl;
+				cout << "ÎÒÃÇEasyPRÍÅ¶ÓÄ¿Ç°ÓĞÒ»¸ö5ÈË×óÓÒµÄĞ¡×éÔÚ½øĞĞEasyPRºóĞø°æ±¾µÄ¿ª·¢¹¤×÷¡£" << endl;
+				cout << "Èç¹ûÄã¶Ô±¾ÏîÄ¿¸ĞĞËÈ¤£¬²¢ÇÒÔ¸ÒâÎª¿ªÔ´¹±Ï×Ò»·İÁ¦Á¿£¬ÎÒÃÇºÜ»¶Ó­ÄãµÄ¼ÓÈë¡£" << endl;
+				cout << "Ä¿Ç°ÕĞÆ¸µÄÖ÷ÒªÈË²ÅÊÇ£º³µÅÆ¶¨Î»£¬Í¼ÏñÊ¶±ğ£¬Éî¶ÈÑ§Ï°£¬ÍøÕ¾½¨ÉèÏà¹Ø·½ÃæµÄÅ£ÈË¡£" << endl;
+				cout << "Èç¹ûÄã¾õµÃ×Ô¼º·ûºÏÌõ¼ş£¬Çë·¢ÓÊ¼şµ½µØÖ·(easypr_dev@163.com)£¬ÆÚ´ıÄãµÄ¼ÓÈë£¡" << endl;
+				cout << endl;
+                break;
+            }
+            
+            if (parser.has("thanks")) {
+                // ¸ĞĞ»Ãûµ¥
+				cout << endl;
+				cout << "±¾ÏîÄ¿ÔÚ½¨Éè¹ı³ÌÖĞ£¬ÊÜµ½ÁËºÜ¶àÈËµÄ°ïÖú£¬ÆäÖĞÒÔÏÂÊÇ¶Ô±¾ÏîÄ¿×ö³öÍ»³ö¹±Ï×µÄ" << endl;
+				cout << "(¹±Ï×°üÀ¨ÓĞÒæ½¨Òé£¬´úÂëµ÷ÓÅ£¬Êı¾İÌá¹©µÈµÈ,ÅÅÃû°´Ê±¼äË³Ğò)£º" << endl;
+				cout << "taotao1233£¬ÌÆ´óÏÀ£¬jsxyhelu£¬Èç¹ûÓĞÒ»Ìì(zhoushiwei)£¬Ñ§Ï°·Ü¶·£¬Ô¬³ĞÖ¾£¬Ê¥³ÇĞ¡Ê¯½³£¬goldriver£¬Micooz£¬ÃÎÀïÊ±¹â£¬Rain Wang£¬" << endl;
+				cout << "»¹ÓĞºÜ¶àµÄÍ¬Ñ§¶Ô±¾ÏîÄ¿Ò²¸øÓèÁË¹ÄÀøÓëÖ§³Ö£¬ÔÚ´ËÒ²Ò»²¢±íÊ¾Õæ³ÏµÄĞ»Òâ£¡" << endl;
+				cout << endl;
+				break;
+            }
+            
+        } while(false);
+        
+    } catch (const std::exception &err) {
+        cout << err.what() << endl;
+    }
+}

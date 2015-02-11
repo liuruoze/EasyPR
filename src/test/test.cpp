@@ -315,7 +315,6 @@ int test_plate_recognize()
 {
 	cout << "test_plate_recognize" << endl;
 
-	//Mat src = imread("image/plate_locate.jpg");
 	Mat src = imread("image/test.jpg");
 
 	CPlateRecognize pr;

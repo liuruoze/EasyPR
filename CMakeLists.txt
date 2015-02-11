@@ -6,7 +6,9 @@ list(APPEND CMAKE_CXX_FLAGS "-std=c++0x")
 
 find_package(OpenCV REQUIRED)
 
-aux_source_directory(./src SOURCE_FILES)
+set(CMAKE_SOURCE_DIR ./src)
+
+include_directories(${CMAKE_SOURCE_DIR}/include/)
 
 set(SOURCE_FILES
 	src/main.cpp
@@ -28,6 +30,7 @@ set(SOURCE_FILES
 	src/util/learn_prepare.cpp
 	src/util/mc_data_prepare.cpp
 	src/util/util.cpp
+	src/util/CParser.cpp
 )
 
 add_executable(EasyPR ${SOURCE_FILES})
