@@ -1,20 +1,23 @@
 #if defined (WIN32) || defined (_WIN32)
-#include <windows.h>
+    #include <windows.h>
 #endif
 
 #include <iostream>
 #include <cstdlib>
 
 #if defined (WIN32) || defined (_WIN32)
-#include <io.h>
+    #include <io.h>
 #elif defined (linux) || defined (__linux__)
-#include <sys/io.h>
-#include <sys/stat.h>
-#include <sys/types.h>
-
-#include <dirent.h>
-#include <time.h>
-#include <cstring>
+    #include <sys/io.h>
+    #include <sys/stat.h>
+    #include <sys/types.h>
+    #include <dirent.h>
+    #include <time.h>
+    #include <cstring>
+#elif defined (__APPLE__)
+    #include <sys/stat.h>
+    #include <sys/types.h>
+    #include <dirent.h>
 #endif
 
 #include <stdlib.h>
@@ -52,7 +55,7 @@ void getFiles(string path, vector<string>& files)
     }
 }
 
-#elif defined (linux) || defined (__linux__)
+#elif defined (linux) || defined (__linux__) || defined (__APPLE__)
 
 void getFiles(string path, vector<string>& files) {
     DIR *dirp = opendir(path.c_str());
@@ -83,6 +86,9 @@ void getFiles(string path, vector<string>& files) {
     closedir(dirp);
 }
 
+#endif
+
+#if (linux) || defined (__linux__)
 double GetTickCount() {
     struct timespec ts;
 
@@ -90,7 +96,6 @@ double GetTickCount() {
 
     return (ts.tv_sec * 1e3 + ts.tv_nsec / 1e6);
 }
-
 #endif
 
 

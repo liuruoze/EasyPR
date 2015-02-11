@@ -231,10 +231,17 @@ void saveModel(int _predictsize, int _neurons)
 	//train the Ann
 	cout << "Begin to saveModelChar predictSize:" << _predictsize 
 		<< " neurons:" << _neurons << endl;
-
+    
+#if defined (__APPLE__)
+    double start = getTickCount();
+    annTrain(TrainingData, Classes, _neurons);
+    double end = getTickCount();
+#else
     double start = GetTickCount();
     annTrain(TrainingData, Classes, _neurons);
     double end = GetTickCount();
+#endif
+
     cout << "GetTickCount:" << (end-start)/1000 << endl;
 
 	cout << "End the saveModelChar" << endl;
