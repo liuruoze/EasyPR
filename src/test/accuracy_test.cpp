@@ -144,14 +144,14 @@ int acurayTest(const string& test_path)
 	cout << "Easypr accuracy test end!" << endl;
 	cout << "------------------" << endl;
 	cout << endl;
-	cout << "正确率统计:"  << endl;
+	cout << "统计参数:"  << endl;
 	cout << "总图片数:" << count_all << "张,  ";
-	cout << "未识别图片:" << count_norecogin << "张,  ";
+	cout << "未识出图片:" << count_norecogin << "张,  ";
 
 	float count_recogin = count_all - (count_err + count_norecogin);
 	float count_rate  = count_recogin / count_all;
 	float count_norate = 1 - count_rate;
-	cout << "未识出率:" << count_norate * 100 << "%  " << endl;
+	cout << "识出率:" << count_rate * 100 << "%  " << endl;
 
 	diff_avg = diff_all / count_recogin;
 	match_rate = match_count/ count_recogin * 100;
