@@ -14,7 +14,7 @@
 using namespace std;
 using namespace cv;
 
-const int LEARANDATA_COUNT = 1000;
+const int LEARANDATA_COUNT = 5000;
 
 void getFiles( string path, vector<string>& files );
 void SplitString(const string& s, vector<string>& v, const string& c);
@@ -126,7 +126,7 @@ bool isNotNight(const string& filepath)
 //! MC：将rawdata的文件换个路径到learndata里
 bool getNewPath(const string& filepath, string& newfilepath)
 {
-	string writePath = "F:/data/easypr-data/learndata/";
+	string writePath = "F:/data/easypr-data/learndata_dl/";
 	vector<string> spilt_path;
 	SplitString(filepath, spilt_path, "\\");
 
@@ -215,8 +215,8 @@ void getLearnData()
 		string filepath = files[i].c_str();
 
 		//只处理白天的数据
-		if (isNotNight(filepath)!=true)
-			continue;
+		//if (isNotNight(filepath)!=true)
+		//	continue;
 
 		//读取数据，并对图片进行预处理
 		Mat img = imread(filepath);
