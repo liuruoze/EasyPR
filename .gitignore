@@ -193,3 +193,6 @@ FakesAssemblies/
 
 # XCode IDE
 EasyPR.xcodeproj/
+
+# Debug tmp files
+image/tmp/
