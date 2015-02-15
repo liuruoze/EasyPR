@@ -353,21 +353,14 @@ int CCharsSegment::GetSpecificRect(const vector<Rect>& vecRect)
 //  2.从特殊字符Rect开始，依次选择6个Rect，多余的舍去。
 int CCharsSegment::RebuildRect(const vector<Rect>& vecRect, vector<Rect>& outRect, int specIndex)
 {
-	//最大只能有7个Rect,减去中文的就只有6个Rect
-	int count = 6;
-
-	for (int i = 0; i < vecRect.size(); i++)
-	{
-		//将特殊字符左边的Rect去掉，这个可能会去掉中文Rect，不过没关系，我们后面会重建。
-		if (i < specIndex)
-			continue;
-
-		outRect.push_back(vecRect[i]);
-		if (!--count)
-			break;
-	}
-
-	return 0;
+    //最大只能有7个Rect,减去中文的就只有6个Rect
+    int count = 6;
+    
+    for (size_t i = specIndex; i < vecRect.size() && count; ++i, --count) {
+        outRect.push_back(vecRect[i]);
+    }
+    
+    return 0;
 }
 
 }	/*! \namespace easypr*/
