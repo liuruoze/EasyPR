@@ -59,8 +59,8 @@ int generate_gdts()
 		Mat dst = detectAndMaskFace(img, cascade, 1.5);
 
 		// 将图片导出到新路径
-		vector<string> spilt_path;
-		SplitString(filepath, spilt_path, "\\");
+        vector<string> spilt_path = Utils::splitString(filepath, '\\');
+
 		int spiltsize = spilt_path.size();
 		string filename = "";
 

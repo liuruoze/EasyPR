@@ -16,14 +16,15 @@
 #include <opencv/highgui.h>
 #include <opencv/cvaux.h>
 #include <algorithm>
+#include "../include/util.h"
 
 using namespace std;
 using namespace cv;
+using namespace easypr;
 
 const int LEARANDATA_COUNT = 5000;
 
 void getFiles( string path, vector<string>& files );
-void SplitString(const string& s, vector<string>& v, const string& c);
 
 //! 省份对应map
 map<string, string> mc_map;
@@ -96,9 +97,8 @@ Mat cutBottom(Mat img)
 //MC：filepath示例：F:\data\easypr-data\learndata\20150110132005-210028-S18-H3952K.jpg
 bool isNotNight(const string& filepath)
 {
-    vector<string> spilt_path;
-    SplitString(filepath, spilt_path, "\\");
-    
+    vector<string> spilt_path = Utils::splitString(filepath, '\\');
+
     int spiltsize = spilt_path.size();
     string filename = "";
     if (spiltsize != 0)
@@ -106,9 +106,8 @@ bool isNotNight(const string& filepath)
         filename = spilt_path[spiltsize-1];
         if (filename != "")
         {
-            vector<string> spilt_name;
-            SplitString(filename, spilt_name, "-");
-            
+            vector<string> spilt_name = Utils::splitString(filename, '-');
+
             int name_size = spilt_name.size();
             string datestr = "";
             if (name_size != 0)
@@ -133,8 +132,7 @@ bool isNotNight(const string& filepath)
 bool getNewPath(const string& filepath, string& newfilepath)
 {
     string writePath = "F:/data/easypr-data/learndata_dl/";
-    vector<string> spilt_path;
-    SplitString(filepath, spilt_path, "\\");
+    vector<string> spilt_path = Utils::splitString(filepath, '\\');
     
     int spiltsize = spilt_path.size();
     string filename = "";
@@ -151,9 +149,8 @@ bool getNewPath(const string& filepath, string& newfilepath)
 //! MC：通过filepath获取车牌号码
 void getPlateLicense(const string& filepath, string& plateLicense)
 {
-    vector<string> spilt_path;
-    SplitString(filepath, spilt_path, "\\");
-    
+    vector<string> spilt_path = Utils::splitString(filepath, '\\');
+
     int spiltsize = spilt_path.size();
     string filename = "";
     if (spiltsize != 0)
@@ -161,9 +158,8 @@ void getPlateLicense(const string& filepath, string& plateLicense)
         filename = spilt_path[spiltsize-1];
         if (filename != "")
         {
-            vector<string> spilt_name;
-            SplitString(filename, spilt_name, "-");
-            
+            vector<string> spilt_name = Utils::splitString(filename, '-');
+
             int name_size = spilt_name.size();
             string plateStr = "";
             string provinceCode = "";
@@ -174,8 +170,8 @@ void getPlateLicense(const string& filepath, string& plateLicense)
                 plateStr = spilt_name[name_size-1];
                 
                 // 将".jpg"去掉
-                vector<string> spilt_plate;
-                SplitString(plateStr, spilt_plate, ".");
+                vector<string> spilt_plate = Utils::splitString(plateStr, '.');
+
                 int plate_size = spilt_plate.size();
                 string rawplate = "";
                 if (plate_size != 0)

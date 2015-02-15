@@ -65,8 +65,7 @@ int general_test()
                 string colorplate = plateVec[0];
                 
                 // 输出"蓝牌:苏E7KU22"中冒号后面的车牌
-                vector<string> spilt_plate;
-                SplitString(colorplate, spilt_plate, ":");
+                vector<string> spilt_plate = Utils::splitString(colorplate, ':');
                 
                 int size = spilt_plate.size();
                 if (size == 2)

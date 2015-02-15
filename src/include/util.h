@@ -7,23 +7,24 @@ namespace easypr {
     class Utils {
     public:
         static long getTimestamp();
+        
+        /*
+         * Get file name from a given path
+         * bool postfix: including the postfix
+         */
+        static std::string getFileName(const std::string &path, const bool postfix = false);
+        
+        /*
+         * Split the given string into segements by a delimiter
+         */
+        static std::vector<std::string> splitString(const std::string &str, const char delimiter);
+        
     };
     
 }
 
 //C++的获取文件夹函数
 void getFiles(std::string path, std::vector<std::string>& files);
-
-//Linux下的GetTickCount函数
-#if defined (linux) || defined (__linux__)
-double GetTickCount();
-#endif
-
-//C++的spilt函数
-void SplitString(const std::string& s, std::vector<std::string>& v, const std::string& c);
-
-//C++的从文件路径名称到文件名称（不包括后缀）的方法
-void getFileName(const std::string& filepath, std::string& name);
 
 //! levenshtein距离，用于计算两个车牌的距离
 //！EasyPR中用levenshtein距离衡量车牌识别与真实车牌的误差

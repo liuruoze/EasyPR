@@ -55,6 +55,56 @@ Utils::getTimestamp()
 #endif
 }
 
+std::string
+Utils::getFileName(const string &path, const bool postfix /* = false */)
+{
+    if (!path.empty()) {
+#if defined (WIN32) || defined (_WIN32)
+        size_t last_slash = path.find_last_of('\\');
+#else
+        size_t last_slash = path.find_last_of('/');
+#endif
+        size_t last_dot   = path.find_last_of('.');
+        
+        if (last_dot < last_slash || last_dot == string::npos) {
+            // not found the right dot of the postfix,
+            // return the file name directly
+            return path.substr(last_slash + 1);
+        } else {
+            // the path has a postfix
+            if (postfix) {
+                // return the file name including postfix
+                return path.substr(last_slash + 1);
+            }
+            // without postfix
+            return path.substr(last_slash + 1, last_dot - last_slash - 1);
+        }
+    }
+    return "";
+}
+
+vector<string>
+Utils::splitString(const string &str, const char delimiter)
+{
+    vector<string> splited;
+    string s(str);
+    size_t pos;
+    
+    while ((pos = s.find(delimiter)) != string::npos ) {
+        string sec = s.substr(0, pos);
+        
+        if (!sec.empty()) {
+            splited.push_back(s.substr(0, pos));
+        }
+        
+        s = s.substr(pos + 1);
+    }
+    
+    splited.push_back(s);
+    
+    return splited;
+}
+
 #if defined (WIN32) || defined (_WIN32)
 
 void getFiles(string path, vector<string>& files)
@@ -116,45 +166,3 @@ void getFiles(string path, vector<string>& files) {
 }
 
 #endif
-
-//C++的spilt函数
-void SplitString(const string& s, vector<string>& v, const string& c)
-{
-	std::string::size_type pos1, pos2;
-	pos2 = s.find(c);
-	pos1 = 0;
-	while(std::string::npos != pos2)
-	{
-		v.push_back(s.substr(pos1, pos2-pos1));
- 
-		pos1 = pos2 + c.size();
-		pos2 = s.find(c, pos1);
-	}
-	if(pos1 != s.length())
-		v.push_back(s.substr(pos1));
-}
-
-
-//! 通过文件夹名称获取文件名，不包括后缀
-void getFileName(const string& filepath, string& name)
-{
-	vector<string> spilt_path;
-	SplitString(filepath, spilt_path, "\\");
-
-	int spiltsize = spilt_path.size();
-	string filename = "";
-	if (spiltsize != 0)
-	{
-		filename = spilt_path[spiltsize-1];
-
-		vector<string> spilt_name;
-		SplitString(filename, spilt_name, ".");
-
-		int name_size = spilt_name.size();
-		if (name_size != 0)
-		{
-			name = spilt_name[0];
-		}
-	}
-}
-
