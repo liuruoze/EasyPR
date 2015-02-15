@@ -1,9 +1,9 @@
 //
 //  main.cpp
-//  äººè„¸é©¬èµ›å…‹
+//  ÈËÁ³ÂíÈü¿Ë
 //
 //  Created by zhou shiwei on 15/1/20.
-//  Copyright (c) 2015å¹´ zhou shiwei. All rights reserved.
+//  Copyright (c) 2015Äê zhou shiwei. All rights reserved.
 //
 
 //  Modified by liu ruoze on 15/1/23
@@ -15,9 +15,9 @@
 #include <iostream>
 #include <string>
 
-//	åäººè„¸è¯†åˆ«æ–‡ä»¶
-//	åœ¨å‘å¸ƒæ•°æ®åˆ°general_testæ•°æ®é›†é‡Œï¼Œè¯·å…ˆç”¨è¿™é‡Œçš„æ–¹æ³•å¯¹å›¾åƒè¿›è¡Œå¤„ç†
-//	EasyPRå¼€æºé¡¹ç›®éå¸¸æ³¨é‡ä¿æŠ¤å›¾ç‰‡ä¸­é©¾é©¶äººçš„éšç§
+//	·´ÈËÁ³Ê¶±ğÎÄ¼ş
+//	ÔÚ·¢²¼Êı¾İµ½general_testÊı¾İ¼¯Àï£¬ÇëÏÈÓÃÕâÀïµÄ·½·¨¶ÔÍ¼Ïñ½øĞĞ´¦Àí
+//	EasyPR¿ªÔ´ÏîÄ¿·Ç³£×¢ÖØ±£»¤Í¼Æ¬ÖĞ¼İÊ»ÈËµÄÒşË½
 
 #include "../include/plate_recognize.h"
 #include "../include/util.h"
@@ -29,9 +29,9 @@ using namespace cv;
 Mat detectAndMaskFace(Mat& img, CascadeClassifier& cascade,
                        double scale );
 
-//	åäººè„¸è¯†åˆ«å‡½æ•°
-//	åœ¨å‘å¸ƒæ•°æ®åˆ°general_testæ•°æ®é›†é‡Œï¼Œè¯·å…ˆç”¨è¿™é‡Œçš„æ–¹æ³•å¯¹å›¾åƒè¿›è¡Œå¤„ç†
-//	EasyPRå¼€æºé¡¹ç›®éå¸¸æ³¨é‡ä¿æŠ¤å›¾ç‰‡ä¸­é©¾é©¶äººçš„éšç§
+//	·´ÈËÁ³Ê¶±ğº¯Êı
+//	ÔÚ·¢²¼Êı¾İµ½general_testÊı¾İ¼¯Àï£¬ÇëÏÈÓÃÕâÀïµÄ·½·¨¶ÔÍ¼Ïñ½øĞĞ´¦Àí
+//	EasyPR¿ªÔ´ÏîÄ¿·Ç³£×¢ÖØ±£»¤Í¼Æ¬ÖĞ¼İÊ»ÈËµÄÒşË½
 int deface() 
 { 
     CascadeClassifier cascade;

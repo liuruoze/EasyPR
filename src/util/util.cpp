@@ -109,17 +109,17 @@ Utils::splitString(const string &str, const char delimiter)
 
 void getFiles(string path, vector<string>& files)
 {
-    //æ–‡ä»¶å¥æŸ„
+    //ÎÄ¼ş¾ä±ú
     long   hFile   =   0;
-    //æ–‡ä»¶ä¿¡æ¯
+    //ÎÄ¼şĞÅÏ¢
     struct _finddata_t fileinfo;
     string p;
     if((hFile = _findfirst(p.assign(path).append("\\*").c_str(),&fileinfo)) !=  -1)
     {
         do
         {
-            //å¦‚æœæ˜¯ç›®å½•,è¿­ä»£ä¹‹
-            //å¦‚æœä¸æ˜¯,åŠ å…¥åˆ—è¡¨
+            //Èç¹ûÊÇÄ¿Â¼,µü´úÖ®
+            //Èç¹û²»ÊÇ,¼ÓÈëÁĞ±í
             if((fileinfo.attrib &  _A_SUBDIR))
             {
                 if(strcmp(fileinfo.name,".") != 0  &&  strcmp(fileinfo.name,"..") != 0)

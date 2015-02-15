@@ -1,4 +1,4 @@
-// svm_train.cpp : svmæ¨¡å‹çš„è®­ç»ƒæ–‡ä»¶ï¼Œä¸»è¦ç”¨åœ¨plate_detectä¸­
+// svm_train.cpp : svmÄ£ĞÍµÄÑµÁ·ÎÄ¼ş£¬Ö÷ÒªÓÃÔÚplate_detectÖĞ
 
 #include "../include/plate_recognize.h"
 #include "../include/features.h"
@@ -15,7 +15,7 @@ void learn2HasPlate(float bound = 0.7)
 	const char * filePath = "train/data/plate_detect_svm/learn/HasPlate";
 	vector<string> files;
 
-	////è·å–è¯¥è·¯å¾„ä¸‹çš„æ‰€æœ‰æ–‡ä»¶
+	////»ñÈ¡¸ÃÂ·¾¶ÏÂµÄËùÓĞÎÄ¼ş
 	getFiles(filePath, files );
 
 	int size = files.size();
@@ -23,7 +23,7 @@ void learn2HasPlate(float bound = 0.7)
 		cout << "File not found in " << filePath << endl;
         return;
     }
-	////éšæœºé€‰å–70%ä½œä¸ºè®­ç»ƒæ•°æ®ï¼Œ30%ä½œä¸ºæµ‹è¯•æ•°æ®
+	////Ëæ»úÑ¡È¡70%×÷ÎªÑµÁ·Êı¾İ£¬30%×÷Îª²âÊÔÊı¾İ
 	srand(unsigned(time(NULL)));
 	random_shuffle(files.begin(), files.end());
 
@@ -62,14 +62,14 @@ void learn2NoPlate(float bound = 0.7)
 	const char * filePath = "train/data/plate_detect_svm/learn/NoPlate";
 	vector<string> files;
 
-	////è·å–è¯¥è·¯å¾„ä¸‹çš„æ‰€æœ‰æ–‡ä»¶
+	////»ñÈ¡¸ÃÂ·¾¶ÏÂµÄËùÓĞÎÄ¼ş
 	getFiles(filePath, files );
 	int size = files.size();
     if (0 == size) {
 		cout << "File not found in " << filePath << endl;
         return;
     }
-	////éšæœºé€‰å–70%ä½œä¸ºè®­ç»ƒæ•°æ®ï¼Œ30%ä½œä¸ºæµ‹è¯•æ•°æ®
+	////Ëæ»úÑ¡È¡70%×÷ÎªÑµÁ·Êı¾İ£¬30%×÷Îª²âÊÔÊı¾İ
 	srand(unsigned(time(NULL)));
 	random_shuffle(files.begin(), files.end());
 
@@ -109,7 +109,7 @@ void getHasPlateTrain(Mat& trainingImages, vector<int>& trainingLabels,
 	const char * filePath = "train/data/plate_detect_svm/train/HasPlate";
 	vector<string> files;
 
-	////è·å–è¯¥è·¯å¾„ä¸‹çš„æ‰€æœ‰æ–‡ä»¶
+	////»ñÈ¡¸ÃÂ·¾¶ÏÂµÄËùÓĞÎÄ¼ş
 	getFiles(filePath, files );
 
 	int size = files.size();
@@ -123,7 +123,7 @@ void getHasPlateTrain(Mat& trainingImages, vector<int>& trainingLabels,
 		//cout << files[i].c_str() << endl;
 		Mat img = imread(files[i].c_str());
 
-		//è°ƒç”¨å›è°ƒå‡½æ•°å†³å®šç‰¹å¾
+		//µ÷ÓÃ»Øµ÷º¯Êı¾ö¶¨ÌØÕ÷
 		Mat features;
 		getFeatures(img, features);
 		features = features.reshape(1, 1);
@@ -141,7 +141,7 @@ void getNoPlateTrain(Mat& trainingImages, vector<int>& trainingLabels,
 	const char * filePath = "train/data/plate_detect_svm/train/NoPlate";
 	vector<string> files;
 
-	////è·å–è¯¥è·¯å¾„ä¸‹çš„æ‰€æœ‰æ–‡ä»¶
+	////»ñÈ¡¸ÃÂ·¾¶ÏÂµÄËùÓĞÎÄ¼ş
 	getFiles(filePath, files );
 
 	int size = files.size();
@@ -155,7 +155,7 @@ void getNoPlateTrain(Mat& trainingImages, vector<int>& trainingLabels,
 		//cout << files[i].c_str() << endl;
 		Mat img = imread(files[i].c_str());
 
-		//è°ƒç”¨å›è°ƒå‡½æ•°å†³å®šç‰¹å¾
+		//µ÷ÓÃ»Øµ÷º¯Êı¾ö¶¨ÌØÕ÷
 		Mat features;
 		getFeatures(img, features);
 		features = features.reshape(1, 1);
@@ -171,7 +171,7 @@ void getHasPlateTest(vector<Mat>& testingImages, vector<int>& testingLabels)
 	const char * filePath = "train/data/plate_detect_svm/test/HasPlate";
 	vector<string> files;
 
-	////è·å–è¯¥è·¯å¾„ä¸‹çš„æ‰€æœ‰æ–‡ä»¶
+	////»ñÈ¡¸ÃÂ·¾¶ÏÂµÄËùÓĞÎÄ¼ş
 	getFiles(filePath, files );
 
 	int size = files.size();
@@ -196,7 +196,7 @@ void getNoPlateTest(vector<Mat>& testingImages, vector<int>& testingLabels)
 	const char * filePath = "train/data/plate_detect_svm/test/NoPlate";
 	vector<string> files;
 
-	////è·å–è¯¥è·¯å¾„ä¸‹çš„æ‰€æœ‰æ–‡ä»¶
+	////»ñÈ¡¸ÃÂ·¾¶ÏÂµÄËùÓĞÎÄ¼ş
 	getFiles(filePath, files );
 
 	int size = files.size();
@@ -216,7 +216,7 @@ void getNoPlateTest(vector<Mat>& testingImages, vector<int>& testingLabels)
 }
 
 
-//! æµ‹è¯•SVMçš„å‡†ç¡®ç‡ï¼Œå›å½’ç‡ä»¥åŠFScore
+//! ²âÊÔSVMµÄ×¼È·ÂÊ£¬»Ø¹éÂÊÒÔ¼°FScore
 void getAccuracy(Mat& testingclasses_preditc, Mat& testingclasses_real)
 {
 	int channels = testingclasses_preditc.channels();
@@ -318,13 +318,13 @@ int svmTrain(bool dividePrepared = true, bool trainPrepared = true,
 
 	if (dividePrepared == false)
 	{
-		//åˆ†å‰²learné‡Œçš„æ•°æ®åˆ°trainå’Œtesté‡Œ
+		//·Ö¸îlearnÀïµÄÊı¾İµ½trainºÍtestÀï
 		cout << "Divide learn to train and test" << endl;
 		learn2HasPlate();
 		learn2NoPlate();
 	}
 
-	//å°†è®­ç»ƒæ•°æ®åŠ è½½å…¥å†…å­˜
+	//½«ÑµÁ·Êı¾İ¼ÓÔØÈëÄÚ´æ
 	if (trainPrepared == false)
 	{
 		cout << "Begin to get train data to memory" << endl;
@@ -340,7 +340,7 @@ int svmTrain(bool dividePrepared = true, bool trainPrepared = true,
 	vector<Mat> testingImages;
     vector<int> testingLabels_real;
 
-	//å°†æµ‹è¯•æ•°æ®åŠ è½½å…¥å†…å­˜
+	//½«²âÊÔÊı¾İ¼ÓÔØÈëÄÚ´æ
 	cout << "Begin to get test data to memory" << endl;
 	getHasPlateTest(testingImages, testingLabels_real);
 	getNoPlateTest(testingImages, testingLabels_real);
@@ -350,8 +350,8 @@ int svmTrain(bool dividePrepared = true, bool trainPrepared = true,
 	{
 		CvSVMParams SVM_params;
 		SVM_params.svm_type = CvSVM::C_SVC;
-		//SVM_params.kernel_type = CvSVM::LINEAR; //CvSVM::LINEAR;   çº¿å‹ï¼Œä¹Ÿå°±æ˜¯æ— æ ¸
-		SVM_params.kernel_type = CvSVM::RBF; //CvSVM::RBF å¾„å‘åŸºå‡½æ•°ï¼Œä¹Ÿå°±æ˜¯é«˜æ–¯æ ¸
+		//SVM_params.kernel_type = CvSVM::LINEAR; //CvSVM::LINEAR;   ÏßĞÍ£¬Ò²¾ÍÊÇÎŞºË
+		SVM_params.kernel_type = CvSVM::RBF; //CvSVM::RBF ¾¶Ïò»ùº¯Êı£¬Ò²¾ÍÊÇ¸ßË¹ºË
 		SVM_params.degree = 0.1;
 		SVM_params.gamma = 1;
 		SVM_params.coef0 = 0.1;
@@ -407,7 +407,7 @@ int svmTrain(bool dividePrepared = true, bool trainPrepared = true,
 		//cout << files[i].c_str() << endl;
 		Mat p = testingImages[i];
 
-		//è°ƒç”¨å›è°ƒå‡½æ•°å†³å®šç‰¹å¾
+		//µ÷ÓÃ»Øµ÷º¯Êı¾ö¶¨ÌØÕ÷
 		Mat features;
 		getFeatures(p, features);
 

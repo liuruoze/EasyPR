@@ -14,7 +14,7 @@ CCharsSegment::CCharsSegment()
 	m_LiuDingSize = DEFAULT_LIUDING_SIZE;
 	m_theMatWidth = DEFAULT_MAT_WIDTH;
 
-	//ï¼è½¦ç‰Œé¢œè‰²åˆ¤æ–­å‚æ•°
+	//£¡³µÅÆÑÕÉ«ÅĞ¶Ï²ÎÊı
 	m_ColorThreshold = DEFAULT_COLORTHRESHOLD;
 	m_BluePercent = DEFAULT_BLUEPERCEMT;
 	m_WhitePercent = DEFAULT_WHITEPERCEMT;
@@ -22,7 +22,7 @@ CCharsSegment::CCharsSegment()
 	m_debug = DEFAULT_DEBUG;
 }
 
-//! å­—ç¬¦å°ºå¯¸éªŒè¯
+//! ×Ö·û³ß´çÑéÖ¤
 bool CCharsSegment::verifySizes(Mat r){
 	//Char sizes 45x90
 	float aspect=45.0f/90.0f;
@@ -46,12 +46,12 @@ bool CCharsSegment::verifySizes(Mat r){
 		return false;
 }
 
-//! å­—ç¬¦é¢„å¤„ç†
+//! ×Ö·ûÔ¤´¦Àí
 Mat CCharsSegment::preprocessChar(Mat in){
 	//Remap image
 	int h=in.rows;
 	int w=in.cols;
-	int charSize=CHAR_SIZE;	//ç»Ÿä¸€æ¯ä¸ªå­—ç¬¦çš„å¤§å°
+	int charSize=CHAR_SIZE;	//Í³Ò»Ã¿¸ö×Ö·ûµÄ´óĞ¡
 	Mat transformMat=Mat::eye(2,3,CV_32F);
 	int m=max(w,h);
 	transformMat.at<float>(0,2)=m/2 - w/2;
@@ -66,7 +66,7 @@ Mat CCharsSegment::preprocessChar(Mat in){
 	return out;
 }
 
-//! ç›´æ–¹å›¾å‡è¡¡ï¼Œä¸ºåˆ¤æ–­è½¦ç‰Œé¢œè‰²åšå‡†å¤‡
+//! Ö±·½Í¼¾ùºâ£¬ÎªÅĞ¶Ï³µÅÆÑÕÉ«×ö×¼±¸
 Mat CCharsSegment::histeq(Mat in)
 {
 	Mat out(in.size(), in.type());
@@ -88,8 +88,8 @@ Mat CCharsSegment::histeq(Mat in)
 }
 
 //getPlateType
-//åˆ¤æ–­è½¦ç‰Œçš„ç±»å‹ï¼Œ1ä¸ºè“ç‰Œï¼Œ2ä¸ºé»„ç‰Œï¼Œ0ä¸ºæœªçŸ¥ï¼Œé»˜è®¤è“ç‰Œ
-//é€šè¿‡åƒç´ ä¸­è“è‰²æ‰€å æ¯”ä¾‹çš„å¤šå°‘æ¥åˆ¤æ–­ï¼Œå¤§äº0.3ä¸ºè“ç‰Œï¼Œå¦åˆ™ä¸ºé»„ç‰Œ
+//ÅĞ¶Ï³µÅÆµÄÀàĞÍ£¬1ÎªÀ¶ÅÆ£¬2Îª»ÆÅÆ£¬0ÎªÎ´Öª£¬Ä¬ÈÏÀ¶ÅÆ
+//Í¨¹ıÏñËØÖĞÀ¶É«ËùÕ¼±ÈÀıµÄ¶àÉÙÀ´ÅĞ¶Ï£¬´óÓÚ0.3ÎªÀ¶ÅÆ£¬·ñÔòÎª»ÆÅÆ
 PlateColor CCharsSegment::getPlateType(Mat input)
 {
 	Mat img;
@@ -129,9 +129,9 @@ PlateColor CCharsSegment::getPlateType(Mat input)
 }
 
 //clearLiuDing
-//å»é™¤è½¦ç‰Œä¸Šæ–¹çš„é’®é’‰
-//è®¡ç®—æ¯è¡Œå…ƒç´ çš„é˜¶è·ƒæ•°ï¼Œå¦‚æœå°äºXè®¤ä¸ºæ˜¯æŸ³ä¸ï¼Œå°†æ­¤è¡Œå…¨éƒ¨å¡«0ï¼ˆæ¶‚é»‘ï¼‰
-//Xçš„æ¨èå€¼ä¸ºï¼Œå¯æ ¹æ®å®é™…è°ƒæ•´
+//È¥³ı³µÅÆÉÏ·½µÄÅ¥¶¤
+//¼ÆËãÃ¿ĞĞÔªËØµÄ½×Ô¾Êı£¬Èç¹ûĞ¡ÓÚXÈÏÎªÊÇÁø¶¡£¬½«´ËĞĞÈ«²¿Ìî0£¨Í¿ºÚ£©
+//XµÄÍÆ¼öÖµÎª£¬¿É¸ù¾İÊµ¼Êµ÷Õû
 void CCharsSegment::clearLiuDing(Mat &img)
 {
     int *jump = new int[img.rows];
@@ -144,7 +144,7 @@ void CCharsSegment::clearLiuDing(Mat &img)
                 jump[i]++;
         }
         if (jump[i] <= m_LiuDingSize) {
-            // å°†æ­¤è¡Œæ¶‚é»‘
+            // ½«´ËĞĞÍ¿ºÚ
             for (int k = 0; k < img.rows; ++k) {
                 img.at<char>(i, k) = 0;
             }
@@ -155,13 +155,13 @@ void CCharsSegment::clearLiuDing(Mat &img)
     jump = nullptr;
 }
 
-//! å­—ç¬¦åˆ†å‰²ä¸æ’åº
+//! ×Ö·û·Ö¸îÓëÅÅĞò
 int CCharsSegment::charsSegment(Mat input, vector<Mat>& resultVec)
 {
 	if( !input.data )
 	{ return -3; }
 
-	//åˆ¤æ–­è½¦ç‰Œé¢œè‰²ä»¥æ­¤ç¡®è®¤thresholdæ–¹æ³•
+	//ÅĞ¶Ï³µÅÆÑÕÉ«ÒÔ´ËÈ·ÈÏthreshold·½·¨
 	PlateColor plateType = getPlateType(input);
 	cvtColor(input, input, CV_RGB2GRAY);
 
@@ -179,7 +179,7 @@ int CCharsSegment::charsSegment(Mat input, vector<Mat>& resultVec)
 		imwrite(ss.str(), img_threshold);
 	}
 
-	//å»é™¤è½¦ç‰Œä¸Šæ–¹çš„æŸ³é’‰ä»¥åŠä¸‹æ–¹çš„æ¨ªçº¿ç­‰å¹²æ‰°
+	//È¥³ı³µÅÆÉÏ·½µÄÁø¶¤ÒÔ¼°ÏÂ·½µÄºáÏßµÈ¸ÉÈÅ
 	clearLiuDing(img_threshold);
 
 
@@ -205,7 +205,7 @@ int CCharsSegment::charsSegment(Mat input, vector<Mat>& resultVec)
 	vector<Rect> vecRect;
 
 	//Remove patch that are no inside limits of aspect ratio and area.  
-	//å°†ä¸ç¬¦åˆç‰¹å®šå°ºå¯¸çš„å›¾å—æ’é™¤å‡ºå»
+	//½«²»·ûºÏÌØ¶¨³ß´çµÄÍ¼¿éÅÅ³ı³öÈ¥
 	while (itc != contours.end()) 
 	{
 		Rect mr = boundingRect(Mat(*itc));
@@ -221,13 +221,13 @@ int CCharsSegment::charsSegment(Mat input, vector<Mat>& resultVec)
 		return -3;
 
 	vector<Rect> sortedRect(vecRect);
-	//å¯¹ç¬¦åˆå°ºå¯¸çš„å›¾å—æŒ‰ç…§ä»å·¦åˆ°å³è¿›è¡Œæ’åº
+	//¶Ô·ûºÏ³ß´çµÄÍ¼¿é°´ÕÕ´Ó×óµ½ÓÒ½øĞĞÅÅĞò
     std::sort(sortedRect.begin(), sortedRect.end(), [] (const Rect &r1, const Rect &r2) {
         return r1.x < r2.x;
     });
 
 	int specIndex = 0;
-	//è·å¾—æŒ‡ç¤ºåŸå¸‚çš„ç‰¹å®šRect,å¦‚è‹Açš„"A"
+	//»ñµÃÖ¸Ê¾³ÇÊĞµÄÌØ¶¨Rect,ÈçËÕAµÄ"A"
 	specIndex = GetSpecificRect(sortedRect);
 
 	if(m_debug)
@@ -241,9 +241,9 @@ int CCharsSegment::charsSegment(Mat input, vector<Mat>& resultVec)
 		}
 	}
 
-	//æ ¹æ®ç‰¹å®šRectå‘å·¦åæ¨å‡ºä¸­æ–‡å­—ç¬¦
-	//è¿™æ ·åšçš„ä¸»è¦åŸå› æ˜¯æ ¹æ®findContoursæ–¹æ³•å¾ˆéš¾æ•æ‰åˆ°ä¸­æ–‡å­—ç¬¦çš„å‡†ç¡®Rectï¼Œå› æ­¤ä»…èƒ½
-	//é€€è¿‡ç‰¹å®šç®—æ³•æ¥æŒ‡å®š
+	//¸ù¾İÌØ¶¨RectÏò×ó·´ÍÆ³öÖĞÎÄ×Ö·û
+	//ÕâÑù×öµÄÖ÷ÒªÔ­ÒòÊÇ¸ù¾İfindContours·½·¨ºÜÄÑ²¶×½µ½ÖĞÎÄ×Ö·ûµÄ×¼È·Rect£¬Òò´Ë½öÄÜ
+	//ÍË¹ıÌØ¶¨Ëã·¨À´Ö¸¶¨
 	Rect chineseRect;
 	if (specIndex < sortedRect.size())
 		chineseRect = GetChineseRect(sortedRect[specIndex]);
@@ -259,9 +259,9 @@ int CCharsSegment::charsSegment(Mat input, vector<Mat>& resultVec)
 	}
 
 
-	//æ–°å»ºä¸€ä¸ªå…¨æ–°çš„æ’åºRect
-	//å°†ä¸­æ–‡å­—ç¬¦Rectç¬¬ä¸€ä¸ªåŠ è¿›æ¥ï¼Œå› ä¸ºå®ƒè‚¯å®šæ˜¯æœ€å·¦è¾¹çš„
-	//å…¶ä½™çš„RectåªæŒ‰ç…§é¡ºåºå»6ä¸ªï¼Œè½¦ç‰Œåªå¯èƒ½æ˜¯7ä¸ªå­—ç¬¦ï¼è¿™æ ·å¯ä»¥é¿å…é˜´å½±å¯¼è‡´çš„â€œ1â€å­—ç¬¦
+	//ĞÂ½¨Ò»¸öÈ«ĞÂµÄÅÅĞòRect
+	//½«ÖĞÎÄ×Ö·ûRectµÚÒ»¸ö¼Ó½øÀ´£¬ÒòÎªËü¿Ï¶¨ÊÇ×î×ó±ßµÄ
+	//ÆäÓàµÄRectÖ»°´ÕÕË³ĞòÈ¥6¸ö£¬³µÅÆÖ»¿ÉÄÜÊÇ7¸ö×Ö·û£¡ÕâÑù¿ÉÒÔ±ÜÃâÒõÓ°µ¼ÖÂµÄ¡°1¡±×Ö·û
 	vector<Rect> newSortedRect;
 	newSortedRect.push_back(chineseRect);
 	RebuildRect(sortedRect, newSortedRect, specIndex);
@@ -290,7 +290,7 @@ int CCharsSegment::charsSegment(Mat input, vector<Mat>& resultVec)
 	return 0;
 }
 
-//! æ ¹æ®ç‰¹æ®Šè½¦ç‰Œæ¥æ„é€ çŒœæµ‹ä¸­æ–‡å­—ç¬¦çš„ä½ç½®å’Œå¤§å°
+//! ¸ù¾İÌØÊâ³µÅÆÀ´¹¹Ôì²Â²âÖĞÎÄ×Ö·ûµÄÎ»ÖÃºÍ´óĞ¡
 Rect CCharsSegment::GetChineseRect(const Rect rectSpe)
 {
 	int height = rectSpe.height;
@@ -306,7 +306,7 @@ Rect CCharsSegment::GetChineseRect(const Rect rectSpe)
 	return a;
 }
 
-//! æ‰¾å‡ºæŒ‡ç¤ºåŸå¸‚çš„å­—ç¬¦çš„Rectï¼Œä¾‹å¦‚è‹A7003Xï¼Œå°±æ˜¯"A"çš„ä½ç½®
+//! ÕÒ³öÖ¸Ê¾³ÇÊĞµÄ×Ö·ûµÄRect£¬ÀıÈçËÕA7003X£¬¾ÍÊÇ"A"µÄÎ»ÖÃ
 int CCharsSegment::GetSpecificRect(const vector<Rect>& vecRect)
 {
 	vector<int> xpositions;
@@ -333,7 +333,7 @@ int CCharsSegment::GetSpecificRect(const vector<Rect>& vecRect)
 		Rect mr = vecRect[i];
 		int midx = mr.x + mr.width/2;
 
-		//å¦‚æœä¸€ä¸ªå­—ç¬¦æœ‰ä¸€å®šçš„å¤§å°ï¼Œå¹¶ä¸”åœ¨æ•´ä¸ªè½¦ç‰Œçš„1/7åˆ°2/7ä¹‹é—´ï¼Œåˆ™æ˜¯æˆ‘ä»¬è¦æ‰¾çš„ç‰¹æ®Šè½¦ç‰Œ
+		//Èç¹ûÒ»¸ö×Ö·ûÓĞÒ»¶¨µÄ´óĞ¡£¬²¢ÇÒÔÚÕû¸ö³µÅÆµÄ1/7µ½2/7Ö®¼ä£¬ÔòÊÇÎÒÃÇÒªÕÒµÄÌØÊâ³µÅÆ
 		if ((mr.width > maxWidth * 0.8 || mr.height > maxHeight * 0.8) &&
 			(midx < int(m_theMatWidth / 7) * 2 && midx > int(m_theMatWidth / 7) * 1))
 		{
@@ -344,12 +344,12 @@ int CCharsSegment::GetSpecificRect(const vector<Rect>& vecRect)
 	return specIndex;
 }
 
-//! è¿™ä¸ªå‡½æ•°åšä¸¤ä¸ªäº‹æƒ…
-//  1.æŠŠç‰¹æ®Šå­—ç¬¦Rectå·¦è¾¹çš„å…¨éƒ¨Rectå»æ‰ï¼Œåé¢å†é‡å»ºä¸­æ–‡å­—ç¬¦çš„ä½ç½®ã€‚
-//  2.ä»ç‰¹æ®Šå­—ç¬¦Rectå¼€å§‹ï¼Œä¾æ¬¡é€‰æ‹©6ä¸ªRectï¼Œå¤šä½™çš„èˆå»ã€‚
+//! Õâ¸öº¯Êı×öÁ½¸öÊÂÇé
+//  1.°ÑÌØÊâ×Ö·ûRect×ó±ßµÄÈ«²¿RectÈ¥µô£¬ºóÃæÔÙÖØ½¨ÖĞÎÄ×Ö·ûµÄÎ»ÖÃ¡£
+//  2.´ÓÌØÊâ×Ö·ûRect¿ªÊ¼£¬ÒÀ´ÎÑ¡Ôñ6¸öRect£¬¶àÓàµÄÉáÈ¥¡£
 int CCharsSegment::RebuildRect(const vector<Rect>& vecRect, vector<Rect>& outRect, int specIndex)
 {
-    //æœ€å¤§åªèƒ½æœ‰7ä¸ªRect,å‡å»ä¸­æ–‡çš„å°±åªæœ‰6ä¸ªRect
+    //×î´óÖ»ÄÜÓĞ7¸öRect,¼õÈ¥ÖĞÎÄµÄ¾ÍÖ»ÓĞ6¸öRect
     int count = 6;
     
     for (size_t i = specIndex; i < vecRect.size() && count; ++i, --count) {

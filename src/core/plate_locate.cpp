@@ -25,8 +25,8 @@ CPlateLocate::CPlateLocate()
 	m_debug = DEFAULT_DEBUG;
 }
 
-//! ç”Ÿæ´»æ¨¡å¼ä¸å·¥ä¸šæ¨¡å¼åˆ‡æ¢
-//! å¦‚æœä¸ºçœŸï¼Œåˆ™è®¾ç½®å„é¡¹å‚æ•°ä¸ºå®šä½ç”Ÿæ´»åœºæ™¯ç…§ç‰‡ï¼ˆå¦‚ç™¾åº¦å›¾ç‰‡ï¼‰çš„å‚æ•°ï¼Œå¦åˆ™æ¢å¤é»˜è®¤å€¼ã€‚
+//! Éú»îÄ£Ê½Óë¹¤ÒµÄ£Ê½ÇĞ»»
+//! Èç¹ûÎªÕæ£¬ÔòÉèÖÃ¸÷Ïî²ÎÊıÎª¶¨Î»Éú»î³¡¾°ÕÕÆ¬£¨Èç°Ù¶ÈÍ¼Æ¬£©µÄ²ÎÊı£¬·ñÔò»Ö¸´Ä¬ÈÏÖµ¡£
 void CPlateLocate::setLifemode(bool param)
 {
 	if(param == true)
@@ -52,12 +52,12 @@ void CPlateLocate::setLifemode(bool param)
 }
 
 
-//! å¯¹minAreaRectè·å¾—çš„æœ€å°å¤–æ¥çŸ©å½¢ï¼Œç”¨çºµæ¨ªæ¯”è¿›è¡Œåˆ¤æ–­
+//! ¶ÔminAreaRect»ñµÃµÄ×îĞ¡Íâ½Ó¾ØĞÎ£¬ÓÃ×İºá±È½øĞĞÅĞ¶Ï
 bool CPlateLocate::verifySizes(RotatedRect mr)
 {
 	float error = m_error;
 	//Spain car plate size: 52x11 aspect 4,7272
-	//China car plate size: 440mm*140mmï¼Œaspect 3.142857
+	//China car plate size: 440mm*140mm£¬aspect 3.142857
 	float aspect = m_aspect;
 	//Set a min and max area. All other patchs are discarded
 	//int min= 1*aspect*1; // minimum area
@@ -85,7 +85,7 @@ bool CPlateLocate::verifySizes(RotatedRect mr)
 	}
 }
 
-//! æ˜¾ç¤ºæœ€ç»ˆç”Ÿæˆçš„è½¦ç‰Œå›¾åƒï¼Œä¾¿äºåˆ¤æ–­æ˜¯å¦æˆåŠŸè¿›è¡Œäº†æ—‹è½¬ã€‚
+//! ÏÔÊ¾×îÖÕÉú³ÉµÄ³µÅÆÍ¼Ïñ£¬±ãÓÚÅĞ¶ÏÊÇ·ñ³É¹¦½øĞĞÁËĞı×ª¡£
 Mat CPlateLocate::showResultMat(Mat src, Size rect_size, Point2f center, int index)
 {
 	Mat img_crop;
@@ -114,10 +114,10 @@ Mat CPlateLocate::showResultMat(Mat src, Size rect_size, Point2f center, int ind
 	return resultResized;
 }
 
-//! å®šä½è½¦ç‰Œå›¾åƒ
-//! src åŸå§‹å›¾åƒ
-//! resultVec ä¸€ä¸ªMatçš„å‘é‡ï¼Œå­˜å‚¨æ‰€æœ‰æŠ“å–åˆ°çš„å›¾åƒ
-//! æˆåŠŸè¿”å›0ï¼Œå¦åˆ™è¿”å›-1
+//! ¶¨Î»³µÅÆÍ¼Ïñ
+//! src Ô­Ê¼Í¼Ïñ
+//! resultVec Ò»¸öMatµÄÏòÁ¿£¬´æ´¢ËùÓĞ×¥È¡µ½µÄÍ¼Ïñ
+//! ³É¹¦·µ»Ø0£¬·ñÔò·µ»Ø-1
 int CPlateLocate::plateLocate(Mat src, vector<Mat>& resultVec)
 {
 	Mat src_blur, src_gray;
@@ -130,7 +130,7 @@ int CPlateLocate::plateLocate(Mat src, vector<Mat>& resultVec)
 	if( !src.data )
 	{ return -1; }
 
-	//é«˜æ–¯æ¨¡ç³Šã€‚Sizeä¸­çš„æ•°å­—å½±å“è½¦ç‰Œå®šä½çš„æ•ˆæœã€‚
+	//¸ßË¹Ä£ºı¡£SizeÖĞµÄÊı×ÖÓ°Ïì³µÅÆ¶¨Î»µÄĞ§¹û¡£
 	GaussianBlur( src, src_blur, Size(m_GaussianBlurSize, m_GaussianBlurSize), 
 		0, 0, BORDER_DEFAULT );
 
@@ -200,11 +200,11 @@ int CPlateLocate::plateLocate(Mat src, vector<Mat>& resultVec)
 		imwrite(ss.str(), img_threshold);
 	}
 
-	//Find è½®å»“ of possibles plates
+	//Find ÂÖÀª of possibles plates
 	vector< vector< Point> > contours;
 	findContours(img_threshold,
 		contours, // a vector of contours
-		CV_RETR_EXTERNAL, // æå–å¤–éƒ¨è½®å»“
+		CV_RETR_EXTERNAL, // ÌáÈ¡Íâ²¿ÂÖÀª
 		CV_CHAIN_APPROX_NONE); // all pixels of each contours
 
 	Mat result;
@@ -253,10 +253,10 @@ int CPlateLocate::plateLocate(Mat src, vector<Mat>& resultVec)
 		{	
 			// rotated rectangle drawing 
 			// Get rotation matrix
-			// æ—‹è½¬è¿™éƒ¨åˆ†ä»£ç ç¡®å®å¯ä»¥å°†æŸäº›å€¾æ–œçš„è½¦ç‰Œè°ƒæ•´æ­£ï¼Œ
-			// ä½†æ˜¯å®ƒä¹Ÿä¼šè¯¯å°†æ›´å¤šæ­£çš„è½¦ç‰Œææˆå€¾æ–œï¼æ‰€ä»¥ç»¼åˆè€ƒè™‘ï¼Œè¿˜æ˜¯ä¸ä½¿ç”¨è¿™æ®µä»£ç ã€‚
-			// 2014-08-14,ç”±äºæ–°åˆ°çš„ä¸€æ‰¹å›¾ç‰‡ä¸­å‘ç°æœ‰å¾ˆå¤šè½¦ç‰Œæ˜¯å€¾æ–œçš„ï¼Œå› æ­¤å†³å®šå†æ¬¡å°è¯•
-			// è¿™æ®µä»£ç ã€‚
+			// Ğı×ªÕâ²¿·Ö´úÂëÈ·Êµ¿ÉÒÔ½«Ä³Ğ©ÇãĞ±µÄ³µÅÆµ÷ÕûÕı£¬
+			// µ«ÊÇËüÒ²»áÎó½«¸ü¶àÕıµÄ³µÅÆ¸ã³ÉÇãĞ±£¡ËùÒÔ×ÛºÏ¿¼ÂÇ£¬»¹ÊÇ²»Ê¹ÓÃÕâ¶Î´úÂë¡£
+			// 2014-08-14,ÓÉÓÚĞÂµ½µÄÒ»ÅúÍ¼Æ¬ÖĞ·¢ÏÖÓĞºÜ¶à³µÅÆÊÇÇãĞ±µÄ£¬Òò´Ë¾ö¶¨ÔÙ´Î³¢ÊÔ
+			// Õâ¶Î´úÂë¡£
 			if(m_debug)
 			{ 
 				Point2f rect_points[4]; 
@@ -273,7 +273,7 @@ int CPlateLocate::plateLocate(Mat src, vector<Mat>& resultVec)
 				angle = 90 + angle;
 				swap(rect_size.width, rect_size.height);
 			}
-			//å¦‚æœæŠ“å–çš„æ–¹å—æ—‹è½¬è¶…è¿‡m_angleè§’åº¦ï¼Œåˆ™ä¸æ˜¯è½¦ç‰Œï¼Œæ”¾å¼ƒå¤„ç†
+			//Èç¹û×¥È¡µÄ·½¿éĞı×ª³¬¹ım_angle½Ç¶È£¬Ôò²»ÊÇ³µÅÆ£¬·ÅÆú´¦Àí
 			if (angle - m_angle < 0 && angle + m_angle > 0)
 			{
 				//Create and rotate image

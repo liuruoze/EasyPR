@@ -25,34 +25,34 @@ class CPlateJudge
 public:
 	CPlateJudge();
 
-	//! è½¦ç‰Œåˆ¤æ–­
+	//! ³µÅÆÅĞ¶Ï
 	int plateJudge(const vector<Mat>&, vector<Mat>&);
 
-	//! è½¦ç‰Œåˆ¤æ–­ï¼ˆä¸€å‰¯å›¾åƒï¼‰
+	//! ³µÅÆÅĞ¶Ï£¨Ò»¸±Í¼Ïñ£©
 	int plateJudge(const Mat& inMat, int& result);
 
-	//! ç›´æ–¹å›¾å‡è¡¡
+	//! Ö±·½Í¼¾ùºâ
 	Mat histeq(Mat);
 
-	//! è£…è½½SVMæ¨¡å‹
+	//! ×°ÔØSVMÄ£ĞÍ
 	void LoadModel();
 
-	//! è£…è½½SVMæ¨¡å‹
+	//! ×°ÔØSVMÄ£ĞÍ
 	void LoadModel(string s);
 
-	//! è®¾ç½®ä¸è¯»å–æ¨¡å‹è·¯å¾„
+	//! ÉèÖÃÓë¶ÁÈ¡Ä£ĞÍÂ·¾¶
 	inline void setModelPath(string path){	m_path = path;	}
 	inline string getModelPath() const{	 return m_path;	}
 
 private:
-	//ï¼ä½¿ç”¨çš„SVMæ¨¡å‹
+	//£¡Ê¹ÓÃµÄSVMÄ£ĞÍ
 	CvSVM svm;
 
-	// ! EasyPRçš„getFeatureså›è°ƒå‡½æ•°
-	// ï¼ç”¨äºä»è½¦ç‰Œçš„imageç”Ÿæˆsvmçš„è®­ç»ƒç‰¹å¾features
+	// ! EasyPRµÄgetFeatures»Øµ÷º¯Êı
+	// £¡ÓÃÓÚ´Ó³µÅÆµÄimageÉú³ÉsvmµÄÑµÁ·ÌØÕ÷features
 	svmCallback m_getFeatures;
 
-	//! æ¨¡å‹å­˜å‚¨è·¯å¾„
+	//! Ä£ĞÍ´æ´¢Â·¾¶
 	string m_path;
 };
 

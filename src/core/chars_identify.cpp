@@ -9,20 +9,20 @@ namespace easypr{
 #define VERTICAL    0
 #define NDEBUG
 
-//ä¸­å›½è½¦ç‰Œ
+//ÖĞ¹ú³µÅÆ
 const char strCharacters[] = {'0','1','2','3','4','5',\
-	'6','7','8','9','A','B', 'C', 'D', 'E','F', 'G', 'H', /* æ²¡æœ‰I */\
-	'J', 'K', 'L', 'M', 'N', /* æ²¡æœ‰O */ 'P', 'Q', 'R', 'S', 'T', \
+	'6','7','8','9','A','B', 'C', 'D', 'E','F', 'G', 'H', /* Ã»ÓĞI */\
+	'J', 'K', 'L', 'M', 'N', /* Ã»ÓĞO */ 'P', 'Q', 'R', 'S', 'T', \
 	'U','V', 'W', 'X', 'Y', 'Z'}; 
-const int numCharacter = 34; /* æ²¡æœ‰Iå’Œ0,10ä¸ªæ•°å­—ä¸24ä¸ªè‹±æ–‡å­—ç¬¦ä¹‹å’Œ */
+const int numCharacter = 34; /* Ã»ÓĞIºÍ0,10¸öÊı×ÖÓë24¸öÓ¢ÎÄ×Ö·ûÖ®ºÍ */
 
-//ä»¥ä¸‹éƒ½æ˜¯æˆ‘è®­ç»ƒæ—¶ç”¨åˆ°çš„ä¸­æ–‡å­—ç¬¦æ•°æ®ï¼Œå¹¶ä¸å…¨é¢ï¼Œæœ‰äº›çœä»½æ²¡æœ‰è®­ç»ƒæ•°æ®æ‰€ä»¥æ²¡æœ‰å­—ç¬¦
-const string strChinese[] = {"zh_cuan" /* å· */, "zh_e" /* é„‚ */,  "zh_gan" /* èµ£*/, \
-	"zh_hei" /* é»‘ */, "zh_hu" /* æ²ª */,  "zh_ji" /* å†€ */, \
-	"zh_jl" /* å‰ */, "zh_jin" /* æ´¥ */, "zh_jing" /* äº¬ */, "zh_shan" /* é™• */, \
-	"zh_liao" /* è¾½ */, "zh_lu" /* é² */, "zh_min" /* é—½ */, "zh_ning" /* å® */, \
-	"zh_su" /* è‹ */,  "zh_sx" /* æ™‹ */, "zh_wan" /* çš– */,\
-	 "zh_yu" /* è±« */, "zh_yue" /* ç²¤ */, "zh_zhe" /* æµ™ */};
+//ÒÔÏÂ¶¼ÊÇÎÒÑµÁ·Ê±ÓÃµ½µÄÖĞÎÄ×Ö·ûÊı¾İ£¬²¢²»È«Ãæ£¬ÓĞĞ©Ê¡·İÃ»ÓĞÑµÁ·Êı¾İËùÒÔÃ»ÓĞ×Ö·û
+const string strChinese[] = {"zh_cuan" /* ´¨ */, "zh_e" /* ¶õ */,  "zh_gan" /* ¸Ó*/, \
+	"zh_hei" /* ºÚ */, "zh_hu" /* »¦ */,  "zh_ji" /* ¼½ */, \
+	"zh_jl" /* ¼ª */, "zh_jin" /* ½ò */, "zh_jing" /* ¾© */, "zh_shan" /* ÉÂ */, \
+	"zh_liao" /* ÁÉ */, "zh_lu" /* Â³ */, "zh_min" /* Ãö */, "zh_ning" /* Äş */, \
+	"zh_su" /* ËÕ */,  "zh_sx" /* ½ú */, "zh_wan" /* Íî */,\
+	 "zh_yu" /* Ô¥ */, "zh_yue" /* ÔÁ */, "zh_zhe" /* Õã */};
 
 const int numChinese = 20;
 const int numAll = 54; /* 34+20=54 */
@@ -36,26 +36,26 @@ CCharsIdentify::CCharsIdentify()
 
 	if (m_map.empty())
 	{
-		m_map.insert(pair<string, string>("zh_cuan","å·"));
-		m_map.insert(pair<string, string>("zh_e","é„‚"));
-		m_map.insert(pair<string, string>("zh_gan","èµ£"));
-		m_map.insert(pair<string, string>("zh_hei","é»‘"));
-		m_map.insert(pair<string, string>("zh_hu","æ²ª"));
-		m_map.insert(pair<string, string>("zh_ji","å†€"));
-		m_map.insert(pair<string, string>("zh_jl","å‰"));
-		m_map.insert(pair<string, string>("zh_jin","æ´¥"));
-		m_map.insert(pair<string, string>("zh_jing","äº¬"));
-		m_map.insert(pair<string, string>("zh_shan","é™•"));
-		m_map.insert(pair<string, string>("zh_liao","è¾½"));
-		m_map.insert(pair<string, string>("zh_lu","é²"));
-		m_map.insert(pair<string, string>("zh_min","é—½"));
-		m_map.insert(pair<string, string>("zh_ning","å®"));
-		m_map.insert(pair<string, string>("zh_su","è‹"));
-		m_map.insert(pair<string, string>("zh_sx","æ™‹"));
-		m_map.insert(pair<string, string>("zh_wan","çš–"));
-		m_map.insert(pair<string, string>("zh_yu","è±«"));
-		m_map.insert(pair<string, string>("zh_yue","ç²¤"));
-		m_map.insert(pair<string, string>("zh_zhe","æµ™"));
+		m_map.insert(pair<string, string>("zh_cuan","´¨"));
+		m_map.insert(pair<string, string>("zh_e","¶õ"));
+		m_map.insert(pair<string, string>("zh_gan","¸Ó"));
+		m_map.insert(pair<string, string>("zh_hei","ºÚ"));
+		m_map.insert(pair<string, string>("zh_hu","»¦"));
+		m_map.insert(pair<string, string>("zh_ji","¼½"));
+		m_map.insert(pair<string, string>("zh_jl","¼ª"));
+		m_map.insert(pair<string, string>("zh_jin","½ò"));
+		m_map.insert(pair<string, string>("zh_jing","¾©"));
+		m_map.insert(pair<string, string>("zh_shan","ÉÂ"));
+		m_map.insert(pair<string, string>("zh_liao","ÁÉ"));
+		m_map.insert(pair<string, string>("zh_lu","Â³"));
+		m_map.insert(pair<string, string>("zh_min","Ãö"));
+		m_map.insert(pair<string, string>("zh_ning","Äş"));
+		m_map.insert(pair<string, string>("zh_su","ËÕ"));
+		m_map.insert(pair<string, string>("zh_sx","½ú"));
+		m_map.insert(pair<string, string>("zh_wan","Íî"));
+		m_map.insert(pair<string, string>("zh_yu","Ô¥"));
+		m_map.insert(pair<string, string>("zh_yue","ÔÁ"));
+		m_map.insert(pair<string, string>("zh_zhe","Õã"));
 	}
 }
 
@@ -72,7 +72,7 @@ void CCharsIdentify::LoadModel(string s)
 	ann.load(s.c_str(), "ann");
 }
 
-//create the accumulation histograms,img is a binary image, t is æ°´å¹³æˆ–å‚ç›´
+//create the accumulation histograms,img is a binary image, t is Ë®Æ½»ò´¹Ö±
 Mat CCharsIdentify::ProjectedHistogram(Mat img, int t)
 {
 	int sz=(t)?img.rows:img.cols;
@@ -80,7 +80,7 @@ Mat CCharsIdentify::ProjectedHistogram(Mat img, int t)
 
 	for(int j=0; j<sz; j++){
 		Mat data=(t)?img.row(j):img.col(j);
-		mhist.at<float>(j)=countNonZero(data);	//ç»Ÿè®¡è¿™ä¸€è¡Œæˆ–ä¸€åˆ—ä¸­ï¼Œéé›¶å…ƒç´ çš„ä¸ªæ•°ï¼Œå¹¶ä¿å­˜åˆ°mhistä¸­
+		mhist.at<float>(j)=countNonZero(data);	//Í³¼ÆÕâÒ»ĞĞ»òÒ»ÁĞÖĞ£¬·ÇÁãÔªËØµÄ¸öÊı£¬²¢±£´æµ½mhistÖĞ
 	}
 
 	//Normalize histogram
@@ -88,12 +88,12 @@ Mat CCharsIdentify::ProjectedHistogram(Mat img, int t)
 	minMaxLoc(mhist, &min, &max);
 
 	if(max>0)
-		mhist.convertTo(mhist,-1 , 1.0f/max, 0);//ç”¨mhistç›´æ–¹å›¾ä¸­çš„æœ€å¤§å€¼ï¼Œå½’ä¸€åŒ–ç›´æ–¹å›¾
+		mhist.convertTo(mhist,-1 , 1.0f/max, 0);//ÓÃmhistÖ±·½Í¼ÖĞµÄ×î´óÖµ£¬¹éÒ»»¯Ö±·½Í¼
 
 	return mhist;
 }
 
-//! è·å¾—å­—ç¬¦çš„ç‰¹å¾å›¾
+//! »ñµÃ×Ö·ûµÄÌØÕ÷Í¼
 Mat CCharsIdentify::features(Mat in, int sizeData)
 {
 	//Histogram features
@@ -109,7 +109,7 @@ Mat CCharsIdentify::features(Mat in, int sizeData)
 
 	Mat out = Mat::zeros(1, numCols, CV_32F);
 
-	//Asign values to feature,ANNçš„æ ·æœ¬ç‰¹å¾ä¸ºæ°´å¹³ã€å‚ç›´ç›´æ–¹å›¾å’Œä½åˆ†è¾¨ç‡å›¾åƒæ‰€ç»„æˆçš„çŸ¢é‡
+	//Asign values to feature,ANNµÄÑù±¾ÌØÕ÷ÎªË®Æ½¡¢´¹Ö±Ö±·½Í¼ºÍµÍ·Ö±æÂÊÍ¼ÏñËù×é³ÉµÄÊ¸Á¿
 	int j=0;
 	for(int i=0; i<vhist.cols; i++)
 	{
@@ -133,7 +133,7 @@ Mat CCharsIdentify::features(Mat in, int sizeData)
 }
 
 
-//! åˆ©ç”¨ç¥ç»ç½‘ç»œåšè¯†åˆ«
+//! ÀûÓÃÉñ¾­ÍøÂç×öÊ¶±ğ
 int CCharsIdentify::classify(Mat f, bool isChinses){
 	int result = -1;
 	Mat output(1, numAll, CV_32FC1);
@@ -173,7 +173,7 @@ int CCharsIdentify::classify(Mat f, bool isChinses){
 }
 
 
-//è¾“å…¥å½“ä¸ªå­—ç¬¦Mat,ç”Ÿæˆå­—ç¬¦çš„string
+//ÊäÈëµ±¸ö×Ö·ûMat,Éú³É×Ö·ûµÄstring
 string CCharsIdentify::charsIdentify(Mat input, bool isChinese)
 {
 	Mat f = features(input, m_predictSize);

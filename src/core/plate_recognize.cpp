@@ -12,13 +12,13 @@ CPlateRecognize::CPlateRecognize()
 	//m_charsRecognise = new CCharsRecognise();
 }
 
-////! è£…è½½SVMæ¨¡å‹
+////! ×°ÔØSVMÄ£ĞÍ
 //void CPlateRecognize::LoadSVM(string strSVM)
 //{
 //	m_plateDetect->LoadModel(strSVM.c_str());
 //}
 //
-////! è£…è½½ANNæ¨¡å‹
+////! ×°ÔØANNÄ£ĞÍ
 //void CPlateRecognize::LoadANN(string strANN)
 //{
 //	m_charsRecognise->LoadModel(strANN.c_str());
@@ -38,7 +38,7 @@ CPlateRecognize::CPlateRecognize()
 
 int CPlateRecognize::plateRecognize(Mat src, vector<string>& licenseVec)
 {
-	//è½¦ç‰Œæ–¹å—é›†åˆ
+	//³µÅÆ·½¿é¼¯ºÏ
 	vector<Mat> plateVec;
 
 	int resultPD = plateDetect(src, plateVec);
@@ -51,10 +51,10 @@ int CPlateRecognize::plateRecognize(Mat src, vector<string>& licenseVec)
 		{
 			Mat plate = plateVec[j];
 			
-			//è·å–è½¦ç‰Œé¢œè‰²
+			//»ñÈ¡³µÅÆÑÕÉ«
 			string plateType = getPlateType(plate);
 
-			//è·å–è½¦ç‰Œå·
+			//»ñÈ¡³µÅÆºÅ
 			string plateIdentify = "";
 			int resultCR = charsRecognise(plate, plateIdentify);
 			if (resultCR == 0)
