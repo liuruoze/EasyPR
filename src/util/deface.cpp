@@ -74,14 +74,12 @@ int deface()
 
 Mat detectAndMaskFace(Mat& img, CascadeClassifier& cascade, double scale)
 {
-  
-    double t = 0;
     vector<Rect> faces;
     Mat gray, smallImg( cvRound (img.rows/scale), cvRound(img.cols/scale), CV_8UC1 );
     cvtColor( img, gray, COLOR_BGR2GRAY );
     resize( gray, smallImg, smallImg.size(), 0, 0, INTER_LINEAR );
     equalizeHist( smallImg, smallImg );
-    t = (double)cv::getTickCount();
+
     cascade.detectMultiScale( smallImg, faces,
                              1.1, 2, 0
                              //|CASCADE_FIND_BIGGEST_OBJECT

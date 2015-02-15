@@ -18,13 +18,42 @@
     #include <sys/stat.h>
     #include <sys/types.h>
     #include <dirent.h>
+    #include <sys/timeb.h>
 #endif
 
 #include <stdlib.h>
 #include <stdio.h>
 #include <vector>
 
+#include "../include/util.h"
+
 using namespace std;
+using namespace easypr;
+
+long
+Utils::getTimestamp()
+{
+#if defined (WIN32) || defined (_WIN32)
+    return GetTickCount();
+#endif
+    
+#if (linux) || defined (__linux__)
+    struct timespec ts;
+    
+    clock_gettime(CLOCK_MONOTONIC, &ts);
+    
+    return (ts.tv_sec * 1e3 + ts.tv_nsec / 1e6);
+#endif
+    
+#if defined (__APPLE__)
+    // there is no function provided by osx to get system tick count.
+    // but considering the purpose by using this function,
+    // we can simply return a millisecond since 1970/1/1 to calc the time elapse.
+    struct timeb tb;
+    ftime(&tb);
+    return tb.time * 1e3 + tb.millitm;
+#endif
+}
 
 #if defined (WIN32) || defined (_WIN32)
 
@@ -87,17 +116,6 @@ void getFiles(string path, vector<string>& files) {
 }
 
 #endif
-
-#if (linux) || defined (__linux__)
-double GetTickCount() {
-    struct timespec ts;
-
-    clock_gettime(CLOCK_MONOTONIC, &ts);
-
-    return (ts.tv_sec * 1e3 + ts.tv_nsec / 1e6);
-}
-#endif
-
 
 //C++的spilt函数
 void SplitString(const string& s, vector<string>& v, const string& c)

@@ -232,10 +232,10 @@ void saveModel(int _predictsize, int _neurons)
     cout << "Begin to saveModelChar predictSize:" << _predictsize
     << " neurons:" << _neurons << endl;
     
-    double start = GetTickCount();
+    long start = Utils::getTimestamp();
     annTrain(TrainingData, Classes, _neurons);
-    double end = GetTickCount();
-    cout << "GetTickCount:" << (end-start)/1000 << endl;
+    long end = Utils::getTimestamp();
+    cout << "Elapse:" << (end-start)/1000 << endl;
     
     cout << "End the saveModelChar" << endl;
     

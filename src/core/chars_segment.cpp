@@ -304,7 +304,7 @@ int CCharsSegment::SortRect(const vector<Rect>& vecRect, vector<Rect>& out)
         xpositions.push_back(vecRect[i].x);
 	}
 
-	float min=xpositions[0];
+    float min;
 	int minIdx=0;
     for(int i=0; i< xpositions.size(); i++)
 	{
