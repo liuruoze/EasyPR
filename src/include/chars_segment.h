@@ -19,6 +19,12 @@
 */
 namespace easypr {
 
+    enum PlateColor {
+        Blue,
+        Yellow,
+        Unknown
+    };
+    
 class CCharsSegment 
 {
 public:
@@ -43,7 +49,7 @@ public:
 	Mat histeq(Mat in);
 
 	//! 获得车牌颜色
-	int getPlateType(Mat input);
+	PlateColor getPlateType(Mat input);
 
 	//! 去除影响字符识别的柳钉
 	void clearLiuDing(Mat &img);

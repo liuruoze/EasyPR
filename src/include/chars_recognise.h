@@ -45,9 +45,9 @@ public:
 	{
 		string color = "未知";
 		int result = m_charsSegment->getPlateType(input);
-		if (1 == result)
+        if (PlateColor::Blue == result)
 			color = "蓝牌";
-		if (2 == result)
+        if (PlateColor::Yellow == result)
 			color = "黄牌";
 		return color;
 	}

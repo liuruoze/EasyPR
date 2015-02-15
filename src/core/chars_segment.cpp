@@ -90,7 +90,7 @@ Mat CCharsSegment::histeq(Mat in)
 //getPlateType
 //判断车牌的类型，1为蓝牌，2为黄牌，0为未知，默认蓝牌
 //通过像素中蓝色所占比例的多少来判断，大于0.3为蓝牌，否则为黄牌
-int CCharsSegment::getPlateType(Mat input)
+PlateColor CCharsSegment::getPlateType(Mat input)
 {
 	Mat img;
 	input.copyTo(img);
@@ -121,11 +121,11 @@ int CCharsSegment::getPlateType(Mat input)
 	double percentWhite = countWhite/nums;
 
 	if (percentBlue - m_BluePercent > 0 && percentWhite - m_WhitePercent > 0)
-		return 1;
+        return PlateColor::Blue;
 	else
-		return 2;
+        return PlateColor::Yellow;
 
-	return 0;
+    return PlateColor::Unknown;
 }
 
 //clearLiuDing
@@ -162,12 +162,12 @@ int CCharsSegment::charsSegment(Mat input, vector<Mat>& resultVec)
 	{ return -3; }
 
 	//判断车牌颜色以此确认threshold方法
-	int plateType = getPlateType(input);
+	PlateColor plateType = getPlateType(input);
 	cvtColor(input, input, CV_RGB2GRAY);
 
 	//Threshold input image
 	Mat img_threshold;
-	if (1 == plateType)
+    if (PlateColor::Blue == plateType)
 		threshold(input, img_threshold, 10, 255, CV_THRESH_OTSU+CV_THRESH_BINARY);
 	else 
 		threshold(input, img_threshold, 10, 255, CV_THRESH_OTSU+CV_THRESH_BINARY_INV);
