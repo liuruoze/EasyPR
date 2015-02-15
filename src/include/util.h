@@ -19,6 +19,14 @@ namespace easypr {
          */
         static std::vector<std::string> splitString(const std::string &str, const char delimiter);
         
+        /*
+         * returns the smaller of the two numbers
+         */
+        template<typename T>
+        static T min(const T &v1, const T &v2) {
+            return (v1 < v2) ? v1 : v2;
+        }
+        
     };
     
 }
@@ -38,7 +46,7 @@ unsigned int levenshtein_distance(const T &s1, const T & s2) {
 	for (unsigned int i = 0; i < len1; i++) {
 		col[0] = i+1;
 		for (unsigned int j = 0; j < len2; j++)
-            col[j+1] = std::min(std::min(prevCol[1 + j] + 1, col[j] + 1), \
+            col[j+1] = easypr::Utils::min(easypr::Utils::min(prevCol[1 + j] + 1, col[j] + 1), \
 								prevCol[j] + (s1[i]==s2[j] ? 0 : 1) );
 		col.swap(prevCol);
 	}
