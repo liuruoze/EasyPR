@@ -224,9 +224,11 @@ int CCharsSegment::charsSegment(Mat input, vector<Mat>& resultVec)
 	if (vecRect.size() == 0)
 		return -3;
 
-	vector<Rect> sortedRect;
+	vector<Rect> sortedRect(vecRect);
 	//对符合尺寸的图块按照从左到右进行排序
-	SortRect(vecRect, sortedRect);
+    std::sort(sortedRect.begin(), sortedRect.end(), [] (const Rect &r1, const Rect &r2) {
+        return r1.x < r2.x;
+    });
 
 	int specIndex = 0;
 	//获得指示城市的特定Rect,如苏A的"A"
@@ -288,50 +290,6 @@ int CCharsSegment::charsSegment(Mat input, vector<Mat>& resultVec)
 			resultVec.push_back(auxRoi);
 		}
 	}
-
-	return 0;
-}
-
-//! 将Rect按位置从左到右进行排序
-int CCharsSegment::SortRect(const vector<Rect>& vecRect, vector<Rect>& out)
-{
-	vector<int> orderIndex;
-    vector<int> xpositions;
-
-	for (int i = 0; i < vecRect.size(); i++)
-	{
-		orderIndex.push_back(i);
-        xpositions.push_back(vecRect[i].x);
-	}
-
-    float min;
-	int minIdx=0;
-    for(int i=0; i< xpositions.size(); i++)
-	{
-        min=xpositions[i];
-        minIdx=i;
-        for(int j=i; j<xpositions.size(); j++)
-		{
-            if(xpositions[j]<min){
-                min=xpositions[j];
-                minIdx=j;
-            }
-        }
-        int aux_i=orderIndex[i];
-        int aux_min=orderIndex[minIdx];
-        orderIndex[i]=aux_min;
-        orderIndex[minIdx]=aux_i;
-        
-        float aux_xi=xpositions[i];
-        float aux_xmin=xpositions[minIdx];
-        xpositions[i]=aux_xmin;
-        xpositions[minIdx]=aux_xi;
-    }
-
-    for(int i=0; i<orderIndex.size(); i++)
-	{
-        out.push_back(vecRect[orderIndex[i]]);
-    }
 
 	return 0;
 }

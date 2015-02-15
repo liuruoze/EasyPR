@@ -59,9 +59,6 @@ public:
 	//  2.从特殊字符Rect开始，依次选择6个Rect，多余的舍去。
 	int RebuildRect(const vector<Rect>& vecRect, vector<Rect>& outRect, int specIndex);
 
-	//! 将Rect按位置从左到右进行排序
-	int SortRect(const vector<Rect>& vecRect, vector<Rect>& out);
-
 	//! 设置变量
 	inline void setLiuDingSize(int param){ m_LiuDingSize = param;}
 	inline void setColorThreshold(int param){ m_ColorThreshold = param;}
