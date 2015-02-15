@@ -132,31 +132,27 @@ int CCharsSegment::getPlateType(Mat input)
 //去除车牌上方的钮钉
 //计算每行元素的阶跃数，如果小于X认为是柳丁，将此行全部填0（涂黑）
 //X的推荐值为，可根据实际调整
-Mat CCharsSegment::clearLiuDing(Mat img)
+void CCharsSegment::clearLiuDing(Mat &img)
 {
-	const int x = m_LiuDingSize;
-	Mat jump = Mat::zeros(1, img.rows, CV_32F);
-	for(int i=0; i < img.rows; i++)
-	{
-		int jumpCount = 0;
-		for(int j=0; j < img.cols-1; j++)
-		{
-			if (img.at<char>(i,j) != img.at<char>(i,j+1))
-				jumpCount++;
-		}	
-		jump.at<float>(i) = jumpCount;
-	}
-	for(int i=0; i < img.rows; i++)
-	{
-		if(jump.at<float>(i) <= x)
-		{
-			for(int j=0; j < img.cols; j++)
-			{
-				img.at<char>(i,j) = 0;
-			}
-		}
-	}
-	return img;
+    int *jump = new int[img.rows];
+    
+    for(int i = 0; i < img.rows; ++i)
+    {
+        for(int j = 0; j < img.cols - 1; ++j)
+        {
+            if (img.at<char>(i, j) != img.at<char>(i, j + 1))
+                jump[i]++;
+        }
+        if (jump[i] <= m_LiuDingSize) {
+            // 将此行涂黑
+            for (int k = 0; k < img.rows; ++k) {
+                img.at<char>(i, k) = 0;
+            }
+        }
+    }
+    
+    delete [] jump;
+    jump = nullptr;
 }
 
 //! 字符分割与排序

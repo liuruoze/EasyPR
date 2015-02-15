@@ -46,7 +46,7 @@ public:
 	int getPlateType(Mat input);
 
 	//! 去除影响字符识别的柳钉
-	Mat clearLiuDing(Mat img);
+	void clearLiuDing(Mat &img);
 
 	//! 根据特殊车牌来构造猜测中文字符的位置和大小
 	Rect GetChineseRect(const Rect rectSpe);
