@@ -5,7 +5,11 @@
 
 #include <iostream>
 #include <cstdlib>
+#ifdef WIN32
 #include <io.h>
+#else
+#include <sys/io.h>
+#endif
 #include <opencv/cv.h>
 #include <opencv/highgui.h>
 #include <opencv/cvaux.h>

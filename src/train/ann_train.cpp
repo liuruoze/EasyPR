@@ -5,16 +5,22 @@
 #include "opencv2/ml/ml.hpp"
 #include "opencv2/highgui/highgui.hpp"
 
+#ifdef WIN32
 #include <windows.h>
+#include <io.h>
+#else
+#include <time.h>
+#include <sys/io.h>
+#endif
+
 #include <vector>
 #include <iostream>
 #include <cstdlib>
-#include <io.h>
 #include <stdlib.h>
 #include <stdio.h>
 
 #include "../include/plate_recognize.h"
-#include "../include/features.h"
+#include "../include/feature.h"
 #include "../include/util.h"
 
 using namespace easypr;
@@ -29,7 +35,7 @@ const char strCharacters[] = {'0','1','2','3','4','5',\
 	'6','7','8','9','A','B', 'C', 'D', 'E','F', 'G', 'H', /* 没有I */\
 	'J', 'K', 'L', 'M', 'N', /* 没有O */ 'P', 'Q', 'R', 'S', 'T', \
 	'U','V', 'W', 'X', 'Y', 'Z'}; 
-const int numCharacter = 34; /* 没有I和O,10个数字与24个英文字符之和 */
+const int numCharacter = 34; /* 没有I和0,10个数字与24个英文字符之和 */
 
 //以下都是我训练时用到的中文字符数据，并不全面，有些省份没有训练数据所以没有字符
 //有些后面加数字2的表示在训练时常看到字符的一种变形，也作为训练数据存储
@@ -200,6 +206,17 @@ int saveTrainData()
     return 0;
 }
 
+int GetTickCountPosix()
+{
+#ifdef WIN32
+	return GetTickCount();
+#else
+	struct timespec ts;
+	clock_gettime(CLOCK_MONOTONIC, &ts);
+	return ts.tv_sec * 1000 + ts.tv_nsec / 1000000;
+#endif
+}
+
 void saveModel(int _predictsize, int _neurons)
 {
 	FileStorage fs;
@@ -223,9 +240,9 @@ void saveModel(int _predictsize, int _neurons)
 	cout << "Begin to saveModelChar predictSize:" << _predictsize 
 		<< " neurons:" << _neurons << endl;
 
-	double start = GetTickCount();  
+	double start = GetTickCountPosix();  
 	annTrain(TrainingData, Classes, _neurons);
-	double end = GetTickCount();  
+	double end = GetTickCountPosix();  
 	cout << "GetTickCount:" << (end-start)/1000 << endl;  
 
 	cout << "End the saveModelChar" << endl;

@@ -1,7 +1,7 @@
 // svm_train.cpp : svm模型的训练文件，主要用在plate_detect中
 
 #include "../include/plate_recognize.h"
-#include "../include/features.h"
+#include "../include/feature.h"
 #include "../include/util.h"
 
 /*! \namespace easypr
