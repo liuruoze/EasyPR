@@ -1,13 +1,26 @@
-#include <windows.h>
 #include <iostream>
 #include <cstdlib>
+
+#ifdef WIN32
+#include <windows.h>
 #include <io.h>
+#else
+#include <sys/io.h>
+#include <sys/stat.h>
+#include <sys/types.h>
+
+#include <dirent.h>
+#include <time.h>
+#include <cstring>
+#endif
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <vector>
 
 using namespace std;
 
+#ifdef WIN32
 void getFiles(string path, vector<string>& files)
 {
 	//文件句柄
@@ -34,6 +47,42 @@ void getFiles(string path, vector<string>& files)
 		_findclose(hFile);
 	}
 }
+#else
+
+void getFiles(string path, vector<string>& files) {
+	DIR *dirp = opendir(path.c_str());
+	if (dirp) {
+		struct stat st;
+		struct dirent *dir;
+		char fullpath[512];
+		if (dirp) {
+			struct stat st;
+			struct dirent *dir;
+			char fullpath[512];
+			while ((dir = readdir(dirp)) != NULL) {
+				if (!strcmp(dir->d_name, ".") ||
+					!strcmp(dir->d_name, "..")) {
+						continue;
+				}
+
+				sprintf(fullpath, "%s/%s", path.c_str(), dir->d_name);
+
+				if (lstat(fullpath, &st) < 0) {
+					//perror("lstat");
+					continue;
+				}
+
+				if (S_ISDIR(st.st_mode)) {
+					getFiles(fullpath, files);
+				} else {
+					files.push_back(fullpath);
+				}
+			}
+		}
+		closedir(dirp);
+	}
+}
+#endif
 
 //C++的spilt函数
 void SplitString(const string& s, vector<string>& v, const string& c)

@@ -7,10 +7,14 @@
 #include "opencv2/nonfree/features2d.hpp"
 #include "opencv/cvaux.h"
 
-#include <objbase.h>
 #include <stdlib.h>
 #include <stdio.h>
+#ifdef WIN32
+#include <objbase.h>
 #include <io.h>
+#else
+#include <sys/io.h>
+#endif
 #include <iostream>
 #include <assert.h>
 #include <algorithm>

@@ -3,7 +3,7 @@
 // 这个部分中的特征由easypr的开发者修改
 
 #include "../include/prep.h"
-#include "../include/features.h"
+#include "../include/feature.h"
 
 /*! \namespace easypr
     Namespace where all the C++ EasyPR functionality resides

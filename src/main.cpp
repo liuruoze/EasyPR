@@ -1,6 +1,6 @@
 #include "include/plate_recognize.h"
 #include "include/util.h"
-#include "include/features.h"
+#include "include/feature.h"
 #include "include/CParser.h"
 
 using namespace easypr;
