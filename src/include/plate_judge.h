@@ -1,7 +1,8 @@
 //////////////////////////////////////////////////////////////////////////
 // Name:	    plate_judge Header
-// Version:		1.0
-// Date:	    2014-09-22
+// Version:		1.1
+// Date:	    2014-09-28
+// MDate:	    2015-01-28
 // Author:	    liuruoze
 // Copyright:   liuruoze
 // Reference:	Mastering OpenCV with Practical Computer Vision Projects

@@ -1,7 +1,8 @@
 //////////////////////////////////////////////////////////////////////////
 // Name:	    plate_detect Header
-// Version:		1.0
+// Version:		1.2
 // Date:	    2014-09-28
+// MDate:	    2015-03-13
 // Author:	    liuruoze
 // Copyright:   liuruoze
 // Reference:	Mastering OpenCV with Practical Computer Vision Projects

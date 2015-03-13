@@ -1,8 +1,9 @@
 //////////////////////////////////////////////////////////////////////////
 // Name:	    plate_locate Header
-// Version:		1.0
+// Version:		1.2
 // Date:	    2014-09-19
 // MDate:		2014-09-29
+// MDate:	    2015-03-13
 // Author:	    liuruoze
 // Copyright:   liuruoze
 // Reference:	Mastering OpenCV with Practical Computer Vision Projects

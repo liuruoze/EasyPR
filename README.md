@@ -36,9 +36,11 @@ EasyPR最开始是发布在[GitHub](https://github.com/liuruoze/EasyPR)上的，
 * 1.车牌定位使用了“颜色信息”+“二次Sobel”的综合搜索方法。在下面的window中红框代表Sobel定位结果，黄框代表颜色定位结果。
 
 * 2.“批量测试”功能增加了一个结果查看window，这个窗口可以用SetDebug()方法开闭(true开，false关)。
+
 ![查看结果](doc/res/window.png)
 
 * 3.解决了“大角度定位”问题，见下图。原图中的车牌可以被定位并转换到正确的视角。
+
 ![大角度定位](doc/res/bigangle.png)
 
 * 4.GDTS里新增了若干张新测试图，包括数张大角度图。
