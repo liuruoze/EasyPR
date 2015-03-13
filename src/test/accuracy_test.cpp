@@ -20,7 +20,7 @@ int acurayTest(const string& test_path)
 	pr.LoadANN("model/ann.xml");
 	pr.LoadSVM("model/svm.xml");
 	pr.setLifemode(true);
-	pr.setDebug(false);
+	pr.setDebug(true);
 
 	//CPlateDetect pd;
 	//pd.LoadSVM("model/svm.xml");

@@ -20,16 +20,27 @@ EasyPR最开始是发布在[GitHub](https://github.com/liuruoze/EasyPR)上的，
 | linux | Micooz  |  [Micooz/EasyPR/tree/linux-dev](https://github.com/Micooz/EasyPR/tree/linux-dev)
 | ios | zhoushiwei |  [zhoushiwei/EasyPR-iOS](https://github.com/zhoushiwei/EasyPR-iOS)
 | mac | zhoushiwei | [zhoushiwei/EasyPR](https://github.com/zhoushiwei/EasyPR)
-| c# | 招聘中 |   
+| c# | 暂无 |   
+| java | 暂无 |  
 
 感谢以上所有开发者的努力！
 
 ### 更新
 
-* 本版本是EasyPR 1.2版本，相比前版本的主要改动是明显提升了车牌定位模块的准确性，主要内容如下：
-* 1.车牌定位使用了“颜色信息”+“二次Sobel”的综合搜索方法。
-* 2.“批量测试”增加了观看结果图片的功能，这个功能可以用SetDebug()方法开关(true开，false关)。
-* 3.攻克了“大角度定位”问题。
+本版本是EasyPR 1.2版本，相比前版本的主要改进是提升了车牌定位模块的准确性，从上个版本70%左右的准确率提升到目前的94%。见下图：
+
+![1.2版综合效果](doc/res/testresult.png)
+
+主要内容如下：
+
+* 1.车牌定位使用了“颜色信息”+“二次Sobel”的综合搜索方法。在下面的window中红框代表Sobel定位结果，黄框代表颜色定位结果。
+
+* 2.“批量测试”功能增加了一个结果查看window，这个窗口可以用SetDebug()方法开闭(true开，false关)。
+![查看结果](doc/res/window.png)
+
+* 3.解决了“大角度定位”问题，见下图。原图中的车牌可以被定位并转换到正确的视角。
+![大角度定位](doc/res/bigangle.png)
+
 * 4.GDTS里新增了若干张新测试图，包括数张大角度图。
 
 ### 兼容性
