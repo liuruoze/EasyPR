@@ -22,7 +22,10 @@ namespace easypr {
 class CCharsSegment 
 {
 public:
+	enum Color { BLUE, YELLOW };
+
 	CCharsSegment();
+	bool plateColorJudge(Mat src, Color r);
 
 	//! ×Ö·û·Ö¸î
 	int charsSegment(Mat, vector<Mat>& );

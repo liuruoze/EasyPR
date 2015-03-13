@@ -90,43 +90,158 @@ Mat CCharsSegment::histeq(Mat in)
 //getPlateType
 //判断车牌的类型，1为蓝牌，2为黄牌，0为未知，默认蓝牌
 //通过像素中蓝色所占比例的多少来判断，大于0.3为蓝牌，否则为黄牌
-int CCharsSegment::getPlateType(Mat input)
+int CCharsSegment::getPlateType(Mat src)
 {
-	Mat img;
-	input.copyTo(img);
-	img = histeq(img);
+	
+	//Mat img;
+	//input.copyTo(img);
+	//img = histeq(img);
 
-	double countBlue = 0;
-	double countWhite = 0;
+	//double countBlue = 0;
+	//double countWhite = 0;
 
-	int nums = img.rows*img.cols;
-	for(int i=0; i < img.rows; i++)
-	{
-		for(int j=0; j < img.cols; j++)
-		{
-			Vec3b intensity = img.at<Vec3b>(i,j);
-			int blue = int(intensity.val[0]);
-			int green = int(intensity.val[1]);
-			int red = int(intensity.val[2]);
+	//int nums = img.rows*img.cols;
+	//for(int i=0; i < img.rows; i++)
+	//{
+	//	for(int j=0; j < img.cols; j++)
+	//	{
+	//		Vec3b intensity = img.at<Vec3b>(i,j);
+	//		int blue = int(intensity.val[0]);
+	//		int green = int(intensity.val[1]);
+	//		int red = int(intensity.val[2]);
 
-			if(blue > m_ColorThreshold && green > 10 && red > 10)		
-				countBlue++;
+	//		if(blue > m_ColorThreshold && green > 10 && red > 10)		
+	//			countBlue++;
 
-			if(blue > m_ColorThreshold && green > m_ColorThreshold && red > m_ColorThreshold)			
-				countWhite++;
-		}	
+	//		if(blue > m_ColorThreshold && green > m_ColorThreshold && red > m_ColorThreshold)			
+	//			countWhite++;
+	//	}	
+	//}
+
+	//double percentBlue = countBlue/nums;
+	//double percentWhite = countWhite/nums;
+
+	//if (percentBlue - m_BluePercent > 0 && percentWhite - m_WhitePercent > 0)
+	//	return 1;
+	//else
+	//	return 2;
+
+	//return 0;
+
+	if (plateColorJudge(src, BLUE) == true) {
+		return 1;
+	}
+	else if (plateColorJudge(src, YELLOW) == true) {
+		return 2;
+	}
+	else {
+		return 1;
+	}
+	
+}
+
+bool CCharsSegment::plateColorJudge(Mat src, const Color r)
+{
+	Mat src_hsv;
+	Mat src_color;
+	cvtColor(src, src_hsv, CV_BGR2HSV);
+
+	vector<Mat> hsvSplit;
+	split(src_hsv, hsvSplit);
+	equalizeHist(hsvSplit[2], hsvSplit[2]);
+	merge(hsvSplit, src_hsv);
+
+	//blue的H范围
+	const int min_blue = 100;
+	const int max_blue = 140;
+
+	//yellow的H范围
+	const int min_yellow = 15;
+	const int max_yellow = 40;
+
+	//匹配模板基色,切换以查找想要的基色
+	int min_h = 0;
+	int max_h = 0;
+	switch (r) {
+	case BLUE:
+		min_h = min_blue;
+		max_h = max_blue;
+		break;
+	case YELLOW:
+		min_h = min_yellow;
+		max_h = max_yellow;
+		break;
 	}
 
-	double percentBlue = countBlue/nums;
-	double percentWhite = countWhite/nums;
+	float diff_h = float((max_h - min_h) / 2);
+	int avg_h = min_h + diff_h;
 
-	if (percentBlue - m_BluePercent > 0 && percentWhite - m_WhitePercent > 0)
-		return 1;
+	int max_sv = 255;
+	int minref_sv = 64;
+
+	int channels = src_hsv.channels();
+	int nRows = src_hsv.rows;
+	//图像数据列需要考虑通道数的影响；
+	int nCols = src_hsv.cols * channels;
+
+	if (src_hsv.isContinuous())//连续存储的数据，按一行处理
+	{
+		nCols *= nRows;
+		nRows = 1;
+	}
+
+	int i, j;
+	uchar* p;
+	for (i = 0; i < nRows; ++i)
+	{
+		p = src_hsv.ptr<uchar>(i);
+		for (j = 0; j < nCols; j += 3)
+		{
+			int H = int(p[j]); //0-180
+			int S = int(p[j + 1]);  //0-255
+			int V = int(p[j + 2]);  //0-255
+
+			bool colorMatched = false;
+
+			if (H > min_h && H < max_h)
+			{
+				int Hdiff = 0;
+				if (H > avg_h)
+					Hdiff = H - avg_h;
+				else
+					Hdiff = avg_h - H;
+
+				float Hdiff_p = float(Hdiff) / diff_h;
+				int min_sv = minref_sv - minref_sv / 2 * (1 - Hdiff_p);
+	
+				if ((S > min_sv && S < max_sv) && (V > min_sv && V < max_sv))
+					colorMatched = true;
+			}
+
+			if (colorMatched == true) {
+				p[j] = 0; p[j + 1] = 0; p[j + 2] = 255;
+			}
+			else {
+				p[j] = 0; p[j + 1] = 0; p[j + 2] = 0;
+			}
+		}
+	}
+
+	vector<Mat> hsvResult;
+	split(src_hsv, hsvResult);
+
+	Mat src_gray = hsvResult[2];
+
+	float percent = float(countNonZero(src_gray)) / float(src_gray.rows * src_gray.cols);
+
+	if (percent > 0.5)
+		return true;
 	else
-		return 2;
-
-	return 0;
+		return false;
 }
+
+
+
 
 //clearLiuDing
 //去除车牌上方的钮钉

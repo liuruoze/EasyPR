@@ -38,10 +38,15 @@ CPlateRecognize::CPlateRecognize()
 
 int CPlateRecognize::plateRecognize(Mat src, vector<string>& licenseVec)
 {
-	//车牌方块集合
+	// 车牌方块集合
 	vector<Mat> plateVec;
+	
+	// 如果设置了Debug模式，就依次显示所有的图片
+	bool showDetectArea = getPDDebug();
 
-	int resultPD = plateDetect(src, plateVec);
+	// 进行深度定位，使用颜色信息与二次Sobel
+	int resultPD = plateDetectDeep(src, plateVec, showDetectArea, 0);
+
 	if (resultPD == 0)
 	{
 		int num = plateVec.size();

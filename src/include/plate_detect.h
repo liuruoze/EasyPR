@@ -17,6 +17,7 @@
 #include "plate_locate.h"
 #include "plate_judge.h"
 
+
 /*! \namespace easypr
     Namespace where all the C++ EasyPR functionality resides
 */
@@ -28,7 +29,12 @@ public:
 	CPlateDetect();
 
 	//! 车牌检测：车牌定位与判断
-	int plateDetect(Mat, vector<Mat>&);
+	int plateDetect(Mat, vector<Mat>&, int index = 0);
+
+	//! 深度车牌检测，使用颜色与二次Sobel法综合
+	int plateDetectDeep(Mat src, vector<Mat>& resultVec, bool showDetectArea = false, int index = 0);
+
+	int showResult(const Mat& result);
 
 	//! 装载SVM模型
 	void LoadSVM(string s);

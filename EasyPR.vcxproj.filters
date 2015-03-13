@@ -90,6 +90,9 @@
     <ClCompile Include="src\util\CParser.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="src\core\plate.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\include\chars_identify.h">
@@ -123,6 +126,9 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="src\include\CParser.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\include\plate.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

@@ -20,6 +20,11 @@ int acurayTest(const string& test_path)
 	pr.LoadANN("model/ann.xml");
 	pr.LoadSVM("model/svm.xml");
 	pr.setLifemode(true);
+	pr.setDebug(false);
+
+	//CPlateDetect pd;
+	//pd.LoadSVM("model/svm.xml");
+	//pd.setPDLifemode(true);
 
 	int size = files.size();
 	//int size = 200;
@@ -48,6 +53,10 @@ int acurayTest(const string& test_path)
 	// 完全匹配的识别次数所占识别图片中的比例
 	float match_rate = 0;
 
+	// 开始和结束时间
+	time_t begin, end;
+	time(&begin);
+
 	for (int i = 0; i < size; i++)
 	{
 		string filepath = files[i].c_str();
@@ -56,11 +65,11 @@ int acurayTest(const string& test_path)
 		// 获取真实的车牌
 		string plateLicense = "";
 		getFileName(filepath, plateLicense);
-
 		cout << "原牌:" << plateLicense << endl;
 
 		// EasyPR开始判断车牌
 		Mat src = imread(filepath);
+
 		vector<string> plateVec;
 		int result = pr.plateRecognize(src, plateVec);
 		if (result == 0)
@@ -138,8 +147,10 @@ int acurayTest(const string& test_path)
 			count_err++;
 		}
 		count_all++;
+		
 	}
-
+	time(&end);
+	
 	cout << "------------------" << endl;
 	cout << "Easypr accuracy test end!" << endl;
 	cout << "------------------" << endl;
@@ -151,7 +162,7 @@ int acurayTest(const string& test_path)
 	float count_recogin = count_all - (count_err + count_norecogin);
 	float count_rate  = count_recogin / count_all;
 	float count_norate = 1 - count_rate;
-	cout << "识出率:" << count_rate * 100 << "%  " << endl;
+	cout << "定位率:" << count_rate * 100 << "%  " << endl;
 
 	diff_avg = diff_all / count_recogin;
 	match_rate = match_count/ count_recogin * 100;
@@ -159,9 +170,44 @@ int acurayTest(const string& test_path)
 	cout << "平均字符差距:" << diff_avg << "个,  ";
 	cout << "完全匹配数:" << match_count << "张,  ";
 	cout << "完全匹配率:" << match_rate << "%  " << endl;
+
+
+	double seconds = difftime(end, begin);
+	double avgsec = seconds / double(count_all);
+
+	cout << "总时间:" << seconds << "秒,  ";
+	cout << "平均执行时间:" << avgsec << "秒  " << endl;
+
 	cout << endl;
 
 	cout << "------------------" << endl;
+	
+	ofstream myfile("run_accuracy.txt", ios::app);
+	if (myfile.is_open())
+	{
+		time_t t = time(0);   // get time now
+		struct tm * now = localtime(&t);
+		char       buf[80];
+
+		strftime(buf, sizeof(buf), "%Y-%m-%d %X", now);
+		myfile << string(buf) << endl;
+
+		myfile << "总图片数:" << count_all << "张,  ";
+		myfile << "未识出图片:" << count_norecogin << "张,  ";
+		myfile << "定位率:" << count_rate * 100 << "%  " << endl;
+		myfile << "平均字符差距:" << diff_avg << "个,  ";
+		myfile << "完全匹配数:" << match_count << "张,  ";
+		myfile << "完全匹配率:" << match_rate << "%  " << endl;
+		myfile << "总时间:" << seconds << "秒,  ";
+		myfile << "平均执行时间:" << avgsec << "秒  " << endl;
+		myfile.close();
+	}
+	else 
+		cout << "Unable to open file";
+
+	return 0;
+
+
 
 	return 0;
 }

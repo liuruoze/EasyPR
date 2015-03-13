@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
       <Configuration>Debug</Configuration>
@@ -20,12 +20,14 @@
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v120</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v120</PlatformToolset>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -41,6 +43,7 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
+    <SourcePath>G:\opencv\opencv\sources\include\opencv2;$(SourcePath)</SourcePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
@@ -89,6 +92,7 @@
     <ClCompile Include="src\core\chars_recognise.cpp" />
     <ClCompile Include="src\core\chars_segment.cpp" />
     <ClCompile Include="src\core\features.cpp" />
+    <ClCompile Include="src\core\plate.cpp" />
     <ClCompile Include="src\test\accuracy_test.cpp" />
     <ClCompile Include="src\train\ann_train.cpp" />
     <ClCompile Include="src\train\svm_train.cpp" />
@@ -112,6 +116,7 @@
     <ClInclude Include="src\include\chars_segment.h" />
     <ClInclude Include="src\include\CParser.h" />
     <ClInclude Include="src\include\features.h" />
+    <ClInclude Include="src\include\plate.h" />
     <ClInclude Include="src\include\plate_detect.h" />
     <ClInclude Include="src\include\plate_judge.h" />
     <ClInclude Include="src\include\plate_locate.h" />

@@ -14,6 +14,7 @@
 
 #include "prep.h"
 #include "features.h"
+#include "plate.h"
 
 /*! \namespace easypr
     Namespace where all the C++ EasyPR functionality resides
@@ -24,6 +25,9 @@ class CPlateJudge
 {
 public:
 	CPlateJudge();
+
+	//! 对多幅车牌进行SVM判断
+	int plateJudge(const vector<CPlate>&, vector<CPlate>&);
 
 	//! 车牌判断
 	int plateJudge(const vector<Mat>&, vector<Mat>&);

@@ -12,10 +12,12 @@
 #include <stdio.h>
 #include <io.h>
 #include <iostream>
+#include <fstream>
 #include <assert.h>
 #include <algorithm>
 #include <cstdlib>
 #include <time.h>
+#include <math.h> 
 
 using namespace std;
 using namespace cv;

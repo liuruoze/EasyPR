@@ -14,6 +14,7 @@
 #define __PLATE_LOCATE_H__
 
 #include "prep.h"
+#include "plate.h"
 
 /*! \namespace easypr
     Namespace where all the C++ EasyPR functionality resides
@@ -25,8 +26,67 @@ class CPlateLocate
 public:
 	CPlateLocate();
 
+	enum LocateType { SOBEL, COLOR };
+	enum Color { BLUE, YELLOW };
+
+	//! Sobel第一次搜索
+	//! 不限制大小和形状，获取的BoundRect进入下一步
+	int sobelFrtSearch(const Mat& src, vector<Rect_<float>>& outRects);
+
+	//! Sobel第二次搜索
+	//! 对大小和形状做限制，生成参考坐标
+	int sobelSecSearch(const Mat& bound, Point2f refpoint, vector<RotatedRect>& outRects);
+
+	//! 抗扭斜处理
+	int deskew(const Mat& src, const Mat& src_b, vector<RotatedRect>& inRects,  vector<CPlate>& outPlates);
+
+	//! 是否偏斜
+	//! 输入二值化图像，输出判断结果
+	bool isdeflection(const Mat& in, const double angle, double& slope);
+	
+	//! Sobel运算
+	//! 输入彩色图像，输出二值化图像
+	int sobelOper(const Mat& in, Mat& out, int blurSize, int morphW, int morphH);
+
+	//! 计算一个安全的Rect
+	bool calcSafeRect(const RotatedRect& roi_rect, const Mat& src, Rect_<float>& safeBoundRect);
+
+	//! 旋转操作
+	bool rotation(Mat& in, Mat& out, const Size rect_size, const Point2f center, const double angle);
+
+	//! 扭变操作
+	void affine(const Mat& in, Mat& out, const double slope);
+
+	//! 颜色定位法
+	int plateColorLocate(Mat src, vector<CPlate>& candPlates, int index = 0);
+
+	//! Sobel定位法
+	int plateSobelLocate(Mat src, vector<CPlate>& candPlates, int index = 0);
+
+	//! Color搜索
+	int colorMatch(const Mat& src, const Color r, Mat& out, vector<RotatedRect>& outRects, int index = 0);
+
+	//! 未使用函数与代码
+	//! 开始------------
+	int sobelFind(const Mat& src, vector<RotatedRect>& rects);
+	int sobelFindAgn(const Mat& src, vector<RotatedRect>& outRects, vector<Mat>& resultVec);
+
+	bool charJudge(Mat roi);
+	bool sobelJudge(Mat roi);
+	int colorJudge(const Mat& src, const Color r, vector<RotatedRect>& rects);
+
+	int deskewOld(Mat src, vector<RotatedRect>& inRects, vector<RotatedRect>& outRects, vector<Mat>& outMats, LocateType locateType);
+
+	bool verifyCharSizes(Mat r);
+	int getPlateType(Mat src);
+	bool plateColorJudge(Mat src, const Color r);
+	Mat clearLiuDing(Mat img);
+
+	//! 结束------------
+	//! 未使用函数与代码
+
 	//! 车牌定位
-	int plateLocate(Mat, vector<Mat>& );
+	int plateLocate(Mat, vector<Mat>&, int = 0 );
 
 	//! 车牌的尺寸验证
 	bool verifySizes(RotatedRect mr);
@@ -70,8 +130,8 @@ public:
 	static const int SOBEL_DDEPTH = CV_16S;
 	static const int SOBEL_X_WEIGHT = 1;
 	static const int SOBEL_Y_WEIGHT = 0 ;
-	static const int DEFAULT_MORPH_SIZE_WIDTH = 17;
-	static const int DEFAULT_MORPH_SIZE_HEIGHT = 3;
+	static const int DEFAULT_MORPH_SIZE_WIDTH = 17;//17
+	static const int DEFAULT_MORPH_SIZE_HEIGHT = 3;//3
 
 	//! showResultMat所用常量
 	static const int WIDTH = 136;
@@ -79,11 +139,11 @@ public:
 	static const int TYPE = CV_8UC3;
 	
 	//! verifySize所用常量
-	static const int DEFAULT_VERIFY_MIN = 3;
-	static const int DEFAULT_VERIFY_MAX = 20;
+	static const int DEFAULT_VERIFY_MIN = 1;//3
+	static const int DEFAULT_VERIFY_MAX = 24;//20
 
 	//! 角度判断所用常量
-	static const int DEFAULT_ANGLE = 30;
+	static const int DEFAULT_ANGLE = 60;//30
 
 	//! 是否开启调试模式常量，默认0代表关闭
 	static const int DEFAULT_DEBUG = 0;
