@@ -20,7 +20,7 @@ int acurayTest(const string& test_path)
 	pr.LoadANN("model/ann.xml");
 	pr.LoadSVM("model/svm.xml");
 	pr.setLifemode(true);
-	pr.setDebug(true);
+	pr.setDebug(false);
 
 	//CPlateDetect pd;
 	//pd.LoadSVM("model/svm.xml");
@@ -91,7 +91,6 @@ int acurayTest(const string& test_path)
 					string colorplate = plateVec[j];
 
 					// 计算"蓝牌:苏E7KU22"中冒号后面的车牌大小"
-					vector<string> spilt_plate;
 					vector<string> spilt_plate = Utils::splitString(colorplate, ':');
 
 					int size = spilt_plate.size();
