@@ -27,6 +27,7 @@ EasyPR最开始是发布在[GitHub](https://github.com/liuruoze/EasyPR)上的，
 
 ### 更新
 
+
 本版本是EasyPR 1.2版本，相比前版本的主要改进是提升了车牌定位模块的准确性，从上个版本70%左右的准确率提升到目前的94%。见下图：
 
 ![1.2版综合效果](doc/res/testresult.png)
@@ -44,6 +45,7 @@ EasyPR最开始是发布在[GitHub](https://github.com/liuruoze/EasyPR)上的，
 ![大角度定位](doc/res/bigangle.png)
 
 * 4.GDTS里新增了若干张新测试图，包括数张大角度图。
+
 
 ### 兼容性
 
@@ -90,7 +92,6 @@ EasyPR不需要安装，开发者直接在其上做改动。如果想使用DLL�
 |------|----------
 | general_test | GDTS（通用数据测试集）
 | natvie_test | NDTS（本地数据测试集）
-| baidu_image | 从百度下载的图片
 | tmp | Debug模式下EasyPR输出中间图片的目录
 
 以下表格是src目录中子目录的解释:
@@ -115,6 +116,7 @@ EasyPR不需要安装，开发者直接在其上做改动。如果想使用DLL�
 | chars_recognise | 字符识别，是字符分割与字符鉴别功能的组合
 | plate_recognize | 车牌识别，是车牌检测与字符识别的共有子类
 | features | 特征提取回调函数
+| plate | 车牌抽象
 | prep.h | 预包含头文件
 
 以下表格是src目录下一些辅助文件的解释与关系:
@@ -135,7 +137,7 @@ EasyPR不需要安装，开发者直接在其上做改动。如果想使用DLL�
 
 ### 鸣谢
 
-taotao1233，唐大侠，jsxyhelu，如果有一天(zhoushiwei)，学习奋斗，袁承志，圣城小石匠，goldriver，Micooz，梦里时光，Rain Wang，任薛纪
+taotao1233，唐大侠，jsxyhelu，如果有一天(zhoushiwei)，学习奋斗，袁承志，圣城小石匠，goldriver，Micooz，梦里时光，Rain Wang，任薛纪，ahccom
 
 
 
