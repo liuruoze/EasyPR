@@ -90,7 +90,7 @@ Mat CCharsSegment::histeq(Mat in)
 //getPlateType
 //判断车牌的类型，1为蓝牌，2为黄牌，0为未知，默认蓝牌
 //通过像素中蓝色所占比例的多少来判断，大于0.3为蓝牌，否则为黄牌
-int CCharsSegment::getPlateType(Mat src)
+PlateColor CCharsSegment::getPlateType(Mat src)
 {
 	
 	//Mat img;
@@ -129,18 +129,18 @@ int CCharsSegment::getPlateType(Mat src)
 	//return 0;
 
 	if (plateColorJudge(src, BLUE) == true) {
-		return 1;
+		return BLUE;
 	}
 	else if (plateColorJudge(src, YELLOW) == true) {
-		return 2;
+		return YELLOW;
 	}
 	else {
-		return 1;
+		return BLUE;
 	}
 	
 }
 
-bool CCharsSegment::plateColorJudge(Mat src, const Color r)
+bool CCharsSegment::plateColorJudge(Mat src, const PlateColor r)
 {
 	Mat src_hsv;
 	Mat src_color;
@@ -247,31 +247,27 @@ bool CCharsSegment::plateColorJudge(Mat src, const Color r)
 //去除车牌上方的钮钉
 //计算每行元素的阶跃数，如果小于X认为是柳丁，将此行全部填0（涂黑）
 //X的推荐值为，可根据实际调整
-Mat CCharsSegment::clearLiuDing(Mat img)
+void CCharsSegment::clearLiuDing(Mat &img)
 {
-	const int x = m_LiuDingSize;
-	Mat jump = Mat::zeros(1, img.rows, CV_32F);
-	for(int i=0; i < img.rows; i++)
-	{
-		int jumpCount = 0;
-		for(int j=0; j < img.cols-1; j++)
-		{
-			if (img.at<char>(i,j) != img.at<char>(i,j+1))
-				jumpCount++;
-		}	
-		jump.at<float>(i) = jumpCount;
-	}
-	for(int i=0; i < img.rows; i++)
-	{
-		if(jump.at<float>(i) <= x)
-		{
-			for(int j=0; j < img.cols; j++)
-			{
-				img.at<char>(i,j) = 0;
-			}
-		}
-	}
-	return img;
+    int *jump = new int[img.rows];
+    
+    for(int i = 0; i < img.rows; ++i)
+    {
+        for(int j = 0; j < img.cols - 1; ++j)
+        {
+            if (img.at<char>(i, j) != img.at<char>(i, j + 1))
+                jump[i]++;
+        }
+        if (jump[i] <= m_LiuDingSize) {
+            // 将此行涂黑
+            for (int k = 0; k < img.rows; ++k) {
+                img.at<char>(i, k) = 0;
+            }
+        }
+    }
+    
+    delete [] jump;
+    jump = nullptr;
 }
 
 //! 字符分割与排序
@@ -281,12 +277,12 @@ int CCharsSegment::charsSegment(Mat input, vector<Mat>& resultVec)
 	{ return -3; }
 
 	//判断车牌颜色以此确认threshold方法
-	int plateType = getPlateType(input);
+	PlateColor plateType = getPlateType(input);
 	cvtColor(input, input, CV_RGB2GRAY);
 
 	//Threshold input image
 	Mat img_threshold;
-	if (1 == plateType)
+    if (PlateColor::BLUE == plateType)
 		threshold(input, img_threshold, 10, 255, CV_THRESH_OTSU+CV_THRESH_BINARY);
 	else 
 		threshold(input, img_threshold, 10, 255, CV_THRESH_OTSU+CV_THRESH_BINARY_INV);
@@ -339,9 +335,11 @@ int CCharsSegment::charsSegment(Mat input, vector<Mat>& resultVec)
 	if (vecRect.size() == 0)
 		return -3;
 
-	vector<Rect> sortedRect;
+	vector<Rect> sortedRect(vecRect);
 	//对符合尺寸的图块按照从左到右进行排序
-	SortRect(vecRect, sortedRect);
+    std::sort(sortedRect.begin(), sortedRect.end(), [] (const Rect &r1, const Rect &r2) {
+        return r1.x < r2.x;
+    });
 
 	int specIndex = 0;
 	//获得指示城市的特定Rect,如苏A的"A"
@@ -407,50 +405,6 @@ int CCharsSegment::charsSegment(Mat input, vector<Mat>& resultVec)
 	return 0;
 }
 
-//! 将Rect按位置从左到右进行排序
-int CCharsSegment::SortRect(const vector<Rect>& vecRect, vector<Rect>& out)
-{
-	vector<int> orderIndex;
-    vector<int> xpositions;
-
-	for (int i = 0; i < vecRect.size(); i++)
-	{
-		orderIndex.push_back(i);
-        xpositions.push_back(vecRect[i].x);
-	}
-
-	float min=xpositions[0];
-	int minIdx=0;
-    for(int i=0; i< xpositions.size(); i++)
-	{
-        min=xpositions[i];
-        minIdx=i;
-        for(int j=i; j<xpositions.size(); j++)
-		{
-            if(xpositions[j]<min){
-                min=xpositions[j];
-                minIdx=j;
-            }
-        }
-        int aux_i=orderIndex[i];
-        int aux_min=orderIndex[minIdx];
-        orderIndex[i]=aux_min;
-        orderIndex[minIdx]=aux_i;
-        
-        float aux_xi=xpositions[i];
-        float aux_xmin=xpositions[minIdx];
-        xpositions[i]=aux_xmin;
-        xpositions[minIdx]=aux_xi;
-    }
-
-    for(int i=0; i<orderIndex.size(); i++)
-	{
-        out.push_back(vecRect[orderIndex[i]]);
-    }
-
-	return 0;
-}
-
 //! 根据特殊车牌来构造猜测中文字符的位置和大小
 Rect CCharsSegment::GetChineseRect(const Rect rectSpe)
 {
@@ -510,21 +464,14 @@ int CCharsSegment::GetSpecificRect(const vector<Rect>& vecRect)
 //  2.从特殊字符Rect开始，依次选择6个Rect，多余的舍去。
 int CCharsSegment::RebuildRect(const vector<Rect>& vecRect, vector<Rect>& outRect, int specIndex)
 {
-	//最大只能有7个Rect,减去中文的就只有6个Rect
-	int count = 6;
-
-	for (int i = 0; i < vecRect.size(); i++)
-	{
-		//将特殊字符左边的Rect去掉，这个可能会去掉中文Rect，不过没关系，我们后面会重建。
-		if (i < specIndex)
-			continue;
-
-		outRect.push_back(vecRect[i]);
-		if (!--count)
-			break;
-	}
-
-	return 0;
+    //最大只能有7个Rect,减去中文的就只有6个Rect
+    int count = 6;
+    
+    for (size_t i = specIndex; i < vecRect.size() && count; ++i, --count) {
+        outRect.push_back(vecRect[i]);
+    }
+    
+    return 0;
 }
 
 }	/*! \namespace easypr*/

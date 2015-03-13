@@ -63,8 +63,7 @@ int acurayTest(const string& test_path)
 		cout << "------------------" << endl;
 
 		// 获取真实的车牌
-		string plateLicense = "";
-		getFileName(filepath, plateLicense);
+		string plateLicense = Utils::getFileName(filepath);
 		cout << "原牌:" << plateLicense << endl;
 
 		// EasyPR开始判断车牌
@@ -93,7 +92,7 @@ int acurayTest(const string& test_path)
 
 					// 计算"蓝牌:苏E7KU22"中冒号后面的车牌大小"
 					vector<string> spilt_plate;
-					SplitString(colorplate, spilt_plate, ":");
+					vector<string> spilt_plate = Utils::splitString(colorplate, ':');
 
 					int size = spilt_plate.size();
 					if (size == 2)
@@ -121,8 +120,7 @@ int acurayTest(const string& test_path)
 					string colorplate = plateVec[j];
 
 					// 计算"蓝牌:苏E7KU22"中冒号后面的车牌大小"
-					vector<string> spilt_plate;
-					SplitString(colorplate, spilt_plate, ":");
+					vector<string> spilt_plate = Utils::splitString(colorplate, ':');
 
 					int size = spilt_plate.size();
 					if (size == 2)
@@ -204,10 +202,6 @@ int acurayTest(const string& test_path)
 	}
 	else 
 		cout << "Unable to open file";
-
-	return 0;
-
-
 
 	return 0;
 }

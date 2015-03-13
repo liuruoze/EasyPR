@@ -18,70 +18,69 @@ const string dst_path = "F:/data/easypr-data/tmp-6";
 
 int general_test()
 {
-	////获取该路径下的所有文件
-	vector<string> files;
-	getFiles(src_path, files);
-
-	CPlateLocate lo;
-	CPlateJudge ju;
-	CPlateRecognize pr;
-
-	pr.LoadANN("model/ann.xml");
-	pr.LoadSVM("model/svm.xml");
-	pr.setLifemode(true);
-
-	int size = files.size();
-	//int size = 200;
-
-	if (0 == size)
-	{
-		cout << "No File Found!" << endl;
-		return 0;
-	}
-
-	cout << "Begin to prepare general_test!" << endl;
-
-	for (int i = 0; i < size; i++)
-	{
-		string filepath = files[i].c_str();
-		cout << "------------------" << endl;
-
-		// EasyPR开始判断车牌
-		Mat src = imread(filepath);
-		vector<string> plateVec;
-
-		int result = pr.plateRecognize(src, plateVec);
-		if (result == 0)
-		{
-			int num = plateVec.size();
-
-			if (num == 0)
-			{
-				cout << ""<< "无车牌" <<endl;
-			} 
-			else 
-			{
-				cout << plateVec[0] <<endl;
-				string colorplate = plateVec[0];
-
-				// 输出"蓝牌:苏E7KU22"中冒号后面的车牌
-				vector<string> spilt_plate;
-				SplitString(colorplate, spilt_plate, ":");
-
-				int size = spilt_plate.size();
-				if (size == 2)
-				{
-					stringstream ss(stringstream::in | stringstream::out);
-					ss << dst_path << "/" << spilt_plate[size-1] << ".jpg";
-					imwrite(ss.str(), src);
-				}
-			}
-		} 
-		else
-		{
-			cout << "错误码:" << result << endl;
-		}
-	}
-
-	return 0;
+    ////获取该路径下的所有文件
+    vector<string> files;
+    getFiles(src_path, files);
+    
+    CPlateLocate lo;
+    CPlateJudge ju;
+    CPlateRecognize pr;
+    
+    pr.LoadANN("model/ann.xml");
+    pr.LoadSVM("model/svm.xml");
+    pr.setLifemode(true);
+    
+    int size = files.size();
+    //int size = 200;
+    
+    if (0 == size)
+    {
+        cout << "No File Found!" << endl;
+        return 0;
+    }
+    
+    cout << "Begin to prepare general_test!" << endl;
+    
+    for (int i = 0; i < size; i++)
+    {
+        string filepath = files[i].c_str();
+        cout << "------------------" << endl;
+        
+        // EasyPR开始判断车牌
+        Mat src = imread(filepath);
+        vector<string> plateVec;
+        
+        int result = pr.plateRecognize(src, plateVec);
+        if (result == 0)
+        {
+            int num = plateVec.size();
+            
+            if (num == 0)
+            {
+                cout << ""<< "无车牌" <<endl;
+            }
+            else
+            {
+                cout << plateVec[0] <<endl;
+                string colorplate = plateVec[0];
+                
+                // 输出"蓝牌:苏E7KU22"中冒号后面的车牌
+                vector<string> spilt_plate = Utils::splitString(colorplate, ':');
+                
+                int size = spilt_plate.size();
+                if (size == 2)
+                {
+                    stringstream ss(stringstream::in | stringstream::out);
+                    ss << dst_path << "/" << spilt_plate[size-1] << ".jpg";
+                    imwrite(ss.str(), src);
+                }
+            }
+        } 
+        else
+        {
+            cout << "错误码:" << result << endl;
+        }
+    }
+    
+    return 0;
 }

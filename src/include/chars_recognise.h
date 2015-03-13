@@ -45,9 +45,9 @@ public:
 	{
 		string color = "Î´Öª";
 		int result = m_charsSegment->getPlateType(input);
-		if (1 == result)
+        if (PlateColor::Blue == result)
 			color = "À¶ÅÆ";
-		if (2 == result)
+        if (PlateColor::Yellow == result)
 			color = "»ÆÅÆ";
 		return color;
 	}

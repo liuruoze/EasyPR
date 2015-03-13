@@ -19,13 +19,20 @@
 */
 namespace easypr {
 
+	enum PlateColor {
+		BLUE,
+		YELLOW,
+		UNKNOWN
+	};
+    
+    
 class CCharsSegment 
 {
 public:
-	enum Color { BLUE, YELLOW };
 
 	CCharsSegment();
-	bool plateColorJudge(Mat src, Color r);
+
+	bool plateColorJudge(Mat src, const PlateColor r);
 
 	//! 字符分割
 	int charsSegment(Mat, vector<Mat>& );
@@ -46,10 +53,10 @@ public:
 	Mat histeq(Mat in);
 
 	//! 获得车牌颜色
-	int getPlateType(Mat input);
+	PlateColor getPlateType(Mat src);
 
 	//! 去除影响字符识别的柳钉
-	Mat clearLiuDing(Mat img);
+	void clearLiuDing(Mat &img);
 
 	//! 根据特殊车牌来构造猜测中文字符的位置和大小
 	Rect GetChineseRect(const Rect rectSpe);
@@ -61,9 +68,6 @@ public:
 	//  1.把特殊字符Rect左边的全部Rect去掉，后面再重建中文字符的位置。
 	//  2.从特殊字符Rect开始，依次选择6个Rect，多余的舍去。
 	int RebuildRect(const vector<Rect>& vecRect, vector<Rect>& outRect, int specIndex);
-
-	//! 将Rect按位置从左到右进行排序
-	int SortRect(const vector<Rect>& vecRect, vector<Rect>& out);
 
 	//! 设置变量
 	inline void setLiuDingSize(int param){ m_LiuDingSize = param;}
