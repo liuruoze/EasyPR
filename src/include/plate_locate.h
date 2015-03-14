@@ -16,6 +16,7 @@
 
 #include "prep.h"
 #include "plate.h"
+#include "core_func.h"
 
 /*! \namespace easypr
     Namespace where all the C++ EasyPR functionality resides
@@ -28,7 +29,6 @@ public:
 	CPlateLocate();
 
 	enum LocateType { SOBEL, COLOR };
-	enum Color { BLUE, YELLOW };
 
 	//! Sobel第一次搜索
 	//! 不限制大小和形状，获取的BoundRect进入下一步
@@ -65,24 +65,13 @@ public:
 	int plateSobelLocate(Mat src, vector<CPlate>& candPlates, int index = 0);
 
 	//! Color搜索
-	int colorMatch(const Mat& src, const Color r, Mat& out, vector<RotatedRect>& outRects, int index = 0);
+	int colorSearch(const Mat& src, const Color r, Mat& out, vector<RotatedRect>& outRects, int index = 0);
 
 	//! 未使用函数与代码
 	//! 开始------------
-	int sobelFind(const Mat& src, vector<RotatedRect>& rects);
-	int sobelFindAgn(const Mat& src, vector<RotatedRect>& outRects, vector<Mat>& resultVec);
-
-	bool charJudge(Mat roi);
 	bool sobelJudge(Mat roi);
-	int colorJudge(const Mat& src, const Color r, vector<RotatedRect>& rects);
-
 	int deskewOld(Mat src, vector<RotatedRect>& inRects, vector<RotatedRect>& outRects, vector<Mat>& outMats, LocateType locateType);
-
 	bool verifyCharSizes(Mat r);
-	int getPlateType(Mat src);
-	bool plateColorJudge(Mat src, const Color r);
-	Mat clearLiuDing(Mat img);
-
 	//! 结束------------
 	//! 未使用函数与代码
 

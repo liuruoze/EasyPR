@@ -7,10 +7,19 @@
 #include "opencv2/nonfree/features2d.hpp"
 #include "opencv/cvaux.h"
 
+#if defined (WIN32) || defined (_WIN32)
 #include <objbase.h>
+#endif
+
 #include <stdlib.h>
 #include <stdio.h>
+
+#if defined (WIN32) || defined (_WIN32)
 #include <io.h>
+#elif defined (linux) || defined (__linux__)
+#include <sys/io.h>
+#endif
+
 #include <iostream>
 #include <fstream>
 #include <assert.h>

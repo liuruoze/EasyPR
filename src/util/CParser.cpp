@@ -8,9 +8,9 @@ using namespace std;
 // class OptionError
 
 OptionError::OptionError(const string &msg)
-    : _msg(msg)
+: _msg(msg)
 {
-
+    
 }
 
 const char *
@@ -23,16 +23,16 @@ OptionError::what() const throw()
 
 OptionError::~OptionError() throw()
 {
-
+    
 }
 
 
 // class CCParseItem
 
 CParseItem::CParseItem(const string &val)
-    : _val(val)
+: _val(val)
 {
-
+    
 }
 
 CParseItem *
@@ -54,10 +54,10 @@ CParseItem::val() const
 // class CParser
 
 CParser::CParser(int argc, char *argv[])
-    : _pr(NULL)
+: _pr(NULL)
 {
     _args.reserve(argc);
-
+    
     for (int i = 0; i < argc; ++i) {
         _args.push_back(argv[i]);
     }
@@ -71,83 +71,90 @@ CParser::parse()
     if (_pr) {
         return _pr;
     }
-
+    
     ArgList::iterator ibegin = _args.begin() + 1; // ignore the first cmd name
     ArgList::iterator iend   = _args.end();
     ArgList::iterator it     = ibegin;
-
+    
     _pr = new ParseResult;
-
+    
     string block;
     string previous(*ibegin);
-
+    
     for ( ; it != iend; ++it) {
         block.assign(*it);
-
+        
         switch (block.size()) {
-        case 1:
-            if (block == "-") {
-                throw OptionError("single '-' is not allowed");
-            }
-            break;
-        case 2:
-            if (block[0] == '-' ) {
-                if (block[1] == '-') {
-                    throw OptionError("option '--' is incomplete");
-                } else {
-                    // single option
-                    // etc: ./exec -s
-                    (*_pr)[block.substr(1)] = NULL;
+            case 1:
+                if (block == "-") {
+                    throw OptionError("single '-' is not allowed");
                 }
-            }
-            break;
-        default: // >=3
-            if (block[0] == '-') {
-                if (block[1] == '-') {
-                    // a long format option
-                    // etc: ./exec --option
-                    (*_pr)[block.substr(2)] = NULL;
-                } else {
-                    // a conbination options
-                    // etc: ./exec -ab[...]
-                    string::iterator tbegin = block.begin() + 1; // ignore the first '-'
-                    string::iterator tend   = block.end();
-                    string::iterator t      = tbegin;
-
-                    for (; t != tend; ++t) {
-                        string key;
-                        key.push_back(*t);
-                        (*_pr)[key] = NULL;
+                break;
+            case 2:
+                if (block[0] == '-' ) {
+                    if (block[1] == '-') {
+                        throw OptionError("option '--' is incomplete");
+                    } else {
+                        // single option
+                        // e.g., ./exec -s
+                        (*_pr)[block.substr(1)] = NULL;
                     }
                 }
-            }
-            break;
+                break;
+            default: // >=3
+                if (block[0] == '-') {
+                    if (block[1] == '-') {
+                        // a long format option
+                        // e.g., ./exec --option
+                        (*_pr)[block.substr(2)] = NULL;
+                    } else {
+                        // a conbination options
+                        // e.g., ./exec -ab[...]
+                        string::iterator tbegin = block.begin() + 1; // ignore the first '-'
+                        string::iterator tend   = block.end();
+                        string::iterator t      = tbegin;
+                        
+                        for (; t != tend; ++t) {
+                            string key;
+                            key.push_back(*t);
+                            (*_pr)[key] = NULL;
+                        }
+                    }
+                }
+                break;
         }// switch
-
+        
         if (block[0] != '-'
             && previous != block //not the first option
-           ) {
-            // it's the value of previous option.
-            // etc: ./exec -o   [...]
-            // etc: ./exec -opq [...]
-
+            ) {
+            
             if (previous[0] != '-') {
                 // previous is not an option, error occur
-                // etc: ./exec abc def
+                // e.g., ./exec abc def
                 throw OptionError("'" + block + "' is not allowed here");
             }
-
+            
             string key;
-            key.push_back(*(previous.end() - 1));
-
+            
+            if (previous[0] == '-' && previous[1] == '-') {
+                // previous is a long format option.
+                // e.g., ./exec --option value
+                key = previous.substr(2);
+            } else {
+                // it's the value of previous option.
+                // e.g., ./exec -o   [...]
+                // e.g., ./exec -opq [...]
+                key.push_back(*(previous.end() - 1));
+            }
+            
             if (_pr->count(key)) {
                 (*_pr)[key] = new CParseItem(block);
             }
         }
-
+        
         previous = block;
     }// for
-
+    
     return _pr;
 }
 
@@ -155,10 +162,10 @@ bool
 CParser::has(const char *key)
 {
     string skey(key);
-
+    
     if (_pr && !skey.empty()) {
         if (skey[0] == '-') {
-            //check conbination options, etc: CParser::has("-xyz")
+            //check conbination options, e.g., CParser::has("-xyz")
             for (size_t i = 1; i < skey.size(); ++i) {
                 string tkey;
                 tkey.push_back(skey[i]);
@@ -168,7 +175,7 @@ CParser::has(const char *key)
             }
             return true;
         } else {
-            // check single option, etc: CParser::has("x")
+            // check single option, e.g., CParser::has("x")
             return _pr->count(skey);
         }
     }

@@ -57,7 +57,7 @@ int CPlateRecognize::plateRecognize(Mat src, vector<string>& licenseVec)
 			Mat plate = plateVec[j];
 			
 			//获取车牌颜色
-			string plateType = getPlateType(plate);
+			string plateType = getPlateColor(plate);
 
 			//获取车牌号
 			string plateIdentify = "";

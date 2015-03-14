@@ -10,6 +10,9 @@ CPlateDetect::CPlateDetect()
 	//cout << "CPlateDetect" << endl;
 	m_plateLocate = new CPlateLocate();
 	m_plateJudge = new CPlateJudge();
+
+	// 默认EasyPR在一幅图中定位最多3个车
+	m_maxPlates = 3;
 }
 
 void CPlateDetect::LoadSVM(string s)
@@ -65,7 +68,7 @@ int CPlateDetect::plateDetectDeep(Mat src, vector<Mat>& resultVec, bool showDete
 	vector<CPlate> all_result_Plates;
 
 	//如果颜色查找找到n个以上（包含n个）的车牌，就不再进行Sobel查找了。
-	const int color_find_max = 4;
+	const int color_find_max = m_maxPlates;
 
 	Mat result;
 	src.copyTo(result);
