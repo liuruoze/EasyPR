@@ -21,7 +21,8 @@ namespace easypr {
 		// 默认为false
 		const float max_sv = 255;
 		const float minref_sv = 64;
-		const float minabs_sv = 90;
+
+		const float minabs_sv = 95;
 
 		//blue的H范围
 		const int min_blue = 100;  //100
@@ -103,7 +104,7 @@ namespace easypr {
 					// 如果为false，则不再自适应，使用固定的最小值minabs_sv
 					float min_sv = 0;
 					if (true == adaptive_minsv)
-						min_sv = minref_sv - minref_sv /2 * (1 - Hdiff_p); // inref_sv - minref_sv / 2 * (1 - Hdiff_p)
+						min_sv = minref_sv - minref_sv / 2 * (1 - Hdiff_p); // inref_sv - minref_sv / 2 * (1 - Hdiff_p)
 					else
 						min_sv = minabs_sv; // add
 

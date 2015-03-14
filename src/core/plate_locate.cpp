@@ -5,8 +5,8 @@
 */
 namespace easypr{
 
-const float DEFAULT_ERROR = 0.75;//0.6
-const float DEFAULT_ASPECT = 4; //3.75 
+const float DEFAULT_ERROR = 0.6;//0.6
+const float DEFAULT_ASPECT = 3.75; //3.75 
 
 CPlateLocate::CPlateLocate()
 {
@@ -118,6 +118,8 @@ int CPlateLocate::colorSearch(const Mat& src, const Color r, Mat& out, vector<Ro
 {
 	Mat match_grey;
 
+	// width值对最终结果影响很大，可以考虑进行多次colorSerch，每次不同的值
+	// 另一种解决方案就是在结果输出到SVM之前，进行线与角的再纠正
 	const int color_morph_width = 10;
 	const int color_morph_height = 2;
 
