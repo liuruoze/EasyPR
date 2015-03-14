@@ -291,6 +291,11 @@ int CCharsSegment::charsSegment(Mat input, vector<Mat>& resultVec)
 	else 
 		threshold(input, img_threshold, 10, 255, CV_THRESH_OTSU+CV_THRESH_BINARY_INV);
 
+	imshow("img_threshold", img_threshold);
+	waitKey(0);
+	destroyWindow("img_threshold");
+
+
 	if(m_debug)
 	{ 
 		stringstream ss(stringstream::in | stringstream::out);
