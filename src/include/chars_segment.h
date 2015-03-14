@@ -13,7 +13,7 @@
 #define __CHARS_SEGMENT_H__
 
 #include "prep.h"
-#include "core_util.h"
+#include "core_func.h"
 
 /*! \namespace easypr
 Namespace where all the C++ EasyPR functionality resides

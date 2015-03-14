@@ -118,11 +118,11 @@ int CPlateLocate::colorSearch(const Mat& src, const Color r, Mat& out, vector<Ro
 {
 	Mat match_grey;
 
-	const int color_morph_width = 8;
+	const int color_morph_width = 10;
 	const int color_morph_height = 2;
 
 	// 进行颜色查找
-	colorMatch(src, match_grey, r);
+	colorMatch(src, match_grey, r, false);
 
 	if (0){
 		imshow("match_grey", match_grey);
@@ -214,73 +214,6 @@ bool CPlateLocate::sobelJudge(Mat roi)
 
 }
 
-
-bool CPlateLocate::charJudge(Mat roi)
-{
-	int plateType = getPlateType(roi);
-	Mat roi_gray;
-	cvtColor(roi, roi_gray, CV_RGB2GRAY);
-
-	//Threshold input image
-	Mat img_threshold;
-	if (1 == plateType)
-		threshold(roi_gray, img_threshold, 10, 255, CV_THRESH_OTSU + CV_THRESH_BINARY);
-	else
-		threshold(roi_gray, img_threshold, 10, 255, CV_THRESH_OTSU + CV_THRESH_BINARY_INV);
-
-	//去除车牌上方的柳钉以及下方的横线等干扰
-	clearLiuDing(img_threshold);
-
-	imshow("charJudge", img_threshold);
-	waitKey(0);
-
-	vector< vector< Point> > contours;
-	findContours(img_threshold, 
-		contours, // a vector of contours
-		CV_RETR_EXTERNAL, // retrieve the external contours
-		CV_CHAIN_APPROX_NONE); // all pixels of each contours
-
-	//Start to iterate to each contour founded
-	vector<vector<Point> >::iterator itc = contours.begin();
-
-	vector<Rect> vecRect;
-
-	while (itc != contours.end())
-	{
-		Rect mr = boundingRect(Mat(*itc));
-		Mat auxRoi(img_threshold, mr);
-
-		if (verifyCharSizes(auxRoi))
-			vecRect.push_back(mr);
-
-		++itc;
-	}
-
-	if (vecRect.size() <= 4)
-		return false;
-
-	return true;
-
-
-	//Mat src_blur;
-	//GaussianBlur(roi, src_blur, Size(m_GaussianBlurSize, m_GaussianBlurSize), 0, 0, BORDER_DEFAULT);
-
-	//Mat src_grey;
-	//cvtColor(src_blur, src_grey, CV_RGB2GRAY);
-
-	//Mat src_threshold;
-	//double otsu_thresh_val = threshold(src_grey, src_threshold, 0, 255, CV_THRESH_OTSU + CV_THRESH_BINARY);
-
-	//Mat src_edge;
-	//double high_thresh_val = otsu_thresh_val, lower_thresh_val = otsu_thresh_val * 0.5;
-	//Canny(src_grey, src_edge, lower_thresh_val, high_thresh_val, 3, true);
-
-	//namedWindow("canny", CV_WINDOW_AUTOSIZE);
-	//imshow("canny", src_edge);
-	//waitKey(0);
-
-	return true;
-}
 
 //! 字符尺寸验证
 bool CPlateLocate::verifyCharSizes(Mat r)
@@ -514,9 +447,14 @@ int CPlateLocate::deskew(const Mat& src, const Mat& src_b, vector<RotatedRect>& 
 				resize(deskew_mat, plate_mat, plate_mat.size(), 0, 0, INTER_AREA);
 			else
 				resize(deskew_mat, plate_mat, plate_mat.size(), 0, 0, INTER_CUBIC);
-
-			/*imshow("plate_mat", plate_mat);
-			waitKey(0);*/
+			
+			/*if (1)
+			{
+				imshow("plate_mat", plate_mat);
+				waitKey(0);
+				destroyWindow("plate_mat");
+			}*/
+			
 
 			CPlate plate;
 			plate.setPlatePos(roi_rect);

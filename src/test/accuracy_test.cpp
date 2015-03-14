@@ -20,7 +20,10 @@ int acurayTest(const string& test_path)
 	pr.LoadANN("model/ann.xml");
 	pr.LoadSVM("model/svm.xml");
 	pr.setLifemode(true);
-	pr.setDebug(false);
+	pr.setDebug(true);
+
+	// 设置要处理的一张图片中最多有多少车牌
+	pr.setMaxPlates(4);
 
 	//CPlateDetect pd;
 	//pd.LoadSVM("model/svm.xml");
@@ -94,7 +97,7 @@ int acurayTest(const string& test_path)
 					vector<string> spilt_plate = Utils::splitString(colorplate, ':');
 
 					int size = spilt_plate.size();
-					if (size == 2)
+					if (size == 2 && spilt_plate[1] != "")
 					{
 						int diff = levenshtein_distance(plateLicense, spilt_plate[size-1]);
 						if (diff < mindiff)
@@ -122,7 +125,7 @@ int acurayTest(const string& test_path)
 					vector<string> spilt_plate = Utils::splitString(colorplate, ':');
 
 					int size = spilt_plate.size();
-					if (size == 2)
+					if (size == 2 && spilt_plate[1] != "")
 					{
 						int diff = levenshtein_distance(plateLicense, spilt_plate[size-1]);
 						cout << "差距:" << diff << "个字符" << endl;

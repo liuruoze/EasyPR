@@ -16,7 +16,7 @@
 
 #include "prep.h"
 #include "plate.h"
-#include "core_util.h"
+#include "core_func.h"
 
 /*! \namespace easypr
     Namespace where all the C++ EasyPR functionality resides
@@ -69,7 +69,6 @@ public:
 
 	//! 未使用函数与代码
 	//! 开始------------
-	bool charJudge(Mat roi);
 	bool sobelJudge(Mat roi);
 	int deskewOld(Mat src, vector<RotatedRect>& inRects, vector<RotatedRect>& outRects, vector<Mat>& outMats, LocateType locateType);
 	bool verifyCharSizes(Mat r);

@@ -3,7 +3,7 @@
 // 这个部分中的函数轻易不要改动
 
 #include "../include/prep.h"
-#include "../include/core_util.h"
+#include "../include/core_func.h"
 
 /*! \namespace easypr
 Namespace where all the C++ EasyPR functionality resides
@@ -13,25 +13,23 @@ namespace easypr {
 	//! 根据一幅图像与颜色模板获取对应的二值图
 	//! 输入RGB图像, 颜色模板（蓝色、黄色）
 	//! 输出灰度图（只有0和255两个值，255代表匹配，0代表不匹配）
-	Mat colorMatch(const Mat& src, Mat& match, const Color r)
+	Mat colorMatch(const Mat& src, Mat& match, const Color r, const bool adaptive_minsv)
 	{
 		// S和V的最小值由adaptive_minsv这个bool值判断
 		// 如果为true，则最小值取决于H值，按比例衰减
 		// 如果为false，则不再自适应，使用固定的最小值minabs_sv
 		// 默认为false
-		const int max_sv = 255;
-		const int minref_sv = 64;
-		const int minabs_sv = 90;
-
-		const bool adaptive_minsv = false;
+		const float max_sv = 255;
+		const float minref_sv = 64;
+		const float minabs_sv = 90;
 
 		//blue的H范围
-		const int min_blue = 100;
-		const int max_blue = 140;
+		const int min_blue = 100;  //100
+		const int max_blue = 140;  //140
 
 		//yellow的H范围
-		const int min_yellow = 15;
-		const int max_yellow = 40;
+		const int min_yellow = 15; //15
+		const int max_yellow = 40; //40
 
 		Mat src_hsv;
 		// 转到HSV空间进行处理，颜色搜索主要使用的是H分量进行蓝色与黄色的匹配工作
@@ -103,9 +101,9 @@ namespace easypr {
 					// S和V的最小值由adaptive_minsv这个bool值判断
 					// 如果为true，则最小值取决于H值，按比例衰减
 					// 如果为false，则不再自适应，使用固定的最小值minabs_sv
-					int min_sv = 0;
+					float min_sv = 0;
 					if (true == adaptive_minsv)
-						min_sv = minref_sv - minref_sv / 2 * (1 - Hdiff_p);
+						min_sv = minref_sv - minref_sv /2 * (1 - Hdiff_p); // inref_sv - minref_sv / 2 * (1 - Hdiff_p)
 					else
 						min_sv = minabs_sv; // add
 
@@ -140,16 +138,16 @@ namespace easypr {
 	//! 判断一个车牌的颜色
 	//! 输入车牌mat与颜色模板
 	//! 返回true或fasle
-	bool plateColorJudge(Mat src, const Color r)
+	bool plateColorJudge(const Mat& src, const Color r, const bool adaptive_minsv)
 	{
 		// 判断阈值
 		const float thresh = 0.5;
 
 		Mat src_gray;
-		colorMatch(src, src_gray, r);
+		colorMatch(src, src_gray, r, adaptive_minsv);
 
 		float percent = float(countNonZero(src_gray)) / float(src_gray.rows * src_gray.cols);
-		//cout << "percent:" << percent << endl;
+		// cout << "percent:" << percent << endl;
 
 		if (percent > thresh)
 			return true;
@@ -159,13 +157,13 @@ namespace easypr {
 
 	//getPlateType
 	//判断车牌的类型
-	Color getPlateType(Mat src)
+	Color getPlateType(const Mat&  src, const bool adaptive_minsv)
 	{
-		if (plateColorJudge(src, BLUE) == true) {
+		if (plateColorJudge(src, BLUE, adaptive_minsv) == true) {
 			//cout << "BLUE" << endl;
 			return BLUE;
 		}
-		else if (plateColorJudge(src, YELLOW) == true) {
+		else if (plateColorJudge(src, YELLOW, adaptive_minsv) == true) {
 			//cout << "YELLOW" << endl;
 			return YELLOW;
 		}

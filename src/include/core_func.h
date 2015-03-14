@@ -1,5 +1,5 @@
-#ifndef __PLATE_UTIL_H__
-#define __PLATE_UTIL_H__
+#ifndef __CORE_FUNC_H__
+#define __CORE_FUNC_H__
 
 /*! \namespace easypr
 Namespace where all the C++ EasyPR functionality resides
@@ -11,12 +11,12 @@ namespace easypr {
 	//! 根据一幅图像与颜色模板获取对应的二值图
 	//! 输入RGB图像, 颜色模板（蓝色、黄色）
 	//! 输出灰度图（只有0和255两个值，255代表匹配，0代表不匹配）
-	Mat colorMatch(const Mat& src, Mat& match, const Color r);
+	Mat colorMatch(const Mat& src, Mat& match, const Color r, const bool adaptive_minsv);
 
 	//! 判断一个车牌的颜色
 	//! 输入车牌mat与颜色模板
 	//! 返回true或fasle
-	bool plateColorJudge(Mat src, const Color r);
+	bool plateColorJudge(const Mat&  src, const Color r, const bool adaptive_minsv);
 
 	//clearLiuDing
 	//去除车牌上方的钮钉
@@ -25,7 +25,7 @@ namespace easypr {
 	Mat clearLiuDing(Mat img);
 
 	//! 获得车牌颜色
-	Color getPlateType(Mat input);
+	Color getPlateType(const Mat&  src, const bool adaptive_minsv);
 
 	//! 直方图均衡
 	Mat histeq(Mat in);
@@ -36,4 +36,4 @@ namespace easypr {
 }	/*! \namespace easypr*/
 
 #endif
-/* endif __PLATE_UTIL_H__ */
+/* endif __CORE_FUNC_H__ */

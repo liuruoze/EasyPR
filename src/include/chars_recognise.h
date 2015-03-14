@@ -44,7 +44,7 @@ namespace easypr {
 		inline string getPlateColor(Mat input) const
 		{
 			string color = "Î´Öª";
-			Color result = getPlateType(input);
+			Color result = getPlateType(input, true);
 			if (BLUE == result)
 				color = "À¶ÅÆ";
 			if (YELLOW == result)

@@ -69,8 +69,14 @@ public:
 
 	inline void setJudgeAngle(int param){m_plateLocate->setJudgeAngle(param);}
 
+	inline void setMaxPlates(float param){ m_maxPlates = param; }
+	inline float getMaxPlates() const { return m_maxPlates; }
+
 private:
-	//！车牌定位
+	//! 设置一幅图中最多有多少车牌
+	int m_maxPlates;
+
+	//! 车牌定位
 	CPlateLocate* m_plateLocate;
 
 	//! 车牌判断

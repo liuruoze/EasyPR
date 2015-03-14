@@ -4,7 +4,7 @@
 
 #include "../include/prep.h"
 #include "../include/features.h"
-#include "../include/core_util.h"
+#include "../include/core_func.h"
 
 /*! \namespace easypr
     Namespace where all the C++ EasyPR functionality resides

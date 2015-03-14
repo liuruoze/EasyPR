@@ -74,7 +74,7 @@ namespace easypr{
 			return -3;
 
 		//判断车牌颜色以此确认threshold方法
-		Color plateType = getPlateType(input);
+		Color plateType = getPlateType(input, true);
 
 		Mat input_grey;
 		cvtColor(input, input_grey, CV_RGB2GRAY);
@@ -95,10 +95,14 @@ namespace easypr{
 			threshold(input_grey, img_threshold, 10, 255, CV_THRESH_OTSU + CV_THRESH_BINARY_INV);
 		else
 			threshold(input_grey, img_threshold, 10, 255, CV_THRESH_OTSU + CV_THRESH_BINARY);
-			
-		/*imshow("img_threshold", img_threshold);
-		waitKey(0);*/
-
+		
+		/*if (1)
+		{
+			imshow("img_threshold", img_threshold);
+			waitKey(0);
+			destroyWindow("img_threshold");
+		}*/
+		
 		if (m_debug)
 		{
 			stringstream ss(stringstream::in | stringstream::out);
@@ -145,9 +149,14 @@ namespace easypr{
 		if (vecRect.size() == 0)
 			return -3;
 
-		vector<Rect> sortedRect;
-		//对符合尺寸的图块按照从左到右进行排序
-		SortRect(vecRect, sortedRect);
+		//vector<Rect> sortedRect;
+		////对符合尺寸的图块按照从左到右进行排序
+		//SortRect(vecRect, sortedRect);
+
+		vector<Rect> sortedRect(vecRect);
+		std::sort(sortedRect.begin(), sortedRect.end(), [](const Rect &r1, const Rect &r2) {
+			return r1.x < r2.x;
+		});
 
 		int specIndex = 0;
 		//获得指示城市的特定Rect,如苏A的"A"
@@ -317,17 +326,22 @@ namespace easypr{
 	int CCharsSegment::RebuildRect(const vector<Rect>& vecRect, vector<Rect>& outRect, int specIndex)
 	{
 		//最大只能有7个Rect,减去中文的就只有6个Rect
+		//int count = 6;
+
+		//for (int i = 0; i < vecRect.size(); i++)
+		//{
+		//	//将特殊字符左边的Rect去掉，这个可能会去掉中文Rect，不过没关系，我们后面会重建。
+		//	if (i < specIndex)
+		//		continue;
+
+		//	outRect.push_back(vecRect[i]);
+		//	if (!--count)
+		//		break;
+		//}
+
 		int count = 6;
-
-		for (int i = 0; i < vecRect.size(); i++)
-		{
-			//将特殊字符左边的Rect去掉，这个可能会去掉中文Rect，不过没关系，我们后面会重建。
-			if (i < specIndex)
-				continue;
-
+		for (size_t i = specIndex; i < vecRect.size() && count; ++i, --count) {
 			outRect.push_back(vecRect[i]);
-			if (!--count)
-				break;
 		}
 
 		return 0;

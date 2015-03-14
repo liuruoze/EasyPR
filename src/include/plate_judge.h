@@ -16,7 +16,7 @@
 #include "prep.h"
 #include "plate.h"
 #include "features.h"
-#include "core_util.h"
+#include "core_func.h"
 
 /*! \namespace easypr
     Namespace where all the C++ EasyPR functionality resides

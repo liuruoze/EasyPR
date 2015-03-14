@@ -5,28 +5,11 @@ EasyPR是一个中文的开源车牌识别系统，其目标是成为一个简�
 
 相比于其他的车牌识别系统，EasyPR有如下特点：
 
-* 它基于openCV这个开源库。这意味着你可以获取全部源代码，并且移植到java等平台。
+* 它基于openCV这个开源库。这意味着你可以获取全部源代码，并且移植到opencv支持的所有平台。
 * 它能够识别中文。例如车牌为苏EUK722的图片，它可以准确地输出std:string类型的"苏EUK722"的结果。
-* 它的识别率较高。图片清晰情况下，车牌检测与字符识别可以达到90%以上的精度。
-
-### 版本
-
-EasyPR最开始是发布在[GitHub](https://github.com/liuruoze/EasyPR)上的，然后在国内的[oschina](http://git.oschina.net/easypr/EasyPR)上也部署了一份镜像。
-相关的issue欢迎在GitHub上统一提交。目前除了windows版本以外，还有以下其他平台的版本：
-
-|版本 | 开发者 | 地址
-|------|-------|-------
-| android |  goldriver  |  [linuxxx/EasyPR_Android](https://github.com/linuxxx/EasyPR_Android)
-| linux | Micooz  |  [Micooz/EasyPR/tree/linux-dev](https://github.com/Micooz/EasyPR/tree/linux-dev)
-| ios | zhoushiwei |  [zhoushiwei/EasyPR-iOS](https://github.com/zhoushiwei/EasyPR-iOS)
-| mac | zhoushiwei | [zhoushiwei/EasyPR](https://github.com/zhoushiwei/EasyPR)
-| c# | 暂无 |   
-| java | 暂无 |  
-
-感谢以上所有开发者的努力！
+* 它的识别率较高。图片清晰情况下，车牌检测与字符识别可以达到80%以上的精度。
 
 ### 更新
-
 
 本版本是EasyPR 1.2版本，相比前版本的主要改进是提升了车牌定位模块的准确性，从上个版本70%左右的准确率提升到目前的94%。见下图：
 
@@ -34,17 +17,32 @@ EasyPR最开始是发布在[GitHub](https://github.com/liuruoze/EasyPR)上的，
 
 主要内容如下：
 
-* 1.车牌定位使用了“颜色信息”+“二次Sobel”的综合搜索方法。在下面的window中红框代表Sobel定位结果，黄框代表颜色定位结果。
+* 车牌定位使用了“颜色信息”+“二次Sobel”的综合搜索方法。在下面的window中红框代表Sobel定位结果，黄框代表颜色定位结果。
 
-* 2.“批量测试”功能增加了一个结果查看window，这个窗口可以用SetDebug()方法开闭(true开，false关)。
+* “批量测试”增加了一个结果查看window，这个窗口可以用SetDebug()方法开闭(true开，false关)。
 
 ![查看结果](doc/res/window.png)
 
-* 3.解决了“大角度定位”问题，见下图。原图中的车牌可以被定位并转换到正确的视角。
+* 基本攻克了“大角度定位”问题，下图的车牌被定位并转到了正确的视角。
 
 ![大角度定位](doc/res/bigangle.png)
 
-* 4.GDTS里新增了若干张新测试图，包括数张大角度图。
+* GDTS里新增了若干张新测试图，包括数张大角度图。
+
+* “批量测试”结果现在同时会保存在“run_accuracy”文件中，可以查询历史运行信息。
+
+* 与Linux版本做了整合，可以实现跨平台编译。
+
+### 平台
+
+目前除了windows平台以外，还有以下其他平台的EasyPR版本。一些平台的版本可能会暂时落后于主平台。
+
+|版本 | 开发者 | 版本 | 地址 
+|------|-------|-------|-------
+| android |  goldriver  |  1.1  |  [linuxxx/EasyPR_Android](https://github.com/linuxxx/EasyPR_Android)
+| linux | Micooz  |  1.2  |  已跟EasyPR整合
+| ios | zhoushiwei |  1.1  |  [zhoushiwei/EasyPR-iOS](https://github.com/zhoushiwei/EasyPR-iOS)
+| mac | zhoushiwei |  1.1  | [zhoushiwei/EasyPR](https://github.com/zhoushiwei/EasyPR)
 
 
 ### 兼容性
@@ -117,7 +115,7 @@ EasyPR不需要安装，开发者直接在其上做改动。如果想使用DLL�
 | plate_recognize | 车牌识别，是车牌检测与字符识别的共有子类
 | features | 特征提取回调函数
 | plate | 车牌抽象
-| prep.h | 预包含头文件
+| core_func.h | 共有的一些函数
 
 以下表格是src目录下一些辅助文件的解释与关系:
 
@@ -130,10 +128,17 @@ EasyPR不需要安装，开发者直接在其上做改动。如果想使用DLL�
 | svm_train.cpp | svm训练函数
 | generate_gdts.cpp | GDTS生成函数
 
-### 问题
+### Contributer
 
-如果有任何问题或者建议请在issues里直接提交，或者发email：easypr_dev@163.com。
-建议与问题一经采纳即会将您的贡献大名列入EasyPR的感谢名单（ Credits ）中。
+* liuruoze：作者与核心代码编写
+
+* Micooz：linux平台编译，性能优化，util类
+
+* jsxyhelu：deface版本一
+
+* zhoushiwei：deface版本二
+
+* ahccom：新的plateLocate函数
 
 ### 鸣谢
 
