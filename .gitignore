@@ -195,4 +195,4 @@ FakesAssemblies/
 EasyPR.xcodeproj/
 
 # Debug tmp files
-image/tmp/
+tmp/
