@@ -348,12 +348,16 @@ int CPlateLocate::sobelOper(const Mat& in, Mat& out, int blurSize, int morphW, i
 	GaussianBlur(in, mat_blur, Size(blurSize, blurSize), 0, 0, BORDER_DEFAULT);
 
 	Mat mat_gray;
-	if (mat_blur.channels() == 3)
+	if (mat_blur.channels() == 3) {
 		cvtColor(mat_blur, mat_gray, CV_RGB2GRAY);
+	}
 	else
 		mat_gray = mat_blur;
 
 	//equalizeHist(mat_gray, mat_gray);
+
+	
+
 
 	int scale = SOBEL_SCALE;
 	int delta = SOBEL_DELTA;
