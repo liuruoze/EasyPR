@@ -41,13 +41,13 @@ namespace easypr {
 
 
 		//! 获得车牌颜色
-		inline string getPlateType(Mat input) const
+		inline string getPlateColor(Mat input) const
 		{
 			string color = "未知";
-			int result = m_charsSegment->getPlateType(input);
-			if (1 == result)
+			Color result = getPlateType(input);
+			if (BLUE == result)
 				color = "蓝牌";
-			if (2 == result)
+			if (YELLOW == result)
 				color = "黄牌";
 			return color;
 		}

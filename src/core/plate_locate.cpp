@@ -5,8 +5,8 @@
 */
 namespace easypr{
 
-const float DEFAULT_ERROR = 0.6;//0.6
-const float DEFAULT_ASPECT = 3.75; 
+const float DEFAULT_ERROR = 0.75;//0.6
+const float DEFAULT_ASPECT = 4; //3.75 
 
 CPlateLocate::CPlateLocate()
 {
@@ -33,7 +33,7 @@ void CPlateLocate::setLifemode(bool param)
 	{
 		setGaussianBlurSize(5);
 		setMorphSizeWidth(17);
-		setMorphSizeHeight(4);
+		setMorphSizeHeight(3);
 		setVerifyError(0.75);
 		setVerifyAspect(4.0);
 		setVerifyMin(1);
@@ -114,115 +114,31 @@ Mat CPlateLocate::showResultMat(Mat src, Size rect_size, Point2f center, int ind
 
 
 // !基于HSV空间的颜色搜索方法
-int CPlateLocate::colorMatch(const Mat& src, const Color r, Mat& out, vector<RotatedRect>& outRects, int index)
+int CPlateLocate::colorSearch(const Mat& src, const Color r, Mat& out, vector<RotatedRect>& outRects, int index)
 {
-	Mat src_hsv;
+	Mat match_grey;
 
-	// 转到HSV空间进行处理，颜色搜索主要使用的是H分量进行蓝色与黄色的匹配工作
-	cvtColor(src, src_hsv, CV_BGR2HSV);
+	const int color_morph_width = 8;
+	const int color_morph_height = 2;
 
-	vector<Mat> hsvSplit;
-	split(src_hsv, hsvSplit);
-	equalizeHist(hsvSplit[2], hsvSplit[2]);
-	merge(hsvSplit, src_hsv);
+	// 进行颜色查找
+	colorMatch(src, match_grey, r);
 
-	//blue的H范围
-	const int min_blue = 100;
-	const int max_blue = 140;
-
-	//yellow的H范围
-	const int min_yellow = 15;
-	const int max_yellow = 40;
-
-	//匹配模板基色,切换以查找想要的基色
-	int min_h = 0;
-	int max_h = 0;
-	switch(r) {
-		case BLUE   : 
-			min_h = min_blue;
-			max_h = max_blue;
-			break;
-		case YELLOW : 
-			min_h = min_yellow;
-			max_h = max_yellow;	 
-			break;
-	}
-
-	float diff_h = float((max_h - min_h) / 2);
-	int avg_h = min_h + diff_h;
-
-	int max_sv = 255;
-	int minref_sv = 64; 
-
-	int channels = src_hsv.channels();
-	int nRows = src_hsv.rows;
-	//图像数据列需要考虑通道数的影响；
-	int nCols = src_hsv.cols * channels;    
-
-	if (src_hsv.isContinuous())//连续存储的数据，按一行处理
-	{
-		nCols *= nRows;
-		nRows = 1;
-	}
-
-	int i, j;
-	uchar* p;
-	for( i = 0; i < nRows; ++i)
-	{
-		p = src_hsv.ptr<uchar>(i);
-		for ( j = 0; j < nCols; j+=3)
-		{
-			int H = int(p[j]); //0-180
-			int S = int(p[j+1]);  //0-255
-			int V = int(p[j+2]);  //0-255
-
-			bool colorMatched = false;
-
-			if (H > min_h && H < max_h)
-			{
-				int Hdiff = 0;
-				if (H > avg_h)
-					Hdiff = H - avg_h;
-				else
-					Hdiff = avg_h - H;
-						
-				float Hdiff_p = float(Hdiff) / diff_h;
-				int min_sv = minref_sv - minref_sv / 2 * (1 - Hdiff_p);
-				min_sv = 90; // add
-				if ((S > min_sv && S < max_sv) && (V > min_sv && V < max_sv ))
-					colorMatched = true;
-			}
-
-			if (colorMatched == true) {
-				p[j]=0;p[j+1]=0;p[j+2]=255;
-			}
-			else {
-				p[j]=0;p[j+1]=0;p[j+2]=0;
-			}			
-		}
-	}
-
-	// 获取颜色匹配后的二值灰度图
-	Mat src_grey;
-	vector<Mat> hsvSplit_done;
-	split(src_hsv, hsvSplit_done);
-	src_grey = hsvSplit_done[2];
-
-	/*if (1){
-		imshow("src_grey", src_grey);
+	if (0){
+		imshow("match_grey", match_grey);
 		waitKey(0);
-	}*/
+	}
 
 	Mat src_threshold;
-	threshold(src_grey, src_threshold, 0, 255, CV_THRESH_OTSU+CV_THRESH_BINARY);
+	threshold(match_grey, src_threshold, 0, 255, CV_THRESH_OTSU + CV_THRESH_BINARY);
 
-	Mat element = getStructuringElement(MORPH_RECT, Size(10, 2) );
+	Mat element = getStructuringElement(MORPH_RECT, Size(color_morph_width, color_morph_height));
 	morphologyEx(src_threshold, src_threshold, MORPH_CLOSE, element);
 
-	/*if (1){
+	if (0){
 		imshow("color", src_threshold);
 		waitKey(0);
-	}*/
+	}
 
 	src_threshold.copyTo(out);
 
@@ -392,214 +308,6 @@ bool CPlateLocate::verifyCharSizes(Mat r)
 }
 
 
-//getPlateType
-//判断车牌的类型，1为蓝牌，2为黄牌，0为未知，默认蓝牌
-//通过像素中蓝色所占比例的多少来判断，大于0.3为蓝牌，否则为黄牌
-int CPlateLocate::getPlateType(Mat src)
-{
-	if (plateColorJudge(src, BLUE) == true) {
-		return 1;
-	}
-	else if (plateColorJudge(src, YELLOW) == true) {
-		return 2;
-	}
-	else {
-		return 1;
-	}
-
-}
-
-bool CPlateLocate::plateColorJudge(Mat src, const Color r)
-{
-	Mat src_hsv;
-	Mat src_color;
-	cvtColor(src, src_hsv, CV_BGR2HSV);
-
-	vector<Mat> hsvSplit;
-	split(src_hsv, hsvSplit);
-	equalizeHist(hsvSplit[2], hsvSplit[2]);
-	merge(hsvSplit, src_hsv);
-
-	//blue的H范围
-	const int min_blue = 100;
-	const int max_blue = 140;
-
-	//yellow的H范围
-	const int min_yellow = 15;
-	const int max_yellow = 40;
-
-	//匹配模板基色,切换以查找想要的基色
-	int min_h = 0;
-	int max_h = 0;
-	switch (r) {
-	case BLUE:
-		min_h = min_blue;
-		max_h = max_blue;
-		break;
-	case YELLOW:
-		min_h = min_yellow;
-		max_h = max_yellow;
-		break;
-	}
-
-	float diff_h = float((max_h - min_h) / 2);
-	int avg_h = min_h + diff_h;
-
-	int max_sv = 255;
-	int minref_sv = 64;
-
-	int channels = src_hsv.channels();
-	int nRows = src_hsv.rows;
-	//图像数据列需要考虑通道数的影响；
-	int nCols = src_hsv.cols * channels;
-
-	if (src_hsv.isContinuous())//连续存储的数据，按一行处理
-	{
-		nCols *= nRows;
-		nRows = 1;
-	}
-
-	int i, j;
-	uchar* p;
-	for (i = 0; i < nRows; ++i)
-	{
-		p = src_hsv.ptr<uchar>(i);
-		for (j = 0; j < nCols; j += 3)
-		{
-			int H = int(p[j]); //0-180
-			int S = int(p[j + 1]);  //0-255
-			int V = int(p[j + 2]);  //0-255
-
-			bool colorMatched = false;
-
-			if (H > min_h && H < max_h)
-			{
-				int Hdiff = 0;
-				if (H > avg_h)
-					Hdiff = H - avg_h;
-				else
-					Hdiff = avg_h - H;
-
-				float Hdiff_p = float(Hdiff) / diff_h;
-				int min_sv = minref_sv - minref_sv / 2 * (1 - Hdiff_p);
-
-				if ((S > min_sv && S < max_sv) && (V > min_sv && V < max_sv))
-					colorMatched = true;
-			}
-
-			if (colorMatched == true) {
-				p[j] = 0; p[j + 1] = 0; p[j + 2] = 255;
-			}
-			else {
-				p[j] = 0; p[j + 1] = 0; p[j + 2] = 0;
-			}
-		}
-	}
-
-	vector<Mat> hsvResult;
-	split(src_hsv, hsvResult);
-
-	Mat src_gray = hsvResult[2];
-
-	float percent = float(countNonZero(src_gray)) / float(src_gray.rows * src_gray.cols);
-
-	if (percent > 0.5)
-		return true;
-	else
-		return false;
-}
-
-
-//clearLiuDing
-//去除车牌上方的钮钉
-//计算每行元素的阶跃数，如果小于X认为是柳丁，将此行全部填0（涂黑）
-//X的推荐值为，可根据实际调整
-Mat CPlateLocate::clearLiuDing(Mat img)
-{
-	const int x = 5;
-	Mat jump = Mat::zeros(1, img.rows, CV_32F);
-	for (int i = 0; i < img.rows; i++)
-	{
-		int jumpCount = 0;
-		for (int j = 0; j < img.cols - 1; j++)
-		{
-			if (img.at<char>(i, j) != img.at<char>(i, j + 1))
-				jumpCount++;
-		}
-		jump.at<float>(i) = jumpCount;
-	}
-	for (int i = 0; i < img.rows; i++)
-	{
-		if (jump.at<float>(i) <= x)
-		{
-			for (int j = 0; j < img.cols; j++)
-			{
-				img.at<char>(i, j) = 0;
-			}
-		}
-	}
-	return img;
-}
-
-
-int CPlateLocate::sobelFind(const Mat& src, vector<RotatedRect>& outRects)
-{
-	/*Mat src_blur;
-	GaussianBlur(src, src_blur, Size(m_GaussianBlurSize, m_GaussianBlurSize), 
-		0, 0, BORDER_DEFAULT );
-
-	Mat grad;
-
-	int scale = SOBEL_SCALE;
-	int delta = SOBEL_DELTA;
-	int ddepth = SOBEL_DDEPTH;
-
-	Mat src_gray;
-	cvtColor(src_blur, src_gray, CV_RGB2GRAY);
-
-	Mat grad_x, grad_y;
-	Mat abs_grad_x, abs_grad_y;
-
-	Sobel(src_gray, grad_x, ddepth, 1, 0, 3, scale, delta, BORDER_DEFAULT);
-	convertScaleAbs(grad_x, abs_grad_x);
-
-	Sobel(src_gray, grad_y, ddepth, 0, 1, 3, scale, delta, BORDER_DEFAULT);
-	convertScaleAbs(grad_y, abs_grad_y);
-
-	addWeighted(abs_grad_x, SOBEL_X_WEIGHT, abs_grad_y, SOBEL_Y_WEIGHT, 0, grad);
-
-	Mat src_threshold;
-	double otsu_thresh_val = threshold(grad, src_threshold, 0, 255, CV_THRESH_OTSU + CV_THRESH_BINARY);
-
-	Mat element = getStructuringElement(MORPH_RECT, Size(m_MorphSizeWidth, m_MorphSizeHeight) );
-	morphologyEx(src_threshold, src_threshold, MORPH_CLOSE, element);*/
-
-	//Mat src_threshold;
-	//sobelOper(src, src_threshold, m_GaussianBlurSize, m_MorphSizeWidth, m_MorphSizeHeight);
-
-	//if (1){
-	//	imshow("sobel", src_threshold);
-	//	waitKey(0);
-	//}
-
-	//vector< vector< Point> > contours;
-	//findContours(src_threshold,
-	//	contours, // a vector of contours
-	//	CV_RETR_EXTERNAL, // 提取外部轮廓
-	//	CV_CHAIN_APPROX_NONE); // all pixels of each contours
-
-	//vector<vector<Point>>::iterator itc = contours.begin();
-	//
-	//while (itc != contours.end())
-	//{
-	//	RotatedRect mr = minAreaRect(Mat(*itc));
-	//	outRects.push_back(mr);
-	//	++itc;
-	//}
-
-	return 0;
-}
-
 //! Sobel第一次搜索
 //! 不限制大小和形状，获取的BoundRect进入下一步
 int CPlateLocate::sobelFrtSearch(const Mat& src, vector<Rect_<float>>& outRects)
@@ -607,10 +315,10 @@ int CPlateLocate::sobelFrtSearch(const Mat& src, vector<Rect_<float>>& outRects)
 	Mat src_threshold;
 	sobelOper(src, src_threshold, m_GaussianBlurSize, m_MorphSizeWidth, m_MorphSizeHeight);
 
-	if (0){
+	/*if (1){
 		imshow("sobelFrtSearch", src_threshold);
 		waitKey(0);
-	}
+	}*/
 
 	vector< vector< Point> > contours;
 	findContours(src_threshold,
@@ -621,12 +329,6 @@ int CPlateLocate::sobelFrtSearch(const Mat& src, vector<Rect_<float>>& outRects)
 	vector<vector<Point>>::iterator itc = contours.begin();
 
 	vector<RotatedRect> first_rects;
-	/*while (itc != contours.end())
-	{
-		RotatedRect mr = minAreaRect(Mat(*itc));
-		first_rects.push_back(mr);
-		++itc;
-	}*/
 
 	while (itc != contours.end())
 	{
@@ -697,154 +399,6 @@ int CPlateLocate::sobelSecSearch(const Mat& bound, Point2f refpoint, vector<Rota
 			RotatedRect refroi(refcenter, size, angle);
 			outRects.push_back(refroi);
 		}
-	}
-
-	return 0;
-}
-
-
-int CPlateLocate::sobelFindAgn(const Mat& roi, vector<RotatedRect>& outRects, vector<Mat>& resultVec)
-{
-	Mat roi_blur;
-	GaussianBlur(roi, roi_blur, Size(3, 3),
-		0, 0, BORDER_DEFAULT);
-
-	Mat roi_gray;
-	cvtColor(roi_blur, roi_gray, CV_RGB2GRAY);
-
-	Mat grad;
-
-	int scale = SOBEL_SCALE;
-	int delta = SOBEL_DELTA;
-	int ddepth = SOBEL_DDEPTH;
-
-	Mat grad_x, grad_y;
-	Mat abs_grad_x, abs_grad_y;
-
-	Sobel(roi_gray, grad_x, ddepth, 1, 0, 3, scale, delta, BORDER_DEFAULT);
-	convertScaleAbs(grad_x, abs_grad_x);
-
-	Sobel(roi_gray, grad_y, ddepth, 0, 1, 3, scale, delta, BORDER_DEFAULT);
-	convertScaleAbs(grad_y, abs_grad_y);
-
-	addWeighted(abs_grad_x, SOBEL_X_WEIGHT, abs_grad_y, SOBEL_Y_WEIGHT, 0, grad);
-
-	Mat roi_threshold;
-	double otsu_thresh_val = threshold(grad, roi_threshold, 0, 255, CV_THRESH_OTSU + CV_THRESH_BINARY);
-
-	Mat element = getStructuringElement(MORPH_RECT, Size(10, 3));
-	morphologyEx(roi_threshold, roi_threshold, MORPH_CLOSE, element);
-
-	//if (1){
-	//	imshow("sobelFindAgn", roi_threshold);
-	//	waitKey(0);
-	//}
-
-	vector< vector< Point> > contours;
-	findContours(roi_threshold,
-		contours, // a vector of contours
-		CV_RETR_EXTERNAL, // 提取外部轮廓
-		CV_CHAIN_APPROX_NONE); // all pixels of each contours
-
-	vector<vector<Point> >::iterator itc = contours.begin();
-	Mat result;
-	roi.copyTo(result);
-
-	while (itc != contours.end())
-	{
-		RotatedRect minRect = minAreaRect(Mat(*itc));
-		if (verifySizes(minRect))
-		{
-			float r = (float)minRect.size.width / (float)minRect.size.height;
-			float angle = minRect.angle;
-			Size rect_size = minRect.size;
-			if (r < 1)
-			{
-				angle = 90 + angle;
-				swap(rect_size.width, rect_size.height);
-			}
-			//如果抓取的方块旋转超过m_angle角度，则不是车牌，放弃处理
-			if (angle - m_angle < 0 && angle + m_angle > 0)
-			{
-				//if (1)
-				//{
-				//	Point2f rect_points[4];
-				//	minRect.points(rect_points);
-				//	for (int j = 0; j < 4; j++)
-				//		line(result, rect_points[j], rect_points[(j + 1) % 4], Scalar(0, 255, 255), 1, 8);
-				//}
-
-				Rect_<float> boudRect = minRect.boundingRect();
-
-				// boudRect的左上的x和y有可能小于0
-				float tl_x = boudRect.x > 0 ? boudRect.x : 0;
-				float tl_y = boudRect.y > 0 ? boudRect.y : 0;
-				// boudRect的右上的x和y有可能大于src的范围
-				float br_x = boudRect.x + boudRect.width < roi.cols ?
-					boudRect.x + boudRect.width - 1 : roi.cols - 1;
-				float br_y = boudRect.y + boudRect.height < roi.rows ?
-					boudRect.y + boudRect.height - 1 : roi.rows - 1;
-
-				float roi_width = br_x - tl_x;
-				float roi_height = br_y - tl_y;
-
-				if (roi_width <= 0 || roi_height <= 0)
-					continue;
-
-				// 新建一个mat，确保地址不越界，以防mat定位roi时抛异常
-				Rect_<float> roiRect = Rect_<float>(tl_x, tl_y, roi_width, roi_height);
-
-				Mat roi_mat = roi(roiRect);
-				Mat img_crop;
-
-				if (0.0 == angle || 90.0 == angle || -90.0 == angle || -0.0 == angle)
-				{
-					//  如果角度等于这些值，则不需要旋转，直接就是正矩形
-					//  以免带来旋转与裁剪中的线性插值带来的误差与模糊
-					img_crop = roi_mat;
-				}
-				else if (angle - 5 < 0 && angle + 5 > 0)
-				{
-					//  如果角度小于5度，则不必旋转，直接显示
-					//  以免带来旋转与裁剪中的线性插值带来的误差与模糊
-					img_crop = roi_mat;
-				}
-				else
-				{
-					//  如果角度在5度到45度之间，则需要旋转
-				
-					//vector<RotatedRect> rects_tmp;
-					//deskewP(src_mat, BLUE, rects_tmp);
-
-					Mat rotmat = getRotationMatrix2D(minRect.center, angle, 1);
-					Mat img_rotated;
-
-					warpAffine(roi_mat, img_rotated, rotmat, roi_mat.size(), CV_INTER_CUBIC);
-
-					Mat middle_crop;
-					getRectSubPix(img_rotated, rect_size, minRect.center, middle_crop);
-
-					//imshow("middle_crop", middle_crop);
-					//waitKey(0);
-
-					Mat out;
-					//deskewP(middle_crop, out, angle);
-
-					img_crop = out;			
-				}
-
-				Mat plate_img;
-				plate_img.create(HEIGHT, WIDTH, TYPE);
-				if (img_crop.cols >= WIDTH || img_crop.rows >= HEIGHT)
-					resize(img_crop, plate_img, plate_img.size(), 0, 0, INTER_AREA);
-				else
-					resize(img_crop, plate_img, plate_img.size(), 0, 0, INTER_CUBIC);
-
-				resultVec.push_back(plate_img);
-				outRects.push_back(minRect);
-			}
-		}
-		itc++;
 	}
 
 	return 0;
@@ -1177,79 +731,6 @@ bool CPlateLocate::calcSafeRect(const RotatedRect& roi_rect, const Mat& src, Rec
 }
 
 
-
-int CPlateLocate::colorJudge(const Mat& src, const Color r, vector<RotatedRect>& rects)
-{
-	Mat src_hsv;
-	Mat src_color;
-	cvtColor(src, src_hsv, CV_BGR2HSV);
-
-	vector<Mat> hsvSplit;
-	split(src_hsv, hsvSplit);
-
-	Mat h_mat = hsvSplit[2];
-
-	//blue的H范围
-	const int min_blue = 100;
-	const int max_blue = 140;
-
-	//yellow的H范围
-	const int min_yellow = 15;
-	const int max_yellow = 40;
-
-	//匹配模板基色,切换以查找想要的基色
-	int min_h = 0;
-	int max_h = 0;
-	switch (r) {
-	case BLUE:
-		min_h = min_blue;
-		max_h = max_blue;
-		break;
-	case YELLOW:
-		min_h = min_yellow;
-		max_h = max_yellow;
-		break;
-	}
-
-	Mat src_threshold;
-	double thresh = threshold(h_mat, src_threshold, 0, 255, CV_THRESH_OTSU + CV_THRESH_BINARY);
-
-	Mat element = getStructuringElement(MORPH_RECT, Size(5, 3));
-	morphologyEx(src_threshold, src_threshold, MORPH_CLOSE, element);
-
-	if (1){
-		imshow("color", src);
-		waitKey(0);
-		imshow("color", src_threshold);
-		waitKey(0);
-	}
-
-	vector< vector< Point> > contours;
-	findContours(src_threshold,
-		contours, // a vector of contours
-		CV_RETR_EXTERNAL, // 提取外部轮廓
-		CV_CHAIN_APPROX_NONE); // all pixels of each contours
-
-	vector<vector<Point>>::iterator itc = contours.begin();
-
-	while (itc != contours.end())
-	{
-		RotatedRect mr = minAreaRect(Mat(*itc));
-		if (!verifySizes(mr))
-		{
-			itc = contours.erase(itc);
-		}
-		else
-		{
-			++itc;
-			rects.push_back(mr);
-		}
-	}
-	return 0;
-
-}
-
-
 int CPlateLocate::deskewOld(Mat src, vector<RotatedRect>& inRects, 
 	vector<RotatedRect>& outRects, vector<Mat>& outMats, LocateType locateType)
 {
@@ -1402,23 +883,23 @@ int CPlateLocate::deskewOld(Mat src, vector<RotatedRect>& inRects,
 					}
 				}
 
-				if (locateType == SOBEL) {
-					vector<Mat> resultVec;
-					vector<RotatedRect> resultRects;
-					sobelFindAgn(src_mat, resultRects, resultVec);
+				//if (locateType == SOBEL) {
+				//	vector<Mat> resultVec;
+				//	vector<RotatedRect> resultRects;
+				//	sobelFindAgn(src_mat, resultRects, resultVec);
 
-					for (int j = 0; j < resultRects.size(); j++) {
-						Point2f origin_center = Point2f(tl_x, tl_y) + resultRects[j].center;
-						RotatedRect origin_rect(origin_center, resultRects[j].size, resultRects[j].angle);
-						outRects.push_back(origin_rect);
-					}
+				//	for (int j = 0; j < resultRects.size(); j++) {
+				//		Point2f origin_center = Point2f(tl_x, tl_y) + resultRects[j].center;
+				//		RotatedRect origin_rect(origin_center, resultRects[j].size, resultRects[j].angle);
+				//		outRects.push_back(origin_rect);
+				//	}
 
-					for (int j = 0; j < resultVec.size(); j++)
-					{
-						//if (charJudge(resultVec[j]))
-						outMats.push_back(resultVec[j]);
-					}
-				}
+				//	for (int j = 0; j < resultVec.size(); j++)
+				//	{
+				//		//if (charJudge(resultVec[j]))
+				//		outMats.push_back(resultVec[j]);
+				//	}
+				//}
 							
 			}
 		}
@@ -1438,12 +919,12 @@ int CPlateLocate::plateColorLocate(Mat src, vector<CPlate>& candPlates, int inde
 
 	// 查找蓝色车牌
 	// 查找颜色匹配车牌
-	colorMatch(src, BLUE, src_b, rects_color_blue, index);
+	colorSearch(src, BLUE, src_b, rects_color_blue, index);
 	// 进行抗扭斜处理
 	deskew(src, src_b, rects_color_blue, plates);
 
 	// 查找黄色车牌
-	colorMatch(src, YELLOW, src_b, rects_color_yellow, index);
+	colorSearch(src, YELLOW, src_b, rects_color_yellow, index);
 	deskew(src, src_b, rects_color_yellow, plates);
 
 	for (int i = 0; i< plates.size(); i++)

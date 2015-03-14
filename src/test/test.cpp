@@ -115,7 +115,7 @@ int test_plate_locate()
 {
 	cout << "test_plate_locate" << endl;
 
-	Mat src = imread("image/¾©P8BK60.jpg");
+	Mat src = imread("image/test.jpg");
 
 	vector<Mat> resultVec;
 	CPlateLocate plate;

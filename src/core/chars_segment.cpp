@@ -23,7 +23,7 @@ namespace easypr{
 	}
 
 	//! 字符尺寸验证
-	bool CCharsSegment::verifySizes(Mat r){
+	bool CCharsSegment::verifyCharSizes(Mat r){
 		//Char sizes 45x90
 		float aspect = 45.0f / 90.0f;
 		float charAspect = (float)r.cols / (float)r.rows;
@@ -66,243 +66,49 @@ namespace easypr{
 		return out;
 	}
 
-	//! 直方图均衡，为判断车牌颜色做准备
-	Mat CCharsSegment::histeq(Mat in)
-	{
-		Mat out(in.size(), in.type());
-		if (in.channels() == 3)
-		{
-			Mat hsv;
-			vector<Mat> hsvSplit;
-			cvtColor(in, hsv, CV_BGR2HSV);
-			split(hsv, hsvSplit);
-			equalizeHist(hsvSplit[2], hsvSplit[2]);
-			merge(hsvSplit, hsv);
-			cvtColor(hsv, out, CV_HSV2BGR);
-		}
-		else if (in.channels() == 1)
-		{
-			equalizeHist(in, out);
-		}
-		return out;
-	}
-
-	//getPlateType
-	//判断车牌的类型，1为蓝牌，2为黄牌，0为未知，默认蓝牌
-	//通过像素中蓝色所占比例的多少来判断，大于0.3为蓝牌，否则为黄牌
-	int CCharsSegment::getPlateType(Mat src)
-	{
-
-		//Mat img;
-		//input.copyTo(img);
-		//img = histeq(img);
-
-		//double countBlue = 0;
-		//double countWhite = 0;
-
-		//int nums = img.rows*img.cols;
-		//for(int i=0; i < img.rows; i++)
-		//{
-		//	for(int j=0; j < img.cols; j++)
-		//	{
-		//		Vec3b intensity = img.at<Vec3b>(i,j);
-		//		int blue = int(intensity.val[0]);
-		//		int green = int(intensity.val[1]);
-		//		int red = int(intensity.val[2]);
-
-		//		if(blue > m_ColorThreshold && green > 10 && red > 10)		
-		//			countBlue++;
-
-		//		if(blue > m_ColorThreshold && green > m_ColorThreshold && red > m_ColorThreshold)			
-		//			countWhite++;
-		//	}	
-		//}
-
-		//double percentBlue = countBlue/nums;
-		//double percentWhite = countWhite/nums;
-
-		//if (percentBlue - m_BluePercent > 0 && percentWhite - m_WhitePercent > 0)
-		//	return 1;
-		//else
-		//	return 2;
-
-		//return 0;
-
-		if (plateColorJudge(src, BLUE) == true) {
-			return 1;
-		}
-		else if (plateColorJudge(src, YELLOW) == true) {
-			return 2;
-		}
-		else {
-			return 1;
-		}
-
-	}
-
-	bool CCharsSegment::plateColorJudge(Mat src, const Color r)
-	{
-		Mat src_hsv;
-		Mat src_color;
-		cvtColor(src, src_hsv, CV_BGR2HSV);
-
-		vector<Mat> hsvSplit;
-		split(src_hsv, hsvSplit);
-		equalizeHist(hsvSplit[2], hsvSplit[2]);
-		merge(hsvSplit, src_hsv);
-
-		//blue的H范围
-		const int min_blue = 100;
-		const int max_blue = 140;
-
-		//yellow的H范围
-		const int min_yellow = 15;
-		const int max_yellow = 40;
-
-		//匹配模板基色,切换以查找想要的基色
-		int min_h = 0;
-		int max_h = 0;
-		switch (r) {
-		case BLUE:
-			min_h = min_blue;
-			max_h = max_blue;
-			break;
-		case YELLOW:
-			min_h = min_yellow;
-			max_h = max_yellow;
-			break;
-		}
-
-		float diff_h = float((max_h - min_h) / 2);
-		int avg_h = min_h + diff_h;
-
-		int max_sv = 255;
-		int minref_sv = 64;
-
-		int channels = src_hsv.channels();
-		int nRows = src_hsv.rows;
-		//图像数据列需要考虑通道数的影响；
-		int nCols = src_hsv.cols * channels;
-
-		if (src_hsv.isContinuous())//连续存储的数据，按一行处理
-		{
-			nCols *= nRows;
-			nRows = 1;
-		}
-
-		int i, j;
-		uchar* p;
-		for (i = 0; i < nRows; ++i)
-		{
-			p = src_hsv.ptr<uchar>(i);
-			for (j = 0; j < nCols; j += 3)
-			{
-				int H = int(p[j]); //0-180
-				int S = int(p[j + 1]);  //0-255
-				int V = int(p[j + 2]);  //0-255
-
-				bool colorMatched = false;
-
-				if (H > min_h && H < max_h)
-				{
-					int Hdiff = 0;
-					if (H > avg_h)
-						Hdiff = H - avg_h;
-					else
-						Hdiff = avg_h - H;
-
-					float Hdiff_p = float(Hdiff) / diff_h;
-					int min_sv = minref_sv - minref_sv / 2 * (1 - Hdiff_p);
-
-					if ((S > min_sv && S < max_sv) && (V > min_sv && V < max_sv))
-						colorMatched = true;
-				}
-
-				if (colorMatched == true) {
-					p[j] = 0; p[j + 1] = 0; p[j + 2] = 255;
-				}
-				else {
-					p[j] = 0; p[j + 1] = 0; p[j + 2] = 0;
-				}
-			}
-		}
-
-		vector<Mat> hsvResult;
-		split(src_hsv, hsvResult);
-
-		Mat src_gray = hsvResult[2];
-
-		float percent = float(countNonZero(src_gray)) / float(src_gray.rows * src_gray.cols);
-
-		if (percent > 0.5)
-			return true;
-		else
-			return false;
-	}
-
-
-
-
-	//clearLiuDing
-	//去除车牌上方的钮钉
-	//计算每行元素的阶跃数，如果小于X认为是柳丁，将此行全部填0（涂黑）
-	//X的推荐值为，可根据实际调整
-	Mat CCharsSegment::clearLiuDing(Mat img)
-	{
-		const int x = m_LiuDingSize;
-		Mat jump = Mat::zeros(1, img.rows, CV_32F);
-		for (int i = 0; i < img.rows; i++)
-		{
-			int jumpCount = 0;
-			for (int j = 0; j < img.cols - 1; j++)
-			{
-				if (img.at<char>(i, j) != img.at<char>(i, j + 1))
-					jumpCount++;
-			}
-			jump.at<float>(i) = jumpCount;
-		}
-		for (int i = 0; i < img.rows; i++)
-		{
-			if (jump.at<float>(i) <= x)
-			{
-				for (int j = 0; j < img.cols; j++)
-				{
-					img.at<char>(i, j) = 0;
-				}
-			}
-		}
-		return img;
-	}
 
 	//! 字符分割与排序
 	int CCharsSegment::charsSegment(Mat input, vector<Mat>& resultVec)
 	{
 		if (!input.data)
-		{
 			return -3;
-		}
 
 		//判断车牌颜色以此确认threshold方法
-		int plateType = getPlateType(input);
-		cvtColor(input, input, CV_RGB2GRAY);
+		Color plateType = getPlateType(input);
 
-		//Threshold input image
+		Mat input_grey;
+		cvtColor(input, input_grey, CV_RGB2GRAY);
+
+		/*imshow("input_grey", input_grey);
+		waitKey(0);*/
+
+		// 直方图均衡化后再进行二值化,效果不如非均衡化的，舍弃
+		// input_grey = histeq(input_grey);
+
+		/*imshow("input_grey", input_grey);
+		waitKey(0);*/
+
 		Mat img_threshold;
-		if (1 == plateType)
-			threshold(input, img_threshold, 10, 255, CV_THRESH_OTSU + CV_THRESH_BINARY);
+		if (BLUE == plateType)
+			threshold(input_grey, img_threshold, 10, 255, CV_THRESH_OTSU + CV_THRESH_BINARY);
+		else if (YELLOW == plateType)
+			threshold(input_grey, img_threshold, 10, 255, CV_THRESH_OTSU + CV_THRESH_BINARY_INV);
 		else
-			threshold(input, img_threshold, 10, 255, CV_THRESH_OTSU + CV_THRESH_BINARY_INV);
+			threshold(input_grey, img_threshold, 10, 255, CV_THRESH_OTSU + CV_THRESH_BINARY);
+			
+		/*imshow("img_threshold", img_threshold);
+		waitKey(0);*/
 
 		if (m_debug)
 		{
 			stringstream ss(stringstream::in | stringstream::out);
 			ss << "image/tmp/debug_char_threshold" << ".jpg";
 			imwrite(ss.str(), img_threshold);
+
 		}
 
 		//去除车牌上方的柳钉以及下方的横线等干扰
 		clearLiuDing(img_threshold);
-
 
 		if (m_debug)
 		{
@@ -322,7 +128,6 @@ namespace easypr{
 
 		//Start to iterate to each contour founded
 		vector<vector<Point> >::iterator itc = contours.begin();
-
 		vector<Rect> vecRect;
 
 		//Remove patch that are no inside limits of aspect ratio and area.  
@@ -331,10 +136,9 @@ namespace easypr{
 		{
 			Rect mr = boundingRect(Mat(*itc));
 			Mat auxRoi(img_threshold, mr);
-			if (verifySizes(auxRoi))
-			{
+			if (verifyCharSizes(auxRoi))
 				vecRect.push_back(mr);
-			}
+
 			++itc;
 		}
 

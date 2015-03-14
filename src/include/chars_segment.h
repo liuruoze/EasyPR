@@ -13,6 +13,7 @@
 #define __CHARS_SEGMENT_H__
 
 #include "prep.h"
+#include "core_util.h"
 
 /*! \namespace easypr
 Namespace where all the C++ EasyPR functionality resides
@@ -22,34 +23,16 @@ namespace easypr {
 	class CCharsSegment
 	{
 	public:
-		enum Color { BLUE, YELLOW };
-
 		CCharsSegment();
-		bool plateColorJudge(Mat src, Color r);
 
 		//! 字符分割
 		int charsSegment(Mat, vector<Mat>&);
 
 		//! 字符尺寸验证
-		bool verifySizes(Mat r);
+		bool verifyCharSizes(Mat r);
 
 		//! 字符预处理
 		Mat preprocessChar(Mat in);
-
-		//! 生成直方图
-		Mat ProjectedHistogram(Mat img, int t);
-
-		//! 生成字符的特定特征
-		Mat features(Mat in, int sizeData);
-
-		//! 直方图均衡，为判断车牌颜色做准备
-		Mat histeq(Mat in);
-
-		//! 获得车牌颜色
-		int getPlateType(Mat input);
-
-		//! 去除影响字符识别的柳钉
-		Mat clearLiuDing(Mat img);
 
 		//! 根据特殊车牌来构造猜测中文字符的位置和大小
 		Rect GetChineseRect(const Rect rectSpe);

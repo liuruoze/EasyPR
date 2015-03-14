@@ -93,6 +93,7 @@
     <ClCompile Include="src\core\chars_segment.cpp" />
     <ClCompile Include="src\core\features.cpp" />
     <ClCompile Include="src\core\plate.cpp" />
+    <ClCompile Include="src\core\core_util.cpp" />
     <ClCompile Include="src\test\accuracy_test.cpp" />
     <ClCompile Include="src\train\ann_train.cpp" />
     <ClCompile Include="src\train\svm_train.cpp" />
@@ -121,6 +122,7 @@
     <ClInclude Include="src\include\plate_judge.h" />
     <ClInclude Include="src\include\plate_locate.h" />
     <ClInclude Include="src\include\plate_recognize.h" />
+    <ClInclude Include="src\include\core_util.h" />
     <ClInclude Include="src\include\prep.h" />
     <ClInclude Include="src\include\util.h" />
   </ItemGroup>

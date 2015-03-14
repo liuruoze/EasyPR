@@ -1,0 +1,39 @@
+#ifndef __PLATE_UTIL_H__
+#define __PLATE_UTIL_H__
+
+/*! \namespace easypr
+Namespace where all the C++ EasyPR functionality resides
+*/
+namespace easypr {
+
+	enum Color{ BLUE, YELLOW };
+
+	//! 根据一幅图像与颜色模板获取对应的二值图
+	//! 输入RGB图像, 颜色模板（蓝色、黄色）
+	//! 输出灰度图（只有0和255两个值，255代表匹配，0代表不匹配）
+	Mat colorMatch(const Mat& src, Mat& match, const Color r);
+
+	//! 判断一个车牌的颜色
+	//! 输入车牌mat与颜色模板
+	//! 返回true或fasle
+	bool plateColorJudge(Mat src, const Color r);
+
+	//clearLiuDing
+	//去除车牌上方的钮钉
+	//计算每行元素的阶跃数，如果小于X认为是柳丁，将此行全部填0（涂黑）
+	//X的推荐值为，可根据实际调整
+	Mat clearLiuDing(Mat img);
+
+	//! 获得车牌颜色
+	Color getPlateType(Mat input);
+
+	//! 直方图均衡
+	Mat histeq(Mat in);
+
+	// ！获取垂直和水平方向直方图
+	Mat ProjectedHistogram(Mat img, int t);
+
+}	/*! \namespace easypr*/
+
+#endif
+/* endif __PLATE_UTIL_H__ */
