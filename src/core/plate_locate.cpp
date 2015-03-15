@@ -1278,8 +1278,9 @@ int CPlateLocate::plateLocate(Mat src, vector<Mat>& resultVec, int index)
 		//large the rect for more
 		if (!verifySizes(mr))
 		{
-			cv::Mat& roi = dst_blue(safeBoundRect);
+                        cv::Mat roi = dst_blue(safeBoundRect);
 			roi.setTo(0);
+                        roi.assignTo(dst_blue);
 		}
 		else
 		{
@@ -1332,8 +1333,9 @@ int CPlateLocate::plateLocate(Mat src, vector<Mat>& resultVec, int index)
 		//large the rect for more
 		if (!verifySizes(mr))
 		{
-			cv::Mat& roi = dst_yellow(safeBoundRect);
+                        cv::Mat roi = dst_yellow(safeBoundRect);
 			roi.setTo(0);
+                        roi.assignTo(dst_yellow);
 		}
 		else
 		{
