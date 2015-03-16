@@ -1,42 +1,49 @@
-
 #ifndef __UTIL_H__
 #define __UTIL_H__
 
+#include <vector>
+#include <string>
+
 #ifdef min
-    #undef min
+#undef min
 #endif
 
 namespace easypr {
-    
-    class Utils {
-    public:
-        static long getTimestamp();
-        
-        /*
-         * Get file name from a given path
-         * bool postfix: including the postfix
-         */
-        static std::string getFileName(const std::string &path, const bool postfix = false);
-        
-        /*
-         * Split the given string into segements by a delimiter
-         */
-        static std::vector<std::string> splitString(const std::string &str, const char delimiter);
-        
-        /*
-         * returns the smaller of the two numbers
-         */
-        template<typename T>
-        static T min(const T &v1, const T &v2) {
-            return (v1 < v2) ? v1 : v2;
-        }
-        
-    };
-    
-}
 
-//C++的获取文件夹函数
-void getFiles(std::string path, std::vector<std::string>& files);
+class Utils {
+ public:
+  static long getTimestamp();
+
+  /*
+   * Get file name from a given path
+   * bool postfix: including the postfix
+   */
+  static std::string getFileName(const std::string& path,
+                                 const bool postfix = false);
+
+  /*
+   * Split the given string into segements by a delimiter
+   */
+  static std::vector<std::string> splitString(const std::string& str,
+                                              const char delimiter);
+
+  /*
+   * returns the smaller of the two numbers
+   */
+  template <typename T>
+  static T min(const T& v1, const T& v2) {
+    return (v1 < v2) ? v1 : v2;
+  }
+
+  /*
+ * Get files from a given folder
+ * all: including all sub-folders
+ */
+  static std::vector<std::string> getFiles(const std::string& folder,
+                                           const bool all = true);
+};
+
+}
 
 //! levenshtein距离，用于计算两个车牌的距离
 //！EasyPR中用levenshtein距离衡量车牌识别与真实车牌的误差

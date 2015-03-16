@@ -13,10 +13,9 @@ void learn2HasPlate(float bound = 0.7)
 {
 
 	const char * filePath = "train/data/plate_detect_svm/learn/HasPlate";
-	vector<string> files;
 
 	////获取该路径下的所有文件
-	getFiles(filePath, files );
+        auto files = Utils::getFiles(filePath);
 
 	int size = files.size();
     if (0 == size) {
@@ -60,10 +59,9 @@ void learn2NoPlate(float bound = 0.7)
 {
 
 	const char * filePath = "train/data/plate_detect_svm/learn/NoPlate";
-	vector<string> files;
 
 	////获取该路径下的所有文件
-	getFiles(filePath, files );
+        auto files = Utils::getFiles(filePath);
 	int size = files.size();
     if (0 == size) {
 		cout << "File not found in " << filePath << endl;
@@ -107,10 +105,9 @@ void getHasPlateTrain(Mat& trainingImages, vector<int>& trainingLabels,
 {
 	int label = 1;
 	const char * filePath = "train/data/plate_detect_svm/train/HasPlate";
-	vector<string> files;
 
 	////获取该路径下的所有文件
-	getFiles(filePath, files );
+        auto files = Utils::getFiles(filePath);
 
 	int size = files.size();
     if (0 == size) {
@@ -139,10 +136,9 @@ void getNoPlateTrain(Mat& trainingImages, vector<int>& trainingLabels,
 {
 	int label = 0;
 	const char * filePath = "train/data/plate_detect_svm/train/NoPlate";
-	vector<string> files;
 
 	////获取该路径下的所有文件
-	getFiles(filePath, files );
+        auto files = Utils::getFiles(filePath);
 
 	int size = files.size();
     if (0 == size) {
@@ -169,10 +165,9 @@ void getHasPlateTest(vector<Mat>& testingImages, vector<int>& testingLabels)
 {
 	int label = 1;
 	const char * filePath = "train/data/plate_detect_svm/test/HasPlate";
-	vector<string> files;
 
 	////获取该路径下的所有文件
-	getFiles(filePath, files );
+        auto files = Utils::getFiles(filePath);
 
 	int size = files.size();
     if (0 == size) {
@@ -194,10 +189,9 @@ void getNoPlateTest(vector<Mat>& testingImages, vector<int>& testingLabels)
 {
 	int label = 0;
 	const char * filePath = "train/data/plate_detect_svm/test/NoPlate";
-	vector<string> files;
 
 	////获取该路径下的所有文件
-	getFiles(filePath, files );
+        auto files = Utils::getFiles(filePath);
 
 	int size = files.size();
     if (0 == size) {

@@ -31,8 +31,7 @@ int generate_gdts()
 	string cascadeName="model/haarcascade_frontalface_alt_tree.xml";
 
 	////获取该路径下的所有文件
-	vector<string> files;
-	getFiles(src_path, files);
+        auto files = Utils::getFiles(src_path);
 	int size = files.size();
 
 	if (0 == size)

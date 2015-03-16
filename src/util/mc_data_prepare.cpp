@@ -9,7 +9,7 @@
 #if defined (WIN32) || defined (_WIN32)
 #include <io.h>
 #elif defined (linux) || defined (__linux__)
-#include <sys/io.h>
+//#include <sys/io.h>
 #endif
 
 #include <opencv/cv.h>
@@ -23,8 +23,6 @@ using namespace cv;
 using namespace easypr;
 
 const int LEARANDATA_COUNT = 5000;
-
-void getFiles( string path, vector<string>& files );
 
 //! 省份对应map
 map<string, string> mc_map;
@@ -195,8 +193,7 @@ void getLearnData()
     const char * filePath = "F:/data/easypr-data/rawdata";
     
     ////获取该路径下的所有文件
-    vector<string> files;
-    getFiles(filePath, files );
+    auto files = Utils::getFiles(filePath);
     
     int size = files.size();
     if (0 == size) {
@@ -248,8 +245,7 @@ void changeFileName()
     char * filePath = "F:/data/PlateLocate/pic1";
     
     ////获取该路径下的所有文件
-    vector<string> files;
-    getFiles(filePath, files );
+    auto files = Utils::getFiles(filePath);
     
     int size = files.size();
     if (0 == size)
