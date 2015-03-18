@@ -6,7 +6,7 @@
 namespace easypr{
 
 const float DEFAULT_ERROR = 0.6;//0.6
-const float DEFAULT_ASPECT = 3.75; //3.75 
+const float DEFAULT_ASPECT = 3.75; //3.75
 
 CPlateLocate::CPlateLocate()
 {
@@ -38,7 +38,7 @@ void CPlateLocate::setLifemode(bool param)
 		setVerifyAspect(4.0);
 		setVerifyMin(1);
 		setVerifyMax(200);
-	} 
+	}
 	else
 	{
 		setGaussianBlurSize(DEFAULT_GAUSSIANBLUR_SIZE);
@@ -91,7 +91,7 @@ Mat CPlateLocate::showResultMat(Mat src, Size rect_size, Point2f center, int ind
 	getRectSubPix(src, rect_size, center, img_crop);
 
 	if(m_debug)
-	{ 
+	{
 		stringstream ss(stringstream::in | stringstream::out);
 		ss << "image/tmp/debug_crop_" << index << ".jpg";
 		imwrite(ss.str(), img_crop);
@@ -103,7 +103,7 @@ Mat CPlateLocate::showResultMat(Mat src, Size rect_size, Point2f center, int ind
 	resize(img_crop, resultResized, resultResized.size(), 0, 0, INTER_CUBIC);
 
 	if(m_debug)
-	{ 
+	{
 		stringstream ss(stringstream::in | stringstream::out);
 		ss << "image/tmp/debug_resize_" << index << ".jpg";
 		imwrite(ss.str(), resultResized);
@@ -174,7 +174,7 @@ int CPlateLocate::colorSearch(const Mat& src, const Color r, Mat& out, vector<Ro
 bool CPlateLocate::sobelJudge(Mat roi)
 {
 	//Mat roi_blur;
-	//GaussianBlur(roi, roi_blur, Size(m_GaussianBlurSize, m_GaussianBlurSize), 
+	//GaussianBlur(roi, roi_blur, Size(m_GaussianBlurSize, m_GaussianBlurSize),
 	//	0, 0, BORDER_DEFAULT );
 	Mat grad;
 
@@ -348,16 +348,12 @@ int CPlateLocate::sobelOper(const Mat& in, Mat& out, int blurSize, int morphW, i
 	GaussianBlur(in, mat_blur, Size(blurSize, blurSize), 0, 0, BORDER_DEFAULT);
 
 	Mat mat_gray;
-	if (mat_blur.channels() == 3) {
+	if (mat_blur.channels() == 3)
 		cvtColor(mat_blur, mat_gray, CV_RGB2GRAY);
-	}
 	else
 		mat_gray = mat_blur;
 
 	//equalizeHist(mat_gray, mat_gray);
-
-	
-
 
 	int scale = SOBEL_SCALE;
 	int delta = SOBEL_DELTA;
@@ -403,7 +399,7 @@ int CPlateLocate::deskew(const Mat& src, const Mat& src_b, vector<RotatedRect>& 
 			roi_angle = 90 + roi_angle;
 			swap(roi_rect_size.width, roi_rect_size.height);
 		}
-		
+
 		if (roi_angle - m_angle < 0 && roi_angle + m_angle > 0)
 		{
 			Rect_<float> safeBoundRect;
@@ -415,12 +411,12 @@ int CPlateLocate::deskew(const Mat& src, const Mat& src_b, vector<RotatedRect>& 
 			Mat bound_mat_b = src_b(safeBoundRect);
 
 			Point2f roi_ref_center = roi_rect.center - safeBoundRect.tl();
-			
+
 			Mat deskew_mat;
-			if ((roi_angle - 5 < 0 && roi_angle + 5 > 0)  || 90.0 == roi_angle || -90.0 == roi_angle) 
+			if ((roi_angle - 5 < 0 && roi_angle + 5 > 0)  || 90.0 == roi_angle || -90.0 == roi_angle)
 			{
 				deskew_mat = bound_mat;
-			} 
+			}
 			else
 			{
 				// 角度在5到60度之间的，首先需要旋转 rotation
@@ -428,14 +424,14 @@ int CPlateLocate::deskew(const Mat& src, const Mat& src_b, vector<RotatedRect>& 
 				Mat rotated_mat_b;
 
 				if (!rotation(bound_mat, rotated_mat, roi_rect_size, roi_ref_center, roi_angle))
-					continue;	
+					continue;
 
 				if (!rotation(bound_mat_b, rotated_mat_b, roi_rect_size, roi_ref_center, roi_angle))
 					continue;
 
 				// 如果图片偏斜，还需要视角转换 affine
 				double roi_slope = 0;
-				
+
 				if (isdeflection(rotated_mat_b, roi_angle, roi_slope))
 				{
 					//cout << "roi_angle:" << roi_angle << endl;
@@ -453,14 +449,14 @@ int CPlateLocate::deskew(const Mat& src, const Mat& src_b, vector<RotatedRect>& 
 				resize(deskew_mat, plate_mat, plate_mat.size(), 0, 0, INTER_AREA);
 			else
 				resize(deskew_mat, plate_mat, plate_mat.size(), 0, 0, INTER_CUBIC);
-			
+
 			/*if (1)
 			{
 				imshow("plate_mat", plate_mat);
 				waitKey(0);
 				destroyWindow("plate_mat");
 			}*/
-			
+
 
 			CPlate plate;
 			plate.setPlatePos(roi_rect);
@@ -517,7 +513,7 @@ bool CPlateLocate::rotation(Mat& in, Mat& out, const Size rect_size, const Point
 
 	return true;
 
-	
+
 }
 
 
@@ -538,7 +534,7 @@ bool CPlateLocate::isdeflection(const Mat& in, const double angle, double& slope
 	comp_index[2] = nRows / 4 * 3;
 
 	const uchar* p;
-	
+
 	for (int i = 0; i < 3; i++)
 	{
 		int index = comp_index[i];
@@ -555,7 +551,7 @@ bool CPlateLocate::isdeflection(const Mat& in, const double angle, double& slope
 	//cout << "len[0]:" << len[0] << endl;
 	//cout << "len[1]:" << len[1] << endl;
 	//cout << "len[2]:" << len[2] << endl;
-	
+
 	double maxlen = max(len[2], len[0]);
 	double minlen = min(len[2], len[0]);
 	double difflen = abs(len[2] - len[0]);
@@ -573,12 +569,12 @@ bool CPlateLocate::isdeflection(const Mat& in, const double angle, double& slope
 		/*cout << "slope_can_1:" << slope_can_1 << endl;
 		cout << "slope_can_2:" << slope_can_2 << endl;
 		cout << "slope_can_3:" << slope_can_3 << endl;*/
- 
+
 		slope = abs(slope_can_1 - g) <= abs(slope_can_2 - g) ? slope_can_1 : slope_can_2;
 
 		/*slope = max(  double(len[2] - len[0]) / double(comp_index[1]),
 			double(len[1] - len[0]) / double(comp_index[0]));*/
-		
+
 		//cout << "slope:" << slope << endl;
 		return true;
 	}
@@ -675,7 +671,7 @@ bool CPlateLocate::calcSafeRect(const RotatedRect& roi_rect, const Mat& src, Rec
 }
 
 
-int CPlateLocate::deskewOld(Mat src, vector<RotatedRect>& inRects, 
+int CPlateLocate::deskewOld(Mat src, vector<RotatedRect>& inRects,
 	vector<RotatedRect>& outRects, vector<Mat>& outMats, LocateType locateType)
 {
 	int k = 1;
@@ -684,7 +680,7 @@ int CPlateLocate::deskewOld(Mat src, vector<RotatedRect>& inRects,
 		RotatedRect minRect = inRects[i];
 
 		if(verifySizes(minRect))
-		{	
+		{
 			float r = (float)minRect.size.width / (float)minRect.size.height;
 			float angle = minRect.angle;
 			cout << "angle:" << angle << endl;
@@ -695,7 +691,7 @@ int CPlateLocate::deskewOld(Mat src, vector<RotatedRect>& inRects,
 				swap(rect_size.width, rect_size.height);
 			}
 
-			if (angle - m_angle < 0 && angle + m_angle > 0) 
+			if (angle - m_angle < 0 && angle + m_angle > 0)
 			{
 				Rect_<float> boudRect = minRect.boundingRect();
 
@@ -703,9 +699,9 @@ int CPlateLocate::deskewOld(Mat src, vector<RotatedRect>& inRects,
 				float tl_x = boudRect.x > 0 ? boudRect.x : 0;
 				float tl_y = boudRect.y > 0 ? boudRect.y : 0;
 				// boudRect的右上的x和y有可能大于src的范围
-				float br_x = boudRect.x + boudRect.width < src.cols  ? 
+				float br_x = boudRect.x + boudRect.width < src.cols  ?
 					boudRect.x + boudRect.width - 1 : src.cols - 1;
-				float br_y = boudRect.y + boudRect.height < src.rows  ? 
+				float br_y = boudRect.y + boudRect.height < src.rows  ?
 					boudRect.y + boudRect.height - 1 : src.rows - 1;
 
 				float roi_width = br_x - tl_x;
@@ -716,13 +712,13 @@ int CPlateLocate::deskewOld(Mat src, vector<RotatedRect>& inRects,
 
 				// 新建一个mat，确保地址不越界，以防mat定位roi时抛异常
 				Rect_<float> roiRect = Rect_<float>(tl_x, tl_y, roi_width, roi_height);
-				
+
 				Mat src_mat = src(roiRect);
 
 				//imshow("src_mat", src_mat);
 				//waitKey(0);
 
-				if (locateType == COLOR) 
+				if (locateType == COLOR)
 				{
 					Mat img_crop;
 					if (0.0 == angle || 90.0 == angle || -90.0 == angle || -0.0 == angle)
@@ -844,7 +840,7 @@ int CPlateLocate::deskewOld(Mat src, vector<RotatedRect>& inRects,
 				//		outMats.push_back(resultVec[j]);
 				//	}
 				//}
-							
+
 			}
 		}
 	}
@@ -894,7 +890,7 @@ int CPlateLocate::plateSobelLocate(Mat src, vector<CPlate>& candPlates, int inde
 	{
 		Rect_<float> bound_rect = bound_rects[i];
 		Point2f refpoint(bound_rect.x, bound_rect.y);
-		
+
 		int x = bound_rect.x > 0 ? bound_rect.x : 0;
 		int y = bound_rect.y > 0 ? bound_rect.y : 0;
 
@@ -923,7 +919,7 @@ int CPlateLocate::plateSobelLocate(Mat src, vector<CPlate>& candPlates, int inde
 //				Point2f srcTri[3];
 //				Point2f dstTri[3];
 //
-//				Point2f rect_points[4]; 
+//				Point2f rect_points[4];
 //				minRect.points( rect_points );
 //
 //				for(int i = 0; i < 4; i++)
@@ -970,22 +966,22 @@ int CPlateLocate::plateSobelLocate(Mat src, vector<CPlate>& candPlates, int inde
 //	{ return -1; }
 //
 //	//测试，三通道划分为单通道
-//	//vector<Mat> channels; 
+//	//vector<Mat> channels;
 //	//split(src, channels);
 //	//Mat imageBlue = channels.at(0);
 //	//if(1)
-//	//{ 
+//	//{
 //	//	stringstream ss(stringstream::in | stringstream::out);
 //	//	ss << "image/tmp/debug_imageBlue" << index << ".jpg";
 //	//	imwrite(ss.str(), imageBlue);
 //	//}
 //
 //	//高斯模糊。Size中的数字影响车牌定位的效果。
-//	GaussianBlur( src, src_blur, Size(m_GaussianBlurSize, m_GaussianBlurSize), 
+//	GaussianBlur( src, src_blur, Size(m_GaussianBlurSize, m_GaussianBlurSize),
 //		0, 0, BORDER_DEFAULT );
 //
 //	if(m_debug)
-//	{ 
+//	{
 //		stringstream ss(stringstream::in | stringstream::out);
 //		ss << "image/tmp/debug_GaussianBlur" << ".jpg";
 //		imwrite(ss.str(), src_blur);
@@ -995,7 +991,7 @@ int CPlateLocate::plateSobelLocate(Mat src, vector<CPlate>& candPlates, int inde
 //	cvtColor( src_blur, src_gray, CV_RGB2GRAY );
 //
 //	if(m_debug)
-//	{ 
+//	{
 //		stringstream ss(stringstream::in | stringstream::out);
 //		ss << "image/tmp/debug_gray" << ".jpg";
 //		imwrite(ss.str(), src_gray);
@@ -1018,11 +1014,11 @@ int CPlateLocate::plateSobelLocate(Mat src, vector<CPlate>& candPlates, int inde
 //	/// Total Gradient (approximate)
 //	addWeighted( abs_grad_x, SOBEL_X_WEIGHT, abs_grad_y, SOBEL_Y_WEIGHT, 0, grad );
 //
-//	//Laplacian( src_gray, grad_x, ddepth, 3, scale, delta, BORDER_DEFAULT );  
-//	//convertScaleAbs( grad_x, grad );  
+//	//Laplacian( src_gray, grad_x, ddepth, 3, scale, delta, BORDER_DEFAULT );
+//	//convertScaleAbs( grad_x, grad );
 //
 //	if(m_debug)
-//	{ 
+//	{
 //		stringstream ss(stringstream::in | stringstream::out);
 //		//ss << "image/tmp/debug_Sobel_" << index << ".jpg";
 //		ss << "image/tmp/" << index << "_" << 3 <<"_debug_Sobel" << ".jpg";
@@ -1030,7 +1026,7 @@ int CPlateLocate::plateSobelLocate(Mat src, vector<CPlate>& candPlates, int inde
 //	}
 //
 //	//if(1)
-//	//{ 
+//	//{
 //	//	stringstream ss(stringstream::in | stringstream::out);
 //	//	ss << "image/tmp/" << index << "_" << 4 <<"_src_combin" << ".jpg";
 //	//	imwrite(ss.str(), src_combin);
@@ -1040,7 +1036,7 @@ int CPlateLocate::plateSobelLocate(Mat src, vector<CPlate>& candPlates, int inde
 //	threshold(grad, img_threshold, 0, 255, CV_THRESH_OTSU+CV_THRESH_BINARY);
 //
 //	if(0)
-//	{ 
+//	{
 //		stringstream ss(stringstream::in | stringstream::out);
 //		//ss << "image/tmp/debug_threshold_" << index << ".jpg";
 //		ss << "image/tmp/" << index << "_" << 5 <<"_img_threshold" << ".jpg";
@@ -1049,9 +1045,9 @@ int CPlateLocate::plateSobelLocate(Mat src, vector<CPlate>& candPlates, int inde
 //
 //	Mat element = getStructuringElement(MORPH_RECT, Size(m_MorphSizeWidth, m_MorphSizeHeight) );
 //	morphologyEx(img_threshold, img_threshold, MORPH_CLOSE, element);
-//	
+//
 //	if(1)
-//	{ 
+//	{
 //		stringstream ss(stringstream::in | stringstream::out);
 //		//ss << "image/tmp/debug_morphology_" << index << ".jpg";
 //		ss << "image/tmp/" << index << "_" << 6 <<"_morph" << ".jpg";
@@ -1067,14 +1063,14 @@ int CPlateLocate::plateSobelLocate(Mat src, vector<CPlate>& candPlates, int inde
 //
 //	Mat result;
 //	if(1)
-//	{ 
+//	{
 //		//// Draw blue contours on a white image
 //		src.copyTo(result);
 //
 //		//drawContours(result, contours,
 //		//	-1, // draw all contours
 //		//	Scalar(0,0,255), // in blue
-//		//	1); // with a thickness of 1 
+//		//	1); // with a thickness of 1
 //
 //		//stringstream ss(stringstream::in | stringstream::out);
 //		//ss << "image/tmp/debug_Contours" << ".jpg";
@@ -1084,7 +1080,7 @@ int CPlateLocate::plateSobelLocate(Mat src, vector<CPlate>& candPlates, int inde
 //
 //	//Start to iterate to each contour founded
 //	vector<vector<Point> >::iterator itc = contours.begin();
-//	
+//
 //	vector<RotatedRect> rects;
 //	//Remove patch that are no inside limits of aspect ratio and area.
 //	int t = 0;
@@ -1110,8 +1106,8 @@ int CPlateLocate::plateSobelLocate(Mat src, vector<CPlate>& candPlates, int inde
 //	{
 //		RotatedRect minRect = rects[i];
 //		if(verifySizes(minRect))
-//		{	
-//			// rotated rectangle drawing 
+//		{
+//			// rotated rectangle drawing
 //			// Get rotation matrix
 //			// 旋转这部分代码确实可以将某些倾斜的车牌调整正，
 //			// 但是它也会误将更多正的车牌搞成倾斜！所以综合考虑，还是不使用这段代码。
@@ -1129,8 +1125,8 @@ int CPlateLocate::plateSobelLocate(Mat src, vector<CPlate>& candPlates, int inde
 //			if (angle - m_angle < 0 && angle + m_angle > 0)
 //			{
 //				if(1)
-//				{ 
-//					Point2f rect_points[4]; 
+//				{
+//					Point2f rect_points[4];
 //					minRect.points( rect_points );
 //					for( int j = 0; j < 4; j++ )
 //						line( result, rect_points[j], rect_points[(j+1)%4], Scalar(0,255,255), 1, 8 );
@@ -1141,7 +1137,7 @@ int CPlateLocate::plateSobelLocate(Mat src, vector<CPlate>& candPlates, int inde
 //				Mat img_rotated;
 //
 //				/*if(m_debug)
-//				{ 
+//				{
 //					stringstream ss(stringstream::in | stringstream::out);
 //					ss << "image/tmp/needRotate" << i << ".jpg";
 //					imwrite(ss.str(), result);
@@ -1150,7 +1146,7 @@ int CPlateLocate::plateSobelLocate(Mat src, vector<CPlate>& candPlates, int inde
 //				warpAffine(src, img_rotated, rotmat, src.size(), CV_INTER_CUBIC);
 //
 //				/*if(m_debug)
-//				{ 
+//				{
 //					stringstream ss(stringstream::in | stringstream::out);
 //					ss << "image/tmp/img_rotated" << i << ".jpg";
 //					imwrite(ss.str(), result);
@@ -1167,7 +1163,7 @@ int CPlateLocate::plateSobelLocate(Mat src, vector<CPlate>& candPlates, int inde
 //	}
 //
 //	if(1)
-//	{ 
+//	{
 //		stringstream ss(stringstream::in | stringstream::out);
 //		//ss << "image/tmp/debug_result" << ".jpg";
 //		ss << "image/tmp/" << index << "_" << 9 <<"_result" << ".jpg";
@@ -1282,7 +1278,8 @@ int CPlateLocate::plateLocate(Mat src, vector<Mat>& resultVec, int index)
 		//large the rect for more
 		if (!verifySizes(mr))
 		{
-			cv::Mat& roi = dst_blue(safeBoundRect);
+
+            cv::Mat& roi = dst_blue(safeBoundRect);
 			roi.setTo(0);
 		}
 		else
@@ -1363,8 +1360,8 @@ int CPlateLocate::plateLocate(Mat src, vector<Mat>& resultVec, int index)
 	/// Total Gradient (approximate)
 	addWeighted(abs_grad_x, SOBEL_X_WEIGHT, abs_grad_y, SOBEL_Y_WEIGHT, 0, grad);
 
-	//Laplacian( src_gray, grad_x, ddepth, 3, scale, delta, BORDER_DEFAULT );  
-	//convertScaleAbs( grad_x, grad ); 
+	//Laplacian( src_gray, grad_x, ddepth, 3, scale, delta, BORDER_DEFAULT );
+	//convertScaleAbs( grad_x, grad );
 	cv::Mat out_blue;
 	cv::multiply(grad, dst_blue, out_blue);
 	cv::Mat out_yellow;
@@ -1483,7 +1480,7 @@ int CPlateLocate::plateLocate(Mat src, vector<Mat>& resultVec, int index)
 		RotatedRect minRect = rects[i];
 		if (verifySizes(minRect))
 		{
-			// rotated rectangle drawing 
+			// rotated rectangle drawing
 			// Get rotation matrix
 			// 旋转这部分代码确实可以将某些倾斜的车牌调整正，
 			// 但是它也会误将更多正的车牌搞成倾斜！所以综合考虑，还是不使用这段代码。
