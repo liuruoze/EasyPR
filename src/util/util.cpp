@@ -5,11 +5,8 @@
 #include <windows.h>
 #include <io.h>
 #elif defined(linux) || defined(__linux__)
-//#include <sys/io.h>
-//#include <sys/stat.h>
-//#include <sys/types.h>
+#include <sys/stat.h>
 #include <dirent.h>
-#include <time.h>
 #include <cstring>
 #elif defined(__APPLE__)
 #include <sys/stat.h>
