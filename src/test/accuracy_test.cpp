@@ -3,7 +3,7 @@
 
 #include "../include/plate_recognize.h"
 #include "../include/util.h"
-#include "../include/features.h"
+#include "../include/feature.h"
 
 using namespace easypr;
 
@@ -83,7 +83,7 @@ int acurayTest(const string& test_path)
 				cout << ""<< "无车牌" <<endl;
 				if (plateLicense != "无车牌")
 					count_norecogin++;
-			} 
+			}
 			else if ( num > 1)
 			{
 				// 多车牌使用diff最小的那个记录
@@ -140,17 +140,17 @@ int acurayTest(const string& test_path)
 				}
 
 			}
-		} 
+		}
 		else
 		{
 			cout << "错误码:" << result << endl;
 			count_err++;
 		}
 		count_all++;
-		
+
 	}
 	time(&end);
-	
+
 	cout << "------------------" << endl;
 	cout << "Easypr accuracy test end!" << endl;
 	cout << "------------------" << endl;
@@ -181,7 +181,7 @@ int acurayTest(const string& test_path)
 	cout << endl;
 
 	cout << "------------------" << endl;
-	
+
 	ofstream myfile("run_accuracy.txt", ios::app);
 	if (myfile.is_open())
 	{
@@ -202,7 +202,7 @@ int acurayTest(const string& test_path)
 		myfile << "平均执行时间:" << avgsec << "秒  " << endl;
 		myfile.close();
 	}
-	else 
+	else
 		cout << "Unable to open file";
 
 	return 0;

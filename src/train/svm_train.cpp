@@ -1,7 +1,7 @@
 // svm_train.cpp : svm模型的训练文件，主要用在plate_detect中
 
 #include "../include/plate_recognize.h"
-#include "../include/features.h"
+#include "../include/feature.h"
 #include "../include/util.h"
 
 /*! \namespace easypr
@@ -35,7 +35,7 @@ void learn2HasPlate(float bound = 0.7)
 		cout << files[i].c_str() << endl;
 		Mat img = imread(files[i].c_str());
 		if(1)
-		{ 
+		{
 			stringstream ss(stringstream::in | stringstream::out);
 			ss << "train/data/plate_detect_svm/train/HasPlate/hasplate_" << i << ".jpg";
 			imwrite(ss.str(), img);
@@ -48,7 +48,7 @@ void learn2HasPlate(float bound = 0.7)
 		cout << files[i].c_str() << endl;
 		Mat img = imread(files[i].c_str());
 		if(1)
-		{ 
+		{
 			stringstream ss(stringstream::in | stringstream::out);
 			ss << "train/data/plate_detect_svm/test/HasPlate/hasplate_" << i << ".jpg";
 			imwrite(ss.str(), img);
@@ -81,7 +81,7 @@ void learn2NoPlate(float bound = 0.7)
 		cout << files[i].c_str() << endl;
 		Mat img = imread(files[i].c_str());
 		if(1)
-		{ 
+		{
 			stringstream ss(stringstream::in | stringstream::out);
 			ss << "train/data/plate_detect_svm/train/NoPlate/noplate_" << i << ".jpg";
 			imwrite(ss.str(), img);
@@ -94,7 +94,7 @@ void learn2NoPlate(float bound = 0.7)
 		cout << files[i].c_str() << endl;
 		Mat img = imread(files[i].c_str());
 		if(1)
-		{ 
+		{
 			stringstream ss(stringstream::in | stringstream::out);
 			ss << "train/data/plate_detect_svm/test/NoPlate/noplate_" << i << ".jpg";
 			imwrite(ss.str(), img);
@@ -102,7 +102,7 @@ void learn2NoPlate(float bound = 0.7)
 	}
 }
 
-void getHasPlateTrain(Mat& trainingImages, vector<int>& trainingLabels, 
+void getHasPlateTrain(Mat& trainingImages, vector<int>& trainingLabels,
 	svmCallback getFeatures = getHisteqFeatures)
 {
 	int label = 1;
@@ -134,7 +134,7 @@ void getHasPlateTrain(Mat& trainingImages, vector<int>& trainingLabels,
 }
 
 
-void getNoPlateTrain(Mat& trainingImages, vector<int>& trainingLabels, 
+void getNoPlateTrain(Mat& trainingImages, vector<int>& trainingLabels,
 	svmCallback getFeatures = getHisteqFeatures)
 {
 	int label = 0;
@@ -362,14 +362,14 @@ int svmTrain(bool dividePrepared = true, bool trainPrepared = true,
 
 		//Train SVM
 		cout << "Begin to generate svm" << endl;
-        
+
         try {
             //CvSVM svm(trainingData, classes, Mat(), Mat(), SVM_params);
-            svm.train_auto(trainingData, classes, Mat(), Mat(), SVM_params, 10, 
+            svm.train_auto(trainingData, classes, Mat(), Mat(), SVM_params, 10,
                            CvSVM::get_default_grid(CvSVM::C),
-                           CvSVM::get_default_grid(CvSVM::GAMMA), 
-                           CvSVM::get_default_grid(CvSVM::P), 
-                           CvSVM::get_default_grid(CvSVM::NU), 
+                           CvSVM::get_default_grid(CvSVM::GAMMA),
+                           CvSVM::get_default_grid(CvSVM::P),
+                           CvSVM::get_default_grid(CvSVM::NU),
                            CvSVM::get_default_grid(CvSVM::COEF),
                            CvSVM::get_default_grid(CvSVM::DEGREE),
                            true);
