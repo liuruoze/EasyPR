@@ -43,7 +43,7 @@ EasyPR是一个中文的开源车牌识别系统，其目标是成为一个简�
 | linux | Micooz  |  1.2  |  已跟EasyPR整合
 | ios | zhoushiwei |  1.1  |  [zhoushiwei/EasyPR-iOS](https://github.com/zhoushiwei/EasyPR-iOS)
 | mac | zhoushiwei |  1.1  | [zhoushiwei/EasyPR](https://github.com/zhoushiwei/EasyPR)
-
+| java | fan-wenjie |  1.2  | [fan-wenjie/EasyPR-Java](https://github.com/fan-wenjie/EasyPR-Java)
 
 ### 兼容性
 
