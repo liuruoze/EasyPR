@@ -1,19 +1,18 @@
 #include "../include/util.h"
-#include <list>
 
 #if defined(WIN32) || defined(_WIN32)
 #include <windows.h>
 #include <io.h>
-#elif defined(linux) || defined(__linux__)
+#elif defined(linux) || defined(__linux__) || defined(__APPLE__)
 #include <sys/stat.h>
 #include <dirent.h>
 #include <cstring>
-#elif defined(__APPLE__)
-#include <sys/stat.h>
-#include <sys/types.h>
-#include <dirent.h>
+#endif
+#if defined(__APPLE__)
 #include <sys/timeb.h>
 #endif
+
+#include <list>
 
 using namespace std;
 using namespace easypr;
@@ -45,7 +44,20 @@ std::string Utils::getFileName(const string &path,
                                const bool postfix /* = false */) {
   if (!path.empty()) {
 #if defined(WIN32) || defined(_WIN32)
-    size_t last_slash = path.find_last_of('\\');
+    size_t last_slash_1 = path.find_last_of("\\");
+    size_t last_slash_2 = path.find_last_of("/");
+    size_t last_slash;
+
+    if (last_slash_1 != std::string::npos &&
+        last_slash_2 != std::string::npos) {
+      // C:/path\\to/file.postfix
+      last_slash = std::max(last_slash_1, last_slash_2);
+    } else {
+      // C:\\path\\to\\file.postfix
+      // C:/path/to/file.postfix
+      last_slash =
+          (last_slash_1 == std::string::npos) ? last_slash_2 : last_slash_1;
+    }
 #else
     size_t last_slash = path.find_last_of('/');
 #endif
@@ -91,30 +103,55 @@ vector<string> Utils::splitString(const string &str, const char delimiter) {
 vector<string> Utils::getFiles(const string &folder,
                                const bool all /* = true */) {
   vector<string> files;
-#if defined(WIN32) || defined(_WIN32)
-  //文件句柄
-  long hFile = 0;
-  //文件信息
-  struct _finddata_t fileinfo;
-  string p;
-  if ((hFile = _findfirst(p.assign(path).append("\\").c_str(), &fileinfo)) !=
-      -1) {
-    do {
-      //如果是目录,迭代之
-      //如果不是,加入列表
-      if ((fileinfo.attrib & _A_SUBDIR)) {
-        if (strcmp(fileinfo.name, ".") != 0 && strcmp(fileinfo.name, "..") != 0)
-          getFiles(p.assign(path).append("\\").append(fileinfo.name), files);
-      } else {
-        files.push_back(p.assign(path).append("\\").append(fileinfo.name));
-      }
-    } while (_findnext(hFile, &fileinfo) == 0);
-    _findclose(hFile);
-  }
-#elif defined(linux) || defined(__linux__) || defined(__APPLE__)
   list<string> subfolders;
   subfolders.push_back(folder);
+#if defined(WIN32) || defined(_WIN32)
+  while (!subfolders.empty()) {
+    string current_folder(subfolders.back());
 
+    if (*(current_folder.end() - 1) != '/') {
+      current_folder.append("/*");
+    } else {
+      current_folder.append("*");
+    }
+
+    subfolders.pop_back();
+
+    struct _finddata_t file_info;
+    long file_handler = _findfirst(current_folder.c_str(), &file_info);
+
+    while (file_handler != -1) {
+      if (all &&
+          (!strcmp(file_info.name, ".") || !strcmp(file_info.name, ".."))) {
+        if (_findnext(file_handler, &file_info) != 0) break;
+        continue;
+      }
+
+      if (file_info.attrib & _A_SUBDIR) {
+        // it's a sub folder
+        if (all) {
+          // will search sub folder
+          string folder(current_folder);
+          folder.pop_back();
+          folder.append(file_info.name);
+
+          subfolders.push_back(folder.c_str());
+        }
+      } else {
+        // it's a file
+        string file_path;
+        // current_folder.pop_back();
+        file_path.assign(current_folder.c_str()).pop_back();
+        file_path.append(file_info.name);
+
+        files.push_back(file_path);
+      }
+
+      if (_findnext(file_handler, &file_info) != 0) break;
+    }  // while
+    _findclose(file_handler);
+  }
+#elif defined(linux) || defined(__linux__) || defined(__APPLE__)
   while (!subfolders.empty()) {
     string current_folder(subfolders.back());
 
