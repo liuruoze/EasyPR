@@ -12,13 +12,13 @@ CPlateRecognize::CPlateRecognize()
 	//m_charsRecognise = new CCharsRecognise();
 }
 
-////! ×°ÔØSVMÄ£ĞÍ
+////! è£…è½½SVMæ¨¡å‹
 //void CPlateRecognize::LoadSVM(string strSVM)
 //{
 //	m_plateDetect->LoadModel(strSVM.c_str());
 //}
 //
-////! ×°ÔØANNÄ£ĞÍ
+////! è£…è½½ANNæ¨¡å‹
 //void CPlateRecognize::LoadANN(string strANN)
 //{
 //	m_charsRecognise->LoadModel(strANN.c_str());
@@ -38,13 +38,13 @@ CPlateRecognize::CPlateRecognize()
 
 int CPlateRecognize::plateRecognize(Mat src, vector<string>& licenseVec)
 {
-	// ³µÅÆ·½¿é¼¯ºÏ
+	// è½¦ç‰Œæ–¹å—é›†åˆ
 	vector<Mat> plateVec;
 	
-	// Èç¹ûÉèÖÃÁËDebugÄ£Ê½£¬¾ÍÒÀ´ÎÏÔÊ¾ËùÓĞµÄÍ¼Æ¬
+	// å¦‚æœè®¾ç½®äº†Debugæ¨¡å¼ï¼Œå°±ä¾æ¬¡æ˜¾ç¤ºæ‰€æœ‰çš„å›¾ç‰‡
 	bool showDetectArea = getPDDebug();
 
-	// ½øĞĞÉî¶È¶¨Î»£¬Ê¹ÓÃÑÕÉ«ĞÅÏ¢Óë¶ş´ÎSobel
+	// è¿›è¡Œæ·±åº¦å®šä½ï¼Œä½¿ç”¨é¢œè‰²ä¿¡æ¯ä¸äºŒæ¬¡Sobel
 	int resultPD = plateDetectDeep(src, plateVec, showDetectArea, 0);
 
 	if (resultPD == 0)
@@ -56,10 +56,10 @@ int CPlateRecognize::plateRecognize(Mat src, vector<string>& licenseVec)
 		{
 			Mat plate = plateVec[j];
 			
-			//»ñÈ¡³µÅÆÑÕÉ«
+			//è·å–è½¦ç‰Œé¢œè‰²
 			string plateType = getPlateColor(plate);
 
-			//»ñÈ¡³µÅÆºÅ
+			//è·å–è½¦ç‰Œå·
 			string plateIdentify = "";
 			int resultCR = charsRecognise(plate, plateIdentify);
 			if (resultCR == 0)

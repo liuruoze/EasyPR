@@ -1,6 +1,6 @@
-// ¸¨ÖúÉú³Égeneral_testÖĞµÄÍ¼Æ¬
-// Í¨ÓÃ×ö·¨ÊÇÊ¹ÓÃeasyprÒÀ´Î¶ÁÈ¡Í¼Æ¬£¬²¢ÓÃÆäÖĞµÄÒ»¸ö³µÅÆÊ¶±ğÎÄ×Ö¸øÍ¼Æ¬ÖØÃüÃû
-// easyprÊ¶±ğµÄÎÄ×Ö²»Ò»¶¨×¼È·£¬Òò´ËĞèÒªÈËÔÙ´ÎÈ·ÈÏÓëÊÖ¹¤µ÷ÕûÏÂ
+// è¾…åŠ©ç”Ÿæˆgeneral_testä¸­çš„å›¾ç‰‡
+// é€šç”¨åšæ³•æ˜¯ä½¿ç”¨easyprä¾æ¬¡è¯»å–å›¾ç‰‡ï¼Œå¹¶ç”¨å…¶ä¸­çš„ä¸€ä¸ªè½¦ç‰Œè¯†åˆ«æ–‡å­—ç»™å›¾ç‰‡é‡å‘½å
+// easyprè¯†åˆ«çš„æ–‡å­—ä¸ä¸€å®šå‡†ç¡®ï¼Œå› æ­¤éœ€è¦äººå†æ¬¡ç¡®è®¤ä¸æ‰‹å·¥è°ƒæ•´ä¸‹
 
 #include "../include/plate_recognize.h"
 #include "../include/util.h"
@@ -10,15 +10,15 @@ using namespace easypr;
 
 extern const string GENERAL_TEST_PATH;
 
-// TODO ½«ÏÂÃæµÄÂ·¾¶¸Ä³ÉÄãµÄ
+// TODO å°†ä¸‹é¢çš„è·¯å¾„æ”¹æˆä½ çš„
 const string src_path = "F:/data/easypr-data/tmp-5";
 
-// TODO ½«ÏÂÃæµÄÂ·¾¶¸Ä³ÉÄãµÄ
+// TODO å°†ä¸‹é¢çš„è·¯å¾„æ”¹æˆä½ çš„
 const string dst_path = "F:/data/easypr-data/tmp-6";
 
 int general_test()
 {
-    ////»ñÈ¡¸ÃÂ·¾¶ÏÂµÄËùÓĞÎÄ¼ş
+    ////è·å–è¯¥è·¯å¾„ä¸‹çš„æ‰€æœ‰æ–‡ä»¶
     auto files = Utils::getFiles(src_path);
     
     CPlateLocate lo;
@@ -45,7 +45,7 @@ int general_test()
         string filepath = files[i].c_str();
         cout << "------------------" << endl;
         
-        // EasyPR¿ªÊ¼ÅĞ¶Ï³µÅÆ
+        // EasyPRå¼€å§‹åˆ¤æ–­è½¦ç‰Œ
         Mat src = imread(filepath);
         vector<string> plateVec;
         
@@ -56,14 +56,14 @@ int general_test()
             
             if (num == 0)
             {
-                cout << ""<< "ÎŞ³µÅÆ" <<endl;
+                cout << ""<< "æ— è½¦ç‰Œ" <<endl;
             }
             else
             {
                 cout << plateVec[0] <<endl;
                 string colorplate = plateVec[0];
                 
-                // Êä³ö"À¶ÅÆ:ËÕE7KU22"ÖĞÃ°ºÅºóÃæµÄ³µÅÆ
+                // è¾“å‡º"è“ç‰Œ:è‹E7KU22"ä¸­å†’å·åé¢çš„è½¦ç‰Œ
                 vector<string> spilt_plate = Utils::splitString(colorplate, ':');
                 
                 int size = spilt_plate.size();
@@ -77,7 +77,7 @@ int general_test()
         } 
         else
         {
-            cout << "´íÎóÂë:" << result << endl;
+            cout << "é”™è¯¯ç :" << result << endl;
         }
     }
     

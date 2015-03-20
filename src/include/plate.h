@@ -22,7 +22,7 @@ namespace easypr {
 	public:
 		CPlate();
 
-		//! ÉèÖÃÓë¶ÁÈ¡±äÁ¿
+		//! è®¾ç½®ä¸è¯»å–å˜é‡
 		inline void setPlateMat(Mat param){ m_plateMat = param; }
 		inline Mat getPlateMat() const{ return m_plateMat; }
 
@@ -33,13 +33,13 @@ namespace easypr {
 		inline String getPlateStr() const{ return m_plateStr; }
 
 	private:
-		//! ³µÅÆµÄÍ¼¿é
+		//! è½¦ç‰Œçš„å›¾å—
 		Mat m_plateMat;
 
-		//! ³µÅÆÔÚÔ­Í¼µÄÎ»ÖÃ
+		//! è½¦ç‰Œåœ¨åŸå›¾çš„ä½ç½®
 		RotatedRect m_platePos;
 
-		//! ³µÅÆ×Ö·û´®
+		//! è½¦ç‰Œå­—ç¬¦ä¸²
 		String m_plateStr;
 	};
 

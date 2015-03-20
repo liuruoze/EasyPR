@@ -20,21 +20,21 @@ int test_plate_recognize();
 int testMain();
 
 
-//°ÑÄãÒª²âÊÔµÄÍ¼Æ¬µØÖ·Ğ´ÔÚÏÂÃæ
+//æŠŠä½ è¦æµ‹è¯•çš„å›¾ç‰‡åœ°å€å†™åœ¨ä¸‹é¢
 const string test_img = "";
 
 
 const string testOption[] = 
 	{
-		"1. test plate_locate(³µÅÆ¶¨Î»);"		/* ³µÅÆ¶¨Î» */,
-		"2. test plate_judge(³µÅÆÅĞ¶Ï);"		/* ³µÅÆÅĞ¶Ï */,  
-		"3. test plate_detect(³µÅÆ¼ì²â);"		/* ³µÅÆ¼ì²â£¨°üº¬³µÅÆ¶¨Î»Óë³µÅÆÅĞ¶Ï£© */, 
-		"4. test chars_segment(×Ö·û·Ö¸ô);"		/* ×Ö·û·Ö¸ô */, 
-		"5. test chars_identify(×Ö·û¼ø±ğ);"		/* ×Ö·û¼ø±ğ */,  
-		"6. test chars_recognise(×Ö·ûÊ¶±ğ);"		/* ×Ö·ûÊ¶±ğ£¨°üº¬×Ö·û·Ö¸ôÓë×Ö·û¼ø±ğ£© */,
-		"7. test plate_recognize(³µÅÆÊ¶±ğ);"		/* ³µÅÆÊ¶±ğ */, 
-		"8. test all(²âÊÔÈ«²¿);"		/* ÒÔÉÏÈ«²¿ */,
-		"9. ·µ»Ø;"		/* ÍË³ö */,
+		"1. test plate_locate(è½¦ç‰Œå®šä½);"		/* è½¦ç‰Œå®šä½ */,
+		"2. test plate_judge(è½¦ç‰Œåˆ¤æ–­);"		/* è½¦ç‰Œåˆ¤æ–­ */,  
+		"3. test plate_detect(è½¦ç‰Œæ£€æµ‹);"		/* è½¦ç‰Œæ£€æµ‹ï¼ˆåŒ…å«è½¦ç‰Œå®šä½ä¸è½¦ç‰Œåˆ¤æ–­ï¼‰ */, 
+		"4. test chars_segment(å­—ç¬¦åˆ†éš”);"		/* å­—ç¬¦åˆ†éš” */, 
+		"5. test chars_identify(å­—ç¬¦é‰´åˆ«);"		/* å­—ç¬¦é‰´åˆ« */,  
+		"6. test chars_recognise(å­—ç¬¦è¯†åˆ«);"		/* å­—ç¬¦è¯†åˆ«ï¼ˆåŒ…å«å­—ç¬¦åˆ†éš”ä¸å­—ç¬¦é‰´åˆ«ï¼‰ */,
+		"7. test plate_recognize(è½¦ç‰Œè¯†åˆ«);"		/* è½¦ç‰Œè¯†åˆ« */, 
+		"8. test all(æµ‹è¯•å…¨éƒ¨);"		/* ä»¥ä¸Šå…¨éƒ¨ */,
+		"9. è¿”å›;"		/* é€€å‡º */,
 	};
 
 const int testOptionCount = 9;
@@ -54,7 +54,7 @@ int testMain()
 		cout << "////////////////////////////////////"<< endl;
 		cout << selectOption.str();
 		cout << "////////////////////////////////////"<< endl;
-		cout << "ÇëÑ¡ÔñÒ»Ïî²Ù×÷:";
+		cout << "è¯·é€‰æ‹©ä¸€é¡¹æ“ä½œ:";
 
 		int select = -1;
 		bool isRepeat = true;
@@ -100,7 +100,7 @@ int testMain()
 				isExit = true;
 				break;
 			default:
-				cout << "ÊäÈë´íÎó£¬ÇëÖØĞÂÊäÈë:";
+				cout << "è¾“å…¥é”™è¯¯ï¼Œè¯·é‡æ–°è¾“å…¥:";
 				isRepeat = true;
 				break;
 			}
@@ -144,10 +144,10 @@ int test_plate_judge()
 
 	Mat src = imread("image/plate_judge.jpg");
 
-	//¿ÉÄÜÊÇ³µÅÆµÄÍ¼¿é¼¯ºÏ
+	//å¯èƒ½æ˜¯è½¦ç‰Œçš„å›¾å—é›†åˆ
 	vector<Mat> matVec;
 
-	//¾­¹ıSVMÅĞ¶ÏºóµÃµ½µÄÍ¼¿é¼¯ºÏ
+	//ç»è¿‡SVMåˆ¤æ–­åå¾—åˆ°çš„å›¾å—é›†åˆ
 	vector<Mat> resultVec;
 
 	CPlateLocate lo;
@@ -240,7 +240,7 @@ int test_chars_identify()
 			Mat resultMat = resultVec[j];
 			bool isChinses = false;
 
-			//Ä¬ÈÏÊ×¸ö×Ö·û¿éÊÇÖĞÎÄ×Ö·û
+			//é»˜è®¤é¦–ä¸ªå­—ç¬¦å—æ˜¯ä¸­æ–‡å­—ç¬¦
 			if (j == 0)
 				isChinses = true;
 
@@ -249,7 +249,7 @@ int test_chars_identify()
 		}
 	}
 
-	const string plateLicense = "ËÕE771H6";
+	const string plateLicense = "è‹E771H6";
 
 	cout << "plateLicense: " << plateLicense << endl;
 	cout << "plateIdentify: " << plateIdentify << endl;
