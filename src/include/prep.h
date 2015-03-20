@@ -17,7 +17,7 @@
 #if defined (WIN32) || defined (_WIN32)
 #include <io.h>
 #elif defined (linux) || defined (__linux__)
-#include <sys/io.h>
+
 #endif
 
 #include <iostream>
@@ -26,7 +26,7 @@
 #include <algorithm>
 #include <cstdlib>
 #include <time.h>
-#include <math.h> 
+#include <math.h>
 
 using namespace std;
 using namespace cv;

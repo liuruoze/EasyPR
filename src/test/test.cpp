@@ -269,14 +269,14 @@ int test_plate_detect()
 {
 	cout << "test_plate_detect" << endl;
 
-	//Mat src = imread("image/plate_detect.jpg");
-	Mat src = imread("image/baidu_image/test1.jpg");
+	Mat src = imread("image/plate_detect.jpg");
+	//Mat src = imread("image/baidu_image/test1.jpg");
 
 	vector<Mat> resultVec;
 	CPlateDetect pd;
 	pd.setPDLifemode(true);
 
-	int result = pd.plateDetect(src, resultVec);
+	int result = pd.plateDetectDeep(src, resultVec);
 	if (result == 0)
 	{
 		int num = resultVec.size();

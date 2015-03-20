@@ -16,7 +16,7 @@
 #if defined (WIN32) || defined (_WIN32)
 #include <io.h>
 #elif defined (linux) || defined (__linux__)
-#include <sys/io.h>
+//#include <sys/io.h>
 #endif
 
 #include <stdlib.h>
@@ -140,8 +140,7 @@ int saveTrainData()
         stringstream ss(stringstream::in | stringstream::out);
         ss << path << "/" << strCharacters[i];
         
-        vector<string> files;
-        getFiles(ss.str(), files);
+        auto files = Utils::getFiles(ss.str());
         
         int size = files.size();
         for (int j = 0; j < size; j++)
@@ -168,9 +167,8 @@ int saveTrainData()
         cout << "Character: "<< strChinese[i] << "\n";
         stringstream ss(stringstream::in | stringstream::out);
         ss << path << "/" << strChinese[i];
-        
-        vector<string> files;
-        getFiles(ss.str(), files);
+
+        auto files = Utils::getFiles(ss.str());
         
         int size = files.size();
         for (int j = 0; j < size; j++)

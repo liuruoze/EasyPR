@@ -24,8 +24,7 @@ char * noPlatePath = "F:/data/easypr-data/learn/noPlate/";
 void label_data()
 {
 	////获取该路径下的所有文件
-	vector<string> files;
-	getFiles(notlabelPath, files);
+        auto files = Utils::getFiles(notlabelPath);
 
 	CPlateLocate lo;
 	CPlateJudge ju;
