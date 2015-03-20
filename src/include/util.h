@@ -8,6 +8,10 @@
 #undef min
 #endif
 
+#ifdef max
+#undef max
+#endif
+
 namespace easypr {
 
 class Utils {

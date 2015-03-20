@@ -18,7 +18,7 @@ int acurayTest(const string& test_path) {
   pr.LoadANN("model/ann.xml");
   pr.LoadSVM("model/svm.xml");
   pr.setLifemode(true);
-  pr.setDebug(true);
+  pr.setDebug(false);
 
   // 设置要处理的一张图片中最多有多少车牌
   pr.setMaxPlates(4);

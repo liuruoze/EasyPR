@@ -51,7 +51,7 @@ std::string Utils::getFileName(const string &path,
     if (last_slash_1 != std::string::npos &&
         last_slash_2 != std::string::npos) {
       // C:/path\\to/file.postfix
-      last_slash = std::max(last_slash_1, last_slash_2);
+      last_slash = max(last_slash_1, last_slash_2);
     } else {
       // C:\\path\\to\\file.postfix
       // C:/path/to/file.postfix
