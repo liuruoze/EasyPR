@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -91,7 +91,7 @@
     <ClCompile Include="src\core\chars_identify.cpp" />
     <ClCompile Include="src\core\chars_recognise.cpp" />
     <ClCompile Include="src\core\chars_segment.cpp" />
-    <ClCompile Include="src\core\features.cpp" />
+    <ClCompile Include="src\core\feature.cpp" />
     <ClCompile Include="src\core\plate.cpp" />
     <ClCompile Include="src\core\core_func.cpp" />
     <ClCompile Include="src\test\accuracy_test.cpp" />
@@ -116,7 +116,7 @@
     <ClInclude Include="src\include\chars_recognise.h" />
     <ClInclude Include="src\include\chars_segment.h" />
     <ClInclude Include="src\include\CParser.h" />
-    <ClInclude Include="src\include\features.h" />
+    <ClInclude Include="src\include\feature.h" />
     <ClInclude Include="src\include\plate.h" />
     <ClInclude Include="src\include\plate_detect.h" />
     <ClInclude Include="src\include\plate_judge.h" />
