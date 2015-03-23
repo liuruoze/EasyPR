@@ -1,6 +1,6 @@
 #include "include/plate_recognize.h"
 #include "include/util.h"
-#include "include/features.h"
+#include "include/feature.h"
 #include "include/CParser.h"
 
 using namespace easypr;
@@ -10,10 +10,10 @@ int acurayTestMain();
 void cmdMain(int argc, char *argv[]);
 
 namespace easypr {
-    
+
     int svmTrain(bool dividePrepared = true, bool trainPrepared = true,
                  svmCallback getFeatures = getHistogramFeatures);
-    
+
 }
 
 extern const string GENERAL_TEST_PATH = "image/general_test";
@@ -43,7 +43,7 @@ int main(int argc, char *argv[])
         cmdMain(argc, argv);
         return 0;
     }
-    
+
     bool isExit = false;
     while (isExit != true)
     {
@@ -53,12 +53,12 @@ int main(int argc, char *argv[])
         {
             selectOption << option[i] << endl;
         }
-        
+
         cout << "////////////////////////////////////"<< endl;
         cout << selectOption.str();
         cout << "////////////////////////////////////"<< endl;
         cout << "请选择一项操作:";
-        
+
         int select = -1;
         bool isRepeat = true;
         while (isRepeat)
@@ -140,12 +140,12 @@ int acurayTestMain()
         {
             selectOption << acuray_option[i] << endl;
         }
-        
+
         cout << "////////////////////////////////////"<< endl;
         cout << selectOption.str();
         cout << "////////////////////////////////////"<< endl;
         cout << "请选择一项操作:";
-        
+
         int select = -1;
         bool isRepeat = true;
         while (isRepeat)
@@ -204,12 +204,12 @@ int svmMain()
         {
             selectOption << svm_option[i] << endl;
         }
-        
+
         cout << "////////////////////////////////////"<< endl;
         cout << selectOption.str();
         cout << "////////////////////////////////////"<< endl;
         cout << "请选择一项操作:";
-        
+
         int select = -1;
         bool isRepeat = true;
         while (isRepeat)
@@ -302,11 +302,11 @@ void cmdMain(int argc, char *argv[])
         "   $ ./EasyPR -p -l -t                                    ",
         NULL
     };
-    
+
     CParser parser(argc, argv);
-    
+
     try {
-        
+
         do {
             if (parser.has_or(2, "help", "h") /* || argc < 2 */) {
                 int i = 0;
@@ -315,44 +315,44 @@ void cmdMain(int argc, char *argv[])
                 }
                 break;
             }
-            
+
             // tests
-            
+
             if (parser.has_or(2, "test_plate_locate", "-tpl")) {
                 cout << (test_plate_locate() == 0 ? "passed" : "failed");
                 break;
             }
-            
+
             if (parser.has_or(2, "test_plate_judge", "-tpj")) {
                 cout << (test_plate_judge() == 0 ? "passed" : "failed");
                 break;
             }
-            
+
             if (parser.has_or(2, "test_plate_detect", "-tpd")) {
                 cout << (test_plate_detect() == 0 ? "passed" : "failed");
                 break;
             }
-            
+
             if (parser.has_or(2, "test_chars_segment", "-tcs")) {
                 cout << (test_chars_segment() == 0 ? "passed" : "failed");
                 break;
             }
-            
+
             if (parser.has_or(2, "test_chars_identify", "-tci")) {
                 cout << (test_chars_identify() == 0 ? "passed" : "failed");
                 break;
             }
-            
+
             if (parser.has_or(2, "test_chars_recognize", "-tcr")) {
                 cout << (test_chars_recognise() == 0 ? "passed" : "failed");
                 break;
             }
-            
+
             if (parser.has_or(2, "test_plate_recognize", "-tpr")) {
                 cout << (test_plate_recognize() == 0 ? "passed" : "failed");
                 break;
             }
-            
+
             if (parser.has_or(2, "test_all", "-ta")) {
                 cout << "test_plate_locate "    << (test_plate_locate()    == 0 ? "passed" : "failed") << endl;
                 cout << "test_plate_judge "     << (test_plate_judge()     == 0 ? "passed" : "failed") << endl;
@@ -364,45 +364,45 @@ void cmdMain(int argc, char *argv[])
                 cout << "test_plate_locate "    << (test_plate_locate()    == 0 ? "passed" : "failed") << endl;
                 break;
             }
-            
+
             // batch testing
-            
+
             if (parser.has_or(2, "general_test", "-gt")) {
                 acurayTest(GENERAL_TEST_PATH);
                 break;
             }
-            
+
             if (parser.has_or(2, "native_test", "-nt")) {
                 acurayTest(NATIVE_TEST_PATH);
                 break;
             }
-            
+
             // svm trains
-            
+
             if (parser.has_or(2, "svm_gen_learndata", "-sgl")) {
                 getLearnData();
                 break;
             }
-            
+
             if (parser.has_or(2, "svm_tag_learndata", "-stl")) {
                 label_data();
                 break;
             }
-            
+
             if (parser.has_or(2, "svm_detect", "-sd")) {
                 svmTrain(parser.has_or(2, "v", "svm_divide"), parser.has_or(2, "t", "svm_train"));
                 break;
             }
-            
+
             // GDTS
-            
+
             if (parser.has_or(2, "gdts", "gts")) {
                 general_test();
                 break;
             }
-            
-            // 
-            
+
+            //
+
             if (parser.has("group")) {
                 // 开发团队;
                 cout << endl;
@@ -413,7 +413,7 @@ void cmdMain(int argc, char *argv[])
                 cout << endl;
                 break;
             }
-            
+
             if (parser.has("thanks")) {
                 // 感谢名单
                 cout << endl;
@@ -424,9 +424,9 @@ void cmdMain(int argc, char *argv[])
                 cout << endl;
                 break;
             }
-            
+
         } while(false);
-        
+
     } catch (const std::exception &err) {
         cout << err.what() << endl;
     }

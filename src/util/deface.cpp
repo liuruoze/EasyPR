@@ -21,7 +21,7 @@
 
 #include "../include/plate_recognize.h"
 #include "../include/util.h"
-#include "../include/features.h"
+#include "../include/feature.h"
 
 using namespace std;
 using namespace cv;
@@ -32,8 +32,8 @@ Mat detectAndMaskFace(Mat& img, CascadeClassifier& cascade,
 //	反人脸识别函数
 //	在发布数据到general_test数据集里，请先用这里的方法对图像进行处理
 //	EasyPR开源项目非常注重保护图片中驾驶人的隐私
-int deface() 
-{ 
+int deface()
+{
     CascadeClassifier cascade;
     //string cascadeName="/Users/zhoushiwei/Dropbox/Avatar/SDMLIB/haarcascade_frontalface_alt2.xml";
 	string cascadeName="model/haarcascade_frontalface_default.xml";
@@ -104,10 +104,10 @@ Mat detectAndMaskFace(Mat& img, CascadeClassifier& cascade, double scale)
                         roi.at<uchar>(jj,ii*3+2)=s2;
                     }
                 }
-                
+
             }
         }
     }
-   
+
 	return img;
 }

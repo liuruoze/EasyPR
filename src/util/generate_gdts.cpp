@@ -5,7 +5,7 @@
 
 #include "../include/plate_recognize.h"
 #include "../include/util.h"
-#include "../include/features.h"
+#include "../include/feature.h"
 
 using namespace easypr;
 
@@ -65,7 +65,7 @@ int generate_gdts()
 
 		if (spiltsize != 0)
 			filename = spilt_path[spiltsize-1];
-	
+
 		stringstream ss(stringstream::in | stringstream::out);
 		ss << dst_path << "/" << filename;
 		imwrite(ss.str(), dst);
