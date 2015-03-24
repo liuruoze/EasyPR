@@ -23,7 +23,7 @@
 #include <stdio.h>
 
 #include "../include/plate_recognize.h"
-#include "../include/features.h"
+#include "../include/feature.h"
 #include "../include/util.h"
 
 using namespace easypr;
@@ -59,14 +59,14 @@ Mat features(Mat in, int sizeData){
     //Histogram features
     Mat vhist=ProjectedHistogram(in,VERTICAL);
     Mat hhist=ProjectedHistogram(in,HORIZONTAL);
-    
+
     //Low data feature
     Mat lowData;
     resize(in, lowData, Size(sizeData, sizeData) );
-    
+
     //Last 10 is the number of moments components
     int numCols=vhist.cols+hhist.cols+lowData.cols*lowData.cols;
-    
+
     Mat out=Mat::zeros(1,numCols,CV_32F);
     //Asign values to feature,ANN的样本特征为水平、垂直直方图和低分辨率图像所组成的矢量
     int j=0;
@@ -100,7 +100,7 @@ void annTrain(Mat TrainData, Mat classes, int nNeruns)
     layers.at<int>(1) = nNeruns;
     layers.at<int>(2) = numAll;
     ann.create(layers, CvANN_MLP::SIGMOID_SYM, 1, 1);
-    
+
     //Prepare trainClases
     //Create a mat with n trained data by m classes
     Mat trainClasses;
@@ -117,7 +117,7 @@ void annTrain(Mat TrainData, Mat classes, int nNeruns)
         }
     }
     Mat weights( 1, TrainData.rows, CV_32FC1, Scalar::all(1) );
-    
+
     //Learn classifier
     ann.train( TrainData, trainClasses, weights );
 }
@@ -130,18 +130,18 @@ int saveTrainData()
     Mat trainingDataf10;
     Mat trainingDataf15;
     Mat trainingDataf20;
-    
+
     vector<int> trainingLabels;
     string path = "train/data/chars_recognise_ann/chars2/chars2";
-    
+
     for(int i = 0; i < numCharacter; i++)
     {
         cout << "Character: "<< strCharacters[i] << "\n";
         stringstream ss(stringstream::in | stringstream::out);
         ss << path << "/" << strCharacters[i];
-        
+
         auto files = Utils::getFiles(ss.str());
-        
+
         int size = files.size();
         for (int j = 0; j < size; j++)
         {
@@ -151,7 +151,7 @@ int saveTrainData()
             Mat f10=features(img, 10);
             Mat f15=features(img, 15);
             Mat f20=features(img, 20);
-            
+
             trainingDataf5.push_back(f5);
             trainingDataf10.push_back(f10);
             trainingDataf15.push_back(f15);
@@ -159,9 +159,9 @@ int saveTrainData()
             trainingLabels.push_back(i);			//每一幅字符图片所对应的字符类别索引下标
         }
     }
-    
+
     path = "train/data/chars_recognise_ann/charsChinese/charsChinese";
-    
+
     for (int i = 0; i < numChinese; i++)
     {
         cout << "Character: "<< strChinese[i] << "\n";
@@ -169,7 +169,7 @@ int saveTrainData()
         ss << path << "/" << strChinese[i];
 
         auto files = Utils::getFiles(ss.str());
-        
+
         int size = files.size();
         for (int j = 0; j < size; j++)
         {
@@ -179,7 +179,7 @@ int saveTrainData()
             Mat f10=features(img, 10);
             Mat f15=features(img, 15);
             Mat f20=features(img, 20);
-            
+
             trainingDataf5.push_back(f5);
             trainingDataf10.push_back(f10);
             trainingDataf15.push_back(f15);
@@ -187,13 +187,13 @@ int saveTrainData()
             trainingLabels.push_back(i + numCharacter);
         }
     }
-    
+
     trainingDataf5.convertTo(trainingDataf5, CV_32FC1);
     trainingDataf10.convertTo(trainingDataf10, CV_32FC1);
     trainingDataf15.convertTo(trainingDataf15, CV_32FC1);
     trainingDataf20.convertTo(trainingDataf20, CV_32FC1);
     Mat(trainingLabels).copyTo(classes);
-    
+
     FileStorage fs("train/ann_data.xml", FileStorage::WRITE);
     fs << "TrainingDataF5" << trainingDataf5;
     fs << "TrainingDataF10" << trainingDataf10;
@@ -201,9 +201,9 @@ int saveTrainData()
     fs << "TrainingDataF20" << trainingDataf20;
     fs << "classes" << classes;
     fs.release();
-    
+
     cout << "End saveTrainData" << endl;
-    
+
     return 0;
 }
 
@@ -211,10 +211,10 @@ void saveModel(int _predictsize, int _neurons)
 {
     FileStorage fs;
     fs.open("train/ann_data.xml", FileStorage::READ);
-    
+
     Mat TrainingData;
     Mat Classes;
-    
+
     string training;
     if(1)
     {
@@ -222,21 +222,21 @@ void saveModel(int _predictsize, int _neurons)
         ss << "TrainingDataF" << _predictsize;
         training = ss.str();
     }
-    
+
     fs[training] >> TrainingData;
     fs["classes"] >> Classes;
-    
+
     //train the Ann
     cout << "Begin to saveModelChar predictSize:" << _predictsize
     << " neurons:" << _neurons << endl;
-    
+
     long start = Utils::getTimestamp();
     annTrain(TrainingData, Classes, _neurons);
     long end = Utils::getTimestamp();
     cout << "Elapse:" << (end-start)/1000 << endl;
-    
+
     cout << "End the saveModelChar" << endl;
-    
+
     string model_name = "train/ann.xml";
     //if(1)
     //{
@@ -244,7 +244,7 @@ void saveModel(int _predictsize, int _neurons)
     //	ss << "ann_prd" << _predictsize << "_neu"<< _neurons << ".xml";
     //	model_name = ss.str();
     //}
-    
+
     FileStorage fsTo(model_name, cv::FileStorage::WRITE);
     ann.write(*fsTo, "ann");
 }
@@ -252,9 +252,9 @@ void saveModel(int _predictsize, int _neurons)
 int annMain()
 {
     cout << "To be begin." << endl;
-    
+
     saveTrainData();
-    
+
     //可根据需要训练不同的predictSize或者neurons的ANN模型
     //for (int i = 2; i <= 2; i ++)
     //{
@@ -265,11 +265,11 @@ int annMain()
     //		saveModel(size, neurons);
     //	}
     //}
-    
+
     //这里演示只训练model文件夹下的ann.xml，此模型是一个predictSize=10,neurons=40的ANN模型。
     //根据机器的不同，训练时间不一样，但一般需要10分钟左右，所以慢慢等一会吧。
     saveModel(10, 40);
-    
+
     cout << "To be end." << endl;
     int end;
     cin >> end;

@@ -1,5 +1,5 @@
-#ifndef __FEATURES_H__
-#define __FEATURES_H__
+#ifndef __FEATURE_H__
+#define __FEATURE_H__
 
 /*! \namespace easypr
     Namespace where all the C++ EasyPR functionality resides
@@ -33,4 +33,4 @@ namespace easypr {
 }	/*! \namespace easypr*/
 
 #endif
-/* endif __FEATURES_H__ */
+/* endif __FEATURE_H__ */
