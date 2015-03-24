@@ -605,7 +605,7 @@ void CPlateLocate::affine(const Mat& in, Mat& out, const double slope)
 
 	if (slope > 0)
 	{
-		//右偏型，新起点坐标系在xiff/2位置
+		//左倾型，新起点坐标系在xiff/2位置
 		plTri[0] = Point2f(0, 0);
 		plTri[1] = Point2f(width - xiff - 1, 0);
 		plTri[2] = Point2f(0 + xiff, height - 1);
@@ -616,7 +616,7 @@ void CPlateLocate::affine(const Mat& in, Mat& out, const double slope)
 	}
 	else
 	{
-		//左偏型，新起点坐标系在 -xiff/2位置
+		//右倾型，新起点坐标系在 -xiff/2位置
 		plTri[0] = Point2f(0 + xiff, 0);
 		plTri[1] = Point2f(width - 1, 0);
 		plTri[2] = Point2f(0, height - 1);
