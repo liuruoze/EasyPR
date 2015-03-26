@@ -3,7 +3,7 @@
 
 #include "../include/plate_recognize.h"
 #include "../include/util.h"
-#include "../include/features.h"
+#include "../include/feature.h"
 
 using namespace easypr;
 

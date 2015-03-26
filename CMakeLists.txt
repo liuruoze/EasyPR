@@ -14,7 +14,7 @@ set(SOURCE_FILES
     src/core/chars_identify.cpp
     src/core/chars_recognise.cpp
     src/core/chars_segment.cpp
-    src/core/features.cpp
+    src/core/feature.cpp
     src/core/plate.cpp
     src/core/plate_detect.cpp
     src/core/plate_judge.cpp

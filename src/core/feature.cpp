@@ -3,7 +3,7 @@
 // 这个部分中的特征由easypr的开发者修改
 
 #include "../include/prep.h"
-#include "../include/features.h"
+#include "../include/feature.h"
 #include "../include/core_func.h"
 
 /*! \namespace easypr
