@@ -414,6 +414,9 @@ int CPlateLocate::deskew(const Mat& src, const Mat& src_b, vector<RotatedRect>& 
 			Mat bound_mat = src(safeBoundRect);
 			Mat bound_mat_b = src_b(safeBoundRect);
 
+			/*Mat element = getStructuringElement(MORPH_ELLIPSE, Size(20, 20));
+			morphologyEx(bound_mat_b, bound_mat_b, MORPH_CLOSE, element);*/
+
 			Point2f roi_ref_center = roi_rect.center - safeBoundRect.tl();
 			
 			Mat deskew_mat;
