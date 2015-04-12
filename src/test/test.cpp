@@ -115,7 +115,7 @@ int test_plate_locate()
 {
 	cout << "test_plate_locate" << endl;
 
-	Mat src = imread("image/plate_locate.jpg");
+	Mat src = imread("image/test.jpg");
 
 	vector<Mat> resultVec;
 	CPlateLocate plate;
@@ -132,6 +132,7 @@ int test_plate_locate()
 			imshow("plate_locate", resultMat);
 			waitKey(0);
 		}
+        destroyWindow("plate_locate");
 	}
 
 	return result;
@@ -168,6 +169,7 @@ int test_plate_judge()
 			imshow("plate_judge", resultMat);
 			waitKey(0);
 		}
+        destroyWindow("plate_judge");
 	}
 
 	CPlateJudge ju;
@@ -186,6 +188,7 @@ int test_plate_judge()
 			imshow("plate_judge", resultMat);
 			waitKey(0);
 		}
+        destroyWindow("plate_judge");
 	}
 
 	return resultJu;
@@ -210,6 +213,7 @@ int test_chars_segment()
 			imshow("chars_segment", resultMat);
 			waitKey(0);
 		}
+        destroyWindow("chars_segment");
 	}
 
 	return result;
@@ -257,10 +261,6 @@ int test_chars_identify()
 	}
 	cout << "Identify Correct!" << endl;
 
-	cout << "Enter 1 for coninue:";
-	int a = 0;
-	cin >> a;
-
 	return result;
 }
 
@@ -269,14 +269,14 @@ int test_plate_detect()
 {
 	cout << "test_plate_detect" << endl;
 
-	//Mat src = imread("image/plate_detect.jpg");
-	Mat src = imread("image/baidu_image/test1.jpg");
+	Mat src = imread("image/plate_detect.jpg");
+	//Mat src = imread("image/baidu_image/test1.jpg");
 
 	vector<Mat> resultVec;
 	CPlateDetect pd;
 	pd.setPDLifemode(true);
 
-	int result = pd.plateDetect(src, resultVec);
+	int result = pd.plateDetectDeep(src, resultVec);
 	if (result == 0)
 	{
 		int num = resultVec.size();
@@ -286,6 +286,7 @@ int test_plate_detect()
 			imshow("plate_detect", resultMat);
 			waitKey(0);
 		}
+        destroyWindow("plate_detect");
 	}
 
 	return result;
@@ -307,10 +308,6 @@ int test_chars_recognise()
 		cout << "charsRecognise: " << charsRecognise << endl;
 	}
 
-	cout << "Enter 1 for coninue:";
-	int a = 0;
-	cin >> a;
-
 	return result;
 }
 
@@ -318,8 +315,7 @@ int test_plate_recognize()
 {
 	cout << "test_plate_recognize" << endl;
 
-	//Mat src = imread("image/plate_locate.jpg");
-	Mat src = imread("image/ÔÁB3RS91.jpg");
+	Mat src = imread("image/test.jpg");
 
 	CPlateRecognize pr;
 	pr.LoadANN("model/ann.xml");
@@ -342,10 +338,6 @@ int test_plate_recognize()
 
 	if (result != 0)
 		cout << "result:" << result << endl;
-
-	cout << "Enter 1 for coninue:";
-	int a = 0;
-	cin >> a;
 
 	return result;
 }

@@ -5,46 +5,45 @@ EasyPR是一个中文的开源车牌识别系统，其目标是成为一个简�
 
 相比于其他的车牌识别系统，EasyPR有如下特点：
 
-* 它基于openCV这个开源库。这意味着你可以获取全部源代码，并且移植到java等平台。
+* 它基于openCV这个开源库。这意味着你可以获取全部源代码，并且移植到opencv支持的所有平台。
 * 它能够识别中文。例如车牌为苏EUK722的图片，它可以准确地输出std:string类型的"苏EUK722"的结果。
-* 它的识别率较高。图片清晰情况下，车牌检测与字符识别可以达到90%以上的精度。
-
-### 版本
-
-EasyPR最开始是发布在[GitHub](https://github.com/liuruoze/EasyPR)上的，然后在国内的[oschina](http://git.oschina.net/easypr/EasyPR)上也部署了一份镜像。
-相关的issue欢迎在GitHub上统一提交。目前除了windows版本以外，还有以下其他平台的版本：
-
-|版本 | 开发者 | 地址
-|------|-------|-------
-| android |  goldriver  |  [linuxxx/EasyPR_Android](https://github.com/linuxxx/EasyPR_Android)
-| linux | Micooz  |  [Micooz/EasyPR/tree/linux-dev](https://github.com/Micooz/EasyPR/tree/linux-dev)
-| ios | zhoushiwei |  [zhoushiwei/EasyPR-iOS](https://github.com/zhoushiwei/EasyPR-iOS)
-| mac | zhoushiwei | [zhoushiwei/EasyPR](https://github.com/zhoushiwei/EasyPR)
-| c# | 招聘中 |   
-
-感谢以上所有开发者的努力！
+* 它的识别率较高。图片清晰情况下，车牌检测与字符识别可以达到80%以上的精度。
 
 ### 更新
 
-目前EasyPR的版本是1.1，相比上一个版本，有以下更新。可以在[ChangeLog](doc/ChangeLog.md)中找到更多信息。
-目前版本的EasyPR在车牌定位上还不够鲁棒，在下个版本中计划对定位做个完善与升级。
+本次更新是1.2版，主要改进在于提升了车牌定位模块的准确性，从70%左右到目前的94%，见下图：
 
-* 新的SVM模型。新模型使用rbf核替代了liner核，在车牌判断的准确率提升了8个百分点。
-* 新增两个特征提取方法。并提供了相关的回调函数接口。
-* 新增Debug模式。可以在image/tmp文件夹下看到所有输出的中间图片。
-* 新增LifeMode模式。相比默认模式，更适合在生活场景下定位车牌。
-* 新增批量测试功能。这个功能可供测试EasyPR在多幅图片上的整体表现效果。
-* 引入GDTS(General Data Test Set。通用数据测试集)概念，作为EasyPR准确率的评测数据集。
-* 引入[GDSL协议](image/GDSL.txt)。此协议是为了确保GDTS中的数据不受到任何商业性与恶性目的行为的滥用。
-* 完善SVM训练功能。提供了一个方便的训练操作窗口。这些功能是为了配合即将发布的SVM开发详解这篇文章。
-* 强化SVM模型验证。使用了三个新的数据集概念，即learn data，train data，test data。
-* 新增评价指标。引入Precise，Recall，FSocre三个指标这三个指标作为SVM模型准确率评判的参数与改善的依据。
-* 新增整体指标。引入levenshtein距离作为EasyPR整体识别准确率误差的评判参数与改善依据。
-* 大幅增加训练数据。SVM训练数据中增加了近千张新数据(未经直方图均衡化的车牌图片和非车牌图片)。
-* 新增命令行窗口，作为测试与训练的辅助工具。
+![1.2版综合效果](doc/res/testresult.png)
 
-注意：上一个版本中image文件下的test.jpg请删除。它的格式已经不符合新的[GDSL协议](image/GDSL.txt)的约定。
-如果想测试，可以使用本版本中替换的test.jpg。
+主要改动如下：
+
+* 车牌定位使用了“颜色信息”+“二次Sobel”的综合搜索方法。在下面的window中红框代表Sobel定位结果，黄框代表颜色定位结果。
+
+* “批量测试”增加了一个结果查看window，这个窗口可以用SetDebug()方法开闭(true开，false关)。
+
+![查看结果](doc/res/window.png)
+
+* 基本攻克了“大角度定位”问题，下图的车牌被定位并转到了正确的视角。
+
+![大角度定位](doc/res/bigangle.png)
+
+* GDTS里新增了若干张新测试图，包括数张大角度图。
+
+* “批量测试”结果现在同时会保存在“run_accuracy”文件中，可以查询历史信息。
+
+* 与Linux版本做了整合，可以实现跨平台编译。
+
+### 平台
+
+目前除了windows平台以外，还有以下其他平台的EasyPR版本。一些平台的版本可能会暂时落后于主平台。
+
+|版本 | 开发者 | 版本 | 地址 
+|------|-------|-------|-------
+| android |  goldriver  |  1.1  |  [linuxxx/EasyPR_Android](https://github.com/linuxxx/EasyPR_Android)
+| linux | Micooz  |  1.2  |  已跟EasyPR整合
+| ios | zhoushiwei |  1.1  |  [zhoushiwei/EasyPR-iOS](https://github.com/zhoushiwei/EasyPR-iOS)
+| mac | zhoushiwei |  1.1  | [zhoushiwei/EasyPR](https://github.com/zhoushiwei/EasyPR)
+| java | fan-wenjie |  1.2  | [fan-wenjie/EasyPR-Java](https://github.com/fan-wenjie/EasyPR-Java)
 
 ### 兼容性
 
@@ -91,7 +90,6 @@ EasyPR不需要安装，开发者直接在其上做改动。如果想使用DLL�
 |------|----------
 | general_test | GDTS（通用数据测试集）
 | natvie_test | NDTS（本地数据测试集）
-| baidu_image | 从百度下载的图片
 | tmp | Debug模式下EasyPR输出中间图片的目录
 
 以下表格是src目录中子目录的解释:
@@ -116,7 +114,8 @@ EasyPR不需要安装，开发者直接在其上做改动。如果想使用DLL�
 | chars_recognise | 字符识别，是字符分割与字符鉴别功能的组合
 | plate_recognize | 车牌识别，是车牌检测与字符识别的共有子类
 | features | 特征提取回调函数
-| prep.h | 预包含头文件
+| plate | 车牌抽象
+| core_func.h | 共有的一些函数
 
 以下表格是src目录下一些辅助文件的解释与关系:
 
@@ -129,14 +128,21 @@ EasyPR不需要安装，开发者直接在其上做改动。如果想使用DLL�
 | svm_train.cpp | svm训练函数
 | generate_gdts.cpp | GDTS生成函数
 
-### 问题
+### Contributer
 
-如果有任何问题或者建议请在issues里直接提交，或者发email：easypr_dev@163.com。
-建议与问题一经采纳即会将您的贡献大名列入EasyPR的感谢名单（ Credits ）中。
+* liuruoze：作者与核心代码编写
+
+* Micooz：linux平台编译，性能优化，util类
+
+* jsxyhelu：deface版本一
+
+* zhoushiwei：deface版本二
+
+* ahccom：新的plateLocate函数
 
 ### 鸣谢
 
-taotao1233，唐大侠，jsxyhelu，如果有一天(zhoushiwei)，学习奋斗，袁承志，圣城小石匠，goldriver，Micooz，梦里时光，Rain Wang
+taotao1233，唐大侠，jsxyhelu，如果有一天(zhoushiwei)，学习奋斗，袁承志，圣城小石匠，goldriver，Micooz，梦里时光，Rain Wang，任薛纪，ahccom
 
 
 

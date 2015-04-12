@@ -77,12 +77,31 @@ int CPlateJudge::plateJudge(const vector<Mat>& inVec,
 	for (int j = 0; j < num; j++)
 	{
 		Mat inMat = inVec[j];
-
+		
 		int response = -1;
 		plateJudge(inMat, response);
 
 		if (response == 1)
 			resultVec.push_back(inMat);
+	}
+	return 0;
+}
+
+//! 对多幅车牌进行SVM判断
+int CPlateJudge::plateJudge(const vector<CPlate>& inVec,
+	vector<CPlate>& resultVec)
+{
+	int num = inVec.size();
+	for (int j = 0; j < num; j++)
+	{
+		CPlate inPlate = inVec[j];
+		Mat inMat = inPlate.getPlateMat();
+
+		int response = -1;
+		plateJudge(inMat, response);
+
+		if (response == 1)
+			resultVec.push_back(inPlate);
 	}
 	return 0;
 }

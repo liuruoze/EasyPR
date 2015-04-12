@@ -1,29 +1,35 @@
 //////////////////////////////////////////////////////////////////////////
 // Name:	    plate_judge Header
-// Version:		1.0
-// Date:	    2014-09-22
+// Version:		1.1
+// Date:	    2014-09-28
+// MDate:	    2015-01-28
 // Author:	    liuruoze
 // Copyright:   liuruoze
 // Reference:	Mastering OpenCV with Practical Computer Vision Projects
 // Reference:	CSDN Bloger taotao1233
-// Desciption:  
+// Desciption:
 // Defines CPlateLocate
 //////////////////////////////////////////////////////////////////////////
 #ifndef __PLATE_JUDGE_H__
 #define __PLATE_JUDGE_H__
 
 #include "prep.h"
-#include "features.h"
+#include "plate.h"
+#include "feature.h"
+#include "core_func.h"
 
 /*! \namespace easypr
     Namespace where all the C++ EasyPR functionality resides
 */
 namespace easypr {
 
-class CPlateJudge 
+class CPlateJudge
 {
 public:
 	CPlateJudge();
+
+	//! 对多幅车牌进行SVM判断
+	int plateJudge(const vector<CPlate>&, vector<CPlate>&);
 
 	//! 车牌判断
 	int plateJudge(const vector<Mat>&, vector<Mat>&);

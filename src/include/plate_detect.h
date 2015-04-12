@@ -1,7 +1,8 @@
 //////////////////////////////////////////////////////////////////////////
 // Name:	    plate_detect Header
-// Version:		1.0
+// Version:		1.2
 // Date:	    2014-09-28
+// MDate:	    2015-03-13
 // Author:	    liuruoze
 // Copyright:   liuruoze
 // Reference:	Mastering OpenCV with Practical Computer Vision Projects
@@ -17,6 +18,7 @@
 #include "plate_locate.h"
 #include "plate_judge.h"
 
+
 /*! \namespace easypr
     Namespace where all the C++ EasyPR functionality resides
 */
@@ -28,7 +30,12 @@ public:
 	CPlateDetect();
 
 	//! 车牌检测：车牌定位与判断
-	int plateDetect(Mat, vector<Mat>&);
+	int plateDetect(Mat, vector<Mat>&, int index = 0);
+
+	//! 深度车牌检测，使用颜色与二次Sobel法综合
+	int plateDetectDeep(Mat src, vector<Mat>& resultVec, bool showDetectArea = true, int index = 0);
+
+	int showResult(const Mat& result);
 
 	//! 装载SVM模型
 	void LoadSVM(string s);
@@ -62,8 +69,14 @@ public:
 
 	inline void setJudgeAngle(int param){m_plateLocate->setJudgeAngle(param);}
 
+	inline void setMaxPlates(float param){ m_maxPlates = param; }
+	inline float getMaxPlates() const { return m_maxPlates; }
+
 private:
-	//！车牌定位
+	//! 设置一幅图中最多有多少车牌
+	int m_maxPlates;
+
+	//! 车牌定位
 	CPlateLocate* m_plateLocate;
 
 	//! 车牌判断

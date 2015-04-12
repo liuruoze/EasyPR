@@ -5,7 +5,7 @@
 
 #include "../include/plate_recognize.h"
 #include "../include/util.h"
-#include "../include/features.h"
+#include "../include/feature.h"
 
 using namespace easypr;
 
@@ -31,8 +31,7 @@ int generate_gdts()
 	string cascadeName="model/haarcascade_frontalface_alt_tree.xml";
 
 	////获取该路径下的所有文件
-	vector<string> files;
-	getFiles(src_path, files);
+        auto files = Utils::getFiles(src_path);
 	int size = files.size();
 
 	if (0 == size)
@@ -59,14 +58,14 @@ int generate_gdts()
 		Mat dst = detectAndMaskFace(img, cascade, 1.5);
 
 		// 将图片导出到新路径
-		vector<string> spilt_path;
-		SplitString(filepath, spilt_path, "\\");
+        vector<string> spilt_path = Utils::splitString(filepath, '\\');
+
 		int spiltsize = spilt_path.size();
 		string filename = "";
 
 		if (spiltsize != 0)
 			filename = spilt_path[spiltsize-1];
-	
+
 		stringstream ss(stringstream::in | stringstream::out);
 		ss << dst_path << "/" << filename;
 		imwrite(ss.str(), dst);
@@ -118,6 +117,6 @@ Mat imageProcess(Mat img)
 	Rect rect(width*0.01, height*0.01, width*0.99, height*0.99);
 
 	Mat dst = img(rect);
-	GaussianBlur( dst, dst, Size(1, 1), 0, 0, BORDER_DEFAULT );
+	//GaussianBlur( dst, dst, Size(1, 1), 0, 0, BORDER_DEFAULT );
 	return dst;
 }
