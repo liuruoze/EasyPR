@@ -12,13 +12,13 @@ CPlateRecognize::CPlateRecognize()
 	//m_charsRecognise = new CCharsRecognise();
 }
 
-////! ×°ÔØSVMÄ£ĞÍ
+////! è£…è½½SVMæ¨¡å‹
 //void CPlateRecognize::LoadSVM(string strSVM)
 //{
 //	m_plateDetect->LoadModel(strSVM.c_str());
 //}
 //
-////! ×°ÔØANNÄ£ĞÍ
+////! è£…è½½ANNæ¨¡å‹
 //void CPlateRecognize::LoadANN(string strANN)
 //{
 //	m_charsRecognise->LoadModel(strANN.c_str());
@@ -38,14 +38,14 @@ CPlateRecognize::CPlateRecognize()
 
 int CPlateRecognize::plateRecognize(Mat src, vector<string>& licenseVec,int index)
 {
-	// ³µÅÆ·½¿é¼¯ºÏ
+	// è½¦ç‰Œæ–¹å—é›†åˆ
 	vector<CPlate> plateVec;
 	
 	
-	// Èç¹ûÉèÖÃÁËDebugÄ£Ê½£¬¾ÍÒÀ´ÎÏÔÊ¾ËùÓĞµÄÍ¼Æ¬
+	// å¦‚æœè®¾ç½®äº†Debugæ¨¡å¼ï¼Œå°±ä¾æ¬¡æ˜¾ç¤ºæ‰€æœ‰çš„å›¾ç‰‡
 	bool showDetectArea = getPDDebug();
 	showDetectArea=0;
-	// ½øĞĞÉî¶È¶¨Î»£¬Ê¹ÓÃÑÕÉ«ĞÅÏ¢Óë¶ş´ÎSobel
+	// è¿›è¡Œæ·±åº¦å®šä½ï¼Œä½¿ç”¨é¢œè‰²ä¿¡æ¯ä¸äºŒæ¬¡Sobel
 	int resultPD = plateDetectDeep(src, plateVec, showDetectArea, 0);
 
 	Mat result;
@@ -64,10 +64,10 @@ int CPlateRecognize::plateRecognize(Mat src, vector<string>& licenseVec,int inde
 			
 			Mat plate = item.getPlateMat();
 			
-			//»ñÈ¡³µÅÆÑÕÉ«
+			//è·å–è½¦ç‰Œé¢œè‰²
 			string plateType = getPlateColor(plate);
 
-			//»ñÈ¡³µÅÆºÅ
+			//è·å–è½¦ç‰Œå·
 			string plateIdentify = "";
 			int resultCR = charsRecognise(plate, plateIdentify);
 			if (resultCR == 0)
@@ -88,7 +88,7 @@ int CPlateRecognize::plateRecognize(Mat src, vector<string>& licenseVec,int inde
 
 				//	CvScalar size(cvScalar(8,0.5,0.1));
 
-				//	text.setFont(NULL, &size, NULL, &p);   // Í¸Ã÷´¦Àí
+				//	text.setFont(NULL, &size, NULL, &p);   // é€æ˜å¤„ç†
 
 				//	text.putText(result, license.c_str(), Point(width,height*(index+1)));
 
@@ -107,14 +107,14 @@ int CPlateRecognize::plateRecognize(Mat src, vector<string>& licenseVec,int inde
 					for (int j = 0; j < 4; j++)
 					{
 						line(result, rect_points[j], rect_points[(j + 1) % 4], Scalar(255, 255, 0), 2, 8);
-						//ÑÕÉ«¶¨Î»³µÅÆ£¬»ÆÉ«·½¿ò
+						//é¢œè‰²å®šä½è½¦ç‰Œï¼Œé»„è‰²æ–¹æ¡†
 					}
 				}
 				else
 				{
 					for( int j = 0; j < 4; j++ )
 					{
-						line(result, rect_points[j], rect_points[(j+1)%4], Scalar(0,0,255), 2, 8 );//sobel¶¨Î»³µÅÆ£¬ºìÉ«·½¿ò
+						line(result, rect_points[j], rect_points[(j+1)%4], Scalar(0,0,255), 2, 8 );//sobelå®šä½è½¦ç‰Œï¼Œçº¢è‰²æ–¹æ¡†
 					}
 
 				}

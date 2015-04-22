@@ -1,29 +1,29 @@
 // learn data_prepare : 
-// Éú³Élearn dataµÄcpp£¬learn dataÖ¸µÄÊÇtrain data£¬verify data£¬ test dataµÄ×ÜºÍ£¬Õâ¸öÃû×ÖÊÇÎÒÆğµÄ¡£
-// learn dataÓ¦¸ÃÊÇÌùºÃ±êÇ©µÄÊı¾İ£¬Òò´Ë¼´±ãÍ¨¹ıEasyPR×Ô¶¯»¯´¦ÀíÒÔºó£¬Ò²ÒªÈËÎªµÄĞŞÕıÒ»ÏÂ.
+// ç”Ÿæˆlearn dataçš„cppï¼Œlearn dataæŒ‡çš„æ˜¯train dataï¼Œverify dataï¼Œ test dataçš„æ€»å’Œï¼Œè¿™ä¸ªåå­—æ˜¯æˆ‘èµ·çš„ã€‚
+// learn dataåº”è¯¥æ˜¯è´´å¥½æ ‡ç­¾çš„æ•°æ®ï¼Œå› æ­¤å³ä¾¿é€šè¿‡EasyPRè‡ªåŠ¨åŒ–å¤„ç†ä»¥åï¼Œä¹Ÿè¦äººä¸ºçš„ä¿®æ­£ä¸€ä¸‹.
 
-// ÄãÓ¦¸Ã°´ÕÕÈçÏÂµÄ²½ÖèºÍË³Ğò×éÖ¯learn data£º
-// 1.ÓÃEasyPR¶Ônot label data½øĞĞ´¦Àí£¬Í¨¹ıEasyPR¸¨ÖúÀ´¶Ô³µÅÆÍ¼Æ¬½øĞĞ±êÇ©£¨·Åµ½²»Í¬ÎÄ¼ş¼ĞÏÂ£©£»
-// 2.±êÇ©·ÖÁ½ÖÖ£¬Ò»ÖÖÊÇÓĞ³µÅÆµÄ£¬Ò»ÖÖÊÇÎŞ³µÅÆµÄ£»
-// 2.EasyPRÉú³É±êÇ©ÒÔºó£¬Äã»¹µÃĞèÒªÈâÑÛÈ·ÈÏÏÂ£¬½«±»²»ÕıÈ·±êÇ©µÄÊı¾İ×ªÒÆµ½ËüÃÇ¸ÃÈ¥µÄÎÄ¼ş¼ĞÏÂ£»
-// 3.Í¨¹ıÉÏÃæµÄ²½Öè£¬ÕıÈ·µÄ³µÅÆÍ¼Æ¬ºÍ·Ç³µÅÆÍ¼Æ¬ÒÑ¾­±»·Ö±ğ·Åµ½Á½¸öÎÄ¼şÏÂ£¬¼ÙÉèÊÇhasplateºÍnoplate£»
-// 4.½«ÕâÁ½¸öÎÄ¼ş¼Ğ·Åµ½EasyPRÄ¿Â¼train/data/plate_detect_svm/learnÏÂÃæ
-// 5.ÔËĞĞEasyPR£¬Ñ¡Ôñ¡°ÑµÁ·¡±Ä¿Â¼ÏÂµÄ¡°³µÅÆ¼ì²â£¨not divide£©¡±£¬Õâ¸ö³ÌĞò»á×Ô¶¯°Ñlearn data·Ö¿é£¬ÑµÁ·£¬²âÊÔ
+// ä½ åº”è¯¥æŒ‰ç…§å¦‚ä¸‹çš„æ­¥éª¤å’Œé¡ºåºç»„ç»‡learn dataï¼š
+// 1.ç”¨EasyPRå¯¹not label dataè¿›è¡Œå¤„ç†ï¼Œé€šè¿‡EasyPRè¾…åŠ©æ¥å¯¹è½¦ç‰Œå›¾ç‰‡è¿›è¡Œæ ‡ç­¾ï¼ˆæ”¾åˆ°ä¸åŒæ–‡ä»¶å¤¹ä¸‹ï¼‰ï¼›
+// 2.æ ‡ç­¾åˆ†ä¸¤ç§ï¼Œä¸€ç§æ˜¯æœ‰è½¦ç‰Œçš„ï¼Œä¸€ç§æ˜¯æ— è½¦ç‰Œçš„ï¼›
+// 2.EasyPRç”Ÿæˆæ ‡ç­¾ä»¥åï¼Œä½ è¿˜å¾—éœ€è¦è‚‰çœ¼ç¡®è®¤ä¸‹ï¼Œå°†è¢«ä¸æ­£ç¡®æ ‡ç­¾çš„æ•°æ®è½¬ç§»åˆ°å®ƒä»¬è¯¥å»çš„æ–‡ä»¶å¤¹ä¸‹ï¼›
+// 3.é€šè¿‡ä¸Šé¢çš„æ­¥éª¤ï¼Œæ­£ç¡®çš„è½¦ç‰Œå›¾ç‰‡å’Œéè½¦ç‰Œå›¾ç‰‡å·²ç»è¢«åˆ†åˆ«æ”¾åˆ°ä¸¤ä¸ªæ–‡ä»¶ä¸‹ï¼Œå‡è®¾æ˜¯hasplateå’Œnoplateï¼›
+// 4.å°†è¿™ä¸¤ä¸ªæ–‡ä»¶å¤¹æ”¾åˆ°EasyPRç›®å½•train/data/plate_detect_svm/learnä¸‹é¢
+// 5.è¿è¡ŒEasyPRï¼Œé€‰æ‹©â€œè®­ç»ƒâ€ç›®å½•ä¸‹çš„â€œè½¦ç‰Œæ£€æµ‹ï¼ˆnot divideï¼‰â€ï¼Œè¿™ä¸ªç¨‹åºä¼šè‡ªåŠ¨æŠŠlearn dataåˆ†å—ï¼Œè®­ç»ƒï¼Œæµ‹è¯•
 
 #include "../include/plate_recognize.h"
 #include "../include/util.h"
 
 using namespace easypr;
 
-//! ½«ÒÔÏÂÂ·¾¶¸Ä³ÉÄãµÄÎ»ÖÃ
+//! å°†ä»¥ä¸‹è·¯å¾„æ”¹æˆä½ çš„ä½ç½®
 const char * notlabelPath = "F:/data/easypr-data/notlabel";
 const char * hasPaltePath = "F:/data/easypr-data/learn/hasPlate/";
 const char * noPlatePath = "F:/data/easypr-data/learn/noPlate/";
 
-//! ¶ÁÈ¡not label data£¬Éú³Élearn data
+//! è¯»å–not label dataï¼Œç”Ÿæˆlearn data
 void label_data()
 {
-	////»ñÈ¡¸ÃÂ·¾¶ÏÂµÄËùÓĞÎÄ¼ş
+	////è·å–è¯¥è·¯å¾„ä¸‹çš„æ‰€æœ‰æ–‡ä»¶
         auto files = Utils::getFiles(notlabelPath);
 
 	CPlateLocate lo;

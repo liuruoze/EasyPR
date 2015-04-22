@@ -23,7 +23,7 @@ namespace easypr{
 	}
 	int CCharsRecognise::charsRecognise(Mat plate, string& plateLicense, int index)
 	{
-		//车牌字符方块集合
+		//杞︾墝瀛楃鏂瑰潡闆嗗悎
 		vector<Mat> matVec;
 
 		string plateIdentify = "";
@@ -37,7 +37,7 @@ namespace easypr{
 				Mat charMat = matVec[j];
 				bool isChinses = false;
 				bool isSpeci=false;
-				//默认首个字符块是中文字符
+				//榛樿棣栦釜瀛楃鍧楁槸涓枃瀛楃
 				if (j == 0)
 					isChinses = true;
 				if(j==1)
