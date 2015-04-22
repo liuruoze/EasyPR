@@ -275,18 +275,19 @@ int test_plate_detect()
 
 	Mat src = imread("image/plate_detect.jpg");
 
-	vector<Mat> resultVec;
+	vector<CPlate> resultVec;
 	CPlateDetect pd;
 	pd.setPDLifemode(true);
 
-	int result = pd.plateDetect(src, resultVec);
+	int result = pd.plateDetectDeep(src, resultVec);
 	if (result == 0)
 	{
 		int num = resultVec.size();
 		for (int j = 0; j < num; j++)
 		{
-			Mat resultMat = resultVec[j];
-			imshow("plate_detect", resultMat);
+			CPlate resultMat = resultVec[j];
+			
+			imshow("plate_detect", resultMat.getPlateMat());
 			waitKey(0);
 		}
 		destroyWindow("plate_detect");

@@ -108,6 +108,7 @@ int CPlateDetect::plateDetectDeep(Mat src, vector<CPlate>& resultVec, bool showD
 		CPlate plate = all_result_Plates[i];
 		resultVec.push_back(plate);
 	}
+
 	return 0;
 }
 
