@@ -1,6 +1,6 @@
-// è¿™ä¸ªæ–‡ä»¶å®šä¹‰äº†EasyPRé‡Œæ‰€æœ‰plateåˆ¤æ–­çš„é€šç”¨å‡½æ•°
-// æ‰€å±å‘½åç©ºé—´ä¸ºeasypr
-// è¿™ä¸ªéƒ¨åˆ†ä¸­çš„å‡½æ•°è½»æ˜“ä¸è¦æ”¹åŠ¨
+// Õâ¸öÎÄ¼ş¶¨ÒåÁËEasyPRÀïËùÓĞplateÅĞ¶ÏµÄÍ¨ÓÃº¯Êı
+// ËùÊôÃüÃû¿Õ¼äÎªeasypr
+// Õâ¸ö²¿·ÖÖĞµÄº¯ÊıÇáÒ×²»Òª¸Ä¶¯
 
 #include "../include/prep.h"
 #include "../include/core_func.h"
@@ -10,30 +10,30 @@ Namespace where all the C++ EasyPR functionality resides
 */
 namespace easypr {
 
-	//! æ ¹æ®ä¸€å¹…å›¾åƒä¸é¢œè‰²æ¨¡æ¿è·å–å¯¹åº”çš„äºŒå€¼å›¾
-	//! è¾“å…¥RGBå›¾åƒ, é¢œè‰²æ¨¡æ¿ï¼ˆè“è‰²ã€é»„è‰²ï¼‰
-	//! è¾“å‡ºç°åº¦å›¾ï¼ˆåªæœ‰0å’Œ255ä¸¤ä¸ªå€¼ï¼Œ255ä»£è¡¨åŒ¹é…ï¼Œ0ä»£è¡¨ä¸åŒ¹é…ï¼‰
+	//! ¸ù¾İÒ»·ùÍ¼ÏñÓëÑÕÉ«Ä£°å»ñÈ¡¶ÔÓ¦µÄ¶şÖµÍ¼
+	//! ÊäÈëRGBÍ¼Ïñ, ÑÕÉ«Ä£°å£¨À¶É«¡¢»ÆÉ«£©
+	//! Êä³ö»Ò¶ÈÍ¼£¨Ö»ÓĞ0ºÍ255Á½¸öÖµ£¬255´ú±íÆ¥Åä£¬0´ú±í²»Æ¥Åä£©
 	Mat colorMatch(const Mat& src, Mat& match, const Color r, const bool adaptive_minsv)
 	{
-		// Så’ŒVçš„æœ€å°å€¼ç”±adaptive_minsvè¿™ä¸ªboolå€¼åˆ¤æ–­
-		// å¦‚æœä¸ºtrueï¼Œåˆ™æœ€å°å€¼å–å†³äºHå€¼ï¼ŒæŒ‰æ¯”ä¾‹è¡°å‡
-		// å¦‚æœä¸ºfalseï¼Œåˆ™ä¸å†è‡ªé€‚åº”ï¼Œä½¿ç”¨å›ºå®šçš„æœ€å°å€¼minabs_sv
-		// é»˜è®¤ä¸ºfalse
+		// SºÍVµÄ×îĞ¡ÖµÓÉadaptive_minsvÕâ¸öboolÖµÅĞ¶Ï
+		// Èç¹ûÎªtrue£¬Ôò×îĞ¡ÖµÈ¡¾öÓÚHÖµ£¬°´±ÈÀıË¥¼õ
+		// Èç¹ûÎªfalse£¬Ôò²»ÔÙ×ÔÊÊÓ¦£¬Ê¹ÓÃ¹Ì¶¨µÄ×îĞ¡Öµminabs_sv
+		// Ä¬ÈÏÎªfalse
 		const float max_sv = 255;
 		const float minref_sv = 64;
 
 		const float minabs_sv = 95;
 
-		//blueçš„HèŒƒå›´
+		//blueµÄH·¶Î§
 		const int min_blue = 100;  //100
 		const int max_blue = 140;  //140
 
-		//yellowçš„HèŒƒå›´
+		//yellowµÄH·¶Î§
 		const int min_yellow = 15; //15
 		const int max_yellow = 40; //40
 
 		Mat src_hsv;
-		// è½¬åˆ°HSVç©ºé—´è¿›è¡Œå¤„ç†ï¼Œé¢œè‰²æœç´¢ä¸»è¦ä½¿ç”¨çš„æ˜¯Håˆ†é‡è¿›è¡Œè“è‰²ä¸é»„è‰²çš„åŒ¹é…å·¥ä½œ
+		// ×ªµ½HSV¿Õ¼ä½øĞĞ´¦Àí£¬ÑÕÉ«ËÑË÷Ö÷ÒªÊ¹ÓÃµÄÊÇH·ÖÁ¿½øĞĞÀ¶É«Óë»ÆÉ«µÄÆ¥Åä¹¤×÷
 		cvtColor(src, src_hsv, CV_BGR2HSV);
 
 		vector<Mat> hsvSplit;
@@ -41,7 +41,7 @@ namespace easypr {
 		equalizeHist(hsvSplit[2], hsvSplit[2]);
 		merge(hsvSplit, src_hsv);
 
-		//åŒ¹é…æ¨¡æ¿åŸºè‰²,åˆ‡æ¢ä»¥æŸ¥æ‰¾æƒ³è¦çš„åŸºè‰²
+		//Æ¥ÅäÄ£°å»ùÉ«,ÇĞ»»ÒÔ²éÕÒÏëÒªµÄ»ùÉ«
 		int min_h = 0;
 		int max_h = 0;
 		switch (r) {
@@ -60,10 +60,10 @@ namespace easypr {
 
 		int channels = src_hsv.channels();
 		int nRows = src_hsv.rows;
-		//å›¾åƒæ•°æ®åˆ—éœ€è¦è€ƒè™‘é€šé“æ•°çš„å½±å“ï¼›
+		//Í¼ÏñÊı¾İÁĞĞèÒª¿¼ÂÇÍ¨µÀÊıµÄÓ°Ïì£»
 		int nCols = src_hsv.cols * channels;
 
-		if (src_hsv.isContinuous())//è¿ç»­å­˜å‚¨çš„æ•°æ®ï¼ŒæŒ‰ä¸€è¡Œå¤„ç†
+		if (src_hsv.isContinuous())//Á¬Ğø´æ´¢µÄÊı¾İ£¬°´Ò»ĞĞ´¦Àí
 		{
 			nCols *= nRows;
 			nRows = 1;
@@ -99,9 +99,9 @@ namespace easypr {
 
 					float Hdiff_p = float(Hdiff) / diff_h;
 
-					// Så’ŒVçš„æœ€å°å€¼ç”±adaptive_minsvè¿™ä¸ªboolå€¼åˆ¤æ–­
-					// å¦‚æœä¸ºtrueï¼Œåˆ™æœ€å°å€¼å–å†³äºHå€¼ï¼ŒæŒ‰æ¯”ä¾‹è¡°å‡
-					// å¦‚æœä¸ºfalseï¼Œåˆ™ä¸å†è‡ªé€‚åº”ï¼Œä½¿ç”¨å›ºå®šçš„æœ€å°å€¼minabs_sv
+					// SºÍVµÄ×îĞ¡ÖµÓÉadaptive_minsvÕâ¸öboolÖµÅĞ¶Ï
+					// Èç¹ûÎªtrue£¬Ôò×îĞ¡ÖµÈ¡¾öÓÚHÖµ£¬°´±ÈÀıË¥¼õ
+					// Èç¹ûÎªfalse£¬Ôò²»ÔÙ×ÔÊÊÓ¦£¬Ê¹ÓÃ¹Ì¶¨µÄ×îĞ¡Öµminabs_sv
 					float min_sv = 0;
 					if (true == adaptive_minsv)
 						min_sv = minref_sv - minref_sv / 2 * (1 - Hdiff_p); // inref_sv - minref_sv / 2 * (1 - Hdiff_p)
@@ -124,7 +124,7 @@ namespace easypr {
 		//cout << "avg_s:" << s_all / count << endl;
 		//cout << "avg_v:" << v_all / count << endl;
 
-		// è·å–é¢œè‰²åŒ¹é…åçš„äºŒå€¼ç°åº¦å›¾
+		// »ñÈ¡ÑÕÉ«Æ¥ÅäºóµÄ¶şÖµ»Ò¶ÈÍ¼
 		Mat src_grey;
 		vector<Mat> hsvSplit_done;
 		split(src_hsv, hsvSplit_done);
@@ -137,9 +137,9 @@ namespace easypr {
 
 	bool bFindLeftRightBound1(Mat& bound_threshold,int& posLeft,int& posRight)
 	{
-		//ä»ä¸¤è¾¹å¯»æ‰¾è¾¹ç•Œ
+		//´ÓÁ½±ßÑ°ÕÒ±ß½ç
 		int span = bound_threshold.rows*0.2;
-		//å·¦è¾¹ç•Œæ£€æµ‹
+		//×ó±ß½ç¼ì²â
 		for (int i=0; i < bound_threshold.cols-span-1;i+=3)
 		{
 			int whiteCount = 0;
@@ -162,7 +162,7 @@ namespace easypr {
 
 		}
 		span = bound_threshold.rows*0.2;
-		//å³è¾¹ç•Œæ£€æµ‹
+		//ÓÒ±ß½ç¼ì²â
 		for (int i=bound_threshold.cols-1; i > span;i-=2)
 		{
 			int whiteCount = 0;
@@ -204,9 +204,9 @@ namespace easypr {
 
 	bool bFindLeftRightBound(Mat& bound_threshold,int& posLeft,int& posRight)
 	{
-		//ä»ä¸¤è¾¹å¯»æ‰¾è¾¹ç•Œ
+		//´ÓÁ½±ßÑ°ÕÒ±ß½ç
 		int span = bound_threshold.rows*0.2;
-		//å·¦è¾¹ç•Œæ£€æµ‹
+		//×ó±ß½ç¼ì²â
 		for (int i=0; i < bound_threshold.cols-span-1;i+=2)
 		{
 			int whiteCount = 0;
@@ -229,7 +229,7 @@ namespace easypr {
 
 		}
 		span = bound_threshold.rows*0.2;
-		//å³è¾¹ç•Œæ£€æµ‹
+		//ÓÒ±ß½ç¼ì²â
 		for (int i=bound_threshold.cols-1; i > span;i-=2)
 		{
 			int whiteCount = 0;
@@ -262,9 +262,9 @@ namespace easypr {
 
 	bool bFindLeftRightBound2(Mat& bound_threshold,int& posLeft,int& posRight)
 	{
-		//ä»ä¸¤è¾¹å¯»æ‰¾è¾¹ç•Œ
+		//´ÓÁ½±ßÑ°ÕÒ±ß½ç
 		int span = bound_threshold.rows*0.2;
-		//å·¦è¾¹ç•Œæ£€æµ‹
+		//×ó±ß½ç¼ì²â
 		for (int i=0; i < bound_threshold.cols-span-1;i+=3)
 		{
 			int whiteCount = 0;
@@ -287,7 +287,7 @@ namespace easypr {
 
 		}
 		span = bound_threshold.rows*0.2;
-		//å³è¾¹ç•Œæ£€æµ‹
+		//ÓÒ±ß½ç¼ì²â
 		for (int i=bound_threshold.cols-1; i > span;i-=3)
 		{
 			int whiteCount = 0;
@@ -318,12 +318,12 @@ namespace easypr {
 
 	}
 
-	//! åˆ¤æ–­ä¸€ä¸ªè½¦ç‰Œçš„é¢œè‰²
-	//! è¾“å…¥è½¦ç‰Œmatä¸é¢œè‰²æ¨¡æ¿
-	//! è¿”å›trueæˆ–fasle
+	//! ÅĞ¶ÏÒ»¸ö³µÅÆµÄÑÕÉ«
+	//! ÊäÈë³µÅÆmatÓëÑÕÉ«Ä£°å
+	//! ·µ»Øtrue»òfasle
 	bool plateColorJudge(const Mat& src, const Color r, const bool adaptive_minsv)
 	{
-		// åˆ¤æ–­é˜ˆå€¼
+		// ÅĞ¶ÏãĞÖµ
 		const float thresh = 0.45;
 
 		Mat src_gray;
@@ -339,7 +339,7 @@ namespace easypr {
 	}
 
 	//getPlateType
-	//åˆ¤æ–­è½¦ç‰Œçš„ç±»å‹
+	//ÅĞ¶Ï³µÅÆµÄÀàĞÍ
 	Color getPlateType(const Mat&  src, const bool adaptive_minsv)
 	{
 		if (plateColorJudge(src, BLUE, adaptive_minsv) == true) {
@@ -370,7 +370,7 @@ namespace easypr {
 				if (img.at<char>(i, j) != img.at<char>(i, j + 1))
 					jumpCount++;
 
-				if (img.at<char>(i, j) == 255)
+				if (img.at<uchar>(i,j) == 255)
 				{
 					whiteCount++;
 				}
@@ -394,9 +394,9 @@ namespace easypr {
 		}
 	}
 
-	//å»é™¤è½¦ç‰Œä¸Šæ–¹çš„é’®é’‰
-	//è®¡ç®—æ¯è¡Œå…ƒç´ çš„é˜¶è·ƒæ•°ï¼Œå¦‚æœå°äºXè®¤ä¸ºæ˜¯æŸ³ä¸ï¼Œå°†æ­¤è¡Œå…¨éƒ¨å¡«0ï¼ˆæ¶‚é»‘ï¼‰
-	//Xçš„æ¨èå€¼ä¸ºï¼Œå¯æ ¹æ®å®é™…è°ƒæ•´
+	//È¥³ı³µÅÆÉÏ·½µÄÅ¥¶¤
+	//¼ÆËãÃ¿ĞĞÔªËØµÄ½×Ô¾Êı£¬Èç¹ûĞ¡ÓÚXÈÏÎªÊÇÁø¶¡£¬½«´ËĞĞÈ«²¿Ìî0£¨Í¿ºÚ£©
+	//XµÄÍÆ¼öÖµÎª£¬¿É¸ù¾İÊµ¼Êµ÷Õû
 	bool clearLiuDing(Mat& img)
 	{
 
@@ -431,7 +431,7 @@ namespace easypr {
 			}
 		}
 
-		////è¿™æ ·çš„ä¸æ˜¯è½¦ç‰Œ
+		////ÕâÑùµÄ²»ÊÇ³µÅÆ
 		if (iCount*1.0/img.rows < 0.5)
 		{
 			return false;
@@ -491,7 +491,7 @@ namespace easypr {
 		}
 		
 
-		//ok,æ‰¾åˆ°ä¸Šä¸‹è¾¹ç•Œ
+		//ok,ÕÒµ½ÉÏÏÂ±ß½ç
 		for (int i = mask.rows-1; i >= mask.rows/2; i--)
 		{
 			int jumpCount = 0;
@@ -572,7 +572,7 @@ namespace easypr {
 		return thresholdV;
 	}
 
-	//! ç›´æ–¹å›¾å‡è¡¡
+	//! Ö±·½Í¼¾ùºâ
 	Mat histeq(Mat in)
 	{
 		Mat out(in.size(), in.type());
@@ -609,7 +609,7 @@ namespace easypr {
 		int numCols=vhist.cols+hhist.cols+lowData.cols*lowData.cols;
 
 		Mat out=Mat::zeros(1,numCols,CV_32F);
-		//Asign values to feature,ANNçš„æ ·æœ¬ç‰¹å¾ä¸ºæ°´å¹³ã€å‚ç›´ç›´æ–¹å›¾å’Œä½åˆ†è¾¨ç‡å›¾åƒæ‰€ç»„æˆçš„çŸ¢é‡
+		//Asign values to feature,ANNµÄÑù±¾ÌØÕ÷ÎªË®Æ½¡¢´¹Ö±Ö±·½Í¼ºÍµÍ·Ö±æÂÊÍ¼ÏñËù×é³ÉµÄÊ¸Á¿
 		int j=0;
 		for(int i=0; i<vhist.cols; i++)
 		{
@@ -675,7 +675,7 @@ namespace easypr {
 		}
 		
 	}
-	// ï¼è·å–å‚ç›´å’Œæ°´å¹³æ–¹å‘ç›´æ–¹å›¾
+	// £¡»ñÈ¡´¹Ö±ºÍË®Æ½·½ÏòÖ±·½Í¼
 	Mat ProjectedHistogram(Mat img, int t)
 	{
 		int sz = (t) ? img.rows : img.cols;
@@ -684,7 +684,7 @@ namespace easypr {
 		for (int j = 0; j<sz; j++){
 			Mat data = (t) ? img.row(j) : img.col(j);
 
-			mhist.at<float>(j) =countNonZero(data);	//ç»Ÿè®¡è¿™ä¸€è¡Œæˆ–ä¸€åˆ—ä¸­ï¼Œéé›¶å…ƒç´ çš„ä¸ªæ•°ï¼Œå¹¶ä¿å­˜åˆ°mhistä¸­
+			mhist.at<float>(j) =countNonZero(data);	//Í³¼ÆÕâÒ»ĞĞ»òÒ»ÁĞÖĞ£¬·ÇÁãÔªËØµÄ¸öÊı£¬²¢±£´æµ½mhistÖĞ
 		}
 
 		//Normalize histogram
@@ -692,7 +692,7 @@ namespace easypr {
 		minMaxLoc(mhist, &min, &max);
 
 		if (max>0)
-			mhist.convertTo(mhist, -1, 1.0f / max, 0);//ç”¨mhistç›´æ–¹å›¾ä¸­çš„æœ€å¤§å€¼ï¼Œå½’ä¸€åŒ–ç›´æ–¹å›¾
+			mhist.convertTo(mhist, -1, 1.0f / max, 0);//ÓÃmhistÖ±·½Í¼ÖĞµÄ×î´óÖµ£¬¹éÒ»»¯Ö±·½Í¼
 
 		return mhist;
 	}
