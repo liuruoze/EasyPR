@@ -62,7 +62,7 @@ int CPlateJudge::plateJudge(const Mat& inMat,int& result)
 	Mat p = features.reshape(1, 1);
 	p.convertTo(p, CV_32FC1);
 
-	int response = (int)svm.predict(p);
+	float response = svm.predict(p);
 	result = response;
 
 	return 0;
@@ -95,13 +95,33 @@ int CPlateJudge::plateJudge(const vector<CPlate>& inVec,
 	for (int j = 0; j < num; j++)
 	{
 		CPlate inPlate = inVec[j];
-		Mat inMat = inPlate.getPlateMat();
+		//Mat inMat = inPlate.getPlateMat();
 
-		int response = -1;
-		plateJudge(inMat, response);
+		//int response = -1;
+		//plateJudge(inMat, response);
 
-		if (response == 1)
-			resultVec.push_back(inPlate);
+	
+
+		//if (response == 1)
+		//	resultVec.push_back(inPlate);
+		//else
+		//{
+		//	int w = inMat.cols;
+		//	int h = inMat.rows;
+		//	//再取中间部分判断一次
+		//	Mat tmpmat = inMat(Rect(w*0.05,h*0.1,w*0.9,h*0.8));
+		//	Mat tmpDes = inMat.clone();
+		//	resize(tmpmat,tmpDes,Size(inMat.size()));
+		//	
+
+
+		//	plateJudge(tmpDes, response);
+
+		//	if (response == 1)
+		//		resultVec.push_back(inPlate);
+		//}
+
+		resultVec.push_back(inPlate);
 	}
 	return 0;
 }

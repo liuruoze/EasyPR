@@ -24,18 +24,13 @@ class CCharsIdentify
 public:
 	CCharsIdentify();
 
-	//! 字符分割
-	string charsIdentify(Mat, bool);
+	//! 字符鉴别
+	string charsIdentify(Mat, bool, bool);
+	string charsIdentify(Mat input);
 
 	//! 字符分类
-	int classify(Mat, bool);
-
-	//create the accumulation histograms,img is a binary image, t is 水平或垂直
-	Mat ProjectedHistogram(Mat img, int t);
-
-	//! 获得字符的特征图
-	Mat features(Mat in, int sizeData);
-
+	int classify(Mat, bool,bool);
+	int classify(Mat f);
 	//! 装载ANN模型
 	void LoadModel();
 

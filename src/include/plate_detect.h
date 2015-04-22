@@ -33,7 +33,7 @@ public:
 	int plateDetect(Mat, vector<Mat>&, int index = 0);
 
 	//! 深度车牌检测，使用颜色与二次Sobel法综合
-	int plateDetectDeep(Mat src, vector<Mat>& resultVec, bool showDetectArea = true, int index = 0);
+	int plateDetectDeep(Mat src, vector<CPlate>& resultVec, bool showDetectArea = true, int index = 0);
 
 	int showResult(const Mat& result);
 

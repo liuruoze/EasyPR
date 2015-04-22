@@ -18,17 +18,25 @@ namespace easypr {
 	//! 返回true或fasle
 	bool plateColorJudge(const Mat&  src, const Color r, const bool adaptive_minsv);
 
-	//clearLiuDing
+	bool bFindLeftRightBound(Mat& bound_threshold,int& posLeft,int& posRight);
+	bool bFindLeftRightBound1(Mat& bound_threshold,int& posLeft,int& posRight);
+	bool bFindLeftRightBound2(Mat& bound_threshold,int& posLeft,int& posRight);
+	
 	//去除车牌上方的钮钉
 	//计算每行元素的阶跃数，如果小于X认为是柳丁，将此行全部填0（涂黑）
 	//X的推荐值为，可根据实际调整
-	Mat clearLiuDing(Mat img);
+	bool clearLiuDing(Mat& img);
+	void clearLiuDingOnly(Mat& img);
+	void clearLiuDing(Mat mask,int& top,int& bottom);
 
 	//! 获得车牌颜色
 	Color getPlateType(const Mat&  src, const bool adaptive_minsv);
 
 	//! 直方图均衡
 	Mat histeq(Mat in);
+	Mat features(Mat in, int sizeData);
+	int ThresholdOtsu(Mat mat);
+
 
 	// ！获取垂直和水平方向直方图
 	Mat ProjectedHistogram(Mat img, int t);

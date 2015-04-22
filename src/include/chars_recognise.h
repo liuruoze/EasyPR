@@ -22,66 +22,54 @@ Namespace where all the C++ EasyPR functionality resides
 */
 namespace easypr {
 
-class CCharsRecognise {
- public:
-  CCharsRecognise();
+	class CCharsRecognise
+	{
+	public:
+		CCharsRecognise();
 
-  ~CCharsRecognise();
+		//! 字符分割与识别
+		int charsRecognise(Mat, String&, int = 0);
 
-  //! 字符分割与识别
-  int charsRecognise(Mat, String&, int =0);
+		string charsRecognise(Mat plate);
 
-  //! 装载ANN模型
-  void LoadANN(string s);
+		//! 装载ANN模型
+		void LoadANN(string s);
 
-  //! 是否开启调试模式
-  inline void setCRDebug(int param) { m_charsSegment->setDebug(param); }
+		//! 是否开启调试模式
+		inline void setCRDebug(int param){ m_charsSegment->setDebug(param); }
 
-  //! 获取调试模式状态
-  inline int getCRDebug() { return m_charsSegment->getDebug(); }
+		//! 获取调试模式状态
+		inline int getCRDebug(){ return m_charsSegment->getDebug(); }
 
-  //! 获得车牌颜色
-  inline string getPlateColor(Mat input) const {
-    string color = "未知";
-    Color result = getPlateType(input, true);
-    if (BLUE == result) color = "蓝牌";
-    if (YELLOW == result) color = "黄牌";
-    return color;
-  }
 
-  //! 设置变量
-  inline void setLiuDingSize(int param) {
-    m_charsSegment->setLiuDingSize(param);
-  }
+		//! 获得车牌颜色
+		inline string getPlateColor(Mat input) const
+		{
+			string color = "未知";
+			Color result = getPlateType(input, true);
+			if (BLUE == result)
+				color = "蓝牌";
+			if (YELLOW == result)
+				color = "黄牌";
+			return color;
+		}
 
-  inline void setColorThreshold(int param) {
-    m_charsSegment->setColorThreshold(param);
-  }
+		//! 设置变量
+		inline void setLiuDingSize(int param){ m_charsSegment->setLiuDingSize(param); }
+		inline void setColorThreshold(int param){ m_charsSegment->setColorThreshold(param); }
+		inline void setBluePercent(float param){ m_charsSegment->setBluePercent(param); }
+		inline float getBluePercent() const { return m_charsSegment->getBluePercent(); }
+		inline void setWhitePercent(float param){ m_charsSegment->setWhitePercent(param); }
+		inline float getWhitePercent() const { return m_charsSegment->getWhitePercent(); }
 
-  inline void setBluePercent(float param) {
-    m_charsSegment->setBluePercent(param);
-  }
+	private:
+		//！字符分割
+		CCharsSegment* m_charsSegment;
 
-  inline float getBluePercent() const {
-    return m_charsSegment->getBluePercent();
-  }
+		//! 字符识别
+		CCharsIdentify* m_charsIdentify;
+	};
 
-  inline void setWhitePercent(float param) {
-    m_charsSegment->setWhitePercent(param);
-  }
-
-  inline float getWhitePercent() const {
-    return m_charsSegment->getWhitePercent();
-  }
-
- private:
-  //！字符分割
-  CCharsSegment* m_charsSegment;
-
-  //! 字符识别
-  CCharsIdentify* m_charsIdentify;
-};
-
-} /* \namespace easypr  */
+}	/* \namespace easypr  */
 
 #endif /* endif __CHARS_RECOGNISE_H__ */

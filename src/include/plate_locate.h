@@ -17,7 +17,7 @@
 #include "prep.h"
 #include "plate.h"
 #include "core_func.h"
-
+class LabInfo;
 /*! \namespace easypr
     Namespace where all the C++ EasyPR functionality resides
 */
@@ -36,7 +36,8 @@ public:
 
 	//! Sobel第二次搜索
 	//! 对大小和形状做限制，生成参考坐标
-	int sobelSecSearch(const Mat& bound, Point2f refpoint, vector<RotatedRect>& outRects);
+	int sobelSecSearch( Mat& bound, Point2f refpoint, vector<RotatedRect>& outRects);
+	int sobelSecSearchPart( Mat& bound, Point2f refpoint, vector<RotatedRect>& outRects);
 
 	//! 抗扭斜处理
 	int deskew(const Mat& src, const Mat& src_b, vector<RotatedRect>& inRects,  vector<CPlate>& outPlates);
@@ -63,6 +64,7 @@ public:
 
 	//! Sobel定位法
 	int plateSobelLocate(Mat src, vector<CPlate>& candPlates, int index = 0);
+	int sobelOperT(const Mat& in, Mat& out, int blurSize, int morphW, int morphH);
 
 	//! Color搜索
 	int colorSearch(const Mat& src, const Color r, Mat& out, vector<RotatedRect>& outRects, int index = 0);
@@ -136,7 +138,7 @@ public:
 	static const int DEFAULT_ANGLE = 60;//30
 
 	//! 是否开启调试模式常量，默认0代表关闭
-	static const int DEFAULT_DEBUG = 0;
+	static const int DEFAULT_DEBUG = 1;
 
 protected:
 	//! 高斯模糊所用变量
@@ -157,6 +159,8 @@ protected:
 
 	//! 是否开启调试模式，0关闭，非0开启
 	int m_debug;
+
+	LabInfo * m_labItem;
 };
 
 }	/*! \namespace easypr*/
