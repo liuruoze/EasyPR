@@ -69,7 +69,7 @@ int acurayTest(const string& test_path) {
     Mat src = imread(filepath);
 
     vector<string> plateVec;
-    int result = pr.plateRecognize(src, plateVec);
+    int result = pr.plateRecognize(src, plateVec,i);
     if (result == 0) {
       int num = plateVec.size();
 

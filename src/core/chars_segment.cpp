@@ -68,7 +68,7 @@ namespace easypr{
 
 
 	//! 字符分割与排序
-	int CCharsSegment::charsSegment(Mat input, vector<Mat>& resultVec)
+	int CCharsSegment::charsSegment(Mat input, vector<Mat>& resultVec, int index)
 	{
 		if (!input.data)
 			return -3;
@@ -89,13 +89,49 @@ namespace easypr{
 		waitKey(0);*/
 
 		Mat img_threshold;
-		if (BLUE == plateType)
-			threshold(input_grey, img_threshold, 10, 255, CV_THRESH_OTSU + CV_THRESH_BINARY);
-		else if (YELLOW == plateType)
-			threshold(input_grey, img_threshold, 10, 255, CV_THRESH_OTSU + CV_THRESH_BINARY_INV);
-		else
-			threshold(input_grey, img_threshold, 10, 255, CV_THRESH_OTSU + CV_THRESH_BINARY);
-		
+		Mat img_threshold_2;
+		Mat img_threshold_3;
+		Mat img_threshold_ad;
+
+		double thresh_val = 0;
+		double thresh_val_2 = 0;
+		double thresh_val_3 = 0;
+		double pently_1 = 0.9;
+		double pently_2 = 0.8;
+		double large_1 = 1.1;
+		double large_2 = 1.25;
+
+		if (BLUE == plateType) {
+			thresh_val = threshold(input_grey, img_threshold, 10, 255, CV_THRESH_OTSU + CV_THRESH_BINARY);
+			//adaptiveThreshold(input_grey, img_threshold_ad, 255, ADAPTIVE_THRESH_GAUSSIAN_C, CV_THRESH_BINARY, 7, 0);
+
+			cout << "BLUE:" << thresh_val << endl;
+
+			thresh_val_2 = thresh_val + 10;
+			thresh_val_3 = thresh_val + 20;
+
+			threshold(input_grey, img_threshold_2, thresh_val_2, 255, CV_THRESH_BINARY);
+			threshold(input_grey, img_threshold_3, thresh_val_3, 255, CV_THRESH_BINARY);
+		}
+		else if (YELLOW == plateType) {
+			thresh_val = threshold(input_grey, img_threshold, 10, 255, CV_THRESH_OTSU + CV_THRESH_BINARY_INV);
+			cout << "YELLOW:" << thresh_val << endl;
+
+			thresh_val_2 = thresh_val * pently_1;
+			thresh_val_3 = thresh_val * pently_2;
+
+			threshold(input_grey, img_threshold_2, thresh_val_2, 255, CV_THRESH_BINARY_INV);
+			threshold(input_grey, img_threshold_3, thresh_val_3, 255, CV_THRESH_BINARY_INV);
+		}
+		else {
+			thresh_val = threshold(input_grey, img_threshold, 10, 255, CV_THRESH_OTSU + CV_THRESH_BINARY);
+			thresh_val_2 = thresh_val * large_2;
+			thresh_val_3 = thresh_val * large_2;
+
+			threshold(input_grey, img_threshold_2, thresh_val_2, 255, CV_THRESH_BINARY);
+			threshold(input_grey, img_threshold_3, thresh_val_3, 255, CV_THRESH_BINARY);
+		}
+	
 		/*if (1)
 		{
 			imshow("img_threshold", img_threshold);
@@ -103,22 +139,58 @@ namespace easypr{
 			destroyWindow("img_threshold");
 		}*/
 		
-		if (m_debug)
+		/*if (1)
 		{
 			stringstream ss(stringstream::in | stringstream::out);
-			ss << "image/tmp/debug_char_threshold" << ".jpg";
+			ss << "image/tmp/img_threshold_ad_" << index << ".jpg";
+			imwrite(ss.str(), img_threshold_ad);
+		}*/
+
+
+		if (1)
+		{
+			stringstream ss(stringstream::in | stringstream::out);
+			ss << "image/tmp/debug_char_threshold_" << index << "_1.jpg";
 			imwrite(ss.str(), img_threshold);
+		}
+
+		if (1)
+		{
+			stringstream ss(stringstream::in | stringstream::out);
+			ss << "image/tmp/debug_char_threshold_" << index << "_2.jpg";
+			imwrite(ss.str(), img_threshold_2);
+		}
+
+		if (1)
+		{
+			stringstream ss(stringstream::in | stringstream::out);
+			ss << "image/tmp/debug_char_threshold_" << index << "_3.jpg";
+			imwrite(ss.str(), img_threshold_3);
 		}
 
 		//去除车牌上方的柳钉以及下方的横线等干扰
-		clearLiuDing(img_threshold);
+		img_threshold = clearLiuDing(img_threshold);
+		img_threshold_2 = clearLiuDing(img_threshold_2);
+		img_threshold_3 = clearLiuDing(img_threshold_3);
 
-		if (m_debug)
+		/*if (1)
 		{
 			stringstream ss(stringstream::in | stringstream::out);
-			ss << "image/tmp/debug_char_clearLiuDing" << ".jpg";
+			ss << "image/tmp/debug_char_clearLiuDing_" << index << ".jpg";
 			imwrite(ss.str(), img_threshold);
 		}
+		if (1)
+		{
+			stringstream ss(stringstream::in | stringstream::out);
+			ss << "image/tmp/debug_char_clearLiuDing_" << index << "_2.jpg";
+			imwrite(ss.str(), img_threshold_2);
+		}
+		if (1)
+		{
+			stringstream ss(stringstream::in | stringstream::out);
+			ss << "image/tmp/debug_char_clearLiuDing_" << index << "_3.jpg";
+			imwrite(ss.str(), img_threshold_3);
+		}*/
 
 		Mat img_contours;
 		img_threshold.copyTo(img_contours);
@@ -128,6 +200,11 @@ namespace easypr{
 			contours, // a vector of contours
 			CV_RETR_EXTERNAL, // retrieve the external contours
 			CV_CHAIN_APPROX_NONE); // all pixels of each contours
+
+		Mat result;
+		input_grey.copyTo(result);
+		cvtColor(result, result, CV_GRAY2RGB);
+		//drawContours(result, contours, -1, Scalar(0, 0, 255), 1);
 
 		//Start to iterate to each contour founded
 		vector<vector<Point> >::iterator itc = contours.begin();
@@ -139,10 +216,17 @@ namespace easypr{
 		{
 			Rect mr = boundingRect(Mat(*itc));
 			Mat auxRoi(img_threshold, mr);
-			if (verifyCharSizes(auxRoi))
+			if (verifyCharSizes(auxRoi)) {
 				vecRect.push_back(mr);
-
+				rectangle(result, mr, Scalar(0, 0, 255), 2);
+			}
 			++itc;
+		}
+
+		if (0) {
+			imshow("result", result);
+			waitKey(0);
+			destroyWindow("result");
 		}
 
 		if (vecRect.size() == 0)
@@ -203,18 +287,37 @@ namespace easypr{
 		for (int i = 0; i < newSortedRect.size(); i++)
 		{
 			Rect mr = newSortedRect[i];
-			Mat auxRoi(img_threshold, mr);
+
+			// 直接使用车牌二值化图生成二值化字符
+			// Mat auxRoi(img_threshold, mr);
+
+			// 字符的二值化使用后二值化策略
+			Mat auxRoi(input, mr);
+			Mat auxRoi_grey;
+			cvtColor(auxRoi, auxRoi_grey, CV_RGB2GRAY);
+
+			Mat autRoi_threshold;
+			if (BLUE == plateType) {
+				threshold(auxRoi_grey, autRoi_threshold, 10, 255, CV_THRESH_OTSU + CV_THRESH_BINARY);
+			}
+			else if (YELLOW == plateType) {
+				threshold(auxRoi_grey, autRoi_threshold, 10, 255, CV_THRESH_OTSU + CV_THRESH_BINARY_INV);
+			}
+			else {
+				threshold(auxRoi_grey, autRoi_threshold, 10, 255, CV_THRESH_OTSU + CV_THRESH_BINARY);
+			}
 
 			if (1)
 			{
-				auxRoi = preprocessChar(auxRoi);
-				if (m_debug)
+				Mat auxRoi_result;
+				auxRoi_result = preprocessChar(autRoi_threshold);
+				if (0)
 				{
 					stringstream ss(stringstream::in | stringstream::out);
-					ss << "image/tmp/debug_char_auxRoi_" << i << ".jpg";
-					imwrite(ss.str(), auxRoi);
+					ss << "image/tmp/debug_char_auxRoi_" << index << "_" << i << ".jpg";
+					imwrite(ss.str(), auxRoi_result);
 				}
-				resultVec.push_back(auxRoi);
+				resultVec.push_back(auxRoi_result);
 			}
 		}
 

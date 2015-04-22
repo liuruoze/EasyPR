@@ -26,13 +26,13 @@ void CCharsRecognise::LoadANN(string s) {
   m_charsIdentify->LoadModel(s.c_str());
 }
 
-int CCharsRecognise::charsRecognise(Mat plate, string& plateLicense) {
+int CCharsRecognise::charsRecognise(Mat plate, string& plateLicense, int index) {
   //车牌字符方块集合
   vector<Mat> matVec;
 
   string plateIdentify = "";
 
-  int result = m_charsSegment->charsSegment(plate, matVec);
+  int result = m_charsSegment->charsSegment(plate, matVec, index);
   if (result == 0) {
     int num = matVec.size();
     for (int j = 0; j < num; j++) {

@@ -36,7 +36,7 @@ CPlateRecognize::CPlateRecognize()
 //	return result;
 //}
 
-int CPlateRecognize::plateRecognize(Mat src, vector<string>& licenseVec)
+int CPlateRecognize::plateRecognize(Mat src, vector<string>& licenseVec, int index)
 {
 	// 车牌方块集合
 	vector<Mat> plateVec;
@@ -55,13 +55,13 @@ int CPlateRecognize::plateRecognize(Mat src, vector<string>& licenseVec)
 		for (int j = 0; j < num; j++)
 		{
 			Mat plate = plateVec[j];
-			
+
 			//获取车牌颜色
 			string plateType = getPlateColor(plate);
 
 			//获取车牌号
 			string plateIdentify = "";
-			int resultCR = charsRecognise(plate, plateIdentify);
+			int resultCR = charsRecognise(plate, plateIdentify, index * 10 + j);
 			if (resultCR == 0)
 			{
 				string license = plateType + ":" + plateIdentify;

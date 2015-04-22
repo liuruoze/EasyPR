@@ -26,7 +26,7 @@ namespace easypr {
 		CCharsSegment();
 
 		//! 字符分割
-		int charsSegment(Mat, vector<Mat>&);
+		int charsSegment(Mat, vector<Mat>&, int = 0);
 
 		//! 字符尺寸验证
 		bool verifyCharSizes(Mat r);
@@ -66,7 +66,7 @@ namespace easypr {
 		static const int VERTICAL = 0;
 
 		//! preprocessChar所用常量
-		static const int DEFAULT_LIUDING_SIZE = 7;
+		static const int DEFAULT_LIUDING_SIZE = 9;
 		static const int DEFAULT_MAT_WIDTH = 136;
 		static const int DEFAULT_COLORTHRESHOLD = 150;
 

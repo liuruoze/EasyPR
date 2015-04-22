@@ -28,7 +28,7 @@ public:
 	CPlateRecognize();
 
 	//! 车牌检测与字符识别
-	int plateRecognize(Mat, vector<string>&);
+	int plateRecognize(Mat, vector<string>&, int = 0);
 
 	//! 生活模式与工业模式切换
 	inline void setLifemode(bool param)

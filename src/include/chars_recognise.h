@@ -29,7 +29,7 @@ class CCharsRecognise {
   ~CCharsRecognise();
 
   //! 字符分割与识别
-  int charsRecognise(Mat, String&);
+  int charsRecognise(Mat, String&, int =0);
 
   //! 装载ANN模型
   void LoadANN(string s);
