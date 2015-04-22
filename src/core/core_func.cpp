@@ -370,7 +370,7 @@ namespace easypr {
 				if (img.at<char>(i, j) != img.at<char>(i, j + 1))
 					jumpCount++;
 
-				if (img.at<char>(i,j) == 255)
+				if (img.at<uchar>(i,j) == 255)
 				{
 					whiteCount++;
 				}
