@@ -24,39 +24,34 @@ class CCharsIdentify
 public:
 	CCharsIdentify();
 
-	//! å­—ç¬¦åˆ†å‰²
-	string charsIdentify(Mat, bool);
+	//! ×Ö·û¼ø±ğ
+	string charsIdentify(Mat, bool, bool);
+	string charsIdentify(Mat input);
 
-	//! å­—ç¬¦åˆ†ç±»
-	int classify(Mat, bool);
-
-	//create the accumulation histograms,img is a binary image, t is æ°´å¹³æˆ–å‚ç›´
-	Mat ProjectedHistogram(Mat img, int t);
-
-	//! è·å¾—å­—ç¬¦çš„ç‰¹å¾å›¾
-	Mat features(Mat in, int sizeData);
-
-	//! è£…è½½ANNæ¨¡å‹
+	//! ×Ö·û·ÖÀà
+	int classify(Mat, bool,bool);
+	int classify(Mat f);
+	//! ×°ÔØANNÄ£ĞÍ
 	void LoadModel();
 
-	//! è£…è½½ANNæ¨¡å‹
+	//! ×°ÔØANNÄ£ĞÍ
 	void LoadModel(string s);
 
-	//! è®¾ç½®ä¸è¯»å–æ¨¡å‹è·¯å¾„
+	//! ÉèÖÃÓë¶ÁÈ¡Ä£ĞÍÂ·¾¶
 	inline void setModelPath(string path){	m_path = path;	}
 	inline string getModelPath() const{	 return m_path;	}
 
 private:
-	//ï¼ä½¿ç”¨çš„ANNæ¨¡å‹
+	//£¡Ê¹ÓÃµÄANNÄ£ĞÍ
 	CvANN_MLP ann;
 
-	//! æ¨¡å‹å­˜å‚¨è·¯å¾„
+	//! Ä£ĞÍ´æ´¢Â·¾¶
 	string m_path;
 
-	//! ç‰¹å¾å°ºå¯¸
+	//! ÌØÕ÷³ß´ç
 	int m_predictSize;
 
-	//! çœä»½å¯¹åº”map
+	//! Ê¡·İ¶ÔÓ¦map
 	map<string, string> m_map;
 };
 

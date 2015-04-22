@@ -3,53 +3,61 @@
 /*! \namespace easypr
 Namespace where all the C++ EasyPR functionality resides
 */
-namespace easypr {
+namespace easypr{
 
-CCharsRecognise::CCharsRecognise()
-    : m_charsSegment(nullptr), m_charsIdentify(nullptr) {
-  m_charsSegment = new CCharsSegment();
-  m_charsIdentify = new CCharsIdentify();
-}
+	CCharsRecognise::CCharsRecognise()
+	{
+		//cout << "CCharsRecognise" << endl;
+		m_charsSegment = new CCharsSegment();
+		m_charsIdentify = new CCharsIdentify();
+	}
 
-CCharsRecognise::~CCharsRecognise() {
-  if (m_charsSegment) {
-    delete m_charsSegment;
-    m_charsSegment = nullptr;
-  }
-  if (m_charsIdentify) {
-    delete m_charsIdentify;
-    m_charsIdentify = nullptr;
-  }
-}
+	void CCharsRecognise::LoadANN(string s)
+	{
+		m_charsIdentify->LoadModel(s.c_str());
+	}
 
-void CCharsRecognise::LoadANN(string s) {
-  m_charsIdentify->LoadModel(s.c_str());
-}
+	string CCharsRecognise::charsRecognise(Mat plate)
+	{
+		return m_charsIdentify->charsIdentify(plate);
+	}
+	int CCharsRecognise::charsRecognise(Mat plate, string& plateLicense, int index)
+	{
+		//车牌字符方块集合
+		vector<Mat> matVec;
 
-int CCharsRecognise::charsRecognise(Mat plate, string& plateLicense) {
-  //杞︾墝瀛楃鏂瑰潡闆嗗悎
-  vector<Mat> matVec;
+		string plateIdentify = "";
 
-  string plateIdentify = "";
+		int result = m_charsSegment->charsSegment(plate, matVec);
+		if (result == 0)
+		{
+			int num = matVec.size();
+			for (int j = 0; j < num; j++)
+			{
+				Mat charMat = matVec[j];
+				bool isChinses = false;
+				bool isSpeci=false;
+				//默认首个字符块是中文字符
+				if (j == 0)
+					isChinses = true;
+				if(j==1)
+					isSpeci=true;
+				string charcater = m_charsIdentify->charsIdentify(charMat, isChinses,isSpeci);
 
-  int result = m_charsSegment->charsSegment(plate, matVec);
-  if (result == 0) {
-    int num = matVec.size();
-    for (int j = 0; j < num; j++) {
-      Mat charMat = matVec[j];
-      bool isChinses = false;
+				
+				
+				plateIdentify = plateIdentify + charcater;
+			}
+		}
 
-      //榛樿棣栦釜瀛楃鍧楁槸涓枃瀛楃
-      if (j == 0) isChinses = true;
+		plateLicense = plateIdentify;
 
-      string charcater = m_charsIdentify->charsIdentify(charMat, isChinses);
-      plateIdentify = plateIdentify + charcater;
-    }
-  }
+		if (plateLicense.size() < 7)
+		{
+			return -1;
+		}
 
-  plateLicense = plateIdentify;
+		return result;
+	}
 
-  return 0;
-}
-
-} /*! \namespace easypr*/
+}	/*! \namespace easypr*/

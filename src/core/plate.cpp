@@ -8,6 +8,7 @@ namespace easypr{
 	CPlate::CPlate()
 	{
 		//cout << "CPlate" << endl;
+		bColored = true;
 	}
 
 }	/*! \namespace easypr*/

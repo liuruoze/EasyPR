@@ -20,6 +20,7 @@ namespace easypr {
 	class CPlate
 	{
 	public:
+		bool bColored;
 		CPlate();
 
 		//! 设置与读取变量

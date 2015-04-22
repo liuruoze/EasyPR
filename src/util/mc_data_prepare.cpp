@@ -242,7 +242,7 @@ void getLearnData()
 void changeFileName()
 {
     //char * filePath = "F:/data/easypr-data/learndata";
-    char * filePath = "F:/data/PlateLocate/pic1";
+    const char * filePath = "F:/data/PlateLocate/pic1";
     
     ////获取该路径下的所有文件
     auto files = Utils::getFiles(filePath);

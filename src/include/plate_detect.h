@@ -29,27 +29,27 @@ class CPlateDetect
 public:
 	CPlateDetect();
 
-	//! è½¦ç‰Œæ£€æµ‹ï¼šè½¦ç‰Œå®šä½ä¸åˆ¤æ–­
+	//! ³µÅÆ¼ì²â£º³µÅÆ¶¨Î»ÓëÅĞ¶Ï
 	int plateDetect(Mat, vector<Mat>&, int index = 0);
 
-	//! æ·±åº¦è½¦ç‰Œæ£€æµ‹ï¼Œä½¿ç”¨é¢œè‰²ä¸äºŒæ¬¡Sobelæ³•ç»¼åˆ
-	int plateDetectDeep(Mat src, vector<Mat>& resultVec, bool showDetectArea = true, int index = 0);
+	//! Éî¶È³µÅÆ¼ì²â£¬Ê¹ÓÃÑÕÉ«Óë¶ş´ÎSobel·¨×ÛºÏ
+	int plateDetectDeep(Mat src, vector<CPlate>& resultVec, bool showDetectArea = true, int index = 0);
 
 	int showResult(const Mat& result);
 
-	//! è£…è½½SVMæ¨¡å‹
+	//! ×°ÔØSVMÄ£ĞÍ
 	void LoadSVM(string s);
 
-	//! ç”Ÿæ´»æ¨¡å¼ä¸å·¥ä¸šæ¨¡å¼åˆ‡æ¢
+	//! Éú»îÄ£Ê½Óë¹¤ÒµÄ£Ê½ÇĞ»»
 	inline void setPDLifemode(bool param){m_plateLocate->setLifemode(param);}
 
-	//! æ˜¯å¦å¼€å¯è°ƒè¯•æ¨¡å¼
+	//! ÊÇ·ñ¿ªÆôµ÷ÊÔÄ£Ê½
 	inline void setPDDebug(int param){ m_plateLocate->setDebug(param);}
 
-	//! è·å–è°ƒè¯•æ¨¡å¼çŠ¶æ€
+	//! »ñÈ¡µ÷ÊÔÄ£Ê½×´Ì¬
 	inline int getPDDebug(){ return m_plateLocate->getDebug();}
 
-	//! è®¾ç½®ä¸è¯»å–å˜é‡
+	//! ÉèÖÃÓë¶ÁÈ¡±äÁ¿
 	inline void setGaussianBlurSize(int param){	m_plateLocate->setGaussianBlurSize(param);}
 	inline int getGaussianBlurSize() const{	return m_plateLocate->getGaussianBlurSize();}
 
@@ -73,13 +73,13 @@ public:
 	inline float getMaxPlates() const { return m_maxPlates; }
 
 private:
-	//! è®¾ç½®ä¸€å¹…å›¾ä¸­æœ€å¤šæœ‰å¤šå°‘è½¦ç‰Œ
+	//! ÉèÖÃÒ»·ùÍ¼ÖĞ×î¶àÓĞ¶àÉÙ³µÅÆ
 	int m_maxPlates;
 
-	//! è½¦ç‰Œå®šä½
+	//! ³µÅÆ¶¨Î»
 	CPlateLocate* m_plateLocate;
 
-	//! è½¦ç‰Œåˆ¤æ–­
+	//! ³µÅÆÅĞ¶Ï
 	CPlateJudge* m_plateJudge;
 };
 

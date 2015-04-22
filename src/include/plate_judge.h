@@ -7,7 +7,7 @@
 // Copyright:   liuruoze
 // Reference:	Mastering OpenCV with Practical Computer Vision Projects
 // Reference:	CSDN Bloger taotao1233
-// Desciption:
+// Desciption:  
 // Defines CPlateLocate
 //////////////////////////////////////////////////////////////////////////
 #ifndef __PLATE_JUDGE_H__
@@ -18,12 +18,13 @@
 #include "feature.h"
 #include "core_func.h"
 
+
 /*! \namespace easypr
     Namespace where all the C++ EasyPR functionality resides
 */
 namespace easypr {
 
-class CPlateJudge
+class CPlateJudge 
 {
 public:
 	CPlateJudge();

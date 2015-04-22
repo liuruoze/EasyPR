@@ -239,12 +239,16 @@ int test_chars_identify()
 		{
 			Mat resultMat = resultVec[j];
 			bool isChinses = false;
+			bool isSpec = false;
 
 			//默认首个字符块是中文字符
 			if (j == 0)
 				isChinses = true;
 
-			string charcater = ci.charsIdentify(resultMat, isChinses);
+			if (j == 1)
+				isSpec = true;
+
+			string charcater = ci.charsIdentify(resultMat, isChinses, isSpec);
 			plateIdentify = plateIdentify + charcater;
 		}
 	}
@@ -270,13 +274,12 @@ int test_plate_detect()
 	cout << "test_plate_detect" << endl;
 
 	Mat src = imread("image/plate_detect.jpg");
-	//Mat src = imread("image/baidu_image/test1.jpg");
 
 	vector<Mat> resultVec;
 	CPlateDetect pd;
 	pd.setPDLifemode(true);
 
-	int result = pd.plateDetectDeep(src, resultVec);
+	int result = pd.plateDetect(src, resultVec);
 	if (result == 0)
 	{
 		int num = resultVec.size();
@@ -286,7 +289,7 @@ int test_plate_detect()
 			imshow("plate_detect", resultMat);
 			waitKey(0);
 		}
-        destroyWindow("plate_detect");
+		destroyWindow("plate_detect");
 	}
 
 	return result;

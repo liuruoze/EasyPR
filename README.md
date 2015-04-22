@@ -11,27 +11,21 @@ EasyPR是一个中文的开源车牌识别系统，其目标是成为一个简�
 
 ### 更新
 
-本次更新是1.2版，主要改进在于提升了车牌定位模块的准确性，从70%左右到目前的94%，见下图：
+本次更新是1.3alpha版，主要改进在于提升了字符识别模块的准确性：
 
-![1.2版综合效果](doc/res/testresult.png)
+平均字符差距从2.0降低到0.7，完整匹配度从25%左右上升到目前的68%。
+
+同时，车牌定位模块准确率进一步提升，从上一个版本的94%上升到现在的99%。见下图：
+
+![1.3版综合效果](doc/res/testresult_1.3.png)
 
 主要改动如下：
 
-* 车牌定位使用了“颜色信息”+“二次Sobel”的综合搜索方法。在下面的window中红框代表Sobel定位结果，黄框代表颜色定位结果。
+* 改进了字符识别算法，重新训练了ANN模型，从而使得字符识别准确率大幅度提升。
 
-* “批量测试”增加了一个结果查看window，这个窗口可以用SetDebug()方法开闭(true开，false关)。
+* 使用了更鲁棒性的办法提升了车牌定位模块的准确率。
 
-![查看结果](doc/res/window.png)
-
-* 基本攻克了“大角度定位”问题，下图的车牌被定位并转到了正确的视角。
-
-![大角度定位](doc/res/bigangle.png)
-
-* GDTS里新增了若干张新测试图，包括数张大角度图。
-
-* “批量测试”结果现在同时会保存在“run_accuracy”文件中，可以查询历史信息。
-
-* 与Linux版本做了整合，可以实现跨平台编译。
+目前版本的问题是处理时间大幅度上升，1.3正式版本中会对这个问题进行fix。
 
 ### 平台
 
@@ -40,7 +34,7 @@ EasyPR是一个中文的开源车牌识别系统，其目标是成为一个简�
 |版本 | 开发者 | 版本 | 地址 
 |------|-------|-------|-------
 | android |  goldriver  |  1.1  |  [linuxxx/EasyPR_Android](https://github.com/linuxxx/EasyPR_Android)
-| linux | Micooz  |  1.2  |  已跟EasyPR整合
+| linux | Micooz  |  1.3  |  已跟EasyPR整合
 | ios | zhoushiwei |  1.1  |  [zhoushiwei/EasyPR-iOS](https://github.com/zhoushiwei/EasyPR-iOS)
 | mac | zhoushiwei |  1.1  | [zhoushiwei/EasyPR](https://github.com/zhoushiwei/EasyPR)
 | java | fan-wenjie |  1.2  | [fan-wenjie/EasyPR-Java](https://github.com/fan-wenjie/EasyPR-Java)
@@ -113,7 +107,7 @@ EasyPR不需要安装，开发者直接在其上做改动。如果想使用DLL�
 | chars_identify | 字符鉴别
 | chars_recognise | 字符识别，是字符分割与字符鉴别功能的组合
 | plate_recognize | 车牌识别，是车牌检测与字符识别的共有子类
-| features | 特征提取回调函数
+| feature | 特征提取回调函数
 | plate | 车牌抽象
 | core_func.h | 共有的一些函数
 
@@ -130,7 +124,9 @@ EasyPR不需要安装，开发者直接在其上做改动。如果想使用DLL�
 
 ### Contributer
 
-* liuruoze：作者与核心代码编写
+* liuruoze：1.0-1.2版核心代码作者
+
+* 海豚嘎嘎：1.3版作者，提升了字符识别准确率
 
 * Micooz：linux平台编译，性能优化，util类
 
@@ -142,7 +138,7 @@ EasyPR不需要安装，开发者直接在其上做改动。如果想使用DLL�
 
 ### 鸣谢
 
-taotao1233，唐大侠，jsxyhelu，如果有一天(zhoushiwei)，学习奋斗，袁承志，圣城小石匠，goldriver，Micooz，梦里时光，Rain Wang，任薛纪，ahccom
+taotao1233，邱锦山，唐大侠，jsxyhelu，如果有一天(zhoushiwei)，学习奋斗，袁承志，圣城小石匠，goldriver，Micooz，梦里时光，Rain Wang，任薛纪，ahccom，星夜落尘，海豚嘎嘎
 
 
 
