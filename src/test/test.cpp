@@ -20,328 +20,330 @@ int test_plate_recognize();
 int testMain();
 
 
-//°ÑÄãÒª²âÊÔµÄÍ¼Æ¬µØÖ·Ğ´ÔÚÏÂÃæ
+//æŠŠä½ è¦æµ‹è¯•çš„å›¾ç‰‡åœ°å€å†™åœ¨ä¸‹é¢
 const string test_img = "";
 
 
-const string testOption[] = 
-	{
-		"1. test plate_locate(³µÅÆ¶¨Î»);"		/* ³µÅÆ¶¨Î» */,
-		"2. test plate_judge(³µÅÆÅĞ¶Ï);"		/* ³µÅÆÅĞ¶Ï */,  
-		"3. test plate_detect(³µÅÆ¼ì²â);"		/* ³µÅÆ¼ì²â£¨°üº¬³µÅÆ¶¨Î»Óë³µÅÆÅĞ¶Ï£© */, 
-		"4. test chars_segment(×Ö·û·Ö¸ô);"		/* ×Ö·û·Ö¸ô */, 
-		"5. test chars_identify(×Ö·û¼ø±ğ);"		/* ×Ö·û¼ø±ğ */,  
-		"6. test chars_recognise(×Ö·ûÊ¶±ğ);"		/* ×Ö·ûÊ¶±ğ£¨°üº¬×Ö·û·Ö¸ôÓë×Ö·û¼ø±ğ£© */,
-		"7. test plate_recognize(³µÅÆÊ¶±ğ);"		/* ³µÅÆÊ¶±ğ */, 
-		"8. test all(²âÊÔÈ«²¿);"		/* ÒÔÉÏÈ«²¿ */,
-		"9. ·µ»Ø;"		/* ÍË³ö */,
-	};
+const string testOption[] =
+{
+    "1. test plate_locate(è½¦ç‰Œå®šä½);"		/* è½¦ç‰Œå®šä½ */,
+    "2. test plate_judge(è½¦ç‰Œåˆ¤æ–­);"		/* è½¦ç‰Œåˆ¤æ–­ */,
+    "3. test plate_detect(è½¦ç‰Œæ£€æµ‹);"		/* è½¦ç‰Œæ£€æµ‹ï¼ˆåŒ…å«è½¦ç‰Œå®šä½ä¸è½¦ç‰Œåˆ¤æ–­ï¼‰ */,
+    "4. test chars_segment(å­—ç¬¦åˆ†éš”);"		/* å­—ç¬¦åˆ†éš” */,
+    "5. test chars_identify(å­—ç¬¦é‰´åˆ«);"		/* å­—ç¬¦é‰´åˆ« */,
+    "6. test chars_recognise(å­—ç¬¦è¯†åˆ«);"		/* å­—ç¬¦è¯†åˆ«ï¼ˆåŒ…å«å­—ç¬¦åˆ†éš”ä¸å­—ç¬¦é‰´åˆ«ï¼‰ */,
+    "7. test plate_recognize(è½¦ç‰Œè¯†åˆ«);"		/* è½¦ç‰Œè¯†åˆ« */,
+    "8. test all(æµ‹è¯•å…¨éƒ¨);"		/* ä»¥ä¸Šå…¨éƒ¨ */,
+    "9. è¿”å›;"		/* é€€å‡º */,
+};
 
 const int testOptionCount = 9;
 
 int testMain()
 {
-	bool isExit = false;
-	while (isExit != true)
-	{
-		stringstream selectOption(stringstream::in | stringstream::out);
-		selectOption << "EasyPR Test:"<< endl;
-		for(int i = 0; i < testOptionCount; i++)
-		{
-			selectOption << testOption[i] << endl;
-		}
-
-		cout << "////////////////////////////////////"<< endl;
-		cout << selectOption.str();
-		cout << "////////////////////////////////////"<< endl;
-		cout << "ÇëÑ¡ÔñÒ»Ïî²Ù×÷:";
-
-		int select = -1;
-		bool isRepeat = true;
-		while (isRepeat)
-		{
-			cin >> select;
-			isRepeat = false;
-			switch (select)
-			{
-			case 1:
-				assert (test_plate_locate() == 0);
-				break;
-			case 2:
-				assert (test_plate_judge() == 0);
-				break;
-			case 3:
-				assert (test_plate_detect() == 0);
-				break;
-			case 4:
-				assert (test_chars_segment() == 0);
-				break;
-			case 5:
-				assert (test_chars_identify() == 0);
-				break;
-			case 6:
-				assert (test_chars_recognise() == 0);
-				break;
-			case 7:
-				assert (test_plate_recognize() == 0);
-				break;
-			case 8:
-				assert (test_plate_locate() == 0);
-				assert (test_plate_judge() == 0);
-				assert (test_plate_detect() == 0);
-
-				assert (test_chars_segment() == 0);
-				assert (test_chars_identify() == 0);
-				assert (test_chars_recognise() == 0);
-
-				assert (test_plate_recognize() == 0);
-				break;
-			case 9:
-				isExit = true;
-				break;
-			default:
-				cout << "ÊäÈë´íÎó£¬ÇëÖØĞÂÊäÈë:";
-				isRepeat = true;
-				break;
-			}
-		}
-	}
-
-	return 0;
+    bool isExit = false;
+    while (isExit != true)
+    {
+        stringstream selectOption(stringstream::in | stringstream::out);
+        selectOption << "EasyPR Test:"<< endl;
+        for(int i = 0; i < testOptionCount; i++)
+        {
+            selectOption << testOption[i] << endl;
+        }
+        
+        cout << "////////////////////////////////////"<< endl;
+        cout << selectOption.str();
+        cout << "////////////////////////////////////"<< endl;
+        cout << "è¯·é€‰æ‹©ä¸€é¡¹æ“ä½œ:";
+        
+        int select = -1;
+        bool isRepeat = true;
+        while (isRepeat)
+        {
+            cin >> select;
+            isRepeat = false;
+            switch (select)
+            {
+                case 1:
+                    assert (test_plate_locate() == 0);
+                    break;
+                case 2:
+                    assert (test_plate_judge() == 0);
+                    break;
+                case 3:
+                    assert (test_plate_detect() == 0);
+                    break;
+                case 4:
+                    assert (test_chars_segment() == 0);
+                    break;
+                case 5:
+                    assert (test_chars_identify() == 0);
+                    break;
+                case 6:
+                    assert (test_chars_recognise() == 0);
+                    break;
+                case 7:
+                    assert (test_plate_recognize() == 0);
+                    break;
+                case 8:
+                    assert (test_plate_locate() == 0);
+                    assert (test_plate_judge() == 0);
+                    assert (test_plate_detect() == 0);
+                    
+                    assert (test_chars_segment() == 0);
+                    assert (test_chars_identify() == 0);
+                    assert (test_chars_recognise() == 0);
+                    
+                    assert (test_plate_recognize() == 0);
+                    break;
+                case 9:
+                    isExit = true;
+                    break;
+                default:
+                    cout << "è¾“å…¥é”™è¯¯ï¼Œè¯·é‡æ–°è¾“å…¥:";
+                    isRepeat = true;
+                    break;
+            }
+        }
+    }
+    
+    return 0;
 }
+
 
 
 int test_plate_locate()
 {
-	cout << "test_plate_locate" << endl;
-
-	Mat src = imread("image/test.jpg");
-
-	vector<Mat> resultVec;
-	CPlateLocate plate;
-	plate.setDebug(1);
-	plate.setLifemode(true);
-
-	int result = plate.plateLocate(src, resultVec);
-	if (result == 0)
-	{
-		int num = resultVec.size();
-		for (int j = 0; j < num; j++)
-		{
-			Mat resultMat = resultVec[j];
-			imshow("plate_locate", resultMat);
-			waitKey(0);
-		}
+    cout << "test_plate_locate" << endl;
+    
+  
+    Mat src = imread((string)projectpath+"image/test.jpg");
+    
+    vector<Mat> resultVec;
+    CPlateLocate plate;
+    plate.setDebug(1);
+    plate.setLifemode(true);
+    
+    int result = plate.plateLocate(src, resultVec);
+    if (result == 0)
+    {
+        int num = resultVec.size();
+        for (int j = 0; j < num; j++)
+        {
+            Mat resultMat = resultVec[j];
+            imshow("plate_locate", resultMat);
+            waitKey(0);
+        }
         destroyWindow("plate_locate");
-	}
-
-	return result;
+    }
+    
+    return result;
 }
 
 int test_plate_judge()
 {
-	cout << "test_plate_judge" << endl;
-
-	Mat src = imread("image/plate_judge.jpg");
-
-	//¿ÉÄÜÊÇ³µÅÆµÄÍ¼¿é¼¯ºÏ
-	vector<Mat> matVec;
-
-	//¾­¹ıSVMÅĞ¶ÏºóµÃµ½µÄÍ¼¿é¼¯ºÏ
-	vector<Mat> resultVec;
-
-	CPlateLocate lo;
-	lo.setDebug(1);
-	lo.setLifemode(true);
-
-	int resultLo = lo.plateLocate(src, matVec);
-
-	if (0 != resultLo)
-		return -1;
-
-	cout << "plate_locate_img" << endl;
-	if (resultLo == 0)
-	{
-		int num = matVec.size();
-		for (int j = 0; j < num; j++)
-		{
-			Mat resultMat = matVec[j];
-			imshow("plate_judge", resultMat);
-			waitKey(0);
-		}
+    cout << "test_plate_judge" << endl;
+    
+    Mat src = imread((string)projectpath+"image/plate_judge.jpg");
+    
+    //å¯èƒ½æ˜¯è½¦ç‰Œçš„å›¾å—é›†åˆ
+    vector<Mat> matVec;
+    
+    //ç»è¿‡SVMåˆ¤æ–­åå¾—åˆ°çš„å›¾å—é›†åˆ
+    vector<Mat> resultVec;
+    
+    CPlateLocate lo;
+    lo.setDebug(1);
+    lo.setLifemode(true);
+    
+    int resultLo = lo.plateLocate(src, matVec);
+    
+    if (0 != resultLo)
+        return -1;
+    
+    cout << "plate_locate_img" << endl;
+    if (resultLo == 0)
+    {
+        int num = matVec.size();
+        for (int j = 0; j < num; j++)
+        {
+            Mat resultMat = matVec[j];
+            imshow("plate_judge", resultMat);
+            waitKey(0);
+        }
         destroyWindow("plate_judge");
-	}
-
-	CPlateJudge ju;
-	int resultJu = ju.plateJudge(matVec, resultVec);
-
-	if (0 != resultJu)
-		return -1;
-
-	cout << "plate_judge_img" << endl;
-	if (resultJu == 0)
-	{
-		int num = resultVec.size();
-		for (int j = 0; j < num; j++)
-		{
-			Mat resultMat = resultVec[j];
-			imshow("plate_judge", resultMat);
-			waitKey(0);
-		}
+    }
+    
+    CPlateJudge ju;
+    int resultJu = ju.plateJudge(matVec, resultVec);
+    
+    if (0 != resultJu)
+        return -1;
+    
+    cout << "plate_judge_img" << endl;
+    if (resultJu == 0)
+    {
+        int num = resultVec.size();
+        for (int j = 0; j < num; j++)
+        {
+            Mat resultMat = resultVec[j];
+            imshow("plate_judge", resultMat);
+            waitKey(0);
+        }
         destroyWindow("plate_judge");
-	}
-
-	return resultJu;
+    }
+    
+    return resultJu;
 }
 
 int test_chars_segment()
 {
-	cout << "test_chars_segment" << endl;
-
-	Mat src = imread("image/chars_segment.jpg");
-
-	vector<Mat> resultVec;
-	CCharsSegment plate;
-
-	int result = plate.charsSegment(src, resultVec);
-	if (result == 0)
-	{
-		int num = resultVec.size();
-		for (int j = 0; j < num; j++)
-		{
-			Mat resultMat = resultVec[j];
-			imshow("chars_segment", resultMat);
-			waitKey(0);
-		}
+    cout << "test_chars_segment" << endl;
+    
+    Mat src = imread((string)projectpath+"image/chars_segment.jpg");
+    
+    vector<Mat> resultVec;
+    CCharsSegment plate;
+    
+    int result = plate.charsSegment(src, resultVec);
+    if (result == 0)
+    {
+        int num = resultVec.size();
+        for (int j = 0; j < num; j++)
+        {
+            Mat resultMat = resultVec[j];
+            imshow("chars_segment", resultMat);
+            waitKey(0);
+        }
         destroyWindow("chars_segment");
-	}
-
-	return result;
+    }
+    
+    return result;
 }
 
 int test_chars_identify()
 {
-	cout << "test_chars_identify" << endl;
-
-	Mat src = imread("image/chars_identify.jpg");
-
-	vector<Mat> resultVec;
-	CCharsSegment cs;
-	CCharsIdentify ci;
-
-	string plateIdentify = "";
-
-	int result = cs.charsSegment(src, resultVec);
-	if (result == 0)
-	{
-		int num = resultVec.size();
-		for (int j = 0; j < num; j++)
-		{
-			Mat resultMat = resultVec[j];
-			bool isChinses = false;
-			bool isSpec = false;
-
-			//Ä¬ÈÏÊ×¸ö×Ö·û¿éÊÇÖĞÎÄ×Ö·û
-			if (j == 0)
-				isChinses = true;
-
-			if (j == 1)
-				isSpec = true;
-
-			string charcater = ci.charsIdentify(resultMat, isChinses, isSpec);
-			plateIdentify = plateIdentify + charcater;
-		}
-	}
-
-	const string plateLicense = "ËÕE771H6";
-
-	cout << "plateLicense: " << plateLicense << endl;
-	cout << "plateIdentify: " << plateIdentify << endl;
-
-	if (plateLicense != plateIdentify)
-	{
-		cout << "Identify Not Correct!" << endl;
-		return -1;
-	}
-	cout << "Identify Correct!" << endl;
-
-	return result;
+    cout << "test_chars_identify" << endl;
+    
+    Mat src = imread((string)projectpath+"image/chars_identify.jpg");
+    
+    vector<Mat> resultVec;
+    CCharsSegment cs;
+    CCharsIdentify ci;
+    
+    string plateIdentify = "";
+    
+    int result = cs.charsSegment(src, resultVec);
+    if (result == 0)
+    {
+        int num = resultVec.size();
+        for (int j = 0; j < num; j++)
+        {
+            Mat resultMat = resultVec[j];
+            bool isChinses = false;
+            bool isSpec = false;
+            
+            //é»˜è®¤é¦–ä¸ªå­—ç¬¦å—æ˜¯ä¸­æ–‡å­—ç¬¦
+            if (j == 0)
+                isChinses = true;
+            
+            if (j == 1)
+                isSpec = true;
+            
+            string charcater = ci.charsIdentify(resultMat, isChinses, isSpec);
+            plateIdentify = plateIdentify + charcater;
+        }
+    }
+    
+    const string plateLicense = "è‹E771H6";
+    
+    cout << "plateLicense: " << plateLicense << endl;
+    cout << "plateIdentify: " << plateIdentify << endl;
+    
+    if (plateLicense != plateIdentify)
+    {
+        cout << "Identify Not Correct!" << endl;
+        return -1;
+    }
+    cout << "Identify Correct!" << endl;
+    
+    return result;
 }
 
 
 int test_plate_detect()
 {
-	cout << "test_plate_detect" << endl;
-
-	Mat src = imread("image/plate_detect.jpg");
-
-	vector<CPlate> resultVec;
-	CPlateDetect pd;
-	pd.setPDLifemode(true);
-
-	int result = pd.plateDetectDeep(src, resultVec);
-	if (result == 0)
-	{
-		int num = resultVec.size();
-		for (int j = 0; j < num; j++)
-		{
-			CPlate resultMat = resultVec[j];
-			
-			imshow("plate_detect", resultMat.getPlateMat());
-			waitKey(0);
-		}
-		destroyWindow("plate_detect");
-	}
-
-	return result;
+    cout << "test_plate_detect" << endl;
+    
+    Mat src = imread((string)projectpath+"image/plate_detect.jpg");
+    
+    vector<CPlate> resultVec;
+    CPlateDetect pd;
+    pd.setPDLifemode(true);
+    
+    int result = pd.plateDetectDeep(src, resultVec);
+    if (result == 0)
+    {
+        int num = resultVec.size();
+        for (int j = 0; j < num; j++)
+        {
+            CPlate resultMat = resultVec[j];
+            
+            imshow("plate_detect", resultMat.getPlateMat());
+            waitKey(0);
+        }
+        destroyWindow("plate_detect");
+    }
+    
+    return result;
 }
 
 
 int test_chars_recognise()
 {
-	cout << "test_chars_recognise" << endl;
-
-	Mat src = imread("image/chars_recognise.jpg");
-
-	CCharsRecognise cr;
-	string charsRecognise = "";
-
-	int result = cr.charsRecognise(src, charsRecognise);
-	if (result == 0)
-	{
-		cout << "charsRecognise: " << charsRecognise << endl;
-	}
-
-	return result;
+    cout << "test_chars_recognise" << endl;
+    
+    Mat src = imread((string)projectpath+"image/chars_recognise.jpg");
+    
+    CCharsRecognise cr;
+    string charsRecognise = "";
+    
+    int result = cr.charsRecognise(src, charsRecognise);
+    if (result == 0)
+    {
+        cout << "charsRecognise: " << charsRecognise << endl;
+    }
+    
+    return result;
 }
 
 int test_plate_recognize()
 {
-	cout << "test_plate_recognize" << endl;
-
-	Mat src = imread("image/test.jpg");
-
-	CPlateRecognize pr;
-	pr.LoadANN("model/ann.xml");
-	pr.LoadSVM("model/svm.xml");
-
-	pr.setLifemode(true);
-	pr.setDebug(true);
-
-	vector<string> plateVec;
-
-	int result = pr.plateRecognize(src, plateVec);
-	if (result == 0)
-	{
-		int num = plateVec.size();
-		for (int j = 0; j < num; j++)
-		{
-			cout << "plateRecognize: " << plateVec[j] << endl;			
-		}
-	}
-
-	if (result != 0)
-		cout << "result:" << result << endl;
-
-	return result;
+    cout << "test_plate_recognize" << endl;
+    
+    Mat src = imread((string)projectpath+"image/test.jpg");
+    
+    CPlateRecognize pr;
+    pr.LoadANN((string)projectpath+"model/ann.xml");
+    pr.LoadSVM((string)projectpath+"model/svm.xml");
+    
+    pr.setLifemode(true);
+    pr.setDebug(true);
+    
+    vector<string> plateVec;
+    
+    int result = pr.plateRecognize(src, plateVec);
+    if (result == 0)
+    {
+        int num = plateVec.size();
+        for (int j = 0; j < num; j++)
+        {
+            cout << "plateRecognize: " << plateVec[j] << endl;			
+        }
+    }
+    
+    if (result != 0)
+        cout << "result:" << result << endl;
+    
+    return result;
 }

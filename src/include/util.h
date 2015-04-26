@@ -13,88 +13,88 @@
 #endif
 
 namespace easypr {
-
-class Utils {
- public:
-  static long getTimestamp();
-
-  /*
-   * Get file name from a given path
-   * bool postfix: including the postfix
-   */
-  static std::string getFileName(const std::string& path,
-                                 const bool postfix = false);
-
-  /*
-   * Split the given string into segements by a delimiter
-   */
-  static std::vector<std::string> splitString(const std::string& str,
-                                              const char delimiter);
-
-  /*
-   * returns the smaller of the two numbers
-   */
-  template <typename T>
-  static T min(const T& v1, const T& v2) {
-    return (v1 < v2) ? v1 : v2;
-  }
-
-  /*
- * Get files from a given folder
- * all: including all sub-folders
- */
-  static std::vector<std::string> getFiles(const std::string& folder,
-                                           const bool all = true);
-};
-
+    
+    class Utils {
+    public:
+        static long getTimestamp();
+        
+        /*
+         * Get file name from a given path
+         * bool postfix: including the postfix
+         */
+        static std::string getFileName(const std::string& path,
+                                       const bool postfix = false);
+        
+        /*
+         * Split the given string into segements by a delimiter
+         */
+        static std::vector<std::string> splitString(const std::string& str,
+                                                    const char delimiter);
+        
+        /*
+         * returns the smaller of the two numbers
+         */
+        template <typename T>
+        static T min(const T& v1, const T& v2) {
+            return (v1 < v2) ? v1 : v2;
+        }
+        
+        /*
+         * Get files from a given folder
+         * all: including all sub-folders
+         */
+        static std::vector<std::string> getFiles(const std::string& folder,
+                                                 const bool all = true);
+    };
+    
 }
 
-//! levenshtein¾àÀë£¬ÓÃÓÚ¼ÆËãÁ½¸ö³µÅÆµÄ¾àÀë
-//£¡EasyPRÖĞÓÃlevenshtein¾àÀëºâÁ¿³µÅÆÊ¶±ğÓëÕæÊµ³µÅÆµÄÎó²î
+//! levenshteinè·ç¦»ï¼Œç”¨äºè®¡ç®—ä¸¤ä¸ªè½¦ç‰Œçš„è·ç¦»
+//ï¼EasyPRä¸­ç”¨levenshteinè·ç¦»è¡¡é‡è½¦ç‰Œè¯†åˆ«ä¸çœŸå®è½¦ç‰Œçš„è¯¯å·®
 template<class T>
 unsigned int levenshtein_distance(const T &s1, const T & s2) {
-	const size_t len1 = s1.size(), len2 = s2.size();
-	std::vector<unsigned int> col(len2+1), prevCol(len2+1);
- 
-	for (unsigned int i = 0; i < prevCol.size(); i++)
-		prevCol[i] = i;
-	for (unsigned int i = 0; i < len1; i++) {
-		col[0] = i+1;
-		for (unsigned int j = 0; j < len2; j++)
+    const size_t len1 = s1.size(), len2 = s2.size();
+    std::vector<unsigned int> col(len2+1), prevCol(len2+1);
+    
+    for (unsigned int i = 0; i < prevCol.size(); i++)
+        prevCol[i] = i;
+    for (unsigned int i = 0; i < len1; i++) {
+        col[0] = i+1;
+        for (unsigned int j = 0; j < len2; j++)
             col[j+1] = easypr::Utils::min(easypr::Utils::min(prevCol[1 + j] + 1, col[j] + 1), \
-								prevCol[j] + (s1[i]==s2[j] ? 0 : 1) );
-		col.swap(prevCol);
-	}
-	return prevCol[len2];
+                                          prevCol[j] + (s1[i]==s2[j] ? 0 : 1) );
+        col.swap(prevCol);
+    }
+    return prevCol[len2];
 }
 
 
-/// test.cppÖĞ·½·¨
+/// test.cppä¸­æ–¹æ³•
 int testMain();
 
-/// accuracy_test.cppÖĞ·½·¨
+/// accuracy_test.cppä¸­æ–¹æ³•
 int acurayTest(const std::string&);
 
-/// mc_data_prepare.cppÖĞ·½·¨
+/// mc_data_prepare.cppä¸­æ–¹æ³•
 void getLearnData();
 void Code2Province(const std::string& code, std::string& province);
 void changeFileName();
 void getPlateLicense(const std::string& filepath, std::string& plateLicense);
 
-/// learn_prepare.cppÖĞ·½·¨
+/// learn_prepare.cppä¸­æ–¹æ³•
 void label_data();
 
-/// general_test_prepare.cppÖĞ·½·¨
+/// general_test_prepare.cppä¸­æ–¹æ³•
 int general_test();
 
 
-//	deface.cppÖĞ·½·¨
-//	·´ÈËÁ³Ê¶±ğº¯Êı
-//	ÔÚ·¢²¼Êı¾İµ½general_testÊı¾İ¼¯Àï£¬ÇëÏÈÓÃÕâÀïµÄ·½·¨¶ÔÍ¼Ïñ½øĞĞ´¦Àí
-//	EasyPR¿ªÔ´ÏîÄ¿·Ç³£×¢ÖØ±£»¤Í¼Æ¬ÖĞ¼İÊ»ÈËµÄÒşË½
+//	deface.cppä¸­æ–¹æ³•
+//	åäººè„¸è¯†åˆ«å‡½æ•°
+//	åœ¨å‘å¸ƒæ•°æ®åˆ°general_testæ•°æ®é›†é‡Œï¼Œè¯·å…ˆç”¨è¿™é‡Œçš„æ–¹æ³•å¯¹å›¾åƒè¿›è¡Œå¤„ç†
+//	EasyPRå¼€æºé¡¹ç›®éå¸¸æ³¨é‡ä¿æŠ¤å›¾ç‰‡ä¸­é©¾é©¶äººçš„éšç§
 int deface();
 
-/// generate_gdts.cppÖĞ·½·¨
+/// generate_gdts.cppä¸­æ–¹æ³•
 int generate_gdts();
 
 #endif

@@ -7,7 +7,7 @@
 // Copyright:   liuruoze
 // Reference:	Mastering OpenCV with Practical Computer Vision Projects
 // Reference:	CSDN Bloger taotao1233
-// Desciption:  
+// Desciption:
 // Defines CPlateLocate
 //////////////////////////////////////////////////////////////////////////
 #ifndef __PLATE_JUDGE_H__
@@ -20,49 +20,49 @@
 
 
 /*! \namespace easypr
-    Namespace where all the C++ EasyPR functionality resides
-*/
+ Namespace where all the C++ EasyPR functionality resides
+ */
 namespace easypr {
-
-class CPlateJudge 
-{
-public:
-	CPlateJudge();
-
-	//! ¶Ô¶à·ù³µÅÆ½øĞĞSVMÅĞ¶Ï
-	int plateJudge(const vector<CPlate>&, vector<CPlate>&);
-
-	//! ³µÅÆÅĞ¶Ï
-	int plateJudge(const vector<Mat>&, vector<Mat>&);
-
-	//! ³µÅÆÅĞ¶Ï£¨Ò»¸±Í¼Ïñ£©
-	int plateJudge(const Mat& inMat, int& result);
-
-	//! Ö±·½Í¼¾ùºâ
-	Mat histeq(Mat);
-
-	//! ×°ÔØSVMÄ£ĞÍ
-	void LoadModel();
-
-	//! ×°ÔØSVMÄ£ĞÍ
-	void LoadModel(string s);
-
-	//! ÉèÖÃÓë¶ÁÈ¡Ä£ĞÍÂ·¾¶
-	inline void setModelPath(string path){	m_path = path;	}
-	inline string getModelPath() const{	 return m_path;	}
-
-private:
-	//£¡Ê¹ÓÃµÄSVMÄ£ĞÍ
-	CvSVM svm;
-
-	// ! EasyPRµÄgetFeatures»Øµ÷º¯Êı
-	// £¡ÓÃÓÚ´Ó³µÅÆµÄimageÉú³ÉsvmµÄÑµÁ·ÌØÕ÷features
-	svmCallback m_getFeatures;
-
-	//! Ä£ĞÍ´æ´¢Â·¾¶
-	string m_path;
-};
-
+    
+    class CPlateJudge
+    {
+    public:
+        CPlateJudge();
+        
+        //! å¯¹å¤šå¹…è½¦ç‰Œè¿›è¡ŒSVMåˆ¤æ–­
+        int plateJudge(const vector<CPlate>&, vector<CPlate>&);
+        
+        //! è½¦ç‰Œåˆ¤æ–­
+        int plateJudge(const vector<Mat>&, vector<Mat>&);
+        
+        //! è½¦ç‰Œåˆ¤æ–­ï¼ˆä¸€å‰¯å›¾åƒï¼‰
+        int plateJudge(const Mat& inMat, int& result);
+        
+        //! ç›´æ–¹å›¾å‡è¡¡
+        Mat histeq(Mat);
+        
+        //! è£…è½½SVMæ¨¡å‹
+        void LoadModel();
+        
+        //! è£…è½½SVMæ¨¡å‹
+        void LoadModel(string s);
+        
+        //! è®¾ç½®ä¸è¯»å–æ¨¡å‹è·¯å¾„
+        inline void setModelPath(string path){	m_path = path;	}
+        inline string getModelPath() const{	 return m_path;	}
+        
+    private:
+        //ï¼ä½¿ç”¨çš„SVMæ¨¡å‹
+        CvSVM svm;
+        
+        // ! EasyPRçš„getFeatureså›è°ƒå‡½æ•°
+        // ï¼ç”¨äºä»è½¦ç‰Œçš„imageç”Ÿæˆsvmçš„è®­ç»ƒç‰¹å¾features
+        svmCallback m_getFeatures;
+        
+        //! æ¨¡å‹å­˜å‚¨è·¯å¾„
+        string m_path;
+    };
+    
 }	/*! \namespace easypr*/
 
 #endif /* endif __PLATE_JUDGE_H__ */

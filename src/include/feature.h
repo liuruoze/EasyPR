@@ -2,34 +2,34 @@
 #define __FEATURE_H__
 
 /*! \namespace easypr
-    Namespace where all the C++ EasyPR functionality resides
-*/
+ Namespace where all the C++ EasyPR functionality resides
+ */
 namespace easypr {
-
-	//! »ñµÃ³µÅÆµÄÌØÕ÷Êı
-	Mat getTheFeatures(Mat in);
-
-	//! EasyPRµÄgetFeatures»Øµ÷º¯Êı
-	//! ÓÃÓÚ´Ó³µÅÆµÄimageÉú³ÉsvmµÄÑµÁ·ÌØÕ÷features
-	typedef void(*svmCallback)(const Mat& image, Mat& features);
-
-	//! EasyPRµÄgetFeatures»Øµ÷º¯Êı
-	//! ±¾º¯ÊıÊÇÉú³ÉÖ±·½Í¼¾ùºâÌØÕ÷µÄ»Øµ÷º¯Êı
-	void getHisteqFeatures(const Mat& image, Mat& features);
-
-	//!  EasyPRµÄgetFeatures»Øµ÷º¯Êı
-	//! ±¾º¯ÊıÊÇ»ñÈ¡´¹Ö±ºÍË®Æ½µÄÖ±·½Í¼Í¼Öµ
-	void getHistogramFeatures(const Mat& image, Mat& features);
-
-	//! ±¾º¯ÊıÊÇ»ñÈ¡SIFTÌØÕ÷×Ó
-	void getSIFTFeatures(const Mat& image, Mat& features);
-
-	//! ±¾º¯ÊıÊÇ»ñÈ¡HOGÌØÕ÷×Ó
-	void getHOGFeatures(const Mat& image, Mat& features);
-
-	//! ±¾º¯ÊıÊÇ»ñÈ¡HSV¿Õ¼äÁ¿»¯µÄÖ±·½Í¼ÌØÕ÷×Ó
-	void getHSVHistFeatures(const Mat& image, Mat& features);
-
+    
+    //! è·å¾—è½¦ç‰Œçš„ç‰¹å¾æ•°
+    Mat getTheFeatures(Mat in);
+    
+    //! EasyPRçš„getFeatureså›è°ƒå‡½æ•°
+    //! ç”¨äºä»è½¦ç‰Œçš„imageç”Ÿæˆsvmçš„è®­ç»ƒç‰¹å¾features
+    typedef void(*svmCallback)(const Mat& image, Mat& features);
+    
+    //! EasyPRçš„getFeatureså›è°ƒå‡½æ•°
+    //! æœ¬å‡½æ•°æ˜¯ç”Ÿæˆç›´æ–¹å›¾å‡è¡¡ç‰¹å¾çš„å›è°ƒå‡½æ•°
+    void getHisteqFeatures(const Mat& image, Mat& features);
+    
+    //!  EasyPRçš„getFeatureså›è°ƒå‡½æ•°
+    //! æœ¬å‡½æ•°æ˜¯è·å–å‚ç›´å’Œæ°´å¹³çš„ç›´æ–¹å›¾å›¾å€¼
+    void getHistogramFeatures(const Mat& image, Mat& features);
+    
+    //! æœ¬å‡½æ•°æ˜¯è·å–SIFTç‰¹å¾å­
+    void getSIFTFeatures(const Mat& image, Mat& features);
+    
+    //! æœ¬å‡½æ•°æ˜¯è·å–HOGç‰¹å¾å­
+    void getHOGFeatures(const Mat& image, Mat& features);
+    
+    //! æœ¬å‡½æ•°æ˜¯è·å–HSVç©ºé—´é‡åŒ–çš„ç›´æ–¹å›¾ç‰¹å¾å­
+    void getHSVHistFeatures(const Mat& image, Mat& features);
+    
 }	/*! \namespace easypr*/
 
 #endif
