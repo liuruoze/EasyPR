@@ -1,135 +1,135 @@
 #include "../include/plate_recognize.h"
 
 /*! \namespace easypr
-    Namespace where all the C++ EasyPR functionality resides
-*/
+ Namespace where all the C++ EasyPR functionality resides
+ */
 namespace easypr{
-
-CPlateRecognize::CPlateRecognize()
-{
-	//cout << "CPlateRecognize" << endl;
-	//m_plateDetect= new CPlateDetect();
-	//m_charsRecognise = new CCharsRecognise();
-}
-
-////! ×°ÔØSVMÄ£ĞÍ
-//void CPlateRecognize::LoadSVM(string strSVM)
-//{
-//	m_plateDetect->LoadModel(strSVM.c_str());
-//}
-//
-////! ×°ÔØANNÄ£ĞÍ
-//void CPlateRecognize::LoadANN(string strANN)
-//{
-//	m_charsRecognise->LoadModel(strANN.c_str());
-//}
-//
-//int CPlateRecognize::plateDetect(Mat src, vector<Mat>& resultVec)
-//{
-//	int result = m_plateDetect->plateDetect(src, resultVec);
-//	return result;
-//}
-//
-//int CPlateRecognize::charsRecognise(Mat plate, string& plateLicense)
-//{
-//	int result = m_charsRecognise->charsRecognise(plate, plateLicense);
-//	return result;
-//}
-
-int CPlateRecognize::plateRecognize(Mat src, vector<string>& licenseVec,int index)
-{
-	// ³µÅÆ·½¿é¼¯ºÏ
-	vector<CPlate> plateVec;
-	
-	
-	// Èç¹ûÉèÖÃÁËDebugÄ£Ê½£¬¾ÍÒÀ´ÎÏÔÊ¾ËùÓĞµÄÍ¼Æ¬
-	bool showDetectArea = getPDDebug();
-	showDetectArea=0;
-	// ½øĞĞÉî¶È¶¨Î»£¬Ê¹ÓÃÑÕÉ«ĞÅÏ¢Óë¶ş´ÎSobel
-	int resultPD = plateDetectDeep(src, plateVec, showDetectArea, 0);
-
-	Mat result;
-	src.copyTo(result);
-
-	if (resultPD == 0)
-	{
-		int num = plateVec.size();
-
-		int resultCR = 0;
-
-		int index = 0;
-		for (int j = 0; j < num; j++)
-		{
-			CPlate item = plateVec[j];
-			
-			Mat plate = item.getPlateMat();
-			
-			//»ñÈ¡³µÅÆÑÕÉ«
-			string plateType = getPlateColor(plate);
-
-			//»ñÈ¡³µÅÆºÅ
-			string plateIdentify = "";
-			int resultCR = charsRecognise(plate, plateIdentify);
-			if (resultCR == 0)
-			{
-				string license = plateType + ":" + plateIdentify;
-				licenseVec.push_back(license);
-
-
-				//int height = 36;
-				//int width = 136;
-				//if(height*index + height < result.rows)
-				//{
-				//	Mat imageRoi = result(Rect(0, 0 + height*index, width, height));
-				//	addWeighted(imageRoi, 0, plate, 1, 0, imageRoi);
-				//	 
-				//	CvxText text("simhei.ttf");
-				//	float p = 0.5;
-
-				//	CvScalar size(cvScalar(8,0.5,0.1));
-
-				//	text.setFont(NULL, &size, NULL, &p);   // Í¸Ã÷´¦Àí
-
-				//	text.putText(result, license.c_str(), Point(width,height*(index+1)));
-
-
-				//	
-				//}
-				//index++;
-
-
-				RotatedRect minRect = item.getPlatePos();
-				Point2f rect_points[4]; 
-				minRect.points( rect_points );
-
-				if(item.bColored)
-				{
-					for (int j = 0; j < 4; j++)
-					{
-						line(result, rect_points[j], rect_points[(j + 1) % 4], Scalar(255, 255, 0), 2, 8);
-						//ÑÕÉ«¶¨Î»³µÅÆ£¬»ÆÉ«·½¿ò
-					}
-				}
-				else
-				{
-					for( int j = 0; j < 4; j++ )
-					{
-						line(result, rect_points[j], rect_points[(j+1)%4], Scalar(0,0,255), 2, 8 );//sobel¶¨Î»³µÅÆ£¬ºìÉ«·½¿ò
-					}
-
-				}
-				
-			
-			}
-		}
-	}
-
-
-	showResult(result);
-
-
-	return resultPD;
-}
-
+    
+    CPlateRecognize::CPlateRecognize()
+    {
+        //cout << "CPlateRecognize" << endl;
+        //m_plateDetect= new CPlateDetect();
+        //m_charsRecognise = new CCharsRecognise();
+    }
+    
+    ////! è£…è½½SVMæ¨¡å‹
+    //void CPlateRecognize::LoadSVM(string strSVM)
+    //{
+    //	m_plateDetect->LoadModel(strSVM.c_str());
+    //}
+    //
+    ////! è£…è½½ANNæ¨¡å‹
+    //void CPlateRecognize::LoadANN(string strANN)
+    //{
+    //	m_charsRecognise->LoadModel(strANN.c_str());
+    //}
+    //
+    //int CPlateRecognize::plateDetect(Mat src, vector<Mat>& resultVec)
+    //{
+    //	int result = m_plateDetect->plateDetect(src, resultVec);
+    //	return result;
+    //}
+    //
+    //int CPlateRecognize::charsRecognise(Mat plate, string& plateLicense)
+    //{
+    //	int result = m_charsRecognise->charsRecognise(plate, plateLicense);
+    //	return result;
+    //}
+    
+    int CPlateRecognize::plateRecognize(Mat src, vector<string>& licenseVec,int index)
+    {
+        // è½¦ç‰Œæ–¹å—é›†åˆ
+        vector<CPlate> plateVec;
+        
+        
+        // å¦‚æœè®¾ç½®äº†Debugæ¨¡å¼ï¼Œå°±ä¾æ¬¡æ˜¾ç¤ºæ‰€æœ‰çš„å›¾ç‰‡
+        bool showDetectArea = getPDDebug();
+        showDetectArea=0;
+        // è¿›è¡Œæ·±åº¦å®šä½ï¼Œä½¿ç”¨é¢œè‰²ä¿¡æ¯ä¸äºŒæ¬¡Sobel
+        int resultPD = plateDetectDeep(src, plateVec, showDetectArea, 0);
+        
+        Mat result;
+        src.copyTo(result);
+        
+        if (resultPD == 0)
+        {
+            int num = plateVec.size();
+            
+            int resultCR = 0;
+            
+            int index = 0;
+            for (int j = 0; j < num; j++)
+            {
+                CPlate item = plateVec[j];
+                
+                Mat plate = item.getPlateMat();
+                
+                //è·å–è½¦ç‰Œé¢œè‰²
+                string plateType = getPlateColor(plate);
+                
+                //è·å–è½¦ç‰Œå·
+                string plateIdentify = "";
+                int resultCR = charsRecognise(plate, plateIdentify);
+                if (resultCR == 0)
+                {
+                    string license = plateType + ":" + plateIdentify;
+                    licenseVec.push_back(license);
+                    
+                    
+                    //int height = 36;
+                    //int width = 136;
+                    //if(height*index + height < result.rows)
+                    //{
+                    //	Mat imageRoi = result(Rect(0, 0 + height*index, width, height));
+                    //	addWeighted(imageRoi, 0, plate, 1, 0, imageRoi);
+                    //
+                    //	CvxText text("simhei.ttf");
+                    //	float p = 0.5;
+                    
+                    //	CvScalar size(cvScalar(8,0.5,0.1));
+                    
+                    //	text.setFont(NULL, &size, NULL, &p);   // é€æ˜å¤„ç†
+                    
+                    //	text.putText(result, license.c_str(), Point(width,height*(index+1)));
+                    
+                    
+                    //	
+                    //}
+                    //index++;
+                    
+                    
+                    RotatedRect minRect = item.getPlatePos();
+                    Point2f rect_points[4]; 
+                    minRect.points( rect_points );
+                    
+                    if(item.bColored)
+                    {
+                        for (int j = 0; j < 4; j++)
+                        {
+                            line(result, rect_points[j], rect_points[(j + 1) % 4], Scalar(255, 255, 0), 2, 8);
+                            //é¢œè‰²å®šä½è½¦ç‰Œï¼Œé»„è‰²æ–¹æ¡†
+                        }
+                    }
+                    else
+                    {
+                        for( int j = 0; j < 4; j++ )
+                        {
+                            line(result, rect_points[j], rect_points[(j+1)%4], Scalar(0,0,255), 2, 8 );//sobelå®šä½è½¦ç‰Œï¼Œçº¢è‰²æ–¹æ¡†
+                        }
+                        
+                    }
+                    
+                    
+                }
+            }
+        }
+        
+        
+        showResult(result);
+        
+        
+        return resultPD;
+    }
+    
 }	/*! \namespace easypr*/
 

@@ -18,51 +18,51 @@
 #include "chars_recognise.h"
 
 /*! \namespace easypr
-    Namespace where all the C++ EasyPR functionality resides
-*/
+ Namespace where all the C++ EasyPR functionality resides
+ */
 namespace easypr {
-
-class CPlateRecognize : public CPlateDetect, public CCharsRecognise
-{
-public:
-	CPlateRecognize();
-
-	//! ³µÅÆ¼ì²âÓë×Ö·ûÊ¶±ğ
-	int plateRecognize(Mat, vector<string>&, int index = 0);
-
-	//! Éú»îÄ£Ê½Óë¹¤ÒµÄ£Ê½ÇĞ»»
-	inline void setLifemode(bool param)
-	{
-		CPlateDetect::setPDLifemode(param);
-	}
-
-	//! ÊÇ·ñ¿ªÆôµ÷ÊÔÄ£Ê½
-	inline void setDebug(int param)
-	{ 
-		CPlateDetect::setPDDebug(param);
-		CCharsRecognise::setCRDebug(param);
-	}
-
-	////! ³µÅÆ¶¨Î»ÓëÅĞ¶Ï
-	//int plateDetect(Mat, vector<Mat>&);
-
-	////! ×Ö·û·Ö¸îÓëÊ¶±ğ
-	//int charsRecognise(Mat, String&);
-
-	////! ×°ÔØSVM
-	//void LoadSVM(string s);
-
-	////! ×°ÔØANNÄ£ĞÍ
-	//void LoadANN(string s);
-
-private:
-	////£¡³µÅÆ¼ì²â
-	//CPlateDetect* m_plateDetect;
-
-	////! ×Ö·ûÊ¶±ğ
-	//CCharsRecognise* m_charsRecognise;
-};
-
+    
+    class CPlateRecognize : public CPlateDetect, public CCharsRecognise
+    {
+    public:
+        CPlateRecognize();
+        
+        //! è½¦ç‰Œæ£€æµ‹ä¸å­—ç¬¦è¯†åˆ«
+        int plateRecognize(Mat, vector<string>&, int index = 0);
+        
+        //! ç”Ÿæ´»æ¨¡å¼ä¸å·¥ä¸šæ¨¡å¼åˆ‡æ¢
+        inline void setLifemode(bool param)
+        {
+            CPlateDetect::setPDLifemode(param);
+        }
+        
+        //! æ˜¯å¦å¼€å¯è°ƒè¯•æ¨¡å¼
+        inline void setDebug(int param)
+        {
+            CPlateDetect::setPDDebug(param);
+            CCharsRecognise::setCRDebug(param);
+        }
+        
+        ////! è½¦ç‰Œå®šä½ä¸åˆ¤æ–­
+        //int plateDetect(Mat, vector<Mat>&);
+        
+        ////! å­—ç¬¦åˆ†å‰²ä¸è¯†åˆ«
+        //int charsRecognise(Mat, String&);
+        
+        ////! è£…è½½SVM
+        //void LoadSVM(string s);
+        
+        ////! è£…è½½ANNæ¨¡å‹
+        //void LoadANN(string s);
+        
+    private:
+        ////ï¼è½¦ç‰Œæ£€æµ‹
+        //CPlateDetect* m_plateDetect;
+        
+        ////! å­—ç¬¦è¯†åˆ«
+        //CCharsRecognise* m_charsRecognise;
+    };
+    
 }	/* \namespace easypr  */
 
 #endif /* endif __PLATE_RECOGNITION_H__ */

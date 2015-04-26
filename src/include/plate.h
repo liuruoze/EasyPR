@@ -4,7 +4,7 @@
 // Date:	    2015-03-12
 // Author:	    liuruoze
 // Copyright:   liuruoze
-// Desciption:  
+// Desciption:
 // Defines CPlate
 //////////////////////////////////////////////////////////////////////////
 #ifndef __PLATE_H__
@@ -13,37 +13,37 @@
 #include "prep.h"
 
 /*! \namespace easypr
-Namespace where all the C++ EasyPR functionality resides
-*/
+ Namespace where all the C++ EasyPR functionality resides
+ */
 namespace easypr {
-
-	class CPlate
-	{
-	public:
-		bool bColored;
-		CPlate();
-
-		//! ÉèÖÃÓë¶ÁÈ¡±äÁ¿
-		inline void setPlateMat(Mat param){ m_plateMat = param; }
-		inline Mat getPlateMat() const{ return m_plateMat; }
-
-		inline void setPlatePos(RotatedRect param){ m_platePos = param; }
-		inline RotatedRect getPlatePos() const{ return m_platePos; }
-
-		inline void setPlateStr(String param){ m_plateStr = param; }
-		inline String getPlateStr() const{ return m_plateStr; }
-
-	private:
-		//! ³µÅÆµÄÍ¼¿é
-		Mat m_plateMat;
-
-		//! ³µÅÆÔÚÔ­Í¼µÄÎ»ÖÃ
-		RotatedRect m_platePos;
-
-		//! ³µÅÆ×Ö·û´®
-		String m_plateStr;
-	};
-
+    
+    class CPlate
+    {
+    public:
+        bool bColored;
+        CPlate();
+        
+        //! è®¾ç½®ä¸è¯»å–å˜é‡
+        inline void setPlateMat(Mat param){ m_plateMat = param; }
+        inline Mat getPlateMat() const{ return m_plateMat; }
+        
+        inline void setPlatePos(RotatedRect param){ m_platePos = param; }
+        inline RotatedRect getPlatePos() const{ return m_platePos; }
+        
+        inline void setPlateStr(String param){ m_plateStr = param; }
+        inline String getPlateStr() const{ return m_plateStr; }
+        
+    private:
+        //! è½¦ç‰Œçš„å›¾å—
+        Mat m_plateMat;
+        
+        //! è½¦ç‰Œåœ¨åŸå›¾çš„ä½ç½®
+        RotatedRect m_platePos;
+        
+        //! è½¦ç‰Œå­—ç¬¦ä¸²
+        String m_plateStr;
+    };
+    
 }	/*! \namespace easypr*/
 
 #endif /* endif __PLATE_H__ */
