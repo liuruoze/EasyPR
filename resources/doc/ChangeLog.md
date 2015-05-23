@@ -38,7 +38,7 @@ EasyPR版本更新
 
 ![fetures](res/fetures.png)
 
-* 新增Debug模式。可以在image/tmp文件夹下看到所有输出的中间图片。
+* 新增Debug模式。可以在tmp文件夹下看到所有输出的中间图片。
 
 ![Debug模式](res/debug.jpg)
 

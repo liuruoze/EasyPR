@@ -1,37 +1,27 @@
-// 通用正确率测试文件
-// AcurayTest对应到main控制命令中的选项2
+#ifndef EASYPR_ACCURACY_HPP
+#define EASYPR_ACCURACY_HPP
 
-#include "../include/plate_recognize.h"
-#include "../include/util.h"
-#include "../include/feature.h"
+namespace easypr {
 
-using namespace easypr;
+namespace demo {
 
-int acurayTest(const string& test_path) {
-  ////获取该路径下的所有文件
+int accuracyTest(const char* test_path) {
   auto files = Utils::getFiles(test_path);
 
-  // CPlateLocate lo;
-  // CPlateJudge ju;
   CPlateRecognize pr;
 
-  pr.LoadANN("model/ann.xml");
-  pr.LoadSVM("model/svm.xml");
+  pr.LoadSVM("resources/model/svm.xml");
+  pr.LoadANN("resources/model/ann.xml");
   pr.setLifemode(true);
   pr.setDebug(false);
 
   // 设置要处理的一张图片中最多有多少车牌
   pr.setMaxPlates(4);
 
-  // CPlateDetect pd;
-  // pd.LoadSVM("model/svm.xml");
-  // pd.setPDLifemode(true);
+  size_t files_num = files.size();
 
-  int size = files.size();
-  // int size = 200;
-
-  if (0 == size) {
-    cout << "No File Found in general_test/native_test!" << endl;
+  if (0 == files_num) {
+    cout << "No File Found in " << test_path << "!" << endl;
     return 0;
   }
 
@@ -57,8 +47,8 @@ int acurayTest(const string& test_path) {
   time_t begin, end;
   time(&begin);
 
-  for (int i = 0; i < size; i++) {
-    string filepath = files[i].c_str();
+  for (int i = 0; i < files_num; i++) {
+    string filepath = files[i];
     cout << "------------------" << endl;
 
     // 获取真实的车牌
@@ -68,10 +58,10 @@ int acurayTest(const string& test_path) {
     // EasyPR开始判断车牌
     Mat src = imread(filepath);
 
-    vector<string> plateVec;
-    int result = pr.plateRecognize(src, plateVec, i);
+    vector <string> plateVec;
+    int result = pr.plateRecognize(src, plateVec);
     if (result == 0) {
-      int num = plateVec.size();
+      size_t num = plateVec.size();
 
       if (num == 0) {
         cout << "无车牌" << endl;
@@ -84,12 +74,13 @@ int acurayTest(const string& test_path) {
           string colorplate = plateVec[j];
 
           // 计算"蓝牌:苏E7KU22"中冒号后面的车牌大小"
-          vector<string> spilt_plate = Utils::splitString(colorplate, ':');
+          vector <string> spilt_plate = Utils::splitString(colorplate, ':');
 
-          int size = spilt_plate.size();
+          size_t size = spilt_plate.size();
           if (size == 2 && spilt_plate[1] != "") {
             int diff =
-                levenshtein_distance(plateLicense, spilt_plate[size - 1]);
+                    Utils::levenshtein_distance(plateLicense,
+                                                spilt_plate[size - 1]);
             if (diff < mindiff) mindiff = diff;
           }
         }
@@ -107,12 +98,13 @@ int acurayTest(const string& test_path) {
           string colorplate = plateVec[j];
 
           // 计算"蓝牌:苏E7KU22"中冒号后面的车牌大小"
-          vector<string> spilt_plate = Utils::splitString(colorplate, ':');
+          vector <string> spilt_plate = Utils::splitString(colorplate, ':');
 
-          int size = spilt_plate.size();
+          size_t size = spilt_plate.size();
           if (size == 2 && spilt_plate[1] != "") {
             int diff =
-                levenshtein_distance(plateLicense, spilt_plate[size - 1]);
+                    Utils::levenshtein_distance(plateLicense,
+                                                spilt_plate[size - 1]);
             cout << "差距:" << diff << "个字符" << endl;
 
             if (diff == 0) {
@@ -141,7 +133,7 @@ int acurayTest(const string& test_path) {
 
   float count_recogin = count_all - (count_err + count_norecogin);
   float count_rate = count_recogin / count_all;
-  //float count_norate = 1 - count_rate;
+
   cout << "定位率:" << count_rate * 100 << "%  " << endl;
 
   diff_avg = diff_all / count_recogin;
@@ -161,7 +153,7 @@ int acurayTest(const string& test_path) {
 
   cout << "------------------" << endl;
 
-  ofstream myfile("run_accuracy.txt", ios::app);
+  ofstream myfile("accuracy.txt", ios::app | ios::out);
   if (myfile.is_open()) {
     time_t t = time(0);  // get time now
     struct tm* now = localtime(&t);
@@ -177,10 +169,16 @@ int acurayTest(const string& test_path) {
     myfile << "完全匹配数:" << match_count << "张,  ";
     myfile << "完全匹配率:" << match_rate << "%  " << endl;
     myfile << "总时间:" << seconds << "秒,  ";
-    myfile << "平均执行时间:" << avgsec << "秒  " << endl;
+    myfile << "平均执行时间:" << avgsec << "秒" << endl;
     myfile.close();
   } else {
     cout << "Unable to open file";
   }
   return 0;
 }
+
+}
+
+}
+
+#endif //EASYPR_ACCURACY_HPP

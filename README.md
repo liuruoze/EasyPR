@@ -83,7 +83,7 @@ EasyPR不需要安装，开发者直接在其上做改动。如果想使用DLL�
 |目录 | 解释
 |------|----------
 | general_test | GDTS（通用数据测试集）
-| natvie_test | NDTS（本地数据测试集）
+| native_test | NDTS（本地数据测试集）
 | tmp | Debug模式下EasyPR输出中间图片的目录
 
 以下表格是src目录中子目录的解释:
@@ -122,7 +122,7 @@ EasyPR不需要安装，开发者直接在其上做改动。如果想使用DLL�
 | svm_train.cpp | svm训练函数
 | generate_gdts.cpp | GDTS生成函数
 
-### Contributer
+### Contributors
 
 * liuruoze：1.0-1.2版核心代码作者
 
@@ -138,9 +138,6 @@ EasyPR不需要安装，开发者直接在其上做改动。如果想使用DLL�
 
 ### 鸣谢
 
-taotao1233，邱锦山，唐大侠，jsxyhelu，如果有一天(zhoushiwei)，学习奋斗，袁承志，圣城小石匠，goldriver，Micooz，梦里时光，Rain Wang，任薛纪，ahccom，星夜落尘，海豚嘎嘎
+taotao1233，邱锦山，唐大侠，jsxyhelu，如果有一天(zhoushiwei)，学习奋斗，袁承志，
 
-
-
-
-
+圣城小石匠，goldriver，Micooz，梦里时光，Rain Wang，任薛纪，ahccom，星夜落尘，海豚嘎嘎

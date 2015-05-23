@@ -2,8 +2,8 @@
 // 所属命名空间为easypr
 // 这个部分中的函数轻易不要改动
 
-#include "../include/prep.h"
-#include "../include/core_func.h"
+#include "easypr/prep.h"
+#include "easypr/core_func.h"
 
 /*! \namespace easypr
 Namespace where all the C++ EasyPR functionality resides

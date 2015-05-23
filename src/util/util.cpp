@@ -1,15 +1,19 @@
-#include "../include/util.h"
+#include "easypr/util.h"
 
 #if defined(WIN32) || defined(_WIN32)
 #include <windows.h>
 #include <io.h>
 #elif defined(linux) || defined(__linux__) || defined(__APPLE__)
+
 #include <sys/stat.h>
 #include <dirent.h>
-#include <cstring>
+
 #endif
+
 #if defined(__APPLE__)
+
 #include <sys/timeb.h>
+
 #endif
 
 #include <list>
@@ -36,11 +40,11 @@ long Utils::getTimestamp() {
   // we can simply return a millisecond since 1970/1/1 to calc the time elapse.
   struct timeb tb;
   ftime(&tb);
-  return tb.time * 1e3 + tb.millitm;
+  return long(tb.time * 1e3 + tb.millitm);
 #endif
 }
 
-std::string Utils::getFileName(const string &path,
+std::string Utils::getFileName(const string& path,
                                const bool postfix /* = false */) {
   if (!path.empty()) {
 #if defined(WIN32) || defined(_WIN32)
@@ -80,7 +84,7 @@ std::string Utils::getFileName(const string &path,
   return "";
 }
 
-vector<string> Utils::splitString(const string &str, const char delimiter) {
+vector<string> Utils::splitString(const string& str, const char delimiter) {
   vector<string> splited;
   string s(str);
   size_t pos;
@@ -100,7 +104,7 @@ vector<string> Utils::splitString(const string &str, const char delimiter) {
   return splited;
 }
 
-vector<string> Utils::getFiles(const string &folder,
+vector<string> Utils::getFiles(const string& folder,
                                const bool all /* = true */) {
   vector<string> files;
   list<string> subfolders;
@@ -159,7 +163,7 @@ vector<string> Utils::getFiles(const string &folder,
       current_folder.push_back('/');
     }
 
-    DIR *pdir = opendir(current_folder.c_str());
+    DIR* pdir = opendir(current_folder.c_str());
 
     subfolders.pop_back();
 
@@ -167,7 +171,7 @@ vector<string> Utils::getFiles(const string &folder,
       continue;
     }
 
-    dirent *dir = NULL;
+    dirent* dir = NULL;
 
     while ((dir = readdir(pdir)) != NULL) {
       // iterates the current folder, search file & sub folder
@@ -197,10 +201,10 @@ vector<string> Utils::getFiles(const string &folder,
         // it's a sub folder
         if (all) {
           // will search sub folder
-          string folder(current_folder);
-          folder.append(dir->d_name);
+          string subfolder(current_folder);
+          subfolder.append(dir->d_name);
 
-          subfolders.push_back(folder.c_str());
+          subfolders.push_back(subfolder.c_str());
         }
       } else {
         // it's a file

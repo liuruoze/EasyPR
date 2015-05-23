@@ -1,12 +1,9 @@
-#include "../include/chars_identify.h"
-#include "../include/core_func.h"
+#include "easypr/chars_identify.h"
+#include "easypr/core_func.h"
 /*! \namespace easypr
     Namespace where all the C++ EasyPR functionality resides
 */
 namespace easypr{
-
-
-#define NDEBUG
 
 	//中国车牌
 	const char strCharacters[] = {'0','1','2','3','4','5',\
@@ -30,14 +27,12 @@ namespace easypr{
 		"zh_yue" /* 粤 */, "zh_yun" /* 云 */, "zh_zang" /* 藏 */,\
 		"zh_zhe" /* 浙 */};
 
-		const int numChinese = 31;
 		const int numAll = 65; /* 34+20=54 */
 
 CCharsIdentify::CCharsIdentify()
 {
-	//cout << "CCharsIdentify" << endl;
 	m_predictSize = 10;
-	m_path = "model/ann.xml";
+	m_path = "resources/model/ann.xml";
 	LoadModel();
 
 	if (m_map.empty())

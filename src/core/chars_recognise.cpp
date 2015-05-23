@@ -1,4 +1,4 @@
-#include "../include/chars_recognise.h"
+#include "easypr/chars_recognise.h"
 
 /*! \namespace easypr
 Namespace where all the C++ EasyPR functionality resides

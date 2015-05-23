@@ -1,4 +1,4 @@
-#include "../include/chars_segment.h"
+#include "easypr/chars_segment.h"
 
 /*! \namespace easypr
 Namespace where all the C++ EasyPR functionality resides
@@ -100,7 +100,7 @@ namespace easypr{
 			int h = input_grey.rows;
 			Mat tmp = input_grey(Rect(w*0.1,h*0.1,w*0.8,h*0.8));
 			int threadHoldV = ThresholdOtsu(tmp);
-			imwrite("./image/tmp/inputgray2.jpg",input_grey);
+			imwrite("./tmp/inputgray2.jpg",input_grey);
 		
 			threshold(input_grey, img_threshold,threadHoldV, 255, CV_THRESH_BINARY);
 
@@ -115,7 +115,7 @@ namespace easypr{
 			int h = input_grey.rows;
 			Mat tmp = input_grey(Rect(w*0.1,h*0.1,w*0.8,h*0.8));
 			int threadHoldV = ThresholdOtsu(tmp);
-			imwrite("./image/tmp/inputgray2.jpg",input_grey);
+			imwrite("./tmp/inputgray2.jpg",input_grey);
 
 			threshold(input_grey, img_threshold,threadHoldV, 255, CV_THRESH_BINARY_INV);
 
@@ -130,7 +130,7 @@ namespace easypr{
 		if (m_debug)
 		{
 			stringstream ss(stringstream::in | stringstream::out);
-			ss << "image/tmp/debug_char_threshold" <<iTag<< ".jpg";
+			ss << "tmp/debug_char_threshold" <<iTag<< ".jpg";
 			imwrite(ss.str(), img_threshold);
 		}
 
@@ -143,7 +143,7 @@ namespace easypr{
 		if (m_debug)
 		{
 			stringstream ss(stringstream::in | stringstream::out);
-			ss << "image/tmp/debug_char_clearLiuDing" <<iTag<< ".jpg";
+			ss << "tmp/debug_char_clearLiuDing" <<iTag<< ".jpg";
 			imwrite(ss.str(), img_threshold);
 		}
 		iTag++;
@@ -198,7 +198,7 @@ namespace easypr{
 			{
 				Mat specMat(img_threshold, sortedRect[specIndex]);
 				stringstream ss(stringstream::in | stringstream::out);
-				ss << "image/tmp/debug_specMat" << ".jpg";
+				ss << "tmp/debug_specMat" << ".jpg";
 				imwrite(ss.str(), specMat);
 			}
 		}
@@ -216,7 +216,7 @@ namespace easypr{
 		{
 			Mat chineseMat(img_threshold, chineseRect);
 			stringstream ss(stringstream::in | stringstream::out);
-			ss << "image/tmp/debug_chineseMat" << ".jpg";
+			ss << "tmp/debug_chineseMat" << ".jpg";
 			imwrite(ss.str(), chineseMat);
 		}
 
@@ -243,7 +243,7 @@ namespace easypr{
 				if (m_debug)
 				{
 					stringstream ss(stringstream::in | stringstream::out);
-					ss << "image/tmp/debug_char_auxRoi_" << (i+staticIndex) << ".jpg";
+					ss << "tmp/debug_char_auxRoi_" << (i+staticIndex) << ".jpg";
 					imwrite(ss.str(), auxRoi);
 				}
 				resultVec.push_back(auxRoi);
