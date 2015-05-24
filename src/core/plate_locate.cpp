@@ -5,6 +5,9 @@
 */
 namespace easypr {
 
+using namespace cv;
+using namespace std;
+
 const float DEFAULT_ERROR = 0.6;
 //0.6
 const float DEFAULT_ASPECT = 3.75; //3.75 
@@ -51,7 +54,7 @@ void CPlateLocate::setLifemode(bool param) {
 
 
 //! 对minAreaRect获得的最小外接矩形，用纵横比进行判断
-bool CPlateLocate::verifySizes(RotatedRect mr) {
+bool CPlateLocate::verifySizes(cv::RotatedRect mr) {
   float error = m_error;
   //Spain car plate size: 52x11 aspect 4,7272
   //China car plate size: 440mm*140mm，aspect 3.142857

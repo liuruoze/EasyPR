@@ -4,6 +4,7 @@
 Namespace where all the C++ EasyPR functionality resides
 */
 namespace easypr{
+  using namespace cv;
 
 	const float DEFAULT_BLUEPERCEMT = 0.3;
 	const float	DEFAULT_WHITEPERCEMT = 0.1;
@@ -129,7 +130,7 @@ namespace easypr{
 		
 		if (m_debug)
 		{
-			stringstream ss(stringstream::in | stringstream::out);
+			std::stringstream ss(std::stringstream::in | std::stringstream::out);
 			ss << "tmp/debug_char_threshold" <<iTag<< ".jpg";
 			imwrite(ss.str(), img_threshold);
 		}
@@ -142,7 +143,7 @@ namespace easypr{
 
 		if (m_debug)
 		{
-			stringstream ss(stringstream::in | stringstream::out);
+			std::stringstream ss(std::stringstream::in | std::stringstream::out);
 			ss << "tmp/debug_char_clearLiuDing" <<iTag<< ".jpg";
 			imwrite(ss.str(), img_threshold);
 		}
@@ -197,7 +198,7 @@ namespace easypr{
 			if (specIndex < sortedRect.size())
 			{
 				Mat specMat(img_threshold, sortedRect[specIndex]);
-				stringstream ss(stringstream::in | stringstream::out);
+				std::stringstream ss(std::stringstream::in | std::stringstream::out);
 				ss << "tmp/debug_specMat" << ".jpg";
 				imwrite(ss.str(), specMat);
 			}
@@ -215,7 +216,7 @@ namespace easypr{
 		if (m_debug)
 		{
 			Mat chineseMat(img_threshold, chineseRect);
-			stringstream ss(stringstream::in | stringstream::out);
+			std::stringstream ss(std::stringstream::in | std::stringstream::out);
 			ss << "tmp/debug_chineseMat" << ".jpg";
 			imwrite(ss.str(), chineseMat);
 		}
@@ -242,7 +243,7 @@ namespace easypr{
 				auxRoi = preprocessChar(auxRoi);
 				if (m_debug)
 				{
-					stringstream ss(stringstream::in | stringstream::out);
+					std::stringstream ss(std::stringstream::in | std::stringstream::out);
 					ss << "tmp/debug_char_auxRoi_" << (i+staticIndex) << ".jpg";
 					imwrite(ss.str(), auxRoi);
 				}

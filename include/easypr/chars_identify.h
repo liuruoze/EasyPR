@@ -12,49 +12,50 @@
 #ifndef __CHARS_IDENTIFY_H__
 #define __CHARS_IDENTIFY_H__
 
-#include "prep.h"
+#include <opencv2/opencv.hpp>
+#include <string>
 
-/*! \namespace easypr
-    Namespace where all the C++ EasyPR functionality resides
-*/
 namespace easypr {
-	
-class CCharsIdentify 
-{
-public:
-	CCharsIdentify();
 
-	//! 字符鉴别
-	string charsIdentify(Mat, bool, bool);
-	string charsIdentify(Mat input);
+class CCharsIdentify {
+ public:
+  CCharsIdentify();
 
-	//! 字符分类
-	int classify(Mat, bool,bool);
-	int classify(Mat f);
-	//! 装载ANN模型
-	void LoadModel();
+  //! 字符鉴别
+  std::string charsIdentify(cv::Mat, bool, bool);
 
-	//! 装载ANN模型
-	void LoadModel(string s);
+  std::string charsIdentify(cv::Mat input);
 
-	//! 设置与读取模型路径
-	inline void setModelPath(string path){	m_path = path;	}
-	inline string getModelPath() const{	 return m_path;	}
+  //! 字符分类
+  int classify(cv::Mat, bool, bool);
 
-private:
-	//！使用的ANN模型
-	CvANN_MLP ann;
+  int classify(cv::Mat f);
 
-	//! 模型存储路径
-	string m_path;
+  //! 装载ANN模型
+  void LoadModel();
 
-	//! 特征尺寸
-	int m_predictSize;
+  //! 装载ANN模型
+  void LoadModel(std::string s);
 
-	//! 省份对应map
-	map<string, string> m_map;
+  //! 设置与读取模型路径
+  inline void setModelPath(std::string path) { m_path = path; }
+
+  inline std::string getModelPath() const { return m_path; }
+
+ private:
+  //！使用的ANN模型
+  CvANN_MLP ann;
+
+  //! 模型存储路径
+  std::string m_path;
+
+  //! 特征尺寸
+  int m_predictSize;
+
+  //! 省份对应map
+  std::map<std::string, std::string> m_map;
 };
 
-}	/* \namespace easypr  */
+}  /* \namespace easypr  */
 
 #endif /* endif __CHARS_IDENTIFY_H__ */

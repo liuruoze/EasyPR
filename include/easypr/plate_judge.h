@@ -13,11 +13,9 @@
 #ifndef __PLATE_JUDGE_H__
 #define __PLATE_JUDGE_H__
 
-#include "prep.h"
 #include "plate.h"
 #include "feature.h"
 #include "core_func.h"
-
 
 /*! \namespace easypr
     Namespace where all the C++ EasyPR functionality resides
@@ -29,16 +27,16 @@ class CPlateJudge {
   CPlateJudge();
 
   //! 对多幅车牌进行SVM判断
-  int plateJudge(const vector<CPlate>&, vector<CPlate>&);
+  int plateJudge(const std::vector<CPlate>&, std::vector<CPlate>&);
 
   //! 车牌判断
-  int plateJudge(const vector<Mat>&, vector<Mat>&);
+  int plateJudge(const std::vector<cv::Mat>&, std::vector<cv::Mat>&);
 
   //! 车牌判断（一副图像）
-  int plateJudge(const Mat& inMat, int& result);
+  int plateJudge(const cv::Mat& inMat, int& result);
 
   //! 直方图均衡
-  Mat histeq(Mat);
+  cv::Mat histeq(cv::Mat);
 
   //! 装载SVM模型
   void LoadModel(const char* model);

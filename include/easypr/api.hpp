@@ -12,11 +12,8 @@ namespace easypr {
 
 namespace api {
 
-const char* kDefaultSVMModel = "resources/model/svm.xml";
-const char* kDefaultANNModel = "resourecs/model/ann.xml";
-
 static bool plate_judge(const char* image,const char *model) {
-  Mat src = imread(image);
+  cv::Mat src = cv::imread(image);
 
   assert(!src.empty());
 
@@ -30,7 +27,7 @@ static bool plate_judge(const char* image,const char *model) {
 }
 
 static void plate_locate(const char* image, const bool life_mode = true) {
-  Mat src = imread(image);
+  cv::Mat src = cv::imread(image);
 
   assert(!src.empty());
 

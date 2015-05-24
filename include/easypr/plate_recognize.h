@@ -12,8 +12,6 @@
 #ifndef __PLATE_RECOGNIZE_H__
 #define __PLATE_RECOGNIZE_H__
 
-#include "prep.h"
-
 #include "plate_detect.h"
 #include "chars_recognise.h"
 
@@ -27,7 +25,7 @@ class CPlateRecognize : public CPlateDetect, public CCharsRecognise {
   CPlateRecognize();
 
   //! 车牌检测与字符识别
-  int plateRecognize(Mat src, vector<string>& licenseVec);
+  int plateRecognize(cv::Mat src, std::vector<std::string>& licenseVec);
 
   //! 生活模式与工业模式切换
   inline void setLifemode(bool param) {

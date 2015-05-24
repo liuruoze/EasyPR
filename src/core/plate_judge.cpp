@@ -5,6 +5,8 @@
 */
 namespace easypr {
 
+using namespace cv;
+
 CPlateJudge::CPlateJudge()
         : m_getFeatures(getHistogramFeatures) {
 
@@ -47,7 +49,7 @@ int CPlateJudge::plateJudge(const Mat& inMat, int& result) {
   p.convertTo(p, CV_32FC1);
 
   float response = svm.predict(p);
-  result = (int)response;
+  result = (int) response;
 
   return 0;
 }

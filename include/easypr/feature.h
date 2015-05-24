@@ -1,9 +1,8 @@
 #ifndef __FEATURE_H__
 #define __FEATURE_H__
 
-/*! \namespace easypr
-    Namespace where all the C++ EasyPR functionality resides
-*/
+#include <opencv2/opencv.hpp>
+
 namespace easypr {
 
 	//! 获得车牌的特征数

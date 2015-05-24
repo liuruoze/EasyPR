@@ -5,6 +5,8 @@
 */
 namespace easypr {
 
+using namespace cv;
+
 CPlateDetect::CPlateDetect() {
   //cout << "CPlateDetect" << endl;
   m_plateLocate = new CPlateLocate();
@@ -34,7 +36,7 @@ int CPlateDetect::plateDetect(Mat src, vector<Mat>& resultVec, int index) {
     for (int i = 0; i < size; i++) {
       Mat img = resultVec[i];
       if (1) {
-        stringstream ss(stringstream::in | stringstream::out);
+        std::stringstream ss(std::stringstream::in | std::stringstream::out);
         ss << "tmp/plate_judge_result_" << i << ".jpg";
         imwrite(ss.str(), img);
       }

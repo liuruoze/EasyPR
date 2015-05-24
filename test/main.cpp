@@ -13,7 +13,7 @@ namespace demo {
 int accuracyTestMain() {
   bool isExit = false;
   while (!isExit) {
-    cout << "////////////////////////////////////" << endl;
+    std::cout << "////////////////////////////////////" << std::endl;
     const char* options[] = {
             "BatchTest Option:",
             "1. general_test;",
@@ -22,13 +22,13 @@ int accuracyTestMain() {
             NULL
     };
     Utils::print_str_lines(options);
-    cout << "////////////////////////////////////" << endl;
-    cout << "请选择一项操作:";
+    std::cout << "////////////////////////////////////" << std::endl;
+    std::cout << "请选择一项操作:";
 
     int select = -1;
     bool isRepeat = true;
     while (isRepeat) {
-      cin >> select;
+      std::cin >> select;
       isRepeat = false;
       switch (select) {
         case 1:
@@ -41,7 +41,7 @@ int accuracyTestMain() {
           isExit = true;
           break;
         default:
-          cout << "输入错误，请重新输入:";
+          std::cout << "输入错误，请重新输入:";
           isRepeat = true;
           break;
       }
@@ -50,69 +50,69 @@ int accuracyTestMain() {
   return 0;
 }
 
-int svmMain() {
-  bool isExit = false;
-  while (!isExit) {
-    cout << "////////////////////////////////////" << endl;
-    const char* options[] = {
-            "SvmTrain Option:",
-            "1. 生成learndata(调整代码到你的环境后再用);",
-            "2. 标签learndata;",
-            "3. 车牌检测(not divide and train);",
-            "4. 车牌检测(not train);",
-            "5. 车牌检测(not divide);",
-            "6. 车牌检测;",
-            "7. 返回;",
-            NULL
-    };
-    Utils::print_str_lines(options);
-    cout << "////////////////////////////////////" << endl;
-    cout << "请选择一项操作:";
-
-    int select = -1;
-    bool isRepeat = true;
-    while (isRepeat) {
-      cin >> select;
-      isRepeat = false;
-
-      Svm svm;
-
-      switch (select) {
-        case 1:
-          // easypr::preprocess::getLearnData();
-          break;
-        case 2:
-          // easypr::preprocess::label_data();
-          break;
-        case 3:
-          svm.train(false, false);
-          break;
-        case 4:
-          svm.train(true, false);
-          break;
-        case 5:
-          svm.train(false, true);
-          break;
-        case 6:
-          svm.train();
-          break;
-        case 7:
-          isExit = true;
-          break;
-        default:
-          cout << "输入错误，请重新输入:";
-          isRepeat = true;
-          break;
-      }
-    }
-  }
-  return 0;
-}
+//int svmMain() {
+//  bool isExit = false;
+//  while (!isExit) {
+//    std::cout << "////////////////////////////////////" << std::endl;
+//    const char* options[] = {
+//            "SvmTrain Option:",
+//            "1. 生成learndata(调整代码到你的环境后再用);",
+//            "2. 标签learndata;",
+//            "3. 车牌检测(not divide and train);",
+//            "4. 车牌检测(not train);",
+//            "5. 车牌检测(not divide);",
+//            "6. 车牌检测;",
+//            "7. 返回;",
+//            NULL
+//    };
+//    Utils::print_str_lines(options);
+//    std::cout << "////////////////////////////////////" << std::endl;
+//    std::cout << "请选择一项操作:";
+//
+//    int select = -1;
+//    bool isRepeat = true;
+//    while (isRepeat) {
+//      std::cin >> select;
+//      isRepeat = false;
+//
+//      //Svm svm;
+//
+//      switch (select) {
+//        case 1:
+//          // easypr::preprocess::getLearnData();
+//          break;
+//        case 2:
+//          // easypr::preprocess::label_data();
+//          break;
+//        case 3:
+//          svm.train(false, false);
+//          break;
+//        case 4:
+//          svm.train(true, false);
+//          break;
+//        case 5:
+//          svm.train(false, true);
+//          break;
+//        case 6:
+//          svm.train();
+//          break;
+//        case 7:
+//          isExit = true;
+//          break;
+//        default:
+//          std::cout << "输入错误，请重新输入:";
+//          isRepeat = true;
+//          break;
+//      }
+//    }
+//  }
+//  return 0;
+//}
 
 int testMain() {
   bool isExit = false;
   while (!isExit) {
-    cout << "////////////////////////////////////" << endl;
+    std::cout << "////////////////////////////////////" << std::endl;
     const char* options[] = {
             "EasyPR Test:",
             "1. test plate_locate(车牌定位);"    /* 车牌定位 */,
@@ -127,13 +127,13 @@ int testMain() {
             NULL
     };
     Utils::print_str_lines(options);
-    cout << "////////////////////////////////////" << endl;
-    cout << "请选择一项操作:";
+    std::cout << "////////////////////////////////////" << std::endl;
+    std::cout << "请选择一项操作:";
 
     int select = -1;
     bool isRepeat = true;
     while (isRepeat) {
-      cin >> select;
+      std::cin >> select;
       isRepeat = false;
       switch (select) {
         case 1:
@@ -172,7 +172,7 @@ int testMain() {
           isExit = true;
           break;
         default:
-          cout << "输入错误，请重新输入:";
+          std::cout << "输入错误，请重新输入:";
           isRepeat = true;
           break;
       }
@@ -232,7 +232,7 @@ void command_line_handler(int argc, const char* argv[]) {
   try {
     parser->parse(argc, argv);
   } catch (const std::exception& err) {
-    cout << err.what() << endl;
+    std::cout << err.what() << std::endl;
     return;
   }
 
@@ -240,7 +240,7 @@ void command_line_handler(int argc, const char* argv[]) {
 
   if (subname == "svm") {
     if (parser->has("help") || argc <= 2) {
-      cout << options("svm");
+      std::cout << options("svm");
       return;
     }
 
@@ -265,21 +265,21 @@ void command_line_handler(int argc, const char* argv[]) {
     return;
   } else if (subname == "locate") {
     if (parser->has("help") || argc <= 2) {
-      cout << options("locate");
+      std::cout << options("locate");
       return;
     }
 
     if (parser->has("file")) {
       easypr::api::plate_locate(parser->get("file")->val().c_str());
-      cout << "finished, results can be found in tmp/" << endl;
+      std::cout << "finished, results can be found in tmp/" << std::endl;
     }
 
     return;
   } else if (subname == "judge") {
     if (parser->has("help") || argc <= 2) {
-      cout << options("judge");
-      cout << "Note that the input image's size should " <<
-      "be the same as the one you gived to svm train." << endl;
+      std::cout << options("judge");
+      std::cout << "Note that the input image's size should " <<
+      "be the same as the one you gived to svm train." << std::endl;
       return;
     }
 
@@ -289,15 +289,15 @@ void command_line_handler(int argc, const char* argv[]) {
 
       const char* true_or_false[2] = {"false", "true"};
 
-      cout << true_or_false[
+      std::cout << true_or_false[
               easypr::api::plate_judge(image.c_str(), svm.c_str())
-      ] << endl;
+      ] << std::endl;
     }
 
     return;
   } else if (subname == "recognize") {
     if (parser->has("help") || argc <= 2) {
-      cout << options("recognize");
+      std::cout << options("recognize");
       return;
     }
 
@@ -313,7 +313,8 @@ void command_line_handler(int argc, const char* argv[]) {
         if (parser->has("color")) {
           // return plate color
           const char* colors[2] = {"blue", "yellow"};
-          cout << colors[easypr::api::get_plate_color(image.c_str())] << endl;
+          std::cout << colors[easypr::api::get_plate_color(image.c_str())] <<
+          std::endl;
         } else {
           // return strings
           auto svm = parser->get("svm")->val();
@@ -323,28 +324,28 @@ void command_line_handler(int argc, const char* argv[]) {
                                                       svm.c_str(),
                                                       ann.c_str());
           for (auto s : results) {
-            cout << s << endl;
+            std::cout << s << std::endl;
           }
         }
       }
     } else {
-      cout << "option 'file' cannot be empty." << endl;
+      std::cout << "option 'file' cannot be empty." << std::endl;
     }
     return;
   }
 
   // no case matched, print all commands.
-  cout
+  std::cout
   << "There are several sub commands listed below, "
   << "choose one by typing:\n\n"
   << "    " << easypr::Utils::getFileName(argv[0]) << " command [options]\n\n"
   << "The commands are:\n"
-  << endl;
+  << std::endl;
   auto subs = options.get_subroutine_list();
   for (auto sub : subs) {
     fprintf(stdout, "%s    %s\n", sub.first.c_str(), sub.second.c_str());
   }
-  cout << endl;
+  std::cout << std::endl;
 }
 
 int main(int argc, const char* argv[]) {
@@ -356,7 +357,7 @@ int main(int argc, const char* argv[]) {
 
   bool isExit = false;
   while (!isExit) {
-    cout << "////////////////////////////////////" << endl;
+    std::cout << "////////////////////////////////////" << std::endl;
     const char* options[] = {
             "EasyPR Option:",
             "1. 测试;",
@@ -370,13 +371,13 @@ int main(int argc, const char* argv[]) {
             NULL
     };
     easypr::Utils::print_str_lines(options);
-    cout << "////////////////////////////////////" << endl;
-    cout << "请选择一项操作:";
+    std::cout << "////////////////////////////////////" << std::endl;
+    std::cout << "请选择一项操作:";
 
     int select = -1;
     bool isRepeat = true;
     while (isRepeat) {
-      cin >> select;
+      std::cin >> select;
       isRepeat = false;
       switch (select) {
         case 1:
@@ -386,7 +387,8 @@ int main(int argc, const char* argv[]) {
           easypr::demo::accuracyTestMain();
           break;
         case 3:
-          easypr::demo::svmMain();
+          // easypr::demo::svmMain();
+          std::cout << "Run \"easypr_test svm\" for more usage." << std::endl;
           break;
         case 4:
           // TODO
@@ -396,7 +398,7 @@ int main(int argc, const char* argv[]) {
           break;
         case 6: {
           // 开发团队;
-          cout << endl;
+          std::cout << std::endl;
           const char* recruitment[] = {
                   "我们EasyPR团队目前有一个5人左右的小组在进行EasyPR后续版本的开发工作。",
                   "如果你对本项目感兴趣，并且愿意为开源贡献一份力量，我们很欢迎你的加入。",
@@ -405,12 +407,12 @@ int main(int argc, const char* argv[]) {
                   NULL
           };
           easypr::Utils::print_str_lines(recruitment);
-          cout << endl;
+          std::cout << std::endl;
           break;
         }
         case 7: {
           // 感谢名单
-          cout << endl;
+          std::cout << std::endl;
           const char* thanks[] = {
                   "本项目在建设过程中，受到了很多人的帮助，其中以下是对本项目做出突出贡献的",
                   "(贡献包括有益建议，代码调优，数据提供等等,排名按时间顺序)：",
@@ -421,14 +423,14 @@ int main(int argc, const char* argv[]) {
                   NULL
           };
           easypr::Utils::print_str_lines(thanks);
-          cout << endl;
+          std::cout << std::endl;
           break;
         }
         case 8:
           isExit = true;
           break;
         default:
-          cout << "输入错误，请重新输入:";
+          std::cout << "输入错误，请重新输入:";
           isRepeat = true;
           break;
       }

@@ -5,12 +5,15 @@ namespace easypr {
 
 namespace demo {
 
+using namespace cv;
+using namespace std;
+
 int test_plate_locate() {
   cout << "test_plate_locate" << endl;
 
-  Mat src = imread("resources/image/test.jpg");
+  cv::Mat src = imread("resources/image/test.jpg");
 
-  vector <Mat> resultVec;
+  vector<cv::Mat> resultVec;
   CPlateLocate plate;
   plate.setDebug(1);
   plate.setLifemode(true);
@@ -19,7 +22,7 @@ int test_plate_locate() {
   if (result == 0) {
     size_t num = resultVec.size();
     for (int j = 0; j < num; j++) {
-      Mat resultMat = resultVec[j];
+      cv::Mat resultMat = resultVec[j];
       imshow("plate_locate", resultMat);
       waitKey(0);
     }
@@ -32,13 +35,13 @@ int test_plate_locate() {
 int test_plate_judge() {
   cout << "test_plate_judge" << endl;
 
-  Mat src = imread("resources/image/plate_judge.jpg");
+  cv::Mat src = imread("resources/image/plate_judge.jpg");
 
   //可能是车牌的图块集合
-  vector <Mat> matVec;
+  vector<cv::Mat> matVec;
 
   //经过SVM判断后得到的图块集合
-  vector <Mat> resultVec;
+  vector<cv::Mat> resultVec;
 
   CPlateLocate lo;
   lo.setDebug(1);
@@ -83,9 +86,9 @@ int test_plate_judge() {
 int test_plate_detect() {
   cout << "test_plate_detect" << endl;
 
-  Mat src = imread("resources/image/plate_detect.jpg");
+  cv::Mat src = imread("resources/image/plate_detect.jpg");
 
-  vector <CPlate> resultVec;
+  vector<CPlate> resultVec;
   CPlateDetect pd;
   pd.setPDLifemode(true);
 
@@ -116,7 +119,7 @@ int test_plate_recognize() {
   pr.setLifemode(true);
   pr.setDebug(true);
 
-  vector <string> plateVec;
+  vector<string> plateVec;
 
   int result = pr.plateRecognize(src, plateVec);
   if (result == 0) {

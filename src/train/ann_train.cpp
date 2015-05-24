@@ -19,14 +19,12 @@
 //#include <sys/io.h>
 #endif
 
-#include <stdlib.h>
-#include <stdio.h>
-
 #include "easypr/plate_recognize.h"
-#include "easypr/feature.h"
 #include "easypr/util.h"
 
 using namespace easypr;
+using namespace cv;
+using namespace std;
 
 #define HORIZONTAL    1
 #define VERTICAL    0
@@ -45,7 +43,7 @@ const int numCharacter = 34;
 
 //以下都是我训练时用到的中文字符数据，并不全面，有些省份没有训练数据所以没有字符
 //有些后面加数字2的表示在训练时常看到字符的一种变形，也作为训练数据存储
-const string strChinese[] = {
+const std::string strChinese[] = {
         "zh_cuan" /* 川 */, "zh_e" /* 鄂 */, "zh_gan" /* 赣*/, \
   "zh_gan1"/*甘*/, "zh_gui"/* 贵 */, "zh_gui1"/* 桂 */, \
   "zh_hei" /* 黑 */, "zh_hu" /* 沪 */, "zh_ji" /* 冀 */, \

@@ -7,6 +7,8 @@
 #include "easypr/feature.h"
 
 using namespace easypr;
+using namespace std;
+using namespace cv;
 
 extern const string GENERAL_TEST_PATH;
 

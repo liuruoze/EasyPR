@@ -133,7 +133,7 @@ void tag_data(const char* source_folder, const char* has_plate_folder,
 
   size_t size = files.size();
   if (0 == size) {
-    cout << "No file found in " << source_folder << endl;
+    std::cout << "No file found in " << source_folder << std::endl;
     return;
   }
 

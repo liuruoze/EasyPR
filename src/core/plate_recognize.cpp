@@ -5,6 +5,9 @@
 */
 namespace easypr {
 
+using namespace cv;
+using namespace std;
+
 CPlateRecognize::CPlateRecognize() {
 
 }

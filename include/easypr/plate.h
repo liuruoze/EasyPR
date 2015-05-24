@@ -10,40 +10,40 @@
 #ifndef __PLATE_H__
 #define __PLATE_H__
 
-#include "prep.h"
+#include <opencv2/opencv.hpp>
 
-/*! \namespace easypr
-Namespace where all the C++ EasyPR functionality resides
-*/
 namespace easypr {
 
-	class CPlate
-	{
-	public:
-		bool bColored;
-		CPlate();
+class CPlate {
+ public:
+  bool bColored;
 
-		//! 设置与读取变量
-		inline void setPlateMat(Mat param){ m_plateMat = param; }
-		inline Mat getPlateMat() const{ return m_plateMat; }
+  CPlate();
 
-		inline void setPlatePos(RotatedRect param){ m_platePos = param; }
-		inline RotatedRect getPlatePos() const{ return m_platePos; }
+  //! 设置与读取变量
+  inline void setPlateMat(cv::Mat param) { m_plateMat = param; }
 
-		inline void setPlateStr(String param){ m_plateStr = param; }
-		inline String getPlateStr() const{ return m_plateStr; }
+  inline cv::Mat getPlateMat() const { return m_plateMat; }
 
-	private:
-		//! 车牌的图块
-		Mat m_plateMat;
+  inline void setPlatePos(cv::RotatedRect param) { m_platePos = param; }
 
-		//! 车牌在原图的位置
-		RotatedRect m_platePos;
+  inline cv::RotatedRect getPlatePos() const { return m_platePos; }
 
-		//! 车牌字符串
-		String m_plateStr;
-	};
+  inline void setPlateStr(std::string param) { m_plateStr = param; }
 
-}	/*! \namespace easypr*/
+  inline std::string getPlateStr() const { return m_plateStr; }
+
+ private:
+  //! 车牌的图块
+  cv::Mat m_plateMat;
+
+  //! 车牌在原图的位置
+  cv::RotatedRect m_platePos;
+
+  //! 车牌字符串
+  std::string m_plateStr;
+};
+
+}  /*! \namespace easypr*/
 
 #endif /* endif __PLATE_H__ */
