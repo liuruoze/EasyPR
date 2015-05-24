@@ -1,3 +1,4 @@
+#include "easypr/core_func.h"
 #include "easypr/svm_train.h"
 #include "easypr/util.h"
 
@@ -15,7 +16,6 @@ void Svm::divide(const char* images_folder, float percentage /* = 0.7 */) {
     std::cout << "No file found in " << images_folder << std::endl;
     return;
   }
-  assert(!files.empty());
 
   srand(unsigned(time(NULL)));
   random_shuffle(files.begin(), files.end());
@@ -38,83 +38,8 @@ void Svm::divide(const char* images_folder, float percentage /* = 0.7 */) {
   }
 }
 
-//! 测试SVM的准确率，回归率以及FScore
-//void Svm::accuracy(cv::Mat& testingclasses_preditc,
-//                   cv::Mat& testingclasses_real) {
-//  int channels = testingclasses_preditc.channels();
-//  std::cout << "channels: " << channels << std::endl;
-//  int nRows = testingclasses_preditc.rows;
-//  std::cout << "nRows: " << nRows << std::endl;
-//  int nCols = testingclasses_preditc.cols * channels;
-//  std::cout << "nCols: " << nCols << std::endl;
-//
-//  int channels_real = testingclasses_real.channels();
-//  std::cout << "channels_real: " << channels_real << std::endl;
-//  int nRows_real = testingclasses_real.rows;
-//  std::cout << "nRows_real: " << nRows_real << std::endl;
-//  int nCols_real = testingclasses_real.cols * channels;
-//  std::cout << "nCols_real: " << nCols_real << std::endl;
-//
-//  double count_all = 0;
-//  double ptrue_rtrue = 0;
-//  double ptrue_rfalse = 0;
-//  double pfalse_rtrue = 0;
-//  double pfalse_rfalse = 0;
-//
-//  for (int i = 0; i < nRows; i++) {
-//    const uchar* inData = testingclasses_preditc.ptr<uchar>(i);
-//    const uchar* outData = testingclasses_real.ptr<uchar>(i);
-//
-//    float predict = inData[0];
-//    float real = outData[0];
-//
-//    count_all++;
-//
-//    if (predict == 1.0 && real == 1.0)
-//      ptrue_rtrue++;
-//    if (predict == 1.0 && real == 0)
-//      ptrue_rfalse++;
-//    if (predict == 0 && real == 1.0)
-//      pfalse_rtrue++;
-//    if (predict == 0 && real == 0)
-//      pfalse_rfalse++;
-//  }
-//
-//  std::cout << "count_all: " << count_all << std::endl;
-//  std::cout << "ptrue_rtrue: " << ptrue_rtrue << std::endl;
-//  std::cout << "ptrue_rfalse: " << ptrue_rfalse << std::endl;
-//  std::cout << "pfalse_rtrue: " << pfalse_rtrue << std::endl;
-//  std::cout << "pfalse_rfalse: " << pfalse_rfalse << std::endl;
-//
-//  double precise = 0;
-//  if (ptrue_rtrue + ptrue_rfalse != 0) {
-//    precise = ptrue_rtrue / (ptrue_rtrue + ptrue_rfalse);
-//    std::cout << "precise: " << precise << std::endl;
-//  }
-//  else {
-//    std::cout << "precise: " << "NA" << std::endl;
-//  }
-//
-//  double recall = 0;
-//  if (ptrue_rtrue + pfalse_rtrue != 0) {
-//    recall = ptrue_rtrue / (ptrue_rtrue + pfalse_rtrue);
-//    std::cout << "recall: " << recall << std::endl;
-//  }
-//  else {
-//    std::cout << "recall: " << "NA" << std::endl;
-//  }
-//
-//  double F = 0;
-//  if (precise + recall != 0) {
-//    F = (precise * recall) / (precise + recall);
-//    std::cout << "F: " << F << std::endl;
-//  }
-//  else {
-//    std::cout << "F: " << "NA" << std::endl;
-//  }
-//}
 void Svm::get_train() {
-  std::cout << "Training learn data..." << std::endl;
+  std::cout << "Collecting train data..." << std::endl;
 
   std::vector<int> labels;
   auto folder = std::string(forward_).append("/train");
@@ -128,12 +53,11 @@ void Svm::get_train() {
     return;
   }
 
-  std::cout << "Training data in " << folder << std::endl;
+  std::cout << "Collecting train data in " << folder << std::endl;
   for (auto f : files) {
     auto image = cv::imread(f);
 
-    cv::Mat features;
-    getHisteqFeatures(image, features);
+    auto features = easypr::histeq(image);
     features = features.reshape(1, 1);
 
     this->trainingData_.push_back(features);
@@ -151,24 +75,26 @@ void Svm::get_train() {
     return;
   }
 
-  std::cout << "Training data in " << folder << std::endl;
+  std::cout << "Collecting train data in " << folder << std::endl;
   for (auto f : files) {
     auto image = cv::imread(f);
 
-    cv::Mat features;
-    getHisteqFeatures(image, features);
+    auto features = easypr::histeq(image);
     features = features.reshape(1, 1);
 
     this->trainingData_.push_back(features);
     labels.push_back(Label::kInverse); // Note here
   }
 
-  this->trainingData_.convertTo(this->trainingData_, CV_32FC1);
+  //
+  cv::Mat out;
+  this->trainingData_.convertTo(out, CV_32FC1);
+  out.copyTo(this->trainingData_);
   cv::Mat(labels).copyTo(this->classes_);
 }
 
 void Svm::get_test() {
-  std::cout << "Tesing data..." << std::endl;
+  std::cout << "Tesing preparation..." << std::endl;
 
   auto folder = std::string(forward_).append("/test");
   auto files = Utils::getFiles(folder);
@@ -178,7 +104,7 @@ void Svm::get_test() {
     std::cout << "No file found in " << folder << std::endl;
     return;
   }
-  std::cout << "Testing in " << folder << std::endl;
+  std::cout << "Prepare testing data in " << folder << std::endl;
   for (auto f : files) {
     auto img = cv::imread(f);
     test_imgaes_.push_back(img);
@@ -196,7 +122,7 @@ void Svm::get_test() {
     std::cout << "No file found in " << folder << std::endl;
     return;
   }
-  std::cout << "Testing in " << folder << std::endl;
+  std::cout << "Prepare testing data in " << folder << std::endl;
   for (auto f : files) {
     auto img = cv::imread(f);
     test_imgaes_.push_back(img);
@@ -204,11 +130,15 @@ void Svm::get_test() {
   }
 }
 
-void Svm::train(bool divide /* = true */, bool train /* = true */,
-                float divide_percentage /* = 0.7 */,
-                svmCallback getFeatures /* = getHistogramFeatures */) {
+void Svm::train(bool divide /* = true */, float divide_percentage /* = 0.7 */,
+                bool train /* = true */,
+                const char* out_svm_path /* = NULL */) {
+  if (out_svm_path == NULL) {
+    out_svm_path = "resources/model/svm.xml";
+  }
+
   if (divide) {
-    std::cout << "Dividing learn data to train and test..." << std::endl;
+    std::cout << "Dividing data to be trained and tested..." << std::endl;
     this->divide(forward_, divide_percentage);
     this->divide(inverse_, divide_percentage);
   }
@@ -233,7 +163,7 @@ void Svm::train(bool divide /* = true */, bool train /* = true */,
       SVM_params.p = 0.1;
       SVM_params.term_crit = cvTermCriteria(CV_TERMCRIT_ITER, 100000, 0.0001);
 
-      std::cout << "Begin to generate svm" << std::endl;
+      std::cout << "Generating svm model file, please wait..." << std::endl;
 
       try {
         //CvSVM svm(trainingData, classes, cv::Mat(), cv::Mat(), SVM_params);
@@ -252,12 +182,12 @@ void Svm::train(bool divide /* = true */, bool train /* = true */,
         std::cout << err.what() << std::endl;
       }
 
-      std::cout << "Svm generate done!" << std::endl;
-
-      cv::FileStorage fsTo("resources/train/svm.xml", cv::FileStorage::WRITE);
+      cv::FileStorage fsTo(out_svm_path, cv::FileStorage::WRITE);
       svm.write(*fsTo, "svm");
-    }
-    else {
+
+      std::cout << "Generate done! The model file is located at " <<
+      out_svm_path << std::endl;
+    } else {
       // don't train, use ready-made model file
       try {
         svm.load("resources/train/svm.xml", "svm");
@@ -267,10 +197,13 @@ void Svm::train(bool divide /* = true */, bool train /* = true */,
     }
   } // if train
 
+  // TODO Check whether the model file exists or not.
+  svm.load(out_svm_path, "svm"); // make sure svm model was loaded
+
   // 30% testing procedure
   this->get_test();
 
-  std::cout << "Begin to predict" << std::endl;
+  std::cout << "Testing..." << std::endl;
 
   double count_all = test_imgaes_.size();
   double ptrue_rtrue = 0;
@@ -281,13 +214,12 @@ void Svm::train(bool divide /* = true */, bool train /* = true */,
   size_t label_index = 0;
   for (auto image : test_imgaes_) {
     //调用回调函数决定特征
-    cv::Mat features;
-    getHistogramFeatures(image, features);
-
+    auto features = easypr::histeq(image);
     features = features.reshape(1, 1);
-    features.convertTo(features, CV_32FC1);
+    cv::Mat out;
+    features.convertTo(out, CV_32FC1);
 
-    Label predict = ((int) svm.predict(features)) == 1 ? kForward : kInverse;
+    Label predict = ((int) svm.predict(out)) == 1 ? kForward : kInverse;
     Label real = test_labels_[label_index++];
 
     if (predict == kForward && real == kForward)
@@ -300,8 +232,6 @@ void Svm::train(bool divide /* = true */, bool train /* = true */,
       pfalse_rfalse++;
   }
 
-  std::cout << "Get the Accuracy!" << std::endl;
-
   std::cout << "count_all: " << count_all << std::endl;
   std::cout << "ptrue_rtrue: " << ptrue_rtrue << std::endl;
   std::cout << "ptrue_rfalse: " << ptrue_rfalse << std::endl;
@@ -312,27 +242,26 @@ void Svm::train(bool divide /* = true */, bool train /* = true */,
   if (ptrue_rtrue + ptrue_rfalse != 0) {
     precise = ptrue_rtrue / (ptrue_rtrue + ptrue_rfalse);
     std::cout << "precise: " << precise << std::endl;
-  }
-  else
+  } else {
     std::cout << "precise: " << "NA" << std::endl;
+  }
 
   double recall = 0;
   if (ptrue_rtrue + pfalse_rtrue != 0) {
     recall = ptrue_rtrue / (ptrue_rtrue + pfalse_rtrue);
     std::cout << "recall: " << recall << std::endl;
-  }
-  else
+  } else {
     std::cout << "recall: " << "NA" << std::endl;
+  }
 
   double Fsocre = 0;
   if (precise + recall != 0) {
     Fsocre = 2 * (precise * recall) / (precise + recall);
     std::cout << "Fsocre: " << Fsocre << std::endl;
-  }
-  else {
+  } else {
     std::cout << "Fsocre: " << "NA" << std::endl;
   }
 
 }
 
-}
+} // namespace easypr

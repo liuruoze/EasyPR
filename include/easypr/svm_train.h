@@ -3,13 +3,11 @@
 
 #include <vector>
 #include <opencv2/opencv.hpp>
-#include "easypr/feature.h"
 
 namespace easypr {
 
 class Svm {
  public:
-
   typedef enum {
     kForward = 1, // correspond to "has plate"
     kInverse = 0  // correspond to "no plate"
@@ -17,23 +15,8 @@ class Svm {
 
   Svm(const char* forward_data_folder, const char* inverse_data_folder);
 
-  void train(bool divide = true, bool train = true,
-            float divide_percentage = 0.7,
-            svmCallback getFeatures = getHistogramFeatures);
-
-//  void getNoPlateTest(std::vector<cv::Mat>& testingImages,
-//                      std::vector<int>& testingLabels);
-//
-//  void getHasPlateTest(std::vector<cv::Mat>& testingImages,
-//                       std::vector<int>& testingLabels);
-//
-//  void getNoPlateTrain(cv::Mat& trainingImages,
-//                       std::vector<int>& trainingLabels,
-//                       svmCallback getFeatures = getHisteqFeatures);
-//
-//  void getHasPlateTrain(cv::Mat& trainingImages,
-//                        std::vector<int>& trainingLabels,
-//                        svmCallback getFeatures = getHisteqFeatures);
+  void train(bool divide = true, float divide_percentage = 0.7,
+             bool train = true, const char* out_svm_folder = NULL);
 
  private:
   /*

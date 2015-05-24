@@ -1,8 +1,9 @@
 #include "easypr.h"
 #include "easypr/program_options.h"
+
 #include "accuracy.hpp"
-#include "plate.hpp"
 #include "chars.hpp"
+#include "plate.hpp"
 
 namespace easypr {
 
@@ -193,18 +194,32 @@ void command_line_handler(int argc, const char* argv[]) {
   options.add_subroutine("svm", "svm operations")
           .make_usage("Usage:");
   options("h,help", "show help information");
-  options("c,create", "create learn data, this function " \
+  options(",svm", "resources/model/svm.xml", "the svm model file," \
+          " this option is used for '--tag'(required)" \
+          " and '--train'(save svm model to) functions");
+  // create
+  options(",create", "create learn data, this function " \
           "will intercept (--max) raw images (--in) and preprocess into (--out)");
   options("i,in", "", "where is the raw images");
   options("o,out", "", "where to put the preprocessed images");
   options("m,max", "5000", "how many learn data would you want to create");
-  options("t,tag", "tag learn data, this function " \
+  // tag
+  options(",tag", "tag learn data, this function " \
           "will find plate blocks in your images(--source) " \
           "as well as classify them into (--has) and (--no)");
   options("s,source", "", "where is your images to be classified");
   options(",has", "", "put plates in this folder");
   options(",no", "", "put images without plate in this folder");
-  options(",svm", "resources/model/svm.xml", "the svm model file");
+  // train
+  options(",train", "train given data, " \
+          "including the forward(has plate) and the inverse(no plate).");
+  options(",has-plate", "", "where is the forward data");
+  options(",no-plate", "", "where is the inverse data");
+  options(",divide",
+          "whether divide train data into two parts by --percentage or not");
+  options(",percentage", "0.7", "70% train data will be used for training," \
+          " others will be used for testing");
+  options(",not-train", "don't train again, run testing directly");
 
   options.add_subroutine("locate", "locate plates in an image")
           .make_usage("Usage:");
@@ -245,6 +260,10 @@ void command_line_handler(int argc, const char* argv[]) {
     }
 
     if (parser->has("create")) {
+      assert(parser->has("in"));
+      assert(parser->has("out"));
+      assert(parser->has("max"));
+
       auto in = parser->get("in")->val();
       auto out = parser->get("out")->val();
       auto max = parser->get("max")->as<int>();
@@ -252,6 +271,11 @@ void command_line_handler(int argc, const char* argv[]) {
     }
 
     if (parser->has("tag")) {
+      assert(parser->has("source"));
+      assert(parser->has("has"));
+      assert(parser->has("no"));
+      assert(parser->has("svm"));
+
       auto source = parser->get("source")->val();
       auto has_path = parser->get("has")->val();
       auto no_path = parser->get("no")->val();
@@ -260,6 +284,24 @@ void command_line_handler(int argc, const char* argv[]) {
                                    no_path.c_str(), svm.c_str());
       std::cout << "Tagging finished, check out output images "
       << "and classify the wrong images manually." << std::endl;
+    }
+
+    if (parser->has("train")) {
+      assert(parser->has("has-plate"));
+      assert(parser->has("no-plate"));
+      assert(parser->has("percentage"));
+      assert(parser->has("svm"));
+
+      auto forward_data_path = parser->get("has-plate")->val();
+      auto inverse_data_path = parser->get("no-plate")->val();
+      bool divide = parser->has("divide");
+      auto percentage = parser->get("percentage")->as<float>();
+      auto svm_model = parser->get("svm")->val();
+      bool not_train = parser->has("not-train");
+
+      easypr::Svm svm(forward_data_path.c_str(), inverse_data_path.c_str());
+
+      svm.train(divide, percentage, !not_train, svm_model.c_str());
     }
 
     return;
@@ -284,6 +326,9 @@ void command_line_handler(int argc, const char* argv[]) {
     }
 
     if (parser->has("file")) {
+      assert(parser->has("file"));
+      assert(parser->has("svm"));
+
       auto image = parser->get("file")->val();
       auto svm = parser->get("svm")->val();
 

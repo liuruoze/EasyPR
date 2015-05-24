@@ -6,43 +6,43 @@ namespace easypr {
 namespace demo {
 
 int test_chars_segment() {
-  cout << "test_chars_segment" << endl;
+  std::cout << "test_chars_segment" << std::endl;
 
-  Mat src = imread("resources/image/chars_segment.jpg");
+  cv::Mat src = cv::imread("resources/image/chars_segment.jpg");
 
-  vector <Mat> resultVec;
+  std::vector<cv::Mat> resultVec;
   CCharsSegment plate;
 
   int result = plate.charsSegment(src, resultVec);
   if (result == 0) {
     size_t num = resultVec.size();
     for (int j = 0; j < num; j++) {
-      Mat resultMat = resultVec[j];
-      imshow("chars_segment", resultMat);
-      waitKey(0);
+      cv::Mat resultMat = resultVec[j];
+      cv::imshow("chars_segment", resultMat);
+      cv::waitKey(0);
     }
-    destroyWindow("chars_segment");
+    cv::destroyWindow("chars_segment");
   }
 
   return result;
 }
 
 int test_chars_identify() {
-  cout << "test_chars_identify" << endl;
+  std::cout << "test_chars_identify" << std::endl;
 
-  Mat src = imread("resources/image/chars_identify.jpg");
+  cv::Mat src = cv::imread("resources/image/chars_identify.jpg");
 
-  vector <Mat> resultVec;
+  std::vector<cv::Mat> resultVec;
   CCharsSegment cs;
   CCharsIdentify ci;
 
-  string plateIdentify = "";
+  std::string plateIdentify = "";
 
   int result = cs.charsSegment(src, resultVec);
   if (result == 0) {
     size_t num = resultVec.size();
     for (int j = 0; j < num; j++) {
-      Mat resultMat = resultVec[j];
+      cv::Mat resultMat = resultVec[j];
       bool isChinses = false;
       bool isSpec = false;
 
@@ -53,36 +53,36 @@ int test_chars_identify() {
       if (j == 1)
         isSpec = true;
 
-      string charcater = ci.charsIdentify(resultMat, isChinses, isSpec);
+      std::string charcater = ci.charsIdentify(resultMat, isChinses, isSpec);
       plateIdentify = plateIdentify + charcater;
     }
   }
 
-  const string plateLicense = "苏E771H6";
+  const std::string plateLicense = "苏E771H6";
 
-  cout << "plateLicense: " << plateLicense << endl;
-  cout << "plateIdentify: " << plateIdentify << endl;
+  std::cout << "plateLicense: " << plateLicense << std::endl;
+  std::cout << "plateIdentify: " << plateIdentify << std::endl;
 
   if (plateLicense != plateIdentify) {
-    cout << "Identify Not Correct!" << endl;
+    std::cout << "Identify Not Correct!" << std::endl;
     return -1;
   }
-  cout << "Identify Correct!" << endl;
+  std::cout << "Identify Correct!" << std::endl;
 
   return result;
 }
 
 int test_chars_recognise() {
-  cout << "test_chars_recognise" << endl;
+  std::cout << "test_chars_recognise" << std::endl;
 
-  Mat src = imread("resources/image/chars_recognise.jpg");
+  cv::Mat src = cv::imread("resources/image/chars_recognise.jpg");
 
   CCharsRecognise cr;
-  string charsRecognise = "";
+  std::string charsRecognise = "";
 
   int result = cr.charsRecognise(src, charsRecognise);
   if (result == 0) {
-    cout << "charsRecognise: " << charsRecognise << endl;
+    std::cout << "charsRecognise: " << charsRecognise << std::endl;
   }
 
   return result;

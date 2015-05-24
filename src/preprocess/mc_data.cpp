@@ -9,7 +9,6 @@
 #include <io.h>
 #endif
 
-#include <opencv2/opencv.hpp>
 #include "easypr/util.h"
 
 namespace easypr {
@@ -66,7 +65,7 @@ cv::Mat cut_top_bottom(const cv::Mat& img) {
   int width = img.size().width;
   int height = img.size().height;
   // TODO: it seems not correctly.
-  cv::Rect rect(0, 0, width, height * 0.97);
+  cv::Rect rect(0, 0, width, int(height * 0.97));
   return img(rect);
 }
 

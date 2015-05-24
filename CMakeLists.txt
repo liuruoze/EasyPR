@@ -23,7 +23,6 @@ set(SOURCE_FILES
     src/train/ann_train.cpp
     src/train/svm_train.cpp
     src/preprocess/deface.cpp
-    src/preprocess/general_test_prepare.cpp
     src/preprocess/gdts.cpp
     src/preprocess/mc_data.cpp
     src/util/util.cpp
