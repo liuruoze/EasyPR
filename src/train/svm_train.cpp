@@ -1,5 +1,6 @@
-#include "easypr/core_func.h"
 #include "easypr/svm_train.h"
+#include <ctime>
+#include "easypr/core_func.h"
 #include "easypr/util.h"
 
 namespace easypr {
@@ -153,8 +154,8 @@ void Svm::train(bool divide /* = true */, float divide_percentage /* = 0.7 */,
       // need to be trained first
       CvSVMParams SVM_params;
       SVM_params.svm_type = CvSVM::C_SVC;
-      //SVM_params.kernel_type = CvSVM::LINEAR; //CvSVM::LINEAR;   绾垮瀷锛屼篃灏辨槸鏃犳牳
-      SVM_params.kernel_type = CvSVM::RBF; //CvSVM::RBF 寰勫悜鍩哄嚱鏁帮紝涔熷氨鏄珮鏂牳
+      //SVM_params.kernel_type = CvSVM::LINEAR; //CvSVM::LINEAR;   线型，也就是无核
+      SVM_params.kernel_type = CvSVM::RBF; //CvSVM::RBF 径向基函数，也就是高斯核
       SVM_params.degree = 0.1;
       SVM_params.gamma = 1;
       SVM_params.coef0 = 0.1;
@@ -213,7 +214,7 @@ void Svm::train(bool divide /* = true */, float divide_percentage /* = 0.7 */,
 
   size_t label_index = 0;
   for (auto image : test_imgaes_) {
-    //璋冪敤鍥炶皟鍑芥暟鍐冲畾鐗瑰緛
+    //调用回调函数决定特征
     auto features = easypr::histeq(image);
     features = features.reshape(1, 1);
     cv::Mat out;

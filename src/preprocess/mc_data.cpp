@@ -1,9 +1,10 @@
-// æ•°æ®é¢„å¤„ç†çš„ç¨‹åºï¼Œä¸»è¦åšä»¥ä¸‹ä¸¤ä»¶äº‹
-// 1.è¯»å–åŸç”Ÿæ•°æ® rawdataï¼Œè¿™å¯èƒ½æœ‰æ•°ç™¾ä¸‡å¼ 
-// 2.éšæœº/é€‰æ‹©æ€§åœ°é€‰å–éƒ¨åˆ†æ•°æ®æˆä¸ºlearndataï¼Œè¿™ä¸ªæ ¹æ®å‚æ•°è®¾ç½®ï¼Œä¸€èˆ¬è®¾ç½®ä¸º1000ï¼Œ10000ï¼Œæˆ–è€…1ç™¾ä¸‡
+// Êı¾İÔ¤´¦ÀíµÄ³ÌĞò£¬Ö÷Òª×öÒÔÏÂÁ½¼şÊÂ
+// 1.¶ÁÈ¡Ô­ÉúÊı¾İ rawdata£¬Õâ¿ÉÄÜÓĞÊı°ÙÍòÕÅ
+// 2.Ëæ»ú/Ñ¡ÔñĞÔµØÑ¡È¡²¿·ÖÊı¾İ³ÉÎªlearndata£¬Õâ¸ö¸ù¾İ²ÎÊıÉèÖÃ£¬Ò»°ãÉèÖÃÎª1000£¬10000£¬»òÕß1°ÙÍò
 #include "easypr/preprocess/mc_data.h"
-#include "easypr/plate_locate.h"
+#include <ctime>
 #include "easypr/plate_judge.h"
+#include "easypr/plate_locate.h"
 
 #if defined (WIN32) || defined (_WIN32)
 #include <io.h>
@@ -16,51 +17,51 @@ namespace easypr {
 namespace preprocess {
 
 //std::map<std::string, std::string> mc_map = {
-//        {"E00", "æœªè¯†åˆ«"},
-//        {"A01", "äº¬"},
-//        {"A02", "æ´¥"},
-//        {"A03", "æ²ª"},
-//        {"A04", "æ¸"},
-//        {"B01", "æ¡‚"},
-//        {"B02", "è’™"},
-//        {"B03", "å®"},
-//        {"B04", "æ–°"},
-//        {"B05", "è—"},
-//        {"S01", "çš–"},
-//        {"S02", "é—½"},
-//        {"S03", "ç²¤"},
-//        {"S04", "ç”˜"},
-//        {"S05", "è´µ"},
-//        {"S06", "é„‚"},
-//        {"S07", "å†€"},
-//        {"S08", "é»‘"},
-//        {"S09", "æ¹˜"},
-//        {"S10", "è±«"},
-//        {"S11", "ç¼"},
-//        {"S12", "å‰"},
-//        {"S13", "è‹"},
-//        {"S14", "èµ£"},
-//        {"S15", "è¾½"},
-//        {"S16", "é’"},
-//        {"S17", "å·"},
-//        {"S18", "é²"},
-//        {"S19", "é™•"},
-//        {"S20", "æ™‹"},
-//        {"S21", "äº‘"},
-//        {"S22", "æµ™"},
-//        {"J01", "å†›"},
-//        {"J02", "æµ·"},
-//        {"J03", "ç©º"},
-//        {"J04", "åŒ—"},
-//        {"J05", "æˆ"},
-//        {"J06", "å¹¿"},
-//        {"J07", "æµ"},
-//        {"J08", "å…°"},
-//        {"J09", "å—"},
-//        {"J10", "æ²ˆ"}
+//        {"E00", "Î´Ê¶±ğ"},
+//        {"A01", "¾©"},
+//        {"A02", "½ò"},
+//        {"A03", "»¦"},
+//        {"A04", "Óå"},
+//        {"B01", "¹ğ"},
+//        {"B02", "ÃÉ"},
+//        {"B03", "Äş"},
+//        {"B04", "ĞÂ"},
+//        {"B05", "²Ø"},
+//        {"S01", "Íî"},
+//        {"S02", "Ãö"},
+//        {"S03", "ÔÁ"},
+//        {"S04", "¸Ê"},
+//        {"S05", "¹ó"},
+//        {"S06", "¶õ"},
+//        {"S07", "¼½"},
+//        {"S08", "ºÚ"},
+//        {"S09", "Ïæ"},
+//        {"S10", "Ô¥"},
+//        {"S11", "Çí"},
+//        {"S12", "¼ª"},
+//        {"S13", "ËÕ"},
+//        {"S14", "¸Ó"},
+//        {"S15", "ÁÉ"},
+//        {"S16", "Çà"},
+//        {"S17", "´¨"},
+//        {"S18", "Â³"},
+//        {"S19", "ÉÂ"},
+//        {"S20", "½ú"},
+//        {"S21", "ÔÆ"},
+//        {"S22", "Õã"},
+//        {"J01", "¾ü"},
+//        {"J02", "º£"},
+//        {"J03", "¿Õ"},
+//        {"J04", "±±"},
+//        {"J05", "³É"},
+//        {"J06", "¹ã"},
+//        {"J07", "¼Ã"},
+//        {"J08", "À¼"},
+//        {"J09", "ÄÏ"},
+//        {"J10", "Éò"}
 //};
 
-// åˆ‡å»ä¸Šéƒ¨ä¸åº•éƒ¨å¹²æ‰°çš„ç»†èŠ‚
+// ÇĞÈ¥ÉÏ²¿Óëµ×²¿¸ÉÈÅµÄÏ¸½Ú
 cv::Mat cut_top_bottom(const cv::Mat& img) {
   int width = img.size().width;
   int height = img.size().height;
@@ -70,18 +71,18 @@ cv::Mat cut_top_bottom(const cv::Mat& img) {
 }
 
 //std::string code_to_province(const std::string& code) {
-//  return (mc_map.find(code) != mc_map.end()) ? mc_map[code] : "æ— ";
+//  return (mc_map.find(code) != mc_map.end()) ? mc_map[code] : "ÎŞ";
 //}
 
-//// é€šè¿‡filepathè·å–è½¦ç‰Œå·ç 
-//// æ–‡ä»¶åæ ¼å¼ï¼šA01_00000
+//// Í¨¹ıfilepath»ñÈ¡³µÅÆºÅÂë
+//// ÎÄ¼şÃû¸ñÊ½£ºA01_00000
 //std::string plate_from_path(const std::string& path) {
 //  auto filename = Utils::getFileName(path);
 //  auto code = filename.substr(0, 3);
 //  return code_to_province(code) + filename.substr(3);
 //}
 
-// å°†rawdataæˆªå–éƒ¨åˆ†æ•°æ®åˆ°learndataä¸­
+// ½«rawdata½ØÈ¡²¿·ÖÊı¾İµ½learndataÖĞ
 void create_learn_data(const char* raw_data_folder, const char* out_data_folder,
                        const int how_many /* = 5000 */) {
   assert(raw_data_folder);
@@ -94,17 +95,17 @@ void create_learn_data(const char* raw_data_folder, const char* out_data_folder,
     std::cout << "No file found in " << raw_data_folder << std::endl;
     return;
   }
-  // éšæœºæ’åˆ—rawdata
+  // Ëæ»úÅÅÁĞrawdata
   srand(unsigned(time(NULL)));
   std::random_shuffle(files.begin(), files.end());
 
   int count = 0;
   for (auto f : files) {
-    // é€‰å–å‰how_manyä¸ªrawdataæ•°æ®ä½œä¸ºlearndata
+    // Ñ¡È¡Ç°how_many¸örawdataÊı¾İ×÷Îªlearndata
     if (count++ >= how_many) {
       break;
     }
-    //è¯»å–æ•°æ®ï¼Œå¹¶å¯¹å›¾ç‰‡è¿›è¡Œé¢„å¤„ç†
+    //¶ÁÈ¡Êı¾İ£¬²¢¶ÔÍ¼Æ¬½øĞĞÔ¤´¦Àí
     cv::Mat img = cv::imread(f);
     img = cut_top_bottom(img);
 
@@ -120,7 +121,7 @@ void create_learn_data(const char* raw_data_folder, const char* out_data_folder,
   std::cout << "Learn data created successfully!" << std::endl;
 }
 
-// å®šä½å¹¶åˆ¤æ–­è½¦ç‰Œæœ‰æ— ï¼Œæ”¾ç½®åœ¨æŒ‡å®šä½ç½®
+// ¶¨Î»²¢ÅĞ¶Ï³µÅÆÓĞÎŞ£¬·ÅÖÃÔÚÖ¸¶¨Î»ÖÃ
 void tag_data(const char* source_folder, const char* has_plate_folder,
               const char* no_plate_folder, const char* svm_model) {
   assert(source_folder);

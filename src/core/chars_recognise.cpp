@@ -21,7 +21,7 @@ std::string CCharsRecognise::charsRecognise(cv::Mat plate) {
 
 int CCharsRecognise::charsRecognise(cv::Mat plate, std::string& plateLicense,
                                     int index) {
-  //杞︾墝瀛楃鏂瑰潡闆嗗悎
+  //车牌字符方块集合
   std::vector<cv::Mat> matVec;
 
   std::string plateIdentify = "";
@@ -33,7 +33,7 @@ int CCharsRecognise::charsRecognise(cv::Mat plate, std::string& plateLicense,
       cv::Mat charMat = matVec[j];
       bool isChinses = false;
       bool isSpeci = false;
-      //榛樿棣栦釜瀛楃鍧楁槸涓枃瀛楃
+      //默认首个字符块是中文字符
       if (j == 0)
         isChinses = true;
       if (j == 1)

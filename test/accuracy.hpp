@@ -1,6 +1,7 @@
 #ifndef EASYPR_ACCURACY_HPP
 #define EASYPR_ACCURACY_HPP
 
+#include <ctime>
 #include <fstream>
 
 namespace easypr {
@@ -17,7 +18,7 @@ int accuracyTest(const char* test_path) {
   pr.setLifemode(true);
   pr.setDebug(false);
 
-  // è®¾ç½®è¦å¤„ç†çš„ä¸€å¼ å›¾ç‰‡ä¸­æœ€å¤šæœ‰å¤šå°‘è½¦ç‰Œ
+  // ÉèÖÃÒª´¦ÀíµÄÒ»ÕÅÍ¼Æ¬ÖĞ×î¶àÓĞ¶àÉÙ³µÅÆ
   pr.setMaxPlates(4);
 
   size_t files_num = files.size();
@@ -29,23 +30,23 @@ int accuracyTest(const char* test_path) {
 
   std::cout << "Begin to test the easypr accuracy!" << std::endl;
 
-  // æ€»çš„æµ‹è¯•å›¾ç‰‡æ•°é‡
+  // ×ÜµÄ²âÊÔÍ¼Æ¬ÊıÁ¿
   int count_all = 0;
-  // é”™è¯¯çš„å›¾ç‰‡æ•°é‡
+  // ´íÎóµÄÍ¼Æ¬ÊıÁ¿
   int count_err = 0;
-  // æœªè¯†åˆ«çš„å›¾ç‰‡æ•°é‡
+  // Î´Ê¶±ğµÄÍ¼Æ¬ÊıÁ¿
   int count_norecogin = 0;
 
-  // æ€»çš„å­—ç¬¦å·®è·
+  // ×ÜµÄ×Ö·û²î¾à
   float diff_all = 0;
-  // å¹³å‡å­—ç¬¦å·®è·
+  // Æ½¾ù×Ö·û²î¾à
   float diff_avg = 0;
-  // å®Œå…¨åŒ¹é…çš„è¯†åˆ«æ¬¡æ•°
+  // ÍêÈ«Æ¥ÅäµÄÊ¶±ğ´ÎÊı
   float match_count = 0;
-  // å®Œå…¨åŒ¹é…çš„è¯†åˆ«æ¬¡æ•°æ‰€å è¯†åˆ«å›¾ç‰‡ä¸­çš„æ¯”ä¾‹
+  // ÍêÈ«Æ¥ÅäµÄÊ¶±ğ´ÎÊıËùÕ¼Ê¶±ğÍ¼Æ¬ÖĞµÄ±ÈÀı
   float match_rate = 0;
 
-  // å¼€å§‹å’Œç»“æŸæ—¶é—´
+  // ¿ªÊ¼ºÍ½áÊøÊ±¼ä
   time_t begin, end;
   time(&begin);
 
@@ -53,11 +54,11 @@ int accuracyTest(const char* test_path) {
     std::string filepath = files[i];
     std::cout << "------------------" << std::endl;
 
-    // è·å–çœŸå®çš„è½¦ç‰Œ
+    // »ñÈ¡ÕæÊµµÄ³µÅÆ
     std::string plateLicense = Utils::getFileName(filepath);
-    std::cout << "åŸç‰Œ:" << plateLicense << std::endl;
+    std::cout << "Ô­ÅÆ:" << plateLicense << std::endl;
 
-    // EasyPRå¼€å§‹åˆ¤æ–­è½¦ç‰Œ
+    // EasyPR¿ªÊ¼ÅĞ¶Ï³µÅÆ
     cv::Mat src = cv::imread(filepath);
 
     std::vector<std::string> plateVec;
@@ -66,16 +67,16 @@ int accuracyTest(const char* test_path) {
       size_t num = plateVec.size();
 
       if (num == 0) {
-        std::cout << "æ— è½¦ç‰Œ" << std::endl;
-        if (plateLicense != "æ— è½¦ç‰Œ") count_norecogin++;
+        std::cout << "ÎŞ³µÅÆ" << std::endl;
+        if (plateLicense != "ÎŞ³µÅÆ") count_norecogin++;
       } else if (num > 1) {
-        // å¤šè½¦ç‰Œä½¿ç”¨diffæœ€å°çš„é‚£ä¸ªè®°å½•
+        // ¶à³µÅÆÊ¹ÓÃdiff×îĞ¡µÄÄÇ¸ö¼ÇÂ¼
         int mindiff = 10000;
         for (int j = 0; j < num; j++) {
           std::cout << plateVec[j] << " (" << j + 1 << ")" << std::endl;
           std::string colorplate = plateVec[j];
 
-          // è®¡ç®—"è“ç‰Œ:è‹E7KU22"ä¸­å†’å·åé¢çš„è½¦ç‰Œå¤§å°"
+          // ¼ÆËã"À¶ÅÆ:ËÕE7KU22"ÖĞÃ°ºÅºóÃæµÄ³µÅÆ´óĞ¡"
           auto spilt_plate = Utils::splitString(colorplate, ':');
 
           size_t size = spilt_plate.size();
@@ -87,19 +88,19 @@ int accuracyTest(const char* test_path) {
           }
         }
 
-        std::cout << "å·®è·:" << mindiff << "ä¸ªå­—ç¬¦" << std::endl;
+        std::cout << "²î¾à:" << mindiff << "¸ö×Ö·û" << std::endl;
         if (mindiff == 0) {
-          // å®Œå…¨åŒ¹é…
+          // ÍêÈ«Æ¥Åä
           match_count++;
         }
         diff_all = diff_all + mindiff;
       } else {
-        // å•è½¦ç‰Œåªè®¡ç®—ä¸€æ¬¡diff
+        // µ¥³µÅÆÖ»¼ÆËãÒ»´Îdiff
         for (int j = 0; j < num; j++) {
           std::cout << plateVec[j] << std::endl;
           std::string colorplate = plateVec[j];
 
-          // è®¡ç®—"è“ç‰Œ:è‹E7KU22"ä¸­å†’å·åé¢çš„è½¦ç‰Œå¤§å°"
+          // ¼ÆËã"À¶ÅÆ:ËÕE7KU22"ÖĞÃ°ºÅºóÃæµÄ³µÅÆ´óĞ¡"
           std::vector<std::string> spilt_plate = Utils::splitString(colorplate,
                                                                     ':');
 
@@ -108,10 +109,10 @@ int accuracyTest(const char* test_path) {
             int diff =
                     Utils::levenshtein_distance(plateLicense,
                                                 spilt_plate[size - 1]);
-            std::cout << "å·®è·:" << diff << "ä¸ªå­—ç¬¦" << std::endl;
+            std::cout << "²î¾à:" << diff << "¸ö×Ö·û" << std::endl;
 
             if (diff == 0) {
-              // å®Œå…¨åŒ¹é…
+              // ÍêÈ«Æ¥Åä
               match_count++;
             }
             diff_all = diff_all + diff;
@@ -119,7 +120,7 @@ int accuracyTest(const char* test_path) {
         }
       }
     } else {
-      std::cout << "é”™è¯¯ç :" << result << std::endl;
+      std::cout << "´íÎóÂë:" << result << std::endl;
       count_err++;
     }
     count_all++;
@@ -130,27 +131,27 @@ int accuracyTest(const char* test_path) {
   std::cout << "Easypr accuracy test end!" << std::endl;
   std::cout << "------------------" << std::endl;
   std::cout << std::endl;
-  std::cout << "ç»Ÿè®¡å‚æ•°:" << std::endl;
-  std::cout << "æ€»å›¾ç‰‡æ•°:" << count_all << "å¼ ,  ";
-  std::cout << "æœªè¯†å‡ºå›¾ç‰‡:" << count_norecogin << "å¼ ,  ";
+  std::cout << "Í³¼Æ²ÎÊı:" << std::endl;
+  std::cout << "×ÜÍ¼Æ¬Êı:" << count_all << "ÕÅ,  ";
+  std::cout << "Î´Ê¶³öÍ¼Æ¬:" << count_norecogin << "ÕÅ,  ";
 
   float count_recogin = count_all - (count_err + count_norecogin);
   float count_rate = count_recogin / count_all;
 
-  std::cout << "å®šä½ç‡:" << count_rate * 100 << "%  " << std::endl;
+  std::cout << "¶¨Î»ÂÊ:" << count_rate * 100 << "%  " << std::endl;
 
   diff_avg = diff_all / count_recogin;
   match_rate = match_count / count_recogin * 100;
 
-  std::cout << "å¹³å‡å­—ç¬¦å·®è·:" << diff_avg << "ä¸ª,  ";
-  std::cout << "å®Œå…¨åŒ¹é…æ•°:" << match_count << "å¼ ,  ";
-  std::cout << "å®Œå…¨åŒ¹é…ç‡:" << match_rate << "%  " << std::endl;
+  std::cout << "Æ½¾ù×Ö·û²î¾à:" << diff_avg << "¸ö,  ";
+  std::cout << "ÍêÈ«Æ¥ÅäÊı:" << match_count << "ÕÅ,  ";
+  std::cout << "ÍêÈ«Æ¥ÅäÂÊ:" << match_rate << "%  " << std::endl;
 
   double seconds = difftime(end, begin);
   double avgsec = seconds / double(count_all);
 
-  std::cout << "æ€»æ—¶é—´:" << seconds << "ç§’,  ";
-  std::cout << "å¹³å‡æ‰§è¡Œæ—¶é—´:" << avgsec << "ç§’  " << std::endl;
+  std::cout << "×ÜÊ±¼ä:" << seconds << "Ãë,  ";
+  std::cout << "Æ½¾ùÖ´ĞĞÊ±¼ä:" << avgsec << "Ãë  " << std::endl;
 
   std::cout << std::endl;
 
@@ -165,14 +166,14 @@ int accuracyTest(const char* test_path) {
     strftime(buf, sizeof(buf), "%Y-%m-%d %X", now);
     myfile << std::string(buf) << std::endl;
 
-    myfile << "æ€»å›¾ç‰‡æ•°:" << count_all << "å¼ ,  ";
-    myfile << "æœªè¯†å‡ºå›¾ç‰‡:" << count_norecogin << "å¼ ,  ";
-    myfile << "å®šä½ç‡:" << count_rate * 100 << "%  " << std::endl;
-    myfile << "å¹³å‡å­—ç¬¦å·®è·:" << diff_avg << "ä¸ª,  ";
-    myfile << "å®Œå…¨åŒ¹é…æ•°:" << match_count << "å¼ ,  ";
-    myfile << "å®Œå…¨åŒ¹é…ç‡:" << match_rate << "%  " << std::endl;
-    myfile << "æ€»æ—¶é—´:" << seconds << "ç§’,  ";
-    myfile << "å¹³å‡æ‰§è¡Œæ—¶é—´:" << avgsec << "ç§’" << std::endl;
+    myfile << "×ÜÍ¼Æ¬Êı:" << count_all << "ÕÅ,  ";
+    myfile << "Î´Ê¶³öÍ¼Æ¬:" << count_norecogin << "ÕÅ,  ";
+    myfile << "¶¨Î»ÂÊ:" << count_rate * 100 << "%  " << std::endl;
+    myfile << "Æ½¾ù×Ö·û²î¾à:" << diff_avg << "¸ö,  ";
+    myfile << "ÍêÈ«Æ¥ÅäÊı:" << match_count << "ÕÅ,  ";
+    myfile << "ÍêÈ«Æ¥ÅäÂÊ:" << match_rate << "%  " << std::endl;
+    myfile << "×ÜÊ±¼ä:" << seconds << "Ãë,  ";
+    myfile << "Æ½¾ùÖ´ĞĞÊ±¼ä:" << avgsec << "Ãë" << std::endl;
     myfile.close();
   } else {
     std::cout << "Unable to open file";

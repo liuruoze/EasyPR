@@ -31,9 +31,6 @@
     <Filter Include="源文件\util">
       <UniqueIdentifier>{53a5d227-5ea7-45e4-9533-ed69bff250fb}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Demo">
-      <UniqueIdentifier>{db890332-5881-4189-9a3d-46691cb88208}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\easypr.h">
@@ -90,15 +87,6 @@
     <ClInclude Include="include\easypr\preprocess\mc_data.h">
       <Filter>头文件\easypr\preprocess</Filter>
     </ClInclude>
-    <ClInclude Include="test\accuracy.hpp">
-      <Filter>Demo</Filter>
-    </ClInclude>
-    <ClInclude Include="test\chars.hpp">
-      <Filter>Demo</Filter>
-    </ClInclude>
-    <ClInclude Include="test\plate.hpp">
-      <Filter>Demo</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\core\chars_identify.cpp">
@@ -151,9 +139,6 @@
     </ClCompile>
     <ClCompile Include="src\preprocess\mc_data.cpp">
       <Filter>源文件\preprocess</Filter>
-    </ClCompile>
-    <ClCompile Include="test\main.cpp">
-      <Filter>Demo</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

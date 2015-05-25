@@ -21,38 +21,38 @@ class CCharsIdentify {
  public:
   CCharsIdentify();
 
-  //! å­—ç¬¦é‰´åˆ«
+  //! ×Ö·û¼ø±ğ
   std::string charsIdentify(cv::Mat, bool, bool);
 
   std::string charsIdentify(cv::Mat input);
 
-  //! å­—ç¬¦åˆ†ç±»
+  //! ×Ö·û·ÖÀà
   int classify(cv::Mat, bool, bool);
 
   int classify(cv::Mat f);
 
-  //! è£…è½½ANNæ¨¡å‹
+  //! ×°ÔØANNÄ£ĞÍ
   void LoadModel();
 
-  //! è£…è½½ANNæ¨¡å‹
+  //! ×°ÔØANNÄ£ĞÍ
   void LoadModel(std::string s);
 
-  //! è®¾ç½®ä¸è¯»å–æ¨¡å‹è·¯å¾„
+  //! ÉèÖÃÓë¶ÁÈ¡Ä£ĞÍÂ·¾¶
   inline void setModelPath(std::string path) { m_path = path; }
 
   inline std::string getModelPath() const { return m_path; }
 
  private:
-  //ï¼ä½¿ç”¨çš„ANNæ¨¡å‹
+  //£¡Ê¹ÓÃµÄANNÄ£ĞÍ
   CvANN_MLP ann;
 
-  //! æ¨¡å‹å­˜å‚¨è·¯å¾„
+  //! Ä£ĞÍ´æ´¢Â·¾¶
   std::string m_path;
 
-  //! ç‰¹å¾å°ºå¯¸
+  //! ÌØÕ÷³ß´ç
   int m_predictSize;
 
-  //! çœä»½å¯¹åº”map
+  //! Ê¡·İ¶ÔÓ¦map
   std::map<std::string, std::string> m_map;
 };
 

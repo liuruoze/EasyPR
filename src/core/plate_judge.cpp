@@ -17,7 +17,7 @@ void CPlateJudge::LoadModel(const char* model) {
   svm.load(model, "svm");
 }
 
-//! ç›´æ–¹å›¾å‡è¡¡
+//! Ö±·½Í¼¾ùºâ
 Mat CPlateJudge::histeq(Mat in) {
   Mat out(in.size(), in.type());
   if (in.channels() == 3) {
@@ -36,7 +36,7 @@ Mat CPlateJudge::histeq(Mat in) {
 }
 
 
-//! å¯¹å•å¹…å›¾åƒè¿›è¡ŒSVMåˆ¤æ–­
+//! ¶Ôµ¥·ùÍ¼Ïñ½øĞĞSVMÅĞ¶Ï
 int CPlateJudge::plateJudge(const Mat& inMat, int& result) {
   if (m_getFeatures == NULL)
     return -1;
@@ -44,7 +44,7 @@ int CPlateJudge::plateJudge(const Mat& inMat, int& result) {
   Mat features;
   m_getFeatures(inMat, features);
 
-  //é€šè¿‡ç›´æ–¹å›¾å‡è¡¡åŒ–åçš„å½©è‰²å›¾è¿›è¡Œé¢„æµ‹
+  //Í¨¹ıÖ±·½Í¼¾ùºâ»¯ºóµÄ²ÊÉ«Í¼½øĞĞÔ¤²â
   Mat p = features.reshape(1, 1);
   p.convertTo(p, CV_32FC1);
 
@@ -55,7 +55,7 @@ int CPlateJudge::plateJudge(const Mat& inMat, int& result) {
 }
 
 
-//! å¯¹å¤šå¹…å›¾åƒè¿›è¡ŒSVMåˆ¤æ–­
+//! ¶Ô¶à·ùÍ¼Ïñ½øĞĞSVMÅĞ¶Ï
 int CPlateJudge::plateJudge(const vector<Mat>& inVec,
                             vector<Mat>& resultVec) {
   size_t num = inVec.size();
@@ -71,7 +71,7 @@ int CPlateJudge::plateJudge(const vector<Mat>& inVec,
   return 0;
 }
 
-//! å¯¹å¤šå¹…è½¦ç‰Œè¿›è¡ŒSVMåˆ¤æ–­
+//! ¶Ô¶à·ù³µÅÆ½øĞĞSVMÅĞ¶Ï
 int CPlateJudge::plateJudge(const vector<CPlate>& inVec,
                             vector<CPlate>& resultVec) {
   size_t num = inVec.size();

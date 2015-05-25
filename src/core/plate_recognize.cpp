@@ -13,13 +13,13 @@ CPlateRecognize::CPlateRecognize() {
 }
 
 int CPlateRecognize::plateRecognize(Mat src, vector<string>& licenseVec) {
-  // è½¦ç‰Œæ–¹å—é›†åˆ
+  // ³µÅÆ·½¿é¼¯ºÏ
   vector<CPlate> plateVec;
 
-  // å¦‚æœè®¾ç½®äº†Debugæ¨¡å¼ï¼Œå°±ä¾æ¬¡æ˜¾ç¤ºæ‰€æœ‰çš„å›¾ç‰‡
+  // Èç¹ûÉèÖÃÁËDebugÄ£Ê½£¬¾ÍÒÀ´ÎÏÔÊ¾ËùÓĞµÄÍ¼Æ¬
   // int showDetectArea = getPDDebug();
   bool showDetectArea = false;
-  // è¿›è¡Œæ·±åº¦å®šä½ï¼Œä½¿ç”¨é¢œè‰²ä¿¡æ¯ä¸äºŒæ¬¡Sobel
+  // ½øĞĞÉî¶È¶¨Î»£¬Ê¹ÓÃÑÕÉ«ĞÅÏ¢Óë¶ş´ÎSobel
   int resultPD = plateDetectDeep(src, plateVec, showDetectArea, 0);
 
   Mat result;
@@ -33,10 +33,10 @@ int CPlateRecognize::plateRecognize(Mat src, vector<string>& licenseVec) {
 
       Mat plate = item.getPlateMat();
 
-      //è·å–è½¦ç‰Œé¢œè‰²
+      //»ñÈ¡³µÅÆÑÕÉ«
       string plateType = getPlateColor(plate);
 
-      //è·å–è½¦ç‰Œå·
+      //»ñÈ¡³µÅÆºÅ
       string plateIdentify = "";
       int resultCR = charsRecognise(plate, plateIdentify);
       if (resultCR == 0) {
@@ -51,12 +51,12 @@ int CPlateRecognize::plateRecognize(Mat src, vector<string>& licenseVec) {
           for (int k = 0; k < 4; k++) {
             line(result, rect_points[k], rect_points[(k + 1) % 4],
                  Scalar(255, 255, 0), 2, 8);
-            //é¢œè‰²å®šä½è½¦ç‰Œï¼Œé»„è‰²æ–¹æ¡†
+            //ÑÕÉ«¶¨Î»³µÅÆ£¬»ÆÉ«·½¿ò
           }
         } else {
           for (int m = 0; m < 4; m++) {
             line(result, rect_points[m], rect_points[(m + 1) % 4],
-                 Scalar(0, 0, 255), 2, 8);//sobelå®šä½è½¦ç‰Œï¼Œçº¢è‰²æ–¹æ¡†
+                 Scalar(0, 0, 255), 2, 8);//sobel¶¨Î»³µÅÆ£¬ºìÉ«·½¿ò
           }
         }
       }
