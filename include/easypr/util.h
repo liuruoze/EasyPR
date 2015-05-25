@@ -69,8 +69,8 @@ class Utils {
     }
   }
 
-  //! levenshtein¾àÀë£¬ÓÃÓÚ¼ÆËãÁ½¸ö³µÅÆµÄ¾àÀë
-  //£¡EasyPRÖĞÓÃlevenshtein¾àÀëºâÁ¿³µÅÆÊ¶±ğÓëÕæÊµ³µÅÆµÄÎó²î
+  //! levenshteinè·ç¦»ï¼Œç”¨äºè®¡ç®—ä¸¤ä¸ªè½¦ç‰Œçš„è·ç¦»
+  //ï¼EasyPRä¸­ç”¨levenshteinè·ç¦»è¡¡é‡è½¦ç‰Œè¯†åˆ«ä¸çœŸå®è½¦ç‰Œçš„è¯¯å·®
   template<class T>
   static unsigned int levenshtein_distance(const T& s1, const T& s2) {
     const size_t len1 = s1.size(), len2 = s2.size();
@@ -94,7 +94,7 @@ class Utils {
 
 } // namespace easypr
 
-/// general_test_prepare.cppÖĞ·½·¨
+/// general_test_prepare.cppä¸­æ–¹æ³•
 int general_test();
 
 #endif // EASYPR_UTIL_H_

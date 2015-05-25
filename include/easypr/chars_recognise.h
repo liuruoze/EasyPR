@@ -24,33 +24,33 @@ class CCharsRecognise {
  public:
   CCharsRecognise();
 
-  //! ×Ö·û·Ö¸îÓëÊ¶±ğ
+  //! å­—ç¬¦åˆ†å‰²ä¸è¯†åˆ«
   int charsRecognise(cv::Mat, std::string&, int = 0);
 
   cv::string charsRecognise(cv::Mat plate);
 
-  //! ×°ÔØANNÄ£ĞÍ
+  //! è£…è½½ANNæ¨¡å‹
   void LoadANN(cv::string s);
 
-  //! ÊÇ·ñ¿ªÆôµ÷ÊÔÄ£Ê½
+  //! æ˜¯å¦å¼€å¯è°ƒè¯•æ¨¡å¼
   inline void setCRDebug(int param) { m_charsSegment->setDebug(param); }
 
-  //! »ñÈ¡µ÷ÊÔÄ£Ê½×´Ì¬
+  //! è·å–è°ƒè¯•æ¨¡å¼çŠ¶æ€
   inline int getCRDebug() { return m_charsSegment->getDebug(); }
 
 
-  //! »ñµÃ³µÅÆÑÕÉ«
+  //! è·å¾—è½¦ç‰Œé¢œè‰²
   inline cv::string getPlateColor(cv::Mat input) const {
-    cv::string color = "Î´Öª";
+    cv::string color = "æœªçŸ¥";
     Color result = getPlateType(input, true);
     if (BLUE == result)
-      color = "À¶ÅÆ";
+      color = "è“ç‰Œ";
     if (YELLOW == result)
-      color = "»ÆÅÆ";
+      color = "é»„ç‰Œ";
     return color;
   }
 
-  //! ÉèÖÃ±äÁ¿
+  //! è®¾ç½®å˜é‡
   inline void setLiuDingSize(int param) {
     m_charsSegment->setLiuDingSize(param);
   }
@@ -76,10 +76,10 @@ class CCharsRecognise {
   }
 
  private:
-  //£¡×Ö·û·Ö¸î
+  //ï¼å­—ç¬¦åˆ†å‰²
   CCharsSegment* m_charsSegment;
 
-  //! ×Ö·ûÊ¶±ğ
+  //! å­—ç¬¦è¯†åˆ«
   CCharsIdentify* m_charsIdentify;
 };
 

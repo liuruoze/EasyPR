@@ -1,11 +1,11 @@
-//  ÈËÁ³ÂíÈü¿Ë
+//  äººè„¸é©¬èµ›å…‹
 //
 //  Created by zhou shiwei on 15/1/20.
-//  Copyright (c) 2015Äê zhou shiwei. All rights reserved.
+//  Copyright (c) 2015å¹´ zhou shiwei. All rights reserved.
 
-//	·´ÈËÁ³Ê¶±ğÎÄ¼ş
-//	ÔÚ·¢²¼Êı¾İµ½general_testÊı¾İ¼¯Àï£¬ÇëÏÈÓÃÕâÀïµÄ·½·¨¶ÔÍ¼Ïñ½øĞĞ´¦Àí
-//	EasyPR¿ªÔ´ÏîÄ¿·Ç³£×¢ÖØ±£»¤Í¼Æ¬ÖĞ¼İÊ»ÈËµÄÒşË½
+//	åäººè„¸è¯†åˆ«æ–‡ä»¶
+//	åœ¨å‘å¸ƒæ•°æ®åˆ°general_testæ•°æ®é›†é‡Œï¼Œè¯·å…ˆç”¨è¿™é‡Œçš„æ–¹æ³•å¯¹å›¾åƒè¿›è¡Œå¤„ç†
+//	EasyPRå¼€æºé¡¹ç›®éå¸¸æ³¨é‡ä¿æŠ¤å›¾ç‰‡ä¸­é©¾é©¶äººçš„éšç§
 
 #ifndef EASYPR_DEFACE_H
 #define EASYPR_DEFACE_H

@@ -5,29 +5,29 @@
 */
 namespace easypr {
 
-//ÖĞ¹ú³µÅÆ
+//ä¸­å›½è½¦ç‰Œ
 const char strCharacters[] = {
         '0', '1', '2', '3', '4', '5', \
-    '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', /* Ã»ÓĞI */\
-    'J', 'K', 'L', 'M', 'N', /* Ã»ÓĞO */ 'P', 'Q', 'R', 'S', 'T', \
+    '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', /* æ²¡æœ‰I */\
+    'J', 'K', 'L', 'M', 'N', /* æ²¡æœ‰O */ 'P', 'Q', 'R', 'S', 'T', \
     'U', 'V', 'W', 'X', 'Y', 'Z'
 };
-const int numCharacter = 34; /* Ã»ÓĞIºÍ0,10¸öÊı×ÖÓë24¸öÓ¢ÎÄ×Ö·ûÖ®ºÍ */
+const int numCharacter = 34; /* æ²¡æœ‰Iå’Œ0,10ä¸ªæ•°å­—ä¸24ä¸ªè‹±æ–‡å­—ç¬¦ä¹‹å’Œ */
 
-//ÒÔÏÂ¶¼ÊÇÎÒÑµÁ·Ê±ÓÃµ½µÄÖĞÎÄ×Ö·ûÊı¾İ£¬²¢²»È«Ãæ£¬ÓĞĞ©Ê¡·İÃ»ÓĞÑµÁ·Êı¾İËùÒÔÃ»ÓĞ×Ö·û
-//ÓĞĞ©ºóÃæ¼ÓÊı×Ö2µÄ±íÊ¾ÔÚÑµÁ·Ê±³£¿´µ½×Ö·ûµÄÒ»ÖÖ±äĞÎ£¬Ò²×÷ÎªÑµÁ·Êı¾İ´æ´¢
+//ä»¥ä¸‹éƒ½æ˜¯æˆ‘è®­ç»ƒæ—¶ç”¨åˆ°çš„ä¸­æ–‡å­—ç¬¦æ•°æ®ï¼Œå¹¶ä¸å…¨é¢ï¼Œæœ‰äº›çœä»½æ²¡æœ‰è®­ç»ƒæ•°æ®æ‰€ä»¥æ²¡æœ‰å­—ç¬¦
+//æœ‰äº›åé¢åŠ æ•°å­—2çš„è¡¨ç¤ºåœ¨è®­ç»ƒæ—¶å¸¸çœ‹åˆ°å­—ç¬¦çš„ä¸€ç§å˜å½¢ï¼Œä¹Ÿä½œä¸ºè®­ç»ƒæ•°æ®å­˜å‚¨
 const std::string strChinese[] = {
-        "zh_cuan" /* ´¨ */, "zh_e" /* ¶õ */, "zh_gan" /* ¸Ó*/, \
-    "zh_gan1"/*¸Ê*/, "zh_gui"/* ¹ó */, "zh_gui1"/* ¹ğ */, \
-    "zh_hei" /* ºÚ */, "zh_hu" /* »¦ */, "zh_ji" /* ¼½ */, \
-    "zh_jin" /* ½ò */, "zh_jing" /* ¾© */, "zh_jl" /* ¼ª */, \
-    "zh_liao" /* ÁÉ */, "zh_lu" /* Â³ */, "zh_meng" /* ÃÉ */, \
-    "zh_min" /* Ãö */, "zh_ning" /* Äş */, "zh_qing" /* Çà */, \
-    "zh_qiong" /* Çí */, "zh_shan" /* ÉÂ */, "zh_su" /* ËÕ */, \
-    "zh_sx" /* ½ú */, "zh_wan" /* Íî */, "zh_xiang" /* Ïæ */, \
-    "zh_xin" /* ĞÂ */, "zh_yu" /* Ô¥ */, "zh_yu1" /* Óå */, \
-    "zh_yue" /* ÔÁ */, "zh_yun" /* ÔÆ */, "zh_zang" /* ²Ø */, \
-    "zh_zhe" /* Õã */};
+        "zh_cuan" /* å· */, "zh_e" /* é„‚ */, "zh_gan" /* èµ£*/, \
+    "zh_gan1"/*ç”˜*/, "zh_gui"/* è´µ */, "zh_gui1"/* æ¡‚ */, \
+    "zh_hei" /* é»‘ */, "zh_hu" /* æ²ª */, "zh_ji" /* å†€ */, \
+    "zh_jin" /* æ´¥ */, "zh_jing" /* äº¬ */, "zh_jl" /* å‰ */, \
+    "zh_liao" /* è¾½ */, "zh_lu" /* é² */, "zh_meng" /* è’™ */, \
+    "zh_min" /* é—½ */, "zh_ning" /* å® */, "zh_qing" /* é’ */, \
+    "zh_qiong" /* ç¼ */, "zh_shan" /* é™• */, "zh_su" /* è‹ */, \
+    "zh_sx" /* æ™‹ */, "zh_wan" /* çš– */, "zh_xiang" /* æ¹˜ */, \
+    "zh_xin" /* æ–° */, "zh_yu" /* è±« */, "zh_yu1" /* æ¸ */, \
+    "zh_yue" /* ç²¤ */, "zh_yun" /* äº‘ */, "zh_zang" /* è— */, \
+    "zh_zhe" /* æµ™ */};
 
 const int numAll = 65;
 
@@ -39,37 +39,37 @@ CCharsIdentify::CCharsIdentify() {
   LoadModel();
 
   if (m_map.empty()) {
-    m_map.insert(std::pair<std::string, std::string>("zh_cuan", "´¨"));
-    m_map.insert(std::pair<std::string, std::string>("zh_e", "¶õ"));
-    m_map.insert(std::pair<std::string, std::string>("zh_gan", "¸Ó"));
-    m_map.insert(std::pair<std::string, std::string>("zh_gan1", "¸Ê"));
-    m_map.insert(std::pair<std::string, std::string>("zh_gui", "¹ó"));
-    m_map.insert(std::pair<std::string, std::string>("zh_gui1", "¹ğ"));
-    m_map.insert(std::pair<std::string, std::string>("zh_hei", "ºÚ"));
-    m_map.insert(std::pair<std::string, std::string>("zh_hu", "»¦"));
-    m_map.insert(std::pair<std::string, std::string>("zh_ji", "¼½"));
-    m_map.insert(std::pair<std::string, std::string>("zh_jin", "½ò"));
-    m_map.insert(std::pair<std::string, std::string>("zh_jing", "¾©"));
-    m_map.insert(std::pair<std::string, std::string>("zh_jl", "¼ª"));
-    m_map.insert(std::pair<std::string, std::string>("zh_liao", "ÁÉ"));
-    m_map.insert(std::pair<std::string, std::string>("zh_lu", "Â³"));
-    m_map.insert(std::pair<std::string, std::string>("zh_meng", "ÃÉ"));
-    m_map.insert(std::pair<std::string, std::string>("zh_min", "Ãö"));
-    m_map.insert(std::pair<std::string, std::string>("zh_ning", "Äş"));
-    m_map.insert(std::pair<std::string, std::string>("zh_qing", "Çà"));
-    m_map.insert(std::pair<std::string, std::string>("zh_qiong", "Çí"));
-    m_map.insert(std::pair<std::string, std::string>("zh_shan", "ÉÂ"));
-    m_map.insert(std::pair<std::string, std::string>("zh_su", "ËÕ"));
-    m_map.insert(std::pair<std::string, std::string>("zh_sx", "½ú"));
-    m_map.insert(std::pair<std::string, std::string>("zh_wan", "Íî"));
-    m_map.insert(std::pair<std::string, std::string>("zh_xiang", "Ïæ"));
-    m_map.insert(std::pair<std::string, std::string>("zh_xin", "ĞÂ"));
-    m_map.insert(std::pair<std::string, std::string>("zh_yu", "Ô¥"));
-    m_map.insert(std::pair<std::string, std::string>("zh_yu1", "Óå"));
-    m_map.insert(std::pair<std::string, std::string>("zh_yue", "ÔÁ"));
-    m_map.insert(std::pair<std::string, std::string>("zh_yun", "ÔÆ"));
-    m_map.insert(std::pair<std::string, std::string>("zh_zang", "²Ø"));
-    m_map.insert(std::pair<std::string, std::string>("zh_zhe", "Õã"));
+    m_map.insert(std::pair<std::string, std::string>("zh_cuan", "å·"));
+    m_map.insert(std::pair<std::string, std::string>("zh_e", "é„‚"));
+    m_map.insert(std::pair<std::string, std::string>("zh_gan", "èµ£"));
+    m_map.insert(std::pair<std::string, std::string>("zh_gan1", "ç”˜"));
+    m_map.insert(std::pair<std::string, std::string>("zh_gui", "è´µ"));
+    m_map.insert(std::pair<std::string, std::string>("zh_gui1", "æ¡‚"));
+    m_map.insert(std::pair<std::string, std::string>("zh_hei", "é»‘"));
+    m_map.insert(std::pair<std::string, std::string>("zh_hu", "æ²ª"));
+    m_map.insert(std::pair<std::string, std::string>("zh_ji", "å†€"));
+    m_map.insert(std::pair<std::string, std::string>("zh_jin", "æ´¥"));
+    m_map.insert(std::pair<std::string, std::string>("zh_jing", "äº¬"));
+    m_map.insert(std::pair<std::string, std::string>("zh_jl", "å‰"));
+    m_map.insert(std::pair<std::string, std::string>("zh_liao", "è¾½"));
+    m_map.insert(std::pair<std::string, std::string>("zh_lu", "é²"));
+    m_map.insert(std::pair<std::string, std::string>("zh_meng", "è’™"));
+    m_map.insert(std::pair<std::string, std::string>("zh_min", "é—½"));
+    m_map.insert(std::pair<std::string, std::string>("zh_ning", "å®"));
+    m_map.insert(std::pair<std::string, std::string>("zh_qing", "é’"));
+    m_map.insert(std::pair<std::string, std::string>("zh_qiong", "ç¼"));
+    m_map.insert(std::pair<std::string, std::string>("zh_shan", "é™•"));
+    m_map.insert(std::pair<std::string, std::string>("zh_su", "è‹"));
+    m_map.insert(std::pair<std::string, std::string>("zh_sx", "æ™‹"));
+    m_map.insert(std::pair<std::string, std::string>("zh_wan", "çš–"));
+    m_map.insert(std::pair<std::string, std::string>("zh_xiang", "æ¹˜"));
+    m_map.insert(std::pair<std::string, std::string>("zh_xin", "æ–°"));
+    m_map.insert(std::pair<std::string, std::string>("zh_yu", "è±«"));
+    m_map.insert(std::pair<std::string, std::string>("zh_yu1", "æ¸"));
+    m_map.insert(std::pair<std::string, std::string>("zh_yue", "ç²¤"));
+    m_map.insert(std::pair<std::string, std::string>("zh_yun", "äº‘"));
+    m_map.insert(std::pair<std::string, std::string>("zh_zang", "è—"));
+    m_map.insert(std::pair<std::string, std::string>("zh_zhe", "æµ™"));
   }
 }
 
@@ -88,9 +88,9 @@ void CCharsIdentify::LoadModel(std::string s) {
 int CCharsIdentify::classify(cv::Mat f, bool isChinses, bool isSpeci) {
   int result = -1;
   cv::Mat output(1, numAll, CV_32FC1);
-  ann.predict(f, output);//Ê¹ÓÃann¶Ô×Ö·û×öÅĞ¶Ï
+  ann.predict(f, output);//ä½¿ç”¨annå¯¹å­—ç¬¦åšåˆ¤æ–­
 
-  if (!isChinses)//¶ÔÖĞÎÄ×Ö·ûµÄÅĞ¶Ï
+  if (!isChinses)//å¯¹ä¸­æ–‡å­—ç¬¦çš„åˆ¤æ–­
   {
     if (isSpeci) {
       result = 0;
@@ -111,7 +111,7 @@ int CCharsIdentify::classify(cv::Mat f, bool isChinses, bool isSpeci) {
       for (int j = 0; j < numCharacter; j++) {
         float val = output.at<float>(j);
         //cout << "j:" << j << "val:"<< val << endl;
-        if (val > maxVal)//ÇóµÃÖĞÎÄ×Ö·ûÈ¨ÖØ×î´óµÄÄÇ¸ö£¬Ò²¾ÍÊÇÍ¨¹ıannÈÏÎª×î¿ÉÄÜµÄ×Ö·û
+        if (val > maxVal)//æ±‚å¾—ä¸­æ–‡å­—ç¬¦æƒé‡æœ€å¤§çš„é‚£ä¸ªï¼Œä¹Ÿå°±æ˜¯é€šè¿‡annè®¤ä¸ºæœ€å¯èƒ½çš„å­—ç¬¦
         {
           maxVal = val;
           result = j;
@@ -119,7 +119,7 @@ int CCharsIdentify::classify(cv::Mat f, bool isChinses, bool isSpeci) {
       }
     }
   }
-  else//¶ÔÊı×ÖºÍÓ¢ÎÄ×ÖÄ¸µÄÅĞ¶Ï
+  else//å¯¹æ•°å­—å’Œè‹±æ–‡å­—æ¯çš„åˆ¤æ–­
   {
 
     result = numCharacter;
@@ -140,7 +140,7 @@ int CCharsIdentify::classify(cv::Mat f, bool isChinses, bool isSpeci) {
 int CCharsIdentify::classify(cv::Mat f) {
   int result = -1;
   cv::Mat output(1, numAll, CV_32FC1);
-  ann.predict(f, output);//Ê¹ÓÃann¶Ô×Ö·û×öÅĞ¶Ï
+  ann.predict(f, output);//ä½¿ç”¨annå¯¹å­—ç¬¦åšåˆ¤æ–­
 
 
 
@@ -149,7 +149,7 @@ int CCharsIdentify::classify(cv::Mat f) {
     float val = output.at<float>(j);
     //cout << "j:" << j << "val:"<< val << endl;
     if (val > maxVal)
-      //ÇóµÃÖĞÎÄ×Ö·ûÈ¨ÖØ×î´óµÄÄÇ¸ö£¬Ò²¾ÍÊÇÍ¨¹ıannÈÏÎª×î¿ÉÄÜµÄ×Ö·û
+      //æ±‚å¾—ä¸­æ–‡å­—ç¬¦æƒé‡æœ€å¤§çš„é‚£ä¸ªï¼Œä¹Ÿå°±æ˜¯é€šè¿‡annè®¤ä¸ºæœ€å¯èƒ½çš„å­—ç¬¦
     {
       maxVal = val;
       result = j;
@@ -173,7 +173,7 @@ int CCharsIdentify::classify(cv::Mat f) {
 std::string CCharsIdentify::charsIdentify(cv::Mat input) {
   cv::Mat f = features(input, m_predictSize);
   std::string result = "";
-  int index = classify(f);//Ê¹ÓÃannÀ´ÅĞ±ğÄÇ¸ö×Ö·û
+  int index = classify(f);//ä½¿ç”¨annæ¥åˆ¤åˆ«é‚£ä¸ªå­—ç¬¦
 
   if (index >= numCharacter) {
     std::string s = strChinese[index - numCharacter];
@@ -189,12 +189,12 @@ std::string CCharsIdentify::charsIdentify(cv::Mat input) {
 
 }
 
-//ÊäÈëµ±¸ö×Ö·ûMat,Éú³É×Ö·ûµÄstd::string
+//è¾“å…¥å½“ä¸ªå­—ç¬¦Mat,ç”Ÿæˆå­—ç¬¦çš„std::string
 std::string CCharsIdentify::charsIdentify(cv::Mat input, bool isChinese,
                                           bool isSpeci) {
   cv::Mat f = features(input, m_predictSize);
   std::string result = "";
-  int index = classify(f, isChinese, isSpeci);//Ê¹ÓÃannÀ´ÅĞ±ğÄÇ¸ö×Ö·û
+  int index = classify(f, isChinese, isSpeci);//ä½¿ç”¨annæ¥åˆ¤åˆ«é‚£ä¸ªå­—ç¬¦
 
   if (!isChinese) {
     result = result + strCharacters[index];

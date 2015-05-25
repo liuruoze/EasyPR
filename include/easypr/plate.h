@@ -20,7 +20,7 @@ class CPlate {
 
   CPlate();
 
-  //! ÉèÖÃÓë¶ÁÈ¡±äÁ¿
+  //! è®¾ç½®ä¸è¯»å–å˜é‡
   inline void setPlateMat(cv::Mat param) { m_plateMat = param; }
 
   inline cv::Mat getPlateMat() const { return m_plateMat; }
@@ -34,13 +34,13 @@ class CPlate {
   inline std::string getPlateStr() const { return m_plateStr; }
 
  private:
-  //! ³µÅÆµÄÍ¼¿é
+  //! è½¦ç‰Œçš„å›¾å—
   cv::Mat m_plateMat;
 
-  //! ³µÅÆÔÚÔ­Í¼µÄÎ»ÖÃ
+  //! è½¦ç‰Œåœ¨åŸå›¾çš„ä½ç½®
   cv::RotatedRect m_platePos;
 
-  //! ³µÅÆ×Ö·û´®
+  //! è½¦ç‰Œå­—ç¬¦ä¸²
   std::string m_plateStr;
 };
 

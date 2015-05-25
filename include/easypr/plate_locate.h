@@ -29,62 +29,62 @@ class CPlateLocate {
     SOBEL, COLOR
   };
 
-  //! SobelµÚÒ»´ÎËÑË÷
-  //! ²»ÏŞÖÆ´óĞ¡ºÍĞÎ×´£¬»ñÈ¡µÄBoundRect½øÈëÏÂÒ»²½
+  //! Sobelç¬¬ä¸€æ¬¡æœç´¢
+  //! ä¸é™åˆ¶å¤§å°å’Œå½¢çŠ¶ï¼Œè·å–çš„BoundRectè¿›å…¥ä¸‹ä¸€æ­¥
   int sobelFrtSearch(const cv::Mat& src,
                      std::vector<cv::Rect_<float>>& outRects);
 
-  //! SobelµÚ¶ş´ÎËÑË÷
-  //! ¶Ô´óĞ¡ºÍĞÎ×´×öÏŞÖÆ£¬Éú³É²Î¿¼×ø±ê
+  //! Sobelç¬¬äºŒæ¬¡æœç´¢
+  //! å¯¹å¤§å°å’Œå½¢çŠ¶åšé™åˆ¶ï¼Œç”Ÿæˆå‚è€ƒåæ ‡
   int sobelSecSearch(cv::Mat& bound, cv::Point2f refpoint,
                      std::vector<cv::RotatedRect>& outRects);
 
   int sobelSecSearchPart(cv::Mat& bound, cv::Point2f refpoint,
                          std::vector<cv::RotatedRect>& outRects);
 
-  //! ¿¹Å¤Ğ±´¦Àí
+  //! æŠ—æ‰­æ–œå¤„ç†
   int deskew(const cv::Mat& src, const cv::Mat& src_b,
              std::vector<cv::RotatedRect>& inRects,
              std::vector<CPlate>& outPlates);
 
-  //! ÊÇ·ñÆ«Ğ±
-  //! ÊäÈë¶şÖµ»¯Í¼Ïñ£¬Êä³öÅĞ¶Ï½á¹û
+  //! æ˜¯å¦åæ–œ
+  //! è¾“å…¥äºŒå€¼åŒ–å›¾åƒï¼Œè¾“å‡ºåˆ¤æ–­ç»“æœ
   bool isdeflection(const cv::Mat& in, const double angle, double& slope);
 
-  //! SobelÔËËã
-  //! ÊäÈë²ÊÉ«Í¼Ïñ£¬Êä³ö¶şÖµ»¯Í¼Ïñ
+  //! Sobelè¿ç®—
+  //! è¾“å…¥å½©è‰²å›¾åƒï¼Œè¾“å‡ºäºŒå€¼åŒ–å›¾åƒ
   int sobelOper(const cv::Mat& in, cv::Mat& out, int blurSize, int morphW,
                 int morphH);
 
-  //! ¼ÆËãÒ»¸ö°²È«µÄRect
+  //! è®¡ç®—ä¸€ä¸ªå®‰å…¨çš„Rect
   bool calcSafeRect(const cv::RotatedRect& roi_rect, const cv::Mat& src,
                     cv::Rect_<float>& safeBoundRect);
 
-  //! Ğı×ª²Ù×÷
+  //! æ—‹è½¬æ“ä½œ
   bool rotation(cv::Mat& in, cv::Mat& out, const cv::Size rect_size,
                 const cv::Point2f center,
                 const double angle);
 
-  //! Å¤±ä²Ù×÷
+  //! æ‰­å˜æ“ä½œ
   void affine(const cv::Mat& in, cv::Mat& out, const double slope);
 
-  //! ÑÕÉ«¶¨Î»·¨
+  //! é¢œè‰²å®šä½æ³•
   int plateColorLocate(cv::Mat src, std::vector<CPlate>& candPlates,
                        int index = 0);
 
-  //! Sobel¶¨Î»·¨
+  //! Sobelå®šä½æ³•
   int plateSobelLocate(cv::Mat src, std::vector<CPlate>& candPlates,
                        int index = 0);
 
   int sobelOperT(const cv::Mat& in, cv::Mat& out, int blurSize, int morphW,
                  int morphH);
 
-  //! ColorËÑË÷
+  //! Coloræœç´¢
   int colorSearch(const cv::Mat& src, const Color r, cv::Mat& out,
                   std::vector<cv::RotatedRect>& outRects, int index = 0);
 
-  //! Î´Ê¹ÓÃº¯ÊıÓë´úÂë
-  //! ¿ªÊ¼------------
+  //! æœªä½¿ç”¨å‡½æ•°ä¸ä»£ç 
+  //! å¼€å§‹------------
   bool sobelJudge(cv::Mat roi);
 
   int deskewOld(cv::Mat src, std::vector<cv::RotatedRect>& inRects,
@@ -93,23 +93,23 @@ class CPlateLocate {
                 LocateType locateType);
 
   bool verifyCharSizes(cv::Mat r);
-  //! ½áÊø------------
-  //! Î´Ê¹ÓÃº¯ÊıÓë´úÂë
+  //! ç»“æŸ------------
+  //! æœªä½¿ç”¨å‡½æ•°ä¸ä»£ç 
 
-  //! ³µÅÆ¶¨Î»
+  //! è½¦ç‰Œå®šä½
   int plateLocate(cv::Mat, std::vector<cv::Mat>&, int = 0);
 
-  //! ³µÅÆµÄ³ß´çÑéÖ¤
+  //! è½¦ç‰Œçš„å°ºå¯¸éªŒè¯
   bool verifySizes(cv::RotatedRect mr);
 
-  //! ½á¹û³µÅÆÏÔÊ¾
+  //! ç»“æœè½¦ç‰Œæ˜¾ç¤º
   cv::Mat showResultMat(cv::Mat src, cv::Size rect_size, cv::Point2f center,
                         int index);
 
-  //! Éú»îÄ£Ê½Óë¹¤ÒµÄ£Ê½ÇĞ»»
+  //! ç”Ÿæ´»æ¨¡å¼ä¸å·¥ä¸šæ¨¡å¼åˆ‡æ¢
   void setLifemode(bool param);
 
-  //! ÉèÖÃÓë¶ÁÈ¡±äÁ¿
+  //! è®¾ç½®ä¸è¯»å–å˜é‡
   inline void setGaussianBlurSize(int param) { m_GaussianBlurSize = param; }
 
   inline int getGaussianBlurSize() const { return m_GaussianBlurSize; }
@@ -136,13 +136,13 @@ class CPlateLocate {
 
   inline void setJudgeAngle(int param) { m_angle = param; }
 
-  //! ÊÇ·ñ¿ªÆôµ÷ÊÔÄ£Ê½
+  //! æ˜¯å¦å¼€å¯è°ƒè¯•æ¨¡å¼
   inline void setDebug(int param) { m_debug = param; }
 
-  //! »ñÈ¡µ÷ÊÔÄ£Ê½×´Ì¬
+  //! è·å–è°ƒè¯•æ¨¡å¼çŠ¶æ€
   inline int getDebug() { return m_debug; }
 
-  //! PlateLocateËùÓÃ³£Á¿
+  //! PlateLocateæ‰€ç”¨å¸¸é‡
   static const int DEFAULT_GAUSSIANBLUR_SIZE = 5;
   static const int SOBEL_SCALE = 1;
   static const int SOBEL_DELTA = 0;
@@ -153,40 +153,40 @@ class CPlateLocate {
   //17
   static const int DEFAULT_MORPH_SIZE_HEIGHT = 3;//3
 
-  //! showResultMatËùÓÃ³£Á¿
+  //! showResultMatæ‰€ç”¨å¸¸é‡
   static const int WIDTH = 136;
   static const int HEIGHT = 36;
   static const int TYPE = CV_8UC3;
 
-  //! verifySizeËùÓÃ³£Á¿
+  //! verifySizeæ‰€ç”¨å¸¸é‡
   static const int DEFAULT_VERIFY_MIN = 1;
   //3
   static const int DEFAULT_VERIFY_MAX = 24;//20
 
-  //! ½Ç¶ÈÅĞ¶ÏËùÓÃ³£Á¿
+  //! è§’åº¦åˆ¤æ–­æ‰€ç”¨å¸¸é‡
   static const int DEFAULT_ANGLE = 60;//30
 
-  //! ÊÇ·ñ¿ªÆôµ÷ÊÔÄ£Ê½³£Á¿£¬Ä¬ÈÏ0´ú±í¹Ø±Õ
+  //! æ˜¯å¦å¼€å¯è°ƒè¯•æ¨¡å¼å¸¸é‡ï¼Œé»˜è®¤0ä»£è¡¨å…³é—­
   static const int DEFAULT_DEBUG = 1;
 
  protected:
-  //! ¸ßË¹Ä£ºıËùÓÃ±äÁ¿
+  //! é«˜æ–¯æ¨¡ç³Šæ‰€ç”¨å˜é‡
   int m_GaussianBlurSize;
 
-  //! Á¬½Ó²Ù×÷ËùÓÃ±äÁ¿
+  //! è¿æ¥æ“ä½œæ‰€ç”¨å˜é‡
   int m_MorphSizeWidth;
   int m_MorphSizeHeight;
 
-  //! verifySizeËùÓÃ±äÁ¿
+  //! verifySizeæ‰€ç”¨å˜é‡
   float m_error;
   float m_aspect;
   int m_verifyMin;
   int m_verifyMax;
 
-  //! ½Ç¶ÈÅĞ¶ÏËùÓÃ±äÁ¿
+  //! è§’åº¦åˆ¤æ–­æ‰€ç”¨å˜é‡
   int m_angle;
 
-  //! ÊÇ·ñ¿ªÆôµ÷ÊÔÄ£Ê½£¬0¹Ø±Õ£¬·Ç0¿ªÆô
+  //! æ˜¯å¦å¼€å¯è°ƒè¯•æ¨¡å¼ï¼Œ0å…³é—­ï¼Œé0å¼€å¯
   int m_debug;
 
   LabInfo* m_labItem;
