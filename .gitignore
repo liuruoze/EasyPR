@@ -8,7 +8,6 @@ Thumbs.db
 *.user
 *.sln.docstates
 *.suo
-*.sln
 
 # Build results
 [Dd]ebug/
