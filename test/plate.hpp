@@ -53,32 +53,29 @@ int test_plate_judge() {
     return -1;
 
   cout << "plate_locate_img" << endl;
-  if (resultLo == 0) {
-    size_t num = matVec.size();
-    for (int j = 0; j < num; j++) {
-      Mat resultMat = matVec[j];
-      imshow("plate_judge", resultMat);
-      waitKey(0);
-    }
-    destroyWindow("plate_judge");
+  size_t num = matVec.size();
+  for (int j = 0; j < num; j++) {
+    Mat resultMat = matVec[j];
+    imshow("plate_judge", resultMat);
+    waitKey(0);
   }
+  destroyWindow("plate_judge");
 
   CPlateJudge ju;
+  ju.LoadModel("resources/model/svm.xml");
   int resultJu = ju.plateJudge(matVec, resultVec);
 
   if (0 != resultJu)
     return -1;
 
   cout << "plate_judge_img" << endl;
-  if (resultJu == 0) {
-    size_t num = resultVec.size();
-    for (int j = 0; j < num; j++) {
-      Mat resultMat = resultVec[j];
-      imshow("plate_judge", resultMat);
-      waitKey(0);
-    }
-    destroyWindow("plate_judge");
+  num = resultVec.size();
+  for (int j = 0; j < num; j++) {
+    Mat resultMat = resultVec[j];
+    imshow("plate_judge", resultMat);
+    waitKey(0);
   }
+  destroyWindow("plate_judge");
 
   return resultJu;
 }

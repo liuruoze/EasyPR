@@ -7,6 +7,7 @@
 #ifndef UTIL_PROGRAM_OPTIONS_H
 #define UTIL_PROGRAM_OPTIONS_H
 
+#include <algorithm>
 #include <cassert>
 #include <iostream>
 #include <map>
