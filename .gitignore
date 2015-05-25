@@ -7,6 +7,8 @@ Thumbs.db
 *.pdb
 *.user
 *.sln.docstates
+*.suo
+*.sln
 
 # Build results
 [Dd]ebug/

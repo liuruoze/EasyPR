@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -34,11 +34,11 @@
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="opencv248.props" />
+    <Import Project="opencv.props" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="opencv248.props" />
+    <Import Project="opencv.props" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -55,6 +55,8 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PrecompiledHeaderFile>stdafx.h</PrecompiledHeaderFile>
+      <AdditionalIncludeDirectories>$(ProjectDir)\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <DisableSpecificWarnings>4819</DisableSpecificWarnings>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -70,6 +72,8 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(ProjectDir)\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <DisableSpecificWarnings>4819</DisableSpecificWarnings>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -79,52 +83,56 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <None Include="image\使用说明.txt" />
-    <None Include="image\免责声明.txt" />
-    <None Include="image\图片捐赠.txt" />
-    <None Include="image\版权声明.txt" />
-    <None Include="model\ann.xml" />
-    <None Include="model\svm.xml" />
-    <None Include="关于版权.txt" />
+    <ClInclude Include="include\easypr.h" />
+    <ClInclude Include="include\easypr\api.hpp" />
+    <ClInclude Include="include\easypr\chars_identify.h" />
+    <ClInclude Include="include\easypr\chars_recognise.h" />
+    <ClInclude Include="include\easypr\chars_segment.h" />
+    <ClInclude Include="include\easypr\core_func.h" />
+    <ClInclude Include="include\easypr\feature.h" />
+    <ClInclude Include="include\easypr\plate.h" />
+    <ClInclude Include="include\easypr\plate_detect.h" />
+    <ClInclude Include="include\easypr\plate_judge.h" />
+    <ClInclude Include="include\easypr\plate_locate.h" />
+    <ClInclude Include="include\easypr\plate_recognize.h" />
+    <ClInclude Include="include\easypr\preprocess\deface.h" />
+    <ClInclude Include="include\easypr\preprocess\gdts.h" />
+    <ClInclude Include="include\easypr\preprocess\mc_data.h" />
+    <ClInclude Include="include\easypr\program_options.h" />
+    <ClInclude Include="include\easypr\svm_train.h" />
+    <ClInclude Include="include\easypr\util.h" />
+    <ClInclude Include="test\accuracy.hpp" />
+    <ClInclude Include="test\chars.hpp" />
+    <ClInclude Include="test\plate.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\core\chars_identify.cpp" />
     <ClCompile Include="src\core\chars_recognise.cpp" />
     <ClCompile Include="src\core\chars_segment.cpp" />
+    <ClCompile Include="src\core\core_func.cpp" />
     <ClCompile Include="src\core\feature.cpp" />
     <ClCompile Include="src\core\plate.cpp" />
-    <ClCompile Include="src\core\core_func.cpp" />
-    <ClCompile Include="src\test\accuracy_test.cpp" />
-    <ClCompile Include="src\train\ann_train.cpp" />
-    <ClCompile Include="src\train\svm_train.cpp" />
-    <ClCompile Include="src\util\CParser.cpp" />
-    <ClCompile Include="src\util\deface.cpp" />
-    <ClCompile Include="src\util\general_test_prepare.cpp" />
-    <ClCompile Include="src\util\generate_gdts.cpp" />
-    <ClCompile Include="src\util\mc_data_prepare.cpp" />
-    <ClCompile Include="src\main.cpp" />
-    <ClCompile Include="src\test\test.cpp" />
     <ClCompile Include="src\core\plate_detect.cpp" />
     <ClCompile Include="src\core\plate_judge.cpp" />
     <ClCompile Include="src\core\plate_locate.cpp" />
     <ClCompile Include="src\core\plate_recognize.cpp" />
-    <ClCompile Include="src\util\learn_prepare.cpp" />
+    <ClCompile Include="src\preprocess\deface.cpp" />
+    <ClCompile Include="src\preprocess\gdts.cpp" />
+    <ClCompile Include="src\preprocess\mc_data.cpp" />
+    <ClCompile Include="src\train\ann_train.cpp" />
+    <ClCompile Include="src\train\svm_train.cpp" />
+    <ClCompile Include="src\util\program_options.cpp" />
     <ClCompile Include="src\util\util.cpp" />
+    <ClCompile Include="test\main.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\include\chars_identify.h" />
-    <ClInclude Include="src\include\chars_recognise.h" />
-    <ClInclude Include="src\include\chars_segment.h" />
-    <ClInclude Include="src\include\CParser.h" />
-    <ClInclude Include="src\include\feature.h" />
-    <ClInclude Include="src\include\plate.h" />
-    <ClInclude Include="src\include\plate_detect.h" />
-    <ClInclude Include="src\include\plate_judge.h" />
-    <ClInclude Include="src\include\plate_locate.h" />
-    <ClInclude Include="src\include\plate_recognize.h" />
-    <ClInclude Include="src\include\core_func.h" />
-    <ClInclude Include="src\include\prep.h" />
-    <ClInclude Include="src\include\util.h" />
+    <Xml Include="resources\model\ann.xml" />
+    <Xml Include="resources\model\svm.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="resources\image\GDSL.txt" />
+    <Text Include="resources\image\使用说明.txt" />
+    <Text Include="关于版权.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
