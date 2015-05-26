@@ -1,5 +1,4 @@
-EasyPR
-======
+# EasyPR
 
 EasyPR是一个中文的开源车牌识别系统，其目标是成为一个简单、高效、准确的车牌识别引擎。
 
@@ -17,7 +16,7 @@ EasyPR是一个中文的开源车牌识别系统，其目标是成为一个简�
 
 同时，车牌定位模块准确率进一步提升，从上一个版本的94%上升到现在的99%。见下图：
 
-![1.3版综合效果](doc/res/testresult_1.3.png)
+![1.3版综合效果](resources/doc/res/testresult_1.3.png)
 
 主要改动如下：
 
@@ -27,7 +26,7 @@ EasyPR是一个中文的开源车牌识别系统，其目标是成为一个简�
 
 目前版本的问题是处理时间大幅度上升，1.3正式版本中会对这个问题进行fix。
 
-### 平台
+### 跨平台
 
 目前除了windows平台以外，还有以下其他平台的EasyPR版本。一些平台的版本可能会暂时落后于主平台。
 
@@ -47,38 +46,31 @@ EasyPR是基于opencv2.4.8版本开发的，2.4.8以上的版本应该可以兼�
 
 假设我们有如下的原始图片，需要识别出中间的车牌字符与颜色：
 
-![EasyPR 原始图片](doc/res/plate_locate.jpg)
+![EasyPR 原始图片](resources/doc/res/plate_locate.jpg)
 
 经过EasyPR的第一步处理车牌检测（PlateDetect）以后，我们获得了原始图片中仅包含车牌的图块：
 
-![EasyPR 车牌](doc/res/blue_plate.jpg)
+![EasyPR 车牌](resources/doc/res/blue_plate.jpg)
 
 接着，我们对图块进行OCR过程，在EasyPR中，叫做字符识别（CharsRecognize）。我们得到了一个包含车牌颜色与字符的字符串：
 
 “蓝牌：苏EUK722”
 
-
-### 安装
-
-EasyPR不需要安装，开发者直接在其上做改动。如果想使用DLL形式引用或者使用其他语言调用，则可以在[EasyPR_DLL_src](https://github.com/liuruoze/EasyPR_Dll_src)中找到。
-
-详细的开发与教程请见[介绍与开发教程](http://www.cnblogs.com/subconscious/p/3979988.html)。
-
-### 使用
-
-使用Git克隆一份拷贝到你本机或者直接下载zip压缩吧。使用vs2010或以上版本的IDE选择“从现有代码创建项目”，引用EasyPR的目录。
+### 目录结构
 
 以下表格是本工程中所有目录的解释:
 
 |目录 | 解释
 |------|----------
 | src |  所有源文件
-| model | 机器学习的模型
-| train | 训练数据与说明
-| image | 测试用的图片
-| doc | 相关文档
+| include | 所有头文件
+| test | 测试程序
+| resources/model | 机器学习的模型
+| resources/train | 训练数据与说明
+| resources/image | 测试用的图片
+| resources/doc | 相关文档
 
-以下表格是image目录中子目录的解释:
+以下表格是resources/image目录中子目录的解释:
 
 |目录 | 解释
 |------|----------
@@ -91,8 +83,7 @@ EasyPR不需要安装，开发者直接在其上做改动。如果想使用DLL�
 |目录 | 解释
 |------|----------
 | core |  核心功能
-| include | 相关头文件
-| test | 测试目录，包括单图测试与批量测试
+| preprocess | SVM预处理
 | train | 训练目录，存放模型训练的代码
 | util | 辅助功能
 
@@ -111,16 +102,108 @@ EasyPR不需要安装，开发者直接在其上做改动。如果想使用DLL�
 | plate | 车牌抽象
 | core_func.h | 共有的一些函数
 
-以下表格是src目录下一些辅助文件的解释与关系:
+以下表格是test目录下文件的解释:
 
 |文件 | 解释
 |------|----------
-| util.h | 辅助功能头文件
 | main.cpp | 主命令行窗口
-| test.cpp | 单例测试
-| accuracy_test.cpp | 批量测试
-| svm_train.cpp | svm训练函数
-| generate_gdts.cpp | GDTS生成函数
+| accuracy.hpp | 批量测试
+| chars.hpp | 字符识别相关
+| plate.hpp | 车牌识别相关
+
+### 使用
+
+EasyPR的所有源代码可在Github上的[项目主页](https://github.com/liuruoze/EasyPR)直接打包下载得到，如果你熟悉git版本控制工具，可以使用下面的命令来克隆代码：
+
+```
+$ git clone https://github.com/liuruoze/EasyPR
+```
+
+EasyPR支持当前主流的操作系统，通常不需要对源代码进行更改就可以编译运行，尽管如此，不同平台上IDE的配置也是有很大差异的，下面主要说明Windows，Linux以及Mac OS下的编译方法。
+
+**Note**: 无论在哪个平台使用EasyPR，都要安装对应平台版本的[opencv](http://opencv.org/)，建议使用正式稳定版本。
+
+#### Windows
+
+Windows下的配置以Visual Studio 2013为例，其他版本大同小异。
+
+* 打开项目目录下的解决方案文件`EasyPR.sln`。
+
+**Note**: 该解决方案会加载两个项目，一个是`EasyPR`，用于编译src/下的源文件生成静态库`libeasypr.lib`；另一个是`Demo`，用来编译test/下的main.cpp，并链接libeasypr.lib生成可执行程序。
+
+* 配置OpenCV库
+
+OpenCV for Windows通常会将使用VS编译好二进制文件放到`opencv\build\`目录下。
+
+EasyPR两个项目的Debug和Release模式都会引用opencv.props属性表，用属性表管理器打开，修改用户宏里面的`OpenCV`项，使之指向你的OpenCV的build目录。
+
+**Note**: 如果你使用的opencv版本不是`2.4.11`，请修改属性表下的`链接器`-`输入`-`附加依赖项`，调整为对应版本的lib。
+
+**Note**: 如果你要使用X64的opencv库或者其他版本的VS，请修改`链接器`-`常规`-`附加库目录`，调整为对应的版本。
+
+* 生成解决方案
+
+默认情况下，生成出现的`libeasypr.lib`和`easypr_test.exe`会放在`bin\debug(release)`下。
+
+**Note**: 直接双击运行程序会出现找不到opencv动态库的情况，这个时候只需要在`opencv\build\x86(x64)\vc(..)\bin`下找到缺失的dll放到执行目录即可。
+
+#### Linux & Mac OS
+
+EasyPR使用CMake在Linux及Mac OS下进行构建，确保系统安装了最新版本的[CMake](http://cmake.org)，然后在任意目录(将存放编译所需的Makefile)执行：
+
+```
+$ cmake path/to/EasyPR
+```
+
+完成后在同一目录下执行编译命令：
+
+```
+$ make
+```
+
+CMake将首先把EasyPR/src下的源文件编译打包为静态库`libeasypr.a`，然后编译`test/main.cpp`，链接静态库生成可执行程序`easypr_test`。
+
+-----
+
+**Note**: *你可以直接利用EasyPR/include和这个静态库来调用EasyPR提供的函数接口编写自己的程序。*
+
+运行Demo：
+
+```
+$ ./easypr_test // 进入菜单交互界面
+$ ./easypr_test ? // 查看CLI帮助
+```
+
+### 命令行示例
+
+可以向`easypr_test[.exe]`传递命令行参数来完成你想要的工作，目前Demo支持四个子命令，其他功能如字符识别将逐步加入。对于每个子命令的帮助信息可以传入`-h`参数来获取。
+
+**车牌识别**
+
+```
+# 利用提供的SVM和ANN模型来识别一张图片里面的所有车牌
+$ ./easypr_test recognize -p resources/image/plate_recognize.jpg --svm resources/model/svm.xml --ann resources/model/ann.xml
+# 或者更简单一些(注意模型路径)
+$ ./easypr_test recognize -p resources/image/plate_recognize.jpg
+```
+
+**SVM训练**
+
+```
+# 首先生成训练用图片
+$ ./easypr_test svm --create --in raw/ --out learn/
+# 接下来给训练用图片打标签，自动把“是”车牌的图块放到has/，“不是”车牌的图块放到no/里，注意这里要使用svm.xml的原因是为了简化你的分类工作量，你也可以手动对图块分类
+$ ./easypr_test svm --tag --source=learn/ --has=has/ --no=no/ --svm=resources/model/svm.xml
+# 接下来就是训练过程了，--divide意味着训练程序会对两个目录下的图块进行划分，默认是70%的训练数据，30%的测试数据，分别放在
+# has/train(70%), has/test; 
+# no/train(70%), no/test
+# Note: 目前你需要自己建立子目录
+$ ./easypr_test svm --train --has-plate=has/ --no-plate=no/ --divide --svm=save/to/svm.xml
+```
+
+详细的开发与教程请见[介绍与开发教程](http://www.cnblogs.com/subconscious/p/3979988.html)。
+
+如果你在使用过程中遇到任何问题，请在[这里](https://github.com/liuruoze/EasyPR/issues)告诉我们。
 
 ### Contributors
 
