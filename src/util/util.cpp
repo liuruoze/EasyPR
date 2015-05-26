@@ -5,8 +5,9 @@
 #include <io.h>
 #elif defined(linux) || defined(__linux__) || defined(__APPLE__)
 
-#include <sys/stat.h>
+#include <cstring>
 #include <dirent.h>
+#include <sys/stat.h>
 
 #endif
 
