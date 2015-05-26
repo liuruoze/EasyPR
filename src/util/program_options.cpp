@@ -1,4 +1,5 @@
 #include "easypr/program_options.h"
+#include <cstring>
 
 namespace program_options {
 
