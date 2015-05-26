@@ -1,6 +1,6 @@
 /***********************
  * This file is a packed library of
- * ProgramOptins(http://github.com/Micooz/ProgramOptions).
+ * ProgramOptions(http://github.com/Micooz/ProgramOptions).
  * ProgramOptions is a library for generating and parsing command line.
  ***********************/
 
