@@ -9,6 +9,7 @@
 
 #include <algorithm>
 #include <cassert>
+#include <cstring>
 #include <iostream>
 #include <map>
 #include <string>
