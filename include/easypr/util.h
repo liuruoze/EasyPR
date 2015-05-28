@@ -4,6 +4,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <opencv2/core/core.hpp>
 
 #if defined(WIN32) || defined(_WIN32)
 #define OS_WINDOWS
@@ -101,6 +102,12 @@ class Utils {
    * Create multi-level directories by given folder.
    */
   static bool mkdir(const std::string folder);
+
+  /*
+   * Make sure the destination folder exists,
+   * if not, create it, then call cv::imwrite.
+   */
+  static bool imwrite(const std::string& file, const cv::Mat& image);
 
 };
 

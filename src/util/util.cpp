@@ -22,9 +22,9 @@
 #endif
 
 #include <list>
+#include <opencv2/highgui/highgui.hpp>
 
-using namespace std;
-using namespace easypr;
+namespace easypr {
 
 long Utils::getTimestamp() {
 #ifdef OS_WINDOWS
@@ -49,7 +49,7 @@ long Utils::getTimestamp() {
 #endif
 }
 
-std::string Utils::getFileName(const string& path,
+std::string Utils::getFileName(const std::string& path,
                                const bool postfix /* = false */) {
   if (!path.empty()) {
 #ifdef OS_WINDOWS
@@ -72,7 +72,7 @@ std::string Utils::getFileName(const string& path,
 #endif
     size_t last_dot = path.find_last_of('.');
 
-    if (last_dot < last_slash || last_dot == string::npos) {
+    if (last_dot < last_slash || last_dot == std::string::npos) {
       // not found the right dot of the postfix,
       // return the file name directly
       return path.substr(last_slash + 1);
@@ -89,13 +89,14 @@ std::string Utils::getFileName(const string& path,
   return "";
 }
 
-vector<string> Utils::splitString(const string& str, const char delimiter) {
-  vector<string> splited;
-  string s(str);
+std::vector<std::string> Utils::splitString(const std::string& str,
+                                            const char delimiter) {
+  std::vector<std::string> splited;
+  std::string s(str);
   size_t pos;
 
-  while ((pos = s.find(delimiter)) != string::npos) {
-    string sec = s.substr(0, pos);
+  while ((pos = s.find(delimiter)) != std::string::npos) {
+    std::string sec = s.substr(0, pos);
 
     if (!sec.empty()) {
       splited.push_back(s.substr(0, pos));
@@ -109,10 +110,10 @@ vector<string> Utils::splitString(const string& str, const char delimiter) {
   return splited;
 }
 
-vector<string> Utils::getFiles(const string& folder,
-                               const bool all /* = true */) {
-  vector<string> files;
-  list<string> subfolders;
+std::vector<std::string> Utils::getFiles(const std::string& folder,
+                                         const bool all /* = true */) {
+  std::vector<std::string> files;
+  std::list<std::string> subfolders;
   subfolders.push_back(folder);
 #ifdef OS_WINDOWS
   while (!subfolders.empty()) {
@@ -162,7 +163,7 @@ vector<string> Utils::getFiles(const string& folder,
   }
 #elif defined(OS_LINUX) || defined(OS_UNIX)
   while (!subfolders.empty()) {
-    string current_folder(subfolders.back());
+    std::string current_folder(subfolders.back());
 
     if (*(current_folder.end() - 1) != '/') {
       current_folder.push_back('/');
@@ -192,7 +193,7 @@ vector<string> Utils::getFiles(const string& folder,
         continue;
       }
 
-      string file_path;
+      std::string file_path;
 
       file_path.append(current_folder.c_str());
       file_path.append(dir->d_name);
@@ -206,7 +207,7 @@ vector<string> Utils::getFiles(const string& folder,
         // it's a sub folder
         if (all) {
           // will search sub folder
-          string subfolder(current_folder);
+          std::string subfolder(current_folder);
           subfolder.append(dir->d_name);
 
           subfolders.push_back(subfolder.c_str());
@@ -251,3 +252,11 @@ bool Utils::mkdir(const std::string folder) {
   }
   return true;
 }
+
+bool Utils::imwrite(const std::string& file, const cv::Mat& image) {
+  auto folder = file.substr(0, file.find_last_of(PATH_DELIMITER));
+  Utils::mkdir(folder);
+  return cv::imwrite(file, image);
+}
+
+} // namespace easypr
