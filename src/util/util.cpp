@@ -1,33 +1,37 @@
 #include "easypr/util.h"
 
-#if defined(WIN32) || defined(_WIN32)
+#ifdef OS_WINDOWS
 #include <windows.h>
+#include <direct.h>
 #include <io.h>
-#elif defined(linux) || defined(__linux__) || defined(__APPLE__)
+#define PATH_DELIMITER '\\'
+#elif defined(OS_LINUX) || defined(OS_UNIX)
 
 #include <cstring>
 #include <dirent.h>
 #include <sys/stat.h>
+#include <unistd.h>
 
+#define PATH_DELIMITER '/'
 #endif
 
-#if defined(__APPLE__)
+#ifdef OS_UNIX
 
 #include <sys/timeb.h>
 
 #endif
 
 #include <list>
+#include <opencv2/highgui/highgui.hpp>
 
-using namespace std;
-using namespace easypr;
+namespace easypr {
 
 long Utils::getTimestamp() {
-#if defined(WIN32) || defined(_WIN32)
+#ifdef OS_WINDOWS
   return GetTickCount();
 #endif
 
-#if (linux) || defined(__linux__)
+#ifdef OS_LINUX
   struct timespec ts;
 
   clock_gettime(CLOCK_MONOTONIC, &ts);
@@ -35,7 +39,7 @@ long Utils::getTimestamp() {
   return (ts.tv_sec * 1e3 + ts.tv_nsec / 1e6);
 #endif
 
-#if defined(__APPLE__)
+#ifdef OS_UNIX
   // there is no function provided by osx to get system tick count.
   // but considering the purpose by using this function,
   // we can simply return a millisecond since 1970/1/1 to calc the time elapse.
@@ -45,10 +49,10 @@ long Utils::getTimestamp() {
 #endif
 }
 
-std::string Utils::getFileName(const string& path,
+std::string Utils::getFileName(const std::string& path,
                                const bool postfix /* = false */) {
   if (!path.empty()) {
-#if defined(WIN32) || defined(_WIN32)
+#ifdef OS_WINDOWS
     size_t last_slash_1 = path.find_last_of("\\");
     size_t last_slash_2 = path.find_last_of("/");
     size_t last_slash;
@@ -68,7 +72,7 @@ std::string Utils::getFileName(const string& path,
 #endif
     size_t last_dot = path.find_last_of('.');
 
-    if (last_dot < last_slash || last_dot == string::npos) {
+    if (last_dot < last_slash || last_dot == std::string::npos) {
       // not found the right dot of the postfix,
       // return the file name directly
       return path.substr(last_slash + 1);
@@ -85,13 +89,14 @@ std::string Utils::getFileName(const string& path,
   return "";
 }
 
-vector<string> Utils::splitString(const string& str, const char delimiter) {
-  vector<string> splited;
-  string s(str);
+std::vector<std::string> Utils::splitString(const std::string& str,
+                                            const char delimiter) {
+  std::vector<std::string> splited;
+  std::string s(str);
   size_t pos;
 
-  while ((pos = s.find(delimiter)) != string::npos) {
-    string sec = s.substr(0, pos);
+  while ((pos = s.find(delimiter)) != std::string::npos) {
+    std::string sec = s.substr(0, pos);
 
     if (!sec.empty()) {
       splited.push_back(s.substr(0, pos));
@@ -105,12 +110,12 @@ vector<string> Utils::splitString(const string& str, const char delimiter) {
   return splited;
 }
 
-vector<string> Utils::getFiles(const string& folder,
-                               const bool all /* = true */) {
-  vector<string> files;
-  list<string> subfolders;
+std::vector<std::string> Utils::getFiles(const std::string& folder,
+                                         const bool all /* = true */) {
+  std::vector<std::string> files;
+  std::list<std::string> subfolders;
   subfolders.push_back(folder);
-#if defined(WIN32) || defined(_WIN32)
+#ifdef OS_WINDOWS
   while (!subfolders.empty()) {
     string current_folder(subfolders.back());
 
@@ -156,9 +161,9 @@ vector<string> Utils::getFiles(const string& folder,
     }  // while
     _findclose(file_handler);
   }
-#elif defined(linux) || defined(__linux__) || defined(__APPLE__)
+#elif defined(OS_LINUX) || defined(OS_UNIX)
   while (!subfolders.empty()) {
-    string current_folder(subfolders.back());
+    std::string current_folder(subfolders.back());
 
     if (*(current_folder.end() - 1) != '/') {
       current_folder.push_back('/');
@@ -188,7 +193,7 @@ vector<string> Utils::getFiles(const string& folder,
         continue;
       }
 
-      string file_path;
+      std::string file_path;
 
       file_path.append(current_folder.c_str());
       file_path.append(dir->d_name);
@@ -202,7 +207,7 @@ vector<string> Utils::getFiles(const string& folder,
         // it's a sub folder
         if (all) {
           // will search sub folder
-          string subfolder(current_folder);
+          std::string subfolder(current_folder);
           subfolder.append(dir->d_name);
 
           subfolders.push_back(subfolder.c_str());
@@ -214,7 +219,44 @@ vector<string> Utils::getFiles(const string& folder,
     }  // while
     closedir(pdir);
   }
-
 #endif
   return files;
 }
+
+bool Utils::mkdir(const std::string folder) {
+  std::string folder_builder;
+  std::string sub;
+  sub.reserve(folder.size());
+  for (auto it = folder.begin(); it != folder.end(); ++it) {
+    const char c = *it;
+    sub.push_back(c);
+    if (c == PATH_DELIMITER || it == folder.end() - 1) {
+      folder_builder.append(sub);
+#ifdef OS_WINDOWS
+	  if (0 != ::_access(folder_builder.c_str(), 0)) {
+#else
+      if (0 != ::access(folder_builder.c_str(), 0)) {
+#endif
+        // this folder not exist
+#ifdef OS_WINDOWS
+		if (0 != ::_mkdir(folder_builder.c_str())) {
+#else
+        if (0 != ::mkdir(folder_builder.c_str(), S_IRWXU)) {
+#endif
+          // create failed
+          return false;
+        }
+      }
+      sub.clear();
+    }
+  }
+  return true;
+}
+
+bool Utils::imwrite(const std::string& file, const cv::Mat& image) {
+  auto folder = file.substr(0, file.find_last_of(PATH_DELIMITER));
+  Utils::mkdir(folder);
+  return cv::imwrite(file, image);
+}
+
+} // namespace easypr

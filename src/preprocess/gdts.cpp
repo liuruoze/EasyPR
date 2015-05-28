@@ -55,7 +55,7 @@ int generate_gdts() {
 
     std::stringstream ss(std::stringstream::in | std::stringstream::out);
     ss << dst_path << "/" << filename;
-    imwrite(ss.str(), dst);
+    utils::imwrite(ss.str(), dst);
   }
 
   return 0;

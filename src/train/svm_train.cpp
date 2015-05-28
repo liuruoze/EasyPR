@@ -34,7 +34,7 @@ void Svm::divide(const char* images_folder, float percentage /* = 0.7 */) {
     } else {
       sprintf(save_to, "%s/test/%s", images_folder, file_name);
     }
-    cv::imwrite(save_to, image);
+    utils::imwrite(save_to, image);
     std::cout << f << " -> " << save_to << std::endl;
   }
 }
