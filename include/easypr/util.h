@@ -5,6 +5,14 @@
 #include <string>
 #include <vector>
 
+#if defined(WIN32) || defined(_WIN32)
+#define OS_WINDOWS
+#elif defined(__APPLE__) || defined(APPLE)
+#define OS_UNIX
+#elif defined(__linux__) || defined(linux)
+#define OS_LINUX
+#endif
+
 #ifdef min
 #undef min
 #endif
@@ -89,6 +97,10 @@ class Utils {
     return prevCol[len2];
   }
 
+  /*
+   * Create multi-level directories by given folder.
+   */
+  static bool mkdir(const std::string folder);
 
 };
 

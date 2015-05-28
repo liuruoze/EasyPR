@@ -1,17 +1,21 @@
 #include "easypr/util.h"
 
-#if defined(WIN32) || defined(_WIN32)
+#ifdef OS_WINDOWS
 #include <windows.h>
+#include <direct.h>
 #include <io.h>
-#elif defined(linux) || defined(__linux__) || defined(__APPLE__)
+#define PATH_DELIMITER '\\'
+#elif defined(OS_LINUX) || defined(OS_UNIX)
 
 #include <cstring>
 #include <dirent.h>
 #include <sys/stat.h>
+#include <unistd.h>
 
+#define PATH_DELIMITER '/'
 #endif
 
-#if defined(__APPLE__)
+#ifdef OS_UNIX
 
 #include <sys/timeb.h>
 
@@ -23,11 +27,11 @@ using namespace std;
 using namespace easypr;
 
 long Utils::getTimestamp() {
-#if defined(WIN32) || defined(_WIN32)
+#ifdef OS_WINDOWS
   return GetTickCount();
 #endif
 
-#if (linux) || defined(__linux__)
+#ifdef OS_LINUX
   struct timespec ts;
 
   clock_gettime(CLOCK_MONOTONIC, &ts);
@@ -35,7 +39,7 @@ long Utils::getTimestamp() {
   return (ts.tv_sec * 1e3 + ts.tv_nsec / 1e6);
 #endif
 
-#if defined(__APPLE__)
+#ifdef OS_UNIX
   // there is no function provided by osx to get system tick count.
   // but considering the purpose by using this function,
   // we can simply return a millisecond since 1970/1/1 to calc the time elapse.
@@ -48,7 +52,7 @@ long Utils::getTimestamp() {
 std::string Utils::getFileName(const string& path,
                                const bool postfix /* = false */) {
   if (!path.empty()) {
-#if defined(WIN32) || defined(_WIN32)
+#ifdef OS_WINDOWS
     size_t last_slash_1 = path.find_last_of("\\");
     size_t last_slash_2 = path.find_last_of("/");
     size_t last_slash;
@@ -110,7 +114,7 @@ vector<string> Utils::getFiles(const string& folder,
   vector<string> files;
   list<string> subfolders;
   subfolders.push_back(folder);
-#if defined(WIN32) || defined(_WIN32)
+#ifdef OS_WINDOWS
   while (!subfolders.empty()) {
     string current_folder(subfolders.back());
 
@@ -156,7 +160,7 @@ vector<string> Utils::getFiles(const string& folder,
     }  // while
     _findclose(file_handler);
   }
-#elif defined(linux) || defined(__linux__) || defined(__APPLE__)
+#elif defined(OS_LINUX) || defined(OS_UNIX)
   while (!subfolders.empty()) {
     string current_folder(subfolders.back());
 
@@ -214,7 +218,36 @@ vector<string> Utils::getFiles(const string& folder,
     }  // while
     closedir(pdir);
   }
-
 #endif
   return files;
+}
+
+bool Utils::mkdir(const std::string folder) {
+  std::string folder_builder;
+  std::string sub;
+  sub.reserve(folder.size());
+  for (auto it = folder.begin(); it != folder.end(); ++it) {
+    const char c = *it;
+    sub.push_back(c);
+    if (c == PATH_DELIMITER || it == folder.end() - 1) {
+      folder_builder.append(sub);
+#ifdef OS_WINDOWS
+	  if (0 != ::_access(folder_builder.c_str(), 0)) {
+#else
+      if (0 != ::access(folder_builder.c_str(), 0)) {
+#endif
+        // this folder not exist
+#ifdef OS_WINDOWS
+		if (0 != ::_mkdir(folder_builder.c_str())) {
+#else
+        if (0 != ::mkdir(folder_builder.c_str(), S_IRWXU)) {
+#endif
+          // create failed
+          return false;
+        }
+      }
+      sub.clear();
+    }
+  }
+  return true;
 }

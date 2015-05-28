@@ -5,12 +5,11 @@
 #include <ctime>
 #include "easypr/plate_judge.h"
 #include "easypr/plate_locate.h"
+#include "easypr/util.h"
 
-#if defined (WIN32) || defined (_WIN32)
+#ifdef OS_WINDOWS
 #include <io.h>
 #endif
-
-#include "easypr/util.h"
 
 namespace easypr {
 

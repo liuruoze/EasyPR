@@ -1,11 +1,10 @@
 // ann_train.cpp : ann模型的训练文件，主要用在OCR中
 
-#include <opencv/cv.h>
-#include <opencv/cvaux.h>
-#include "opencv2/ml/ml.hpp"
-#include "opencv2/highgui/highgui.hpp"
+#include <opencv2/opencv.hpp>
+#include "easypr/util.h"
+#include "easypr/plate_recognize.h"
 
-#if defined (WIN32) || defined (_WIN32)
+#ifdef OS_WINDOWS
 #include <windows.h>
 #endif
 
@@ -13,14 +12,9 @@
 #include <iostream>
 #include <cstdlib>
 
-#if defined (WIN32) || defined (_WIN32)
+#ifdef OS_WINDOWS
 #include <io.h>
-#elif defined (linux) || defined (__linux__)
-//#include <sys/io.h>
 #endif
-
-#include "easypr/plate_recognize.h"
-#include "easypr/util.h"
 
 using namespace easypr;
 using namespace cv;
