@@ -114,7 +114,7 @@ void create_learn_data(const char* raw_data_folder, const char* out_data_folder,
     }
     save_to.append(Utils::getFileName(f, true));
 
-    cv::imwrite(save_to, img);
+    utils::imwrite(save_to, img);
     std::cout << f << " -> " << save_to << std::endl;
   }
   std::cout << "Learn data created successfully!" << std::endl;
@@ -168,7 +168,7 @@ void tag_data(const char* source_folder, const char* has_plate_folder,
                 no_plate_folder, filename.c_str(), plate_index);
         std::cout << "[N] -> " << save_to << std::endl;
       }
-      cv::imwrite(save_to, plate);
+      utils::imwrite(save_to, plate);
       ++plate_index;
     }
   }

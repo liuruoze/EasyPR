@@ -1,4 +1,5 @@
 #include "easypr/plate_detect.h"
+#include "easypr/util.h"
 
 /*! \namespace easypr
     Namespace where all the C++ EasyPR functionality resides
@@ -38,7 +39,7 @@ int CPlateDetect::plateDetect(Mat src, vector<Mat>& resultVec, int index) {
       if (1) {
         std::stringstream ss(std::stringstream::in | std::stringstream::out);
         ss << "tmp/plate_judge_result_" << i << ".jpg";
-        imwrite(ss.str(), img);
+        utils::imwrite(ss.str(), img);
       }
     }
   }

@@ -1,4 +1,5 @@
 #include "easypr/chars_segment.h"
+#include "easypr/util.h"
 
 /*! \namespace easypr
 Namespace where all the C++ EasyPR functionality resides
@@ -101,7 +102,7 @@ namespace easypr{
 			int h = input_grey.rows;
 			Mat tmp = input_grey(Rect(w*0.1,h*0.1,w*0.8,h*0.8));
 			int threadHoldV = ThresholdOtsu(tmp);
-			imwrite("./tmp/inputgray2.jpg",input_grey);
+      utils::imwrite("tmp/inputgray2.jpg",input_grey);
 		
 			threshold(input_grey, img_threshold,threadHoldV, 255, CV_THRESH_BINARY);
 
@@ -116,7 +117,7 @@ namespace easypr{
 			int h = input_grey.rows;
 			Mat tmp = input_grey(Rect(w*0.1,h*0.1,w*0.8,h*0.8));
 			int threadHoldV = ThresholdOtsu(tmp);
-			imwrite("./tmp/inputgray2.jpg",input_grey);
+      utils::imwrite("tmp/inputgray2.jpg",input_grey);
 
 			threshold(input_grey, img_threshold,threadHoldV, 255, CV_THRESH_BINARY_INV);
 
@@ -132,7 +133,7 @@ namespace easypr{
 		{
 			std::stringstream ss(std::stringstream::in | std::stringstream::out);
 			ss << "tmp/debug_char_threshold" <<iTag<< ".jpg";
-			imwrite(ss.str(), img_threshold);
+      utils::imwrite(ss.str(), img_threshold);
 		}
 
 		//去除车牌上方的柳钉以及下方的横线等干扰
@@ -145,7 +146,7 @@ namespace easypr{
 		{
 			std::stringstream ss(std::stringstream::in | std::stringstream::out);
 			ss << "tmp/debug_char_clearLiuDing" <<iTag<< ".jpg";
-			imwrite(ss.str(), img_threshold);
+      utils::imwrite(ss.str(), img_threshold);
 		}
 		iTag++;
 
@@ -200,7 +201,7 @@ namespace easypr{
 				Mat specMat(img_threshold, sortedRect[specIndex]);
 				std::stringstream ss(std::stringstream::in | std::stringstream::out);
 				ss << "tmp/debug_specMat" << ".jpg";
-				imwrite(ss.str(), specMat);
+        utils::imwrite(ss.str(), specMat);
 			}
 		}
 
@@ -218,7 +219,7 @@ namespace easypr{
 			Mat chineseMat(img_threshold, chineseRect);
 			std::stringstream ss(std::stringstream::in | std::stringstream::out);
 			ss << "tmp/debug_chineseMat" << ".jpg";
-			imwrite(ss.str(), chineseMat);
+      utils::imwrite(ss.str(), chineseMat);
 		}
 
 
@@ -245,7 +246,7 @@ namespace easypr{
 				{
 					std::stringstream ss(std::stringstream::in | std::stringstream::out);
 					ss << "tmp/debug_char_auxRoi_" << (i+staticIndex) << ".jpg";
-					imwrite(ss.str(), auxRoi);
+          utils::imwrite(ss.str(), auxRoi);
 				}
 				resultVec.push_back(auxRoi);
 			}

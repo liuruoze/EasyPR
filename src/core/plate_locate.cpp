@@ -1,4 +1,5 @@
 #include "easypr/plate_locate.h"
+#include "easypr/util.h"
 
 /*! \namespace easypr
     Namespace where all the C++ EasyPR functionality resides
@@ -90,7 +91,7 @@ Mat CPlateLocate::showResultMat(Mat src, Size rect_size, Point2f center,
   if (m_debug) {
     stringstream ss(stringstream::in | stringstream::out);
     ss << "tmp/debug_crop_" << index << ".jpg";
-    imwrite(ss.str(), img_crop);
+    utils::imwrite(ss.str(), img_crop);
   }
 
   Mat resultResized;
@@ -101,7 +102,7 @@ Mat CPlateLocate::showResultMat(Mat src, Size rect_size, Point2f center,
   if (m_debug) {
     stringstream ss(stringstream::in | stringstream::out);
     ss << "tmp/debug_resize_" << index << ".jpg";
-    imwrite(ss.str(), resultResized);
+    utils::imwrite(ss.str(), resultResized);
   }
 
   return resultResized;
@@ -134,7 +135,7 @@ int CPlateLocate::colorSearch(const Mat& src, const Color r, Mat& out,
   morphologyEx(src_threshold, src_threshold, MORPH_CLOSE, element);
 
 
-  imwrite("./tmp/color.jpg", src_threshold);
+  utils::imwrite("tmp/color.jpg", src_threshold);
 
 
   src_threshold.copyTo(out);
@@ -245,7 +246,7 @@ int CPlateLocate::sobelFrtSearch(const Mat& src,
             m_MorphSizeHeight);
 
 
-  imwrite("tmp/sobelFrtSearch.jpg", src_threshold);
+  utils::imwrite("tmp/sobelFrtSearch.jpg", src_threshold);
 
 
   vector<vector<Point> > contours;
@@ -322,14 +323,14 @@ int CPlateLocate::sobelSecSearchPart(Mat& bound, Point2f refpoint,
 
     }
 
-    imwrite("tmp/repaireimg1.jpg", bound_threshold);
+    utils::imwrite("tmp/repaireimg1.jpg", bound_threshold);
 
     //两边的区域不要
     for (int i = 0; i < bound_threshold.rows; i++) {
       bound_threshold.data[i * bound_threshold.cols + posLeft] = 0;
       bound_threshold.data[i * bound_threshold.cols + posRight] = 0;
     }
-    imwrite("tmp/repaireimg2.jpg", bound_threshold);
+    utils::imwrite("tmp/repaireimg2.jpg", bound_threshold);
   }
 
 
@@ -373,7 +374,7 @@ int CPlateLocate::sobelSecSearch(Mat& bound, Point2f refpoint,
   //! 第二次参数比一次精细，但针对的是得到的外接矩阵之后的图像，再sobel得到二值图像
   sobelOper(bound, bound_threshold, 3, 10, 3);
 
-  imwrite("./tmp/sobelSecSearch.jpg", bound_threshold);
+  utils::imwrite("tmp/sobelSecSearch.jpg", bound_threshold);
 
   vector<vector<Point> > contours;
   findContours(bound_threshold,
@@ -472,7 +473,7 @@ void DeleteNotArea(Mat& inmat) {
     threshold(input_grey, img_threshold, threadHoldV, 255, CV_THRESH_BINARY);
     //threshold(input_grey, img_threshold, 5, 255, CV_THRESH_OTSU + CV_THRESH_BINARY);
 
-    imwrite("./tmp/inputgray2.jpg", img_threshold);
+    utils::imwrite("tmp/inputgray2.jpg", img_threshold);
 
   }
   else if (YELLOW == plateType) {
@@ -1024,7 +1025,7 @@ int CPlateLocate::sobelOperT(const Mat& in, Mat& out, int blurSize, int morphW,
 
   //mat_gray = m_bilateral.BilateralFilter(mat_gray,6);
 
-  imwrite("./tmp/grayblure.jpg", mat_gray);
+  utils::imwrite("tmp/grayblure.jpg", mat_gray);
 
   //equalizeHist(mat_gray, mat_gray);
 
@@ -1044,18 +1045,18 @@ int CPlateLocate::sobelOperT(const Mat& in, Mat& out, int blurSize, int morphW,
   Mat grad;
   addWeighted(abs_grad_x, 1, abs_grad_y, 0, 0, grad);
 
-  imwrite("./tmp/graygrad.jpg", grad);
+  utils::imwrite("tmp/graygrad.jpg", grad);
 
   Mat mat_threshold;
   //double otsu_thresh_val =
   threshold(grad, mat_threshold, 0, 255, CV_THRESH_OTSU + CV_THRESH_BINARY);
 
-  imwrite("./tmp/grayBINARY.jpg", mat_threshold);
+  utils::imwrite("tmp/grayBINARY.jpg", mat_threshold);
 
   Mat element = getStructuringElement(MORPH_RECT, Size(morphW, morphH));
   morphologyEx(mat_threshold, mat_threshold, MORPH_CLOSE, element);
 
-  imwrite("./tmp/phologyEx.jpg", mat_threshold);
+  utils::imwrite("tmp/phologyEx.jpg", mat_threshold);
 
   out = mat_threshold;
 
@@ -1175,7 +1176,7 @@ int CPlateLocate::plateLocate(Mat src, vector<Mat>& resultVec, int index) {
   if (m_debug) {
     stringstream ss(stringstream::in | stringstream::out);
     ss << "tmp/debug_GaussianBlur" << ".jpg";
-    imwrite(ss.str(), src_blur);
+    utils::imwrite(ss.str(), src_blur);
   }
 
   /// Convert it to gray
@@ -1184,7 +1185,7 @@ int CPlateLocate::plateLocate(Mat src, vector<Mat>& resultVec, int index) {
   if (m_debug) {
     stringstream ss(stringstream::in | stringstream::out);
     ss << "tmp/debug_gray" << ".jpg";
-    imwrite(ss.str(), src_gray);
+    utils::imwrite(ss.str(), src_gray);
   }
   // RGB颜色初定位
   // http://wenku.baidu.com/view/2329e5d2360cba1aa811da65.html?re=view
@@ -1330,9 +1331,9 @@ int CPlateLocate::plateLocate(Mat src, vector<Mat>& resultVec, int index) {
   if (m_debug) {
     stringstream ss(stringstream::in | stringstream::out);
     ss << "tmp/debug_Sobel_blue" << ".jpg";
-    imwrite(ss.str(), out_blue);
+    utils::imwrite(ss.str(), out_blue);
     ss << "tmp/debug_Sobel_yellow" << ".jpg";
-    imwrite(ss.str(), out_yellow);
+    utils::imwrite(ss.str(), out_yellow);
   }
 
   Mat img_threshold_blue;
@@ -1346,9 +1347,9 @@ int CPlateLocate::plateLocate(Mat src, vector<Mat>& resultVec, int index) {
   if (m_debug) {
     stringstream ss(stringstream::in | stringstream::out);
     ss << "tmp/debug_threshold_blue" << ".jpg";
-    imwrite(ss.str(), img_threshold_blue);
+    utils::imwrite(ss.str(), img_threshold_blue);
     ss << "tmp/debug_threshold_yellow" << ".jpg";
-    imwrite(ss.str(), img_threshold_yellow);
+    utils::imwrite(ss.str(), img_threshold_yellow);
   }
 
   Mat element = getStructuringElement(MORPH_RECT, Size(m_MorphSizeWidth,
@@ -1360,9 +1361,9 @@ int CPlateLocate::plateLocate(Mat src, vector<Mat>& resultVec, int index) {
   if (m_debug) {
     stringstream ss(stringstream::in | stringstream::out);
     ss << "tmp/debug_morphology_blue" << ".jpg";
-    imwrite(ss.str(), img_threshold_blue);
+    utils::imwrite(ss.str(), img_threshold_blue);
     ss << "tmp/debug_morphology_yellow" << ".jpg";
-    imwrite(ss.str(), img_threshold_yellow);
+    utils::imwrite(ss.str(), img_threshold_yellow);
   }
 
   //Find 轮廓 of possibles plates
@@ -1391,7 +1392,7 @@ int CPlateLocate::plateLocate(Mat src, vector<Mat>& resultVec, int index) {
                  1); // with a thickness of 1
     stringstream ss(stringstream::in | stringstream::out);
     ss << "tmp/debug_Contours" << ".jpg";
-    imwrite(ss.str(), result);
+    utils::imwrite(ss.str(), result);
   }
 
 
@@ -1471,7 +1472,7 @@ int CPlateLocate::plateLocate(Mat src, vector<Mat>& resultVec, int index) {
   if (m_debug) {
     stringstream ss(stringstream::in | stringstream::out);
     ss << "tmp/debug_result" << ".jpg";
-    imwrite(ss.str(), result);
+    utils::imwrite(ss.str(), result);
   }
 
   return 0;

@@ -111,6 +111,8 @@ class Utils {
 
 };
 
+typedef Utils utils;
+
 } // namespace easypr
 
 /// general_test_prepare.cpp÷–∑Ω∑®
