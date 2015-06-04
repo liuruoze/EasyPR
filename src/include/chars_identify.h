@@ -24,13 +24,14 @@ class CCharsIdentify
 public:
 	CCharsIdentify();
 
-	//! 字符鉴别
+	//! 字符分割
 	string charsIdentify(Mat, bool, bool);
 	string charsIdentify(Mat input);
 
 	//! 字符分类
-	int classify(Mat, bool,bool);
+	int classify(Mat, bool, bool);
 	int classify(Mat f);
+
 	//! 装载ANN模型
 	void LoadModel();
 

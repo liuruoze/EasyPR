@@ -15,6 +15,7 @@
 #include "prep.h"
 #include "core_func.h"
 
+
 /*! \namespace easypr
 Namespace where all the C++ EasyPR functionality resides
 */

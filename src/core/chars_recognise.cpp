@@ -21,7 +21,7 @@ namespace easypr{
 	{
 		return m_charsIdentify->charsIdentify(plate);
 	}
-	int CCharsRecognise::charsRecognise(Mat plate, string& plateLicense, int index)
+	int CCharsRecognise::charsRecognise(Mat plate, string& plateLicense)
 	{
 		//车牌字符方块集合
 		vector<Mat> matVec;
@@ -36,16 +36,16 @@ namespace easypr{
 			{
 				Mat charMat = matVec[j];
 				bool isChinses = false;
-				bool isSpeci=false;
+				bool isSpeci = false;
+
 				//默认首个字符块是中文字符
 				if (j == 0)
 					isChinses = true;
-				if(j==1)
+				if (j == 1)
 					isSpeci=true;
-				string charcater = m_charsIdentify->charsIdentify(charMat, isChinses,isSpeci);
 
-				
-				
+				string charcater = m_charsIdentify->charsIdentify(charMat, isChinses, isSpeci);
+			
 				plateIdentify = plateIdentify + charcater;
 			}
 		}

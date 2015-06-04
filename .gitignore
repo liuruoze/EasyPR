@@ -196,3 +196,6 @@ EasyPR.xcodeproj/
 
 # Debug tmp files
 tmp/
+
+# native_test files
+native_test/

@@ -11,11 +11,9 @@ EasyPR是一个中文的开源车牌识别系统，其目标是成为一个简�
 
 ### 更新
 
-本次更新是1.3alpha版，主要改进在于提升了字符识别模块的准确性：
+本次更新是1.3beta版，主要改进在于提升了字符识别模块的准确性：
 
-平均字符差距从2.0降低到0.7，完整匹配度从25%左右上升到目前的68%。
-
-同时，车牌定位模块准确率进一步提升，从上一个版本的94%上升到现在的99%。见下图：
+平均字符差距从0.7降低到0.4，完整匹配度从68%左右上升到目前的82%。 见下图：
 
 ![1.3版综合效果](doc/res/testresult_1.3.png)
 
@@ -35,8 +33,8 @@ EasyPR是一个中文的开源车牌识别系统，其目标是成为一个简�
 |------|-------|-------|-------
 | android |  goldriver  |  1.1  |  [linuxxx/EasyPR_Android](https://github.com/linuxxx/EasyPR_Android)
 | linux | Micooz  |  1.3  |  已跟EasyPR整合
-| ios | zhoushiwei |  1.1  |  [zhoushiwei/EasyPR-iOS](https://github.com/zhoushiwei/EasyPR-iOS)
-| mac | zhoushiwei |  1.1  | [zhoushiwei/EasyPR](https://github.com/zhoushiwei/EasyPR)
+| ios | zhoushiwei |  1.3  |  [zhoushiwei/EasyPR-iOS](https://github.com/zhoushiwei/EasyPR-iOS)
+| mac | zhoushiwei,Micooz |  1.3  | 已跟EasyPR整合
 | java | fan-wenjie |  1.2  | [fan-wenjie/EasyPR-Java](https://github.com/fan-wenjie/EasyPR-Java)
 
 ### 兼容性
@@ -66,7 +64,9 @@ EasyPR不需要安装，开发者直接在其上做改动。如果想使用DLL�
 
 ### 使用
 
-使用Git克隆一份拷贝到你本机或者直接下载zip压缩吧。使用vs2010或以上版本的IDE选择“从现有代码创建项目”，引用EasyPR的目录。
+使用Git克隆一份拷贝到你本机或者直接下载zip压缩吧。
+
+使用vs2010或以上版本的IDE选择“从现有代码创建项目”，引用EasyPR的目录，项目类型切记选择"控制台类型"。
 
 以下表格是本工程中所有目录的解释:
 
@@ -126,9 +126,9 @@ EasyPR不需要安装，开发者直接在其上做改动。如果想使用DLL�
 
 * liuruoze：1.0-1.2版核心代码作者
 
-* 海豚嘎嘎：1.3版作者，提升了字符识别准确率
+* 海豚嘎嘎：1.3版作者，提升了车牌定位与字符识别的准确率
 
-* Micooz：linux平台编译，性能优化，util类
+* Micooz：linux与mac的跨平台编译，性能优化，util类
 
 * jsxyhelu：deface版本一
 

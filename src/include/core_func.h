@@ -6,7 +6,7 @@ Namespace where all the C++ EasyPR functionality resides
 */
 namespace easypr {
 
-	enum Color{ BLUE, YELLOW };
+	enum Color{ BLUE, YELLOW, WHITE, UNKNOWN};
 
 	//! 根据一幅图像与颜色模板获取对应的二值图
 	//! 输入RGB图像, 颜色模板（蓝色、黄色）
@@ -16,7 +16,7 @@ namespace easypr {
 	//! 判断一个车牌的颜色
 	//! 输入车牌mat与颜色模板
 	//! 返回true或fasle
-	bool plateColorJudge(const Mat&  src, const Color r, const bool adaptive_minsv);
+	bool plateColorJudge(const Mat&  src, const Color r, const bool adaptive_minsv, float& percent);
 
 	bool bFindLeftRightBound(Mat& bound_threshold,int& posLeft,int& posRight);
 	bool bFindLeftRightBound1(Mat& bound_threshold,int& posLeft,int& posRight);
@@ -35,10 +35,12 @@ namespace easypr {
 	//! 直方图均衡
 	Mat histeq(Mat in);
 	Mat features(Mat in, int sizeData);
+	Rect GetCenterRect(Mat& in);
+	Mat CutTheRect(Mat& in,Rect& rect);
 	int ThresholdOtsu(Mat mat);
 
 
-	// ！获取垂直和水平方向直方图
+	//! 获取垂直和水平方向直方图
 	Mat ProjectedHistogram(Mat img, int t);
 
 }	/*! \namespace easypr*/

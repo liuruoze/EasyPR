@@ -84,32 +84,34 @@ namespace easypr{
 		int h = input.rows;
 
 		Mat tmpMat = input(Rect(w*0.1,h*0.1,w*0.8,h*0.8));
+
 		//判断车牌颜色以此确认threshold方法
 		Color plateType = getPlateType(tmpMat, true);
 
 		Mat input_grey;
 		cvtColor(input, input_grey, CV_BGR2GRAY);
 
-
 		Mat img_threshold ;
 		if (BLUE == plateType)
 		{
+			//cout << "BLUE" << endl;
 			img_threshold = input_grey.clone();
 			
 			int w = input_grey.cols;
 			int h = input_grey.rows;
 			Mat tmp = input_grey(Rect(w*0.1,h*0.1,w*0.8,h*0.8));
 			int threadHoldV = ThresholdOtsu(tmp);
-			imwrite("./image/tmp/inputgray2.jpg",input_grey);
+			imwrite("E:/img_inputgray2.jpg",input_grey);
 		
-			threshold(input_grey, img_threshold,threadHoldV, 255, CV_THRESH_BINARY);
-
+			threshold(input_grey, img_threshold, threadHoldV, 255, CV_THRESH_BINARY);
+			imwrite("E:/img_threshold.jpg",img_threshold);
 
 			//threshold(input_grey, img_threshold, 5, 255, CV_THRESH_OTSU + CV_THRESH_BINARY);
 
 		}
 		else if (YELLOW == plateType)
 		{
+			//cout << "YELLOW" << endl;
 			img_threshold = input_grey.clone();
 			int w = input_grey.cols;
 			int h = input_grey.rows;
@@ -117,15 +119,34 @@ namespace easypr{
 			int threadHoldV = ThresholdOtsu(tmp);
 			imwrite("./image/tmp/inputgray2.jpg",input_grey);
 
-			threshold(input_grey, img_threshold,threadHoldV, 255, CV_THRESH_BINARY_INV);
-
+			threshold(input_grey, img_threshold, threadHoldV, 255, CV_THRESH_BINARY_INV);
 
 			//threshold(input_grey, img_threshold, 10, 255, CV_THRESH_OTSU + CV_THRESH_BINARY_INV);
 		}
+		else if (WHITE == plateType)
+		{
+			//cout << "WHITE" << endl;
+			/*img_threshold = input_grey.clone();
+			int w = input_grey.cols;
+			int h = input_grey.rows;
+			Mat tmp = input_grey(Rect(w*0.1, h*0.1, w*0.8, h*0.8));
+			int threadHoldV = ThresholdOtsu(tmp);
+			imwrite("./image/tmp/inputgray2.jpg", input_grey);*/
+
+			threshold(input_grey, img_threshold, 10, 255, CV_THRESH_OTSU + CV_THRESH_BINARY_INV);
+		}
 		else
+		{
+			//cout << "UNKNOWN" << endl;
 			threshold(input_grey, img_threshold, 10, 255, CV_THRESH_OTSU + CV_THRESH_BINARY);
+		}
 		
-	
+		if (0)
+		{
+			imshow("threshold", img_threshold);
+			waitKey(0);
+			destroyWindow("threshold");
+		}
 		
 		if (m_debug)
 		{
@@ -135,6 +156,8 @@ namespace easypr{
 		}
 
 		//去除车牌上方的柳钉以及下方的横线等干扰
+		//并且也判断了是否是车牌
+		//并且在此对字符的跳变次数以及字符颜色所占的比重做了是否是车牌的判别条件
 		if(!clearLiuDing(img_threshold))
 		{
 			return -3;
@@ -358,19 +381,6 @@ namespace easypr{
 	//  2.从特殊字符Rect开始，依次选择6个Rect，多余的舍去。
 	int CCharsSegment::RebuildRect(const vector<Rect>& vecRect, vector<Rect>& outRect, int specIndex)
 	{
-		//最大只能有7个Rect,减去中文的就只有6个Rect
-		//int count = 6;
-
-		//for (int i = 0; i < vecRect.size(); i++)
-		//{
-		//	//将特殊字符左边的Rect去掉，这个可能会去掉中文Rect，不过没关系，我们后面会重建。
-		//	if (i < specIndex)
-		//		continue;
-
-		//	outRect.push_back(vecRect[i]);
-		//	if (!--count)
-		//		break;
-		//}
 
 		int count = 6;
 		for (size_t i = specIndex; i < vecRect.size() && count; ++i, --count) {

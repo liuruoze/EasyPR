@@ -35,6 +35,7 @@ public:
 	//! 深度车牌检测，使用颜色与二次Sobel法综合
 	int plateDetectDeep(Mat src, vector<CPlate>& resultVec, bool showDetectArea = true, int index = 0);
 
+	//! 展示中间的结果
 	int showResult(const Mat& result);
 
 	//! 装载SVM模型

@@ -28,7 +28,7 @@ namespace easypr {
 		CCharsRecognise();
 
 		//! 字符分割与识别
-		int charsRecognise(Mat, String&, int = 0);
+		int charsRecognise(Mat, String&);
 
 		string charsRecognise(Mat plate);
 

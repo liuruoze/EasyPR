@@ -117,7 +117,6 @@ int CPlateJudge::plateJudge(const vector<CPlate>& inVec,
 				resultVec.push_back(inPlate);
 		}
 
-		//resultVec.push_back(inPlate);
 	}
 	return 0;
 }

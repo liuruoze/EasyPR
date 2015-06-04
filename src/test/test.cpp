@@ -19,10 +19,11 @@ int test_chars_recognise();
 int test_plate_recognize();
 int testMain();
 
-
 //把你要测试的图片地址写在下面
-const string test_img = "";
-
+const string img_plate_locate = "image/川A105LR.jpg";
+const string img_plate_detect = "image/川A1D590.jpg";
+const string img_chars_segment = "image/川AE8H60.jpg";
+const string img_plate_recognize = "image/川A105LR.jpg";
 
 const string testOption[] = 
 	{
@@ -115,14 +116,64 @@ int test_plate_locate()
 {
 	cout << "test_plate_locate" << endl;
 
-	Mat src = imread("image/test.jpg");
+	Mat src = imread(img_plate_locate);
 
 	vector<Mat> resultVec;
 	CPlateLocate plate;
 	plate.setDebug(1);
 	plate.setLifemode(true);
 
-	int result = plate.plateLocate(src, resultVec);
+	vector<Mat> resultPlates;
+
+	vector<CPlate> color_Plates;
+	vector<CPlate> sobel_Plates;
+	vector<CPlate> color_result_Plates;
+	vector<CPlate> sobel_result_Plates;
+
+	vector<CPlate> all_result_Plates;
+
+	const int color_find_max = 4;
+
+	plate.plateColorLocate(src, color_Plates);
+	for (int i = 0; i<color_Plates.size(); ++i)
+		color_result_Plates.push_back(color_Plates[i]);
+
+	for (int i = 0; i< color_result_Plates.size(); i++)
+	{
+		CPlate plate = color_result_Plates[i];
+		all_result_Plates.push_back(plate);
+	}
+
+	//颜色和边界闭操作同时采用
+	{
+		plate.plateSobelLocate(src, sobel_Plates);
+
+		for (int i = 0; i<sobel_Plates.size(); ++i)
+		{
+			sobel_result_Plates.push_back(sobel_Plates[i]);
+		}
+
+		for (int i = 0; i< sobel_result_Plates.size(); i++)
+		{
+			CPlate plate = sobel_result_Plates[i];
+			plate.bColored = false;
+
+			all_result_Plates.push_back(plate);
+		}
+	}
+
+	for (int i = 0; i < all_result_Plates.size(); i++)
+	{
+		// 把截取的车牌图像依次放到左上角
+		CPlate plate = all_result_Plates[i];
+		Mat resultMat = plate.getPlateMat();
+		imshow("plate_locate", resultMat);
+		waitKey(0);
+	}
+
+	destroyWindow("plate_locate");
+
+	/*int result = plate.plateLocate(src, resultVec);
 	if (result == 0)
 	{
 		int num = resultVec.size();
@@ -133,9 +184,9 @@ int test_plate_locate()
 			waitKey(0);
 		}
         destroyWindow("plate_locate");
-	}
+	}*/
 
-	return result;
+	return 0;
 }
 
 int test_plate_judge()
@@ -198,22 +249,42 @@ int test_chars_segment()
 {
 	cout << "test_chars_segment" << endl;
 
-	Mat src = imread("image/chars_segment.jpg");
+	Mat src = imread(img_chars_segment);
 
-	vector<Mat> resultVec;
-	CCharsSegment plate;
+	vector<CPlate> resultVec;
 
-	int result = plate.charsSegment(src, resultVec);
+	CPlateDetect pd;
+	CCharsSegment cs;
+	pd.setPDLifemode(true);
+
+	int result = pd.plateDetectDeep(src, resultVec);
 	if (result == 0)
 	{
 		int num = resultVec.size();
 		for (int j = 0; j < num; j++)
 		{
-			Mat resultMat = resultVec[j];
-			imshow("chars_segment", resultMat);
+			CPlate plate = resultVec[j];
+
+			imshow("plate_detect", plate.getPlateMat());
 			waitKey(0);
+
+			vector<Mat> resultChars;
+
+			int result_cs = cs.charsSegment(plate.getPlateMat(), resultChars);
+			if (result_cs == 0)
+			{
+				int num_cs = resultChars.size();
+				for (int p = 0; p < num_cs; p++)
+				{
+					Mat resultChar = resultChars[p];
+					imshow("chars_segment", resultChar);
+					waitKey(0);
+				}
+				destroyWindow("chars_segment");
+			}
+
 		}
-        destroyWindow("chars_segment");
+		destroyWindow("plate_detect");
 	}
 
 	return result;
@@ -273,7 +344,7 @@ int test_plate_detect()
 {
 	cout << "test_plate_detect" << endl;
 
-	Mat src = imread("image/plate_detect.jpg");
+	Mat src = imread(img_plate_detect);
 
 	vector<CPlate> resultVec;
 	CPlateDetect pd;
@@ -319,7 +390,7 @@ int test_plate_recognize()
 {
 	cout << "test_plate_recognize" << endl;
 
-	Mat src = imread("image/test.jpg");
+	Mat src = imread(img_plate_recognize);
 
 	CPlateRecognize pr;
 	pr.LoadANN("model/ann.xml");

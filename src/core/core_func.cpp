@@ -32,6 +32,10 @@ namespace easypr {
 		const int min_yellow = 15; //15
 		const int max_yellow = 40; //40
 
+		//white的H范围
+		const int min_white = 0; //15
+		const int max_white = 30; //40
+
 		Mat src_hsv;
 		// 转到HSV空间进行处理，颜色搜索主要使用的是H分量进行蓝色与黄色的匹配工作
 		cvtColor(src, src_hsv, CV_BGR2HSV);
@@ -52,6 +56,10 @@ namespace easypr {
 		case YELLOW:
 			min_h = min_yellow;
 			max_h = max_yellow;
+			break;
+		case WHITE:
+			min_h = min_white;
+			max_h = max_white;
 			break;
 		}
 
@@ -321,7 +329,7 @@ namespace easypr {
 	//! 判断一个车牌的颜色
 	//! 输入车牌mat与颜色模板
 	//! 返回true或fasle
-	bool plateColorJudge(const Mat& src, const Color r, const bool adaptive_minsv)
+	bool plateColorJudge(const Mat& src, const Color r, const bool adaptive_minsv, float& percent)
 	{
 		// 判断阈值
 		const float thresh = 0.45;
@@ -329,8 +337,8 @@ namespace easypr {
 		Mat src_gray;
 		colorMatch(src, src_gray, r, adaptive_minsv);
 
-		float percent = float(countNonZero(src_gray)) / float(src_gray.rows * src_gray.cols);
-		// cout << "percent:" << percent << endl;
+		percent = float(countNonZero(src_gray)) / float(src_gray.rows * src_gray.cols);
+		//cout << "percent:" << percent << endl;
 
 		if (percent > thresh)
 			return true;
@@ -342,17 +350,34 @@ namespace easypr {
 	//判断车牌的类型
 	Color getPlateType(const Mat&  src, const bool adaptive_minsv)
 	{
-		if (plateColorJudge(src, BLUE, adaptive_minsv) == true) {
+		float max_percent = 0;
+		Color max_color = UNKNOWN;
+
+		float blue_percent = 0;
+		float yellow_percent = 0;
+		float white_percent = 0;
+
+		if (plateColorJudge(src, BLUE, adaptive_minsv, blue_percent) == true) {
 			//cout << "BLUE" << endl;
 			return BLUE;
 		}
-		else if (plateColorJudge(src, YELLOW, adaptive_minsv) == true) {
+		else if (plateColorJudge(src, YELLOW, adaptive_minsv, yellow_percent) == true) {
 			//cout << "YELLOW" << endl;
 			return YELLOW;
 		}
+		else if (plateColorJudge(src, WHITE, adaptive_minsv, white_percent) == true) {
+			//cout << "WHITE" << endl;
+			return WHITE;
+		}
 		else {
 			//cout << "OTHER" << endl;
-			return BLUE;
+			
+			// 如果任意一者都不大于阈值，则取值最大者
+			max_percent = blue_percent > yellow_percent ? blue_percent : yellow_percent;
+			max_color = blue_percent > yellow_percent ? BLUE : YELLOW;
+
+			max_color = max_percent > white_percent ? max_color : WHITE;
+			return max_color;
 		}
 	}
 
@@ -370,7 +395,7 @@ namespace easypr {
 				if (img.at<char>(i, j) != img.at<char>(i, j + 1))
 					jumpCount++;
 
-				if (img.at<uchar>(i,j) == 255)
+				if (img.at<char>(i,j) == 255)
 				{
 					whiteCount++;
 				}
@@ -400,6 +425,7 @@ namespace easypr {
 	bool clearLiuDing(Mat& img)
 	{
 
+		vector<float> fJump;
 		int whiteCount = 0;
 		const int x = 7;
 		Mat jump = Mat::zeros(1, img.rows, CV_32F);
@@ -425,26 +451,25 @@ namespace easypr {
 		int iCount = 0;
 		for (int i = 0; i < img.rows; i++)
 		{
-			if (jump.at<float>(i) > x)
+			fJump.push_back(jump.at<float>(i));
+			if (jump.at<float>(i) >= 16 && jump.at<float>(i) <= 45)
 			{
+				//车牌字符满足一定跳变条件
 				iCount++;
 			}
 		}
 
 		////这样的不是车牌
-		if (iCount*1.0/img.rows < 0.5)
+		if (iCount*1.0/img.rows <= 0.40)
+		{
+			//满足条件的跳变的行数也要在一定的阈值内
+			return false;
+		}
+		//不满足车牌的条件
+		if (whiteCount*1.0/(img.rows*img.cols) < 0.15 || whiteCount*1.0/(img.rows*img.cols) > 0.50)
 		{
 			return false;
 		}
-
-		if (whiteCount*1.0/(img.rows*img.cols) < 0.15)
-		{
-			return false;
-		}
-		
-
-		
-		
 
 		for (int i = 0; i < img.rows; i++)
 		{
@@ -596,14 +621,151 @@ namespace easypr {
 	#define HORIZONTAL    1
 	#define VERTICAL    0
 
-	Mat features(Mat in, int sizeData){
-		//Histogram features
-		Mat vhist=ProjectedHistogram(in,VERTICAL);
-		Mat hhist=ProjectedHistogram(in,HORIZONTAL);
+	Mat CutTheRect(Mat& in,Rect& rect)
+	{
+		int size = in.cols;// (rect.width>rect.height)?rect.width:rect.height;
+		Mat dstMat(size,size,CV_8UC1);
+		dstMat.setTo(Scalar(0,0,0));
 
+		int x=(int)floor((float)(size-rect.width)/2.0f);
+		int y=(int)floor((float)(size-rect.height)/2.0f);
+
+
+		//把rect中的数据 考取到dstMat的中间
+		for (int i=0;i<rect.height;++i)
+		{
+			//宽
+			for (int j=0;j<rect.width;++j)
+			{
+				dstMat.data[dstMat.step[0]*(i+y)+j+x] = in.data[in.step[0]*(i+rect.y)+j+rect.x];
+			}
+			
+		}
+		
+
+		//
+		return dstMat;
+	}
+	Rect GetCenterRect(Mat& in)
+	{
+		Rect _rect;
+
+	
+		int top = 0;
+		int bottom = in.rows-1;
+		//上下
+		for (int i=0;i<in.rows;++i)
+		{
+		
+			bool bFind = false;
+			for(int j=0;j<in.cols;++j)
+			{
+				if(in.data[i*in.step[0]+j] > 20 )
+				{
+					top = i;
+					bFind = true;
+					break;
+				}
+			}
+			if (bFind)
+			{
+				break;
+			}
+			
+			//统计这一行或一列中，非零元素的个数
+			
+		}
+		for (int i=in.rows-1;i>=0;--i)
+		{
+			bool bFind = false;
+			for(int j=0;j<in.cols;++j)
+			{
+				if(in.data[i*in.step[0]+j] > 20 )
+				{
+					bottom = i;
+					bFind = true;
+					break;
+				}
+			}
+			if (bFind)
+			{
+				break;
+			}
+			//统计这一行或一列中，非零元素的个数
+
+		}
+
+		
+
+		//左右
+		int left = 0;
+		int right = in.cols-1;
+		for (int j=0;j<in.cols;++j)
+		{
+			bool bFind = false;
+			for(int i=0;i<in.rows;++i)
+			{
+				if(in.data[i*in.step[0]+j] > 20)
+				{
+					left = j;
+					bFind = true;
+					break;
+				}
+			}
+			if (bFind)
+			{
+				break;
+			}
+			//统计这一行或一列中，非零元素的个数
+
+			
+		}
+		for (int j=in.cols-1;j>=0;--j)
+		{
+			bool bFind = false;
+			for(int i=0;i<in.rows;++i)
+			{
+				if(in.data[i*in.step[0]+j] > 20 )
+				{
+					right = j;
+					bFind = true;
+
+					break;
+				}
+			}
+			if (bFind)
+			{
+				break;
+			}
+			//统计这一行或一列中，非零元素的个数
+
+		}
+
+		_rect.x = left;
+		_rect.y = top;
+		_rect.width = right-left+1;
+		_rect.height = bottom-top+1;
+
+		return _rect;
+	}
+
+	Mat features(Mat in, int sizeData)
+	{
+		
+
+		//抠取中间区域
+		Rect _rect  = GetCenterRect(in);
+
+		Mat tmpIn = CutTheRect(in,_rect);
+		//Mat tmpIn = in.clone();
 		//Low data feature
 		Mat lowData;
-		resize(in, lowData, Size(sizeData, sizeData) );
+		resize(tmpIn, lowData, Size(sizeData, sizeData) );
+	
+
+		//Histogram features
+		Mat vhist=ProjectedHistogram(lowData,VERTICAL);
+		Mat hhist=ProjectedHistogram(lowData,HORIZONTAL);
 
 		//Last 10 is the number of moments components
 		int numCols=vhist.cols+hhist.cols+lowData.cols*lowData.cols;
@@ -623,8 +785,9 @@ namespace easypr {
 		}
 		for(int x=0; x<lowData.cols; x++)
 		{
-			for(int y=0; y<lowData.rows; y++){
-				out.at<float>(j)=(float)lowData.at<unsigned char>(x,y);
+			for(int y=0; y<lowData.rows; y++)
+			{
+				out.at<float>(j)+=(float)lowData.at<unsigned char>(x,y);
 				j++;
 			}
 		}
@@ -640,19 +803,20 @@ namespace easypr {
 		{
 			for (int i=0;i<mat.rows;++i)
 			{
-				/*if (mat.data[i*mat.step[0]]  > iValue)
-				{
-					iCount+=1.0;
-				}*/
-				/*if(mat.ptr<uchar>(i)[0] > 0)
-				{
-					iCount+=1.0;
-				}*/
-				
-				if(mat.at<uchar>(Point(0,i)) > 0)
+			
+				if (mat.data[i*mat.step[0]]  > iValue)
 				{
 					iCount+=1.0;
 				}
+				///*if(mat.ptr<uchar>(i)[0] > 0)
+				//{
+				//	iCount+=1.0;
+				//}*/
+				//
+				//if(mat.at<uchar>(Point(0,i)) > 0)
+				//{
+				//	iCount+=1.0;
+				//}
 			}
 			return iCount;
 			
@@ -661,6 +825,7 @@ namespace easypr {
 		{
 			for (int i = 0;i<mat.cols;++i)
 			{
+			
 				if (mat.data[i] > iValue)
 				{
 					iCount+=1.0;
@@ -684,7 +849,7 @@ namespace easypr {
 		for (int j = 0; j<sz; j++){
 			Mat data = (t) ? img.row(j) : img.col(j);
 
-			mhist.at<float>(j) =countNonZero(data);	//统计这一行或一列中，非零元素的个数，并保存到mhist中
+			mhist.at<float>(j) =countOfBigValue(data,20);	//统计这一行或一列中，非零元素的个数，并保存到mhist中
 		}
 
 		//Normalize histogram

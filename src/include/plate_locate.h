@@ -16,8 +16,9 @@
 
 #include "prep.h"
 #include "plate.h"
+
 #include "core_func.h"
-class LabInfo;
+
 /*! \namespace easypr
     Namespace where all the C++ EasyPR functionality resides
 */
@@ -160,7 +161,6 @@ protected:
 	//! 是否开启调试模式，0关闭，非0开启
 	int m_debug;
 
-	LabInfo * m_labItem;
 };
 
 }	/*! \namespace easypr*/

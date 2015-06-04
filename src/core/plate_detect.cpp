@@ -57,7 +57,6 @@ int CPlateDetect::plateDetect(Mat src, vector<Mat>& resultVec, int index)
 
 int CPlateDetect::plateDetectDeep(Mat src, vector<CPlate>& resultVec, bool showDetectArea, int index)
 {
-
 	vector<Mat> resultPlates;
 
 	vector<CPlate> color_Plates;
@@ -72,29 +71,46 @@ int CPlateDetect::plateDetectDeep(Mat src, vector<CPlate>& resultVec, bool showD
 
 	m_plateLocate->plateColorLocate(src, color_Plates, index);
 	
-	m_plateJudge->plateJudge(color_Plates, color_result_Plates);
-
+	//m_plateJudge->plateJudge(color_Plates, color_result_Plates);
+	//下面代码是sunjunlishi添加
+	for (int i=0;i<color_Plates.size();++i)
+	{
+		//暂时屏蔽车牌的判断，车牌判断采用 字符跳变的方式判断
+		//字符跳变的形式  | | | | | | |,根据跳变的规律直接判断车牌，更准，效率更高
+		//当然判断跳变用的还是原始代码，在后面我加上了主食
+		color_result_Plates.push_back(color_Plates[i]);
+	}
 	
 	for (int i = 0; i< color_result_Plates.size(); i++)
 	{
 		CPlate plate = color_result_Plates[i];
-
-		RotatedRect minRect = plate.getPlatePos();
-		Point2f rect_points[4];
-		minRect.points(rect_points);
-		
-	
 		all_result_Plates.push_back(plate);
 	}
 
-
+	//颜色和边界闭操作同时采用
 	{
 		m_plateLocate->plateSobelLocate(src, sobel_Plates, index);
-		m_plateJudge->plateJudge(sobel_Plates, sobel_result_Plates);
+		//m_plateJudge->plateJudge(sobel_Plates, sobel_result_Plates);
+
+		//下面代码是sunjunlishi添加
+		for (int i=0;i<sobel_Plates.size();++i)
+		{
+			//暂时屏蔽车牌的判断，车牌判断采用 字符跳变的方式判断
+			//字符跳变的形式  | | | | | | |,根据跳变的规律直接判断车牌，更准，效率更高
+			//当然判断跳变用的还是原始代码，在后面我加上了主食
+			sobel_result_Plates.push_back(sobel_Plates[i]);
+		}
 
 		for (int i = 0; i< sobel_result_Plates.size(); i++)
 		{
 			CPlate plate = sobel_result_Plates[i];
+
+			if (0)
+			{
+				imshow("plate_mat", plate.getPlateMat());
+				waitKey(0);
+				destroyWindow("plate_mat");
+			}
 
 			plate.bColored = false;
 
@@ -108,72 +124,59 @@ int CPlateDetect::plateDetectDeep(Mat src, vector<CPlate>& resultVec, bool showD
 		CPlate plate = all_result_Plates[i];
 		resultVec.push_back(plate);
 	}
-
 	return 0;
 }
 
 int CPlateDetect::showResult(const Mat& result)
 {
-	const int RESULTWIDTH = 1000;  //640 930
-	const int RESULTHEIGHT = 810;   //540 710
+	namedWindow("EasyPR", CV_WINDOW_AUTOSIZE);
 
-	/*if(cbgImage_ && cbgImage_->width == result.cols/4*4 && cbgImage_->height == result.rows)
-	{
-		for (int i=0;i<cbgImage_->height;++i)
-		{
-			for (int j=0;j<cbgImage_->width;++j)
-			{
-				cbgImage_->imageData[i*cbgImage_->widthStep+j*3] = result.data[i*result.step[0]+j*3+2];
-				cbgImage_->imageData[i*cbgImage_->widthStep+j*3+1] = result.data[i*result.step[0]+j*3+2+1];
-				cbgImage_->imageData[i*cbgImage_->widthStep+j*3+2] = result.data[i*result.step[0]+j*3];
-			}
+	const int RESULTWIDTH = 930;  //640 930
+	const int RESULTHEIGHT = 710;   //540 710
+
+	Mat img_window;
+	img_window.create(RESULTHEIGHT, RESULTWIDTH, CV_8UC3);
+
+	int nRows = result.rows;
+	int nCols = result.cols;
+
+	Mat result_resize;
+	if (nCols <= img_window.cols && nRows <= img_window.rows) {
+		result_resize = result;
+
+	} else if (nCols > img_window.cols && nRows <= img_window.rows) {
+		float scale = float(img_window.cols) / float(nCols);
+		resize(result, result_resize, Size(), scale, scale, CV_INTER_AREA);
+
+	} else if (nCols <= img_window.cols && nRows > img_window.rows) {
+		float scale = float(img_window.rows) / float(nRows);
+		resize(result, result_resize, Size(), scale, scale, CV_INTER_AREA);
+
+	} else if (nCols > img_window.cols && nRows > img_window.rows) {
+		Mat result_middle;
+		float scale = float(img_window.cols) / float(nCols);
+		resize(result, result_middle, Size(), scale, scale, CV_INTER_AREA);
+
+		if (result_middle.rows > img_window.rows) {
+			float scale = float(img_window.rows) / float(result_middle.rows);
+			resize(result_middle, result_resize, Size(), scale, scale, CV_INTER_AREA);
 
 		}
-	}*/
-	
-	
-	
+		else {
+			result_resize = result_middle;
+		}
+	} else {
+		result_resize = result;
+	}
 
-	//Mat img_window;
-	//img_window.create(RESULTHEIGHT, RESULTWIDTH, CV_8UC3);
+	Mat imageRoi = img_window(Rect((RESULTWIDTH - result_resize.cols) / 2, (RESULTHEIGHT - result_resize.rows) / 2,
+		result_resize.cols, result_resize.rows));
+	addWeighted(imageRoi, 0, result_resize, 1, 0, imageRoi);
 
-	//int nRows = result.rows;
-	//int nCols = result.cols;
+	imshow("EasyPR", img_window);
+	waitKey();
 
-	//Mat result_resize;
-	//if (nCols <= img_window.cols && nRows <= img_window.rows) {
-	//	result_resize = result;
-
-	//} else if (nCols > img_window.cols && nRows <= img_window.rows) {
-	//	float scale = float(img_window.cols) / float(nCols);
-	//	resize(result, result_resize, Size(), scale, scale, CV_INTER_AREA);
-
-	//} else if (nCols <= img_window.cols && nRows > img_window.rows) {
-	//	float scale = float(img_window.rows) / float(nRows);
-	//	resize(result, result_resize, Size(), scale, scale, CV_INTER_AREA);
-
-	//} else if (nCols > img_window.cols && nRows > img_window.rows) {
-	//	Mat result_middle;
-	//	float scale = float(img_window.cols) / float(nCols);
-	//	resize(result, result_middle, Size(), scale, scale, CV_INTER_AREA);
-
-	//	if (result_middle.rows > img_window.rows) {
-	//		float scale = float(img_window.rows) / float(result_middle.rows);
-	//		resize(result_middle, result_resize, Size(), scale, scale, CV_INTER_AREA);
-
-	//	}
-	//	else {
-	//		result_resize = result_middle;
-	//	}
-	//} else {
-	//	result_resize = result;
-	//}
-
-	//Mat imageRoi = img_window(Rect((RESULTWIDTH - result_resize.cols) / 2, (RESULTHEIGHT - result_resize.rows) / 2,
-	//	result_resize.cols, result_resize.rows));
-	//addWeighted(imageRoi, 0, result_resize, 1, 0, imageRoi);
-
-	//imshow("EasyPR", img_window);
+	destroyWindow("EasyPR");
 
 	return 0;
 }

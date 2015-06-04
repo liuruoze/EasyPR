@@ -18,7 +18,6 @@
 #include "feature.h"
 #include "core_func.h"
 
-
 /*! \namespace easypr
     Namespace where all the C++ EasyPR functionality resides
 */
@@ -52,11 +51,11 @@ public:
 	inline string getModelPath() const{	 return m_path;	}
 
 private:
-	//！使用的SVM模型
+	//! 使用的SVM模型
 	CvSVM svm;
 
-	// ! EasyPR的getFeatures回调函数
-	// ！用于从车牌的image生成svm的训练特征features
+	//! EasyPR的getFeatures回调函数
+	//! 用于从车牌的image生成svm的训练特征features
 	svmCallback m_getFeatures;
 
 	//! 模型存储路径
