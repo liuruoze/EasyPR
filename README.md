@@ -55,12 +55,12 @@ EasyPR是基于opencv2.4.8版本开发的，2.4.8以上的版本应该可以兼�
 
 “蓝牌：苏EUK722”
 
-
 ### 安装
 
 EasyPR不需要安装，开发者直接在其上做改动。如果想使用DLL形式引用或者使用其他语言调用，则可以在[EasyPR_DLL_src](https://github.com/liuruoze/EasyPR_Dll_src)中找到。
 
 详细的开发与教程请见[介绍与开发教程](http://www.cnblogs.com/subconscious/p/3979988.html)。
+
 
 ### 使用
 
@@ -121,6 +121,12 @@ EasyPR不需要安装，开发者直接在其上做改动。如果想使用DLL�
 | accuracy_test.cpp | 批量测试
 | svm_train.cpp | svm训练函数
 | generate_gdts.cpp | GDTS生成函数
+
+### 版权
+
+EasyPR的源代码遵循Apache v2.0协议开源。
+
+EasyPR的数据与图片遵循[GDSL协议](image/GDST.txt)（通用数据共享协议）开放，请仔细阅读该协议。
 
 ### Contributer
 
