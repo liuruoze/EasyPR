@@ -5,7 +5,7 @@
 // Author:	    liuruoze
 // Copyright:   liuruoze
 // Desciption:  
-// Defines CPlate
+// An abstract class for car plate.
 //////////////////////////////////////////////////////////////////////////
 #ifndef __PLATE_H__
 #define __PLATE_H__
@@ -21,6 +21,8 @@ namespace easypr {
 	{
 	public:
 		bool bColored;
+
+		//! 构造函数
 		CPlate();
 
 		//! 设置与读取变量
