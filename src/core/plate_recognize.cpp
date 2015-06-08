@@ -12,51 +12,21 @@ CPlateRecognize::CPlateRecognize()
 	//m_charsRecognise = new CCharsRecognise();
 }
 
-////! 装载SVM模型
-//void CPlateRecognize::LoadSVM(string strSVM)
-//{
-//	m_plateDetect->LoadModel(strSVM.c_str());
-//}
-//
-////! 装载ANN模型
-//void CPlateRecognize::LoadANN(string strANN)
-//{
-//	m_charsRecognise->LoadModel(strANN.c_str());
-//}
-//
-//int CPlateRecognize::plateDetect(Mat src, vector<Mat>& resultVec)
-//{
-//	int result = m_plateDetect->plateDetect(src, resultVec);
-//	return result;
-//}
-//
-//int CPlateRecognize::charsRecognise(Mat plate, string& plateLicense)
-//{
-//	int result = m_charsRecognise->charsRecognise(plate, plateLicense);
-//	return result;
-//}
-
-
 // !车牌识别模块
 int CPlateRecognize::plateRecognize(Mat src, vector<string>& licenseVec, int index)
 {
 	// 车牌方块集合
 	vector<CPlate> plateVec;
 	
-	// 如果设置了Debug模式，就依次显示所有的图片
-	bool showDetectArea = getPDDebug();
-
 	// 进行深度定位，使用颜色信息与二次Sobel
-	int resultPD = plateDetectDeep(src, plateVec, showDetectArea, 0);
-
-	Mat result;
-	src.copyTo(result);
+	int resultPD = plateDetectDeep(src, plateVec, getPDDebug(), 0);
 
 	if (resultPD == 0)
 	{
 		int num = plateVec.size();
 		int index = 0;
 
+		//依次识别每个车牌内的符号
 		for (int j = 0; j < num; j++)
 		{
 			CPlate item = plateVec[j];		
@@ -72,36 +42,51 @@ int CPlateRecognize::plateRecognize(Mat src, vector<string>& licenseVec, int ind
 			{
 				string license = plateType + ":" + plateIdentify;
 				licenseVec.push_back(license);
-
-				/*int height = 36;
-				int width = 136;
-				if(height*index + height < result.rows)
-				{
-					Mat imageRoi = result(Rect(0, 0 + height*index, width, height));
-					addWeighted(imageRoi, 0, plate, 1, 0, imageRoi);				 				
-				}
-				index++;*/
-
-				RotatedRect minRect = item.getPlatePos();
-				Point2f rect_points[4]; 
-				minRect.points( rect_points );
-
-				if(item.bColored)
-				{
-					for (int j = 0; j < 4; j++)
-						line(result, rect_points[j], rect_points[(j + 1) % 4], Scalar(255, 255, 0), 2, 8);
-				}
-				else
-				{
-					for( int j = 0; j < 4; j++ )
-						line(result, rect_points[j], rect_points[(j+1)%4], Scalar(0,0,255), 2, 8 );//sobel定位车牌，红色方框
-				}							
 			}
 		}
-	}
+		//完整识别过程到此结束
+		
 
-	if (showDetectArea)
-		showResult(result);
+		//如果是Debug模式，则还需要将定位的图片显示在原图左上角
+		if (getPDDebug() == true)
+		{
+			Mat result;
+			src.copyTo(result);
+
+			for (int j = 0; j < num; j++)
+			{
+				CPlate item = plateVec[j];
+				Mat plate = item.getPlateMat();
+
+				int height = 36;
+				int width = 136;
+				if( height*index + height < result.rows )
+				{
+					Mat imageRoi = result(Rect(0, 0 + height*index, width, height));
+					addWeighted(imageRoi, 0, plate, 1, 0, imageRoi);
+				}
+				index++;
+
+				RotatedRect minRect = item.getPlatePos();
+				Point2f rect_points[4];
+				minRect.points(rect_points);
+
+				Scalar lineColor = Scalar(255, 255, 255);
+
+				if (item.getPlateLocateType() == SOBEL)
+					lineColor = Scalar(255, 0, 0);
+
+				if (item.getPlateLocateType() == COLOR)
+					lineColor = Scalar(0, 255, 0);
+
+				for (int j = 0; j < 4; j++)
+					line(result, rect_points[j], rect_points[(j + 1) % 4], lineColor, 2, 8);
+			}
+
+			//显示定位框的图片
+			showResult(result);
+		}	
+	}
 
 	return resultPD;
 }

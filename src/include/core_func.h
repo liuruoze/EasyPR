@@ -8,6 +8,8 @@ namespace easypr {
 
 	enum Color{ BLUE, YELLOW, WHITE, UNKNOWN};
 
+	enum LocateType { SOBEL, COLOR, OTHER };
+
 	//! 根据一幅图像与颜色模板获取对应的二值图
 	//! 输入RGB图像, 颜色模板（蓝色、黄色）
 	//! 输出灰度图（只有0和255两个值，255代表匹配，0代表不匹配）

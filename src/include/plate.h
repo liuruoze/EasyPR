@@ -11,6 +11,7 @@
 #define __PLATE_H__
 
 #include "prep.h"
+#include "core_func.h"
 
 /*! \namespace easypr
 Namespace where all the C++ EasyPR functionality resides
@@ -35,6 +36,9 @@ namespace easypr {
 		inline void setPlateStr(String param){ m_plateStr = param; }
 		inline String getPlateStr() const{ return m_plateStr; }
 
+		inline void setPlateLocateType(LocateType param){ m_locateType = param; }
+		inline LocateType getPlateLocateType() const{ return m_locateType; }
+
 	private:
 		//! 车牌的图块
 		Mat m_plateMat;
@@ -44,6 +48,9 @@ namespace easypr {
 
 		//! 车牌字符串
 		String m_plateStr;
+
+		//! 车牌定位的方法
+		LocateType m_locateType;
 	};
 
 }	/*! \namespace easypr*/

@@ -41,7 +41,6 @@ namespace easypr {
 		//! 获取调试模式状态
 		inline int getCRDebug(){ return m_charsSegment->getDebug(); }
 
-
 		//! 获得车牌颜色
 		inline string getPlateColor(Mat input) const
 		{
