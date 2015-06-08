@@ -29,8 +29,6 @@ class CPlateLocate
 public:
 	CPlateLocate();
 
-	enum LocateType { SOBEL, COLOR };
-
 	//! Sobel第一次搜索
 	//! 不限制大小和形状，获取的BoundRect进入下一步
 	int sobelFrtSearch(const Mat& src, vector<Rect_<float>>& outRects);

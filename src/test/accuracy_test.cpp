@@ -7,30 +7,27 @@
 
 using namespace easypr;
 
-int acurayTest(const string& test_path) {
-	////获取该路径下的所有文件
+int acurayTest(const string& test_path) 
+{
 	auto files = Utils::getFiles(test_path);
 
-	// CPlateLocate lo;
-	// CPlateJudge ju;
 	CPlateRecognize pr;
 
 	pr.LoadANN("model/ann.xml");
 	pr.LoadSVM("model/svm.xml");
-	pr.setLifemode(true);
+
+	// 设置Debug模式
 	pr.setDebug(false);
+
+	pr.setLifemode(true);
 
 	// 设置要处理的一张图片中最多有多少车牌
 	pr.setMaxPlates(4);
 
-	// CPlateDetect pd;
-	// pd.LoadSVM("model/svm.xml");
-	// pd.setPDLifemode(true);
-
 	int size = files.size();
-	// int size = 200;
 
-	if (0 == size) {
+	if (0 == size) 
+	{
 		cout << "No File Found in general_test/native_test!" << endl;
 		return 0;
 	}

@@ -70,36 +70,30 @@ int CPlateDetect::plateDetectDeep(Mat src, vector<CPlate>& resultVec, bool showD
 	const int color_find_max = m_maxPlates;
 
 	m_plateLocate->plateColorLocate(src, color_Plates, index);
-	
-	//m_plateJudge->plateJudge(color_Plates, color_result_Plates);
-	//下面代码是sunjunlishi添加
-	for (int i=0;i<color_Plates.size();++i)
-	{
-		//暂时屏蔽车牌的判断，车牌判断采用 字符跳变的方式判断
-		//字符跳变的形式  | | | | | | |,根据跳变的规律直接判断车牌，更准，效率更高
-		//当然判断跳变用的还是原始代码，在后面我加上了主食
-		color_result_Plates.push_back(color_Plates[i]);
-	}
+	m_plateJudge->plateJudge(color_Plates, color_result_Plates);
+
+	//for (int i=0;i<color_Plates.size();++i)
+	//{
+	//	color_result_Plates.push_back(color_Plates[i]);
+	//}
 	
 	for (int i = 0; i< color_result_Plates.size(); i++)
 	{
 		CPlate plate = color_result_Plates[i];
+
+		plate.setPlateLocateType(COLOR);
 		all_result_Plates.push_back(plate);
 	}
 
 	//颜色和边界闭操作同时采用
 	{
 		m_plateLocate->plateSobelLocate(src, sobel_Plates, index);
-		//m_plateJudge->plateJudge(sobel_Plates, sobel_result_Plates);
+		m_plateJudge->plateJudge(sobel_Plates, sobel_result_Plates);
 
-		//下面代码是sunjunlishi添加
-		for (int i=0;i<sobel_Plates.size();++i)
+		/*for (int i=0;i<sobel_Plates.size();++i)
 		{
-			//暂时屏蔽车牌的判断，车牌判断采用 字符跳变的方式判断
-			//字符跳变的形式  | | | | | | |,根据跳变的规律直接判断车牌，更准，效率更高
-			//当然判断跳变用的还是原始代码，在后面我加上了主食
 			sobel_result_Plates.push_back(sobel_Plates[i]);
-		}
+		}*/
 
 		for (int i = 0; i< sobel_result_Plates.size(); i++)
 		{
@@ -113,6 +107,7 @@ int CPlateDetect::plateDetectDeep(Mat src, vector<CPlate>& resultVec, bool showD
 			}
 
 			plate.bColored = false;
+			plate.setPlateLocateType(SOBEL);
 
 			all_result_Plates.push_back(plate);
 		}
@@ -131,8 +126,8 @@ int CPlateDetect::showResult(const Mat& result)
 {
 	namedWindow("EasyPR", CV_WINDOW_AUTOSIZE);
 
-	const int RESULTWIDTH = 930;  //640 930
-	const int RESULTHEIGHT = 710;   //540 710
+	const int RESULTWIDTH = 640;  //640 930
+	const int RESULTHEIGHT = 540;   //540 710
 
 	Mat img_window;
 	img_window.create(RESULTHEIGHT, RESULTWIDTH, CV_8UC3);
