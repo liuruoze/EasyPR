@@ -17,7 +17,7 @@ int acurayTest(const string& test_path)
 	pr.LoadSVM("model/svm.xml");
 
 	// ÉèÖÃDebugÄ£Ê½
-	pr.setDebug(false);
+	pr.setDebug(true);
 
 	pr.setLifemode(true);
 
