@@ -211,10 +211,10 @@ FakesAssemblies/
 EasyPR.xcodeproj/
 
 # Debug tmp files
-tmp/*.*
+tmp/
 
 # native_test files
-native_test/*.*
+native_test/
 
 *.vcxproj
 *.vcxproj.filters
