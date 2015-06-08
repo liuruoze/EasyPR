@@ -60,6 +60,7 @@ namespace easypr{
 		Mat warpImage(m, m, in.type());
 		warpAffine(in, warpImage, transformMat, warpImage.size(), INTER_LINEAR, BORDER_CONSTANT, Scalar(0));
 
+		//！ 将所有的字符调整成统一的尺寸
 		Mat out;
 		resize(warpImage, out, Size(charSize, charSize));
 
@@ -72,13 +73,14 @@ namespace easypr{
 	// reference: Rafael C. Gonzalez. Digital Image Processing Using MATLAB
 	
 	int staticIndex = 0;
-
 	int iTag = 0;
+
 	//! 字符分割与排序
 	int CCharsSegment::charsSegment(Mat input, vector<Mat>& resultVec)
 	{
+		// 输入图片无数据，返回ErrorCode=0x01
 		if (!input.data)
-			return -3;
+			return 0x01;
 
 		int w = input.cols;
 		int h = input.rows;
@@ -155,13 +157,12 @@ namespace easypr{
 			imwrite(ss.str(), img_threshold);
 		}
 
-		//去除车牌上方的柳钉以及下方的横线等干扰
-		//并且也判断了是否是车牌
-		//并且在此对字符的跳变次数以及字符颜色所占的比重做了是否是车牌的判别条件
-		if(!clearLiuDing(img_threshold))
-		{
-			return -3;
-		}
+		// 去除车牌上方的柳钉以及下方的横线等干扰
+		// 并且也判断了是否是车牌
+		// 并且在此对字符的跳变次数以及字符颜色所占的比重做了是否是车牌的判别条件
+		// 如果不是车牌，返回ErrorCode=0x02
+		if (!clearLiuDing(img_threshold))
+			return 0x02;
 
 		if (m_debug)
 		{
@@ -170,6 +171,7 @@ namespace easypr{
 			imwrite(ss.str(), img_threshold);
 		}
 		iTag++;
+
 
 		Mat img_contours;
 		img_threshold.copyTo(img_contours);
@@ -180,39 +182,34 @@ namespace easypr{
 			CV_RETR_EXTERNAL, // retrieve the external contours
 			CV_CHAIN_APPROX_NONE); // all pixels of each contours
 
-		//Start to iterate to each contour founded
 		vector<vector<Point> >::iterator itc = contours.begin();
 		vector<Rect> vecRect;
 
-		//Remove patch that are no inside limits of aspect ratio and area.  
-		//将不符合特定尺寸的图块排除出去
-		while (itc != contours.end())
-		{
+		// 将不符合特定尺寸的字符块排除出去
+		while (itc != contours.end()) {
 			Rect mr = boundingRect(Mat(*itc));
 			Mat auxRoi(img_threshold, mr);
+
 			if (verifyCharSizes(auxRoi))
 				vecRect.push_back(mr);
-
 			++itc;
 		}
 
+		// 如果找不到任何字符块，则返回ErrorCode=0x03
 		if (vecRect.size() == 0)
-			return -3;
+			return 0x03;
 
-		vector<Rect> sortedRect;
-		////对符合尺寸的图块按照从左到右进行排序
-		SortRect(vecRect, sortedRect);
+		// 对符合尺寸的图块按照从左到右进行排序;
 
-		/*vector<Rect> sortedRect(vecRect);
-		std::sort
-		(sortedRect.begin(), sortedRect.end(), [](const Rect &r1, const Rect &r2)
-			{
-				return r1.x < r2.x;
-			}
-		);*/
+		/*vector<Rect> sortedRect;		
+		SortRect(vecRect, sortedRect);*/
+
+		vector<Rect> sortedRect(vecRect);
+		std::sort(sortedRect.begin(), sortedRect.end(), [](const Rect &r1, const Rect &r2) {return r1.x < r2.x;});
 
 		int specIndex = 0;
-		//获得指示城市的特定Rect,如苏A的"A"
+
+		//获得特殊字符对应的Rectt,如苏A的"A"
 		specIndex = GetSpecificRect(sortedRect);
 
 		if (m_debug)

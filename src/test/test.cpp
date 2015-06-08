@@ -20,10 +20,10 @@ int test_plate_recognize();
 int testMain();
 
 //把你要测试的图片地址写在下面
-const string img_plate_locate = "image/川A105LR.jpg";
-const string img_plate_detect = "image/川A1D590.jpg";
-const string img_chars_segment = "image/川AE8H60.jpg";
-const string img_plate_recognize = "image/川A105LR.jpg";
+const string img_plate_locate = "image/test.jpg";
+const string img_plate_detect = "image/test.jpg";
+const string img_chars_segment = "image/test.jpg";
+const string img_plate_recognize = "image/test.jpg";
 
 const string testOption[] = 
 	{
