@@ -6,14 +6,29 @@ Thumbs.db
 *.exe
 *.pdb
 *.user
-*.sln.docstates
+*.aps
+*.pch
+*.vspscc
+*_i.c
+*_p.c
+*.ncb
 *.suo
+*.tlb
+*.tlh
+*.bak
+*.cache
+*.ilk
+*.log
+[Bb]in
+[Dd]ebug*/
+*.lib
+*.sbr
+obj/
+[Rr]elease*/
+_ReSharper*/
+
 
 # Build results
-[Dd]ebug/
-[Dd]ebugPublic/
-[Rr]elease/
-[Rr]eleases/
 experiment/
 experi/
 bak/
@@ -197,3 +212,6 @@ EasyPR.xcodeproj/
 
 # Debug tmp files
 tmp/
+
+# native_test files
+native_test/

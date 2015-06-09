@@ -1,6 +1,7 @@
 #ifndef EASYPR_ACCURACY_HPP
 #define EASYPR_ACCURACY_HPP
 
+#include <easypr.h>
 #include <ctime>
 #include <fstream>
 
@@ -13,106 +14,110 @@ int accuracyTest(const char* test_path) {
 
   CPlateRecognize pr;
 
-  pr.LoadSVM("resources/model/svm.xml");
   pr.LoadANN("resources/model/ann.xml");
-  pr.setLifemode(true);
+  pr.LoadSVM("resources/model/svm.xml");
+
+  // ÉèÖÃDebugÄ£Ê½
   pr.setDebug(false);
 
-  // è®¾ç½®è¦å¤„ç†çš„ä¸€å¼ å›¾ç‰‡ä¸­æœ€å¤šæœ‰å¤šå°‘è½¦ç‰Œ
+  pr.setLifemode(true);
+
+  // ÉèÖÃÒª´¦ÀíµÄÒ»ÕÅÍ¼Æ¬ÖĞ×î¶àÓĞ¶àÉÙ³µÅÆ
   pr.setMaxPlates(4);
 
-  size_t files_num = files.size();
+  int size = files.size();
 
-  if (0 == files_num) {
-    std::cout << "No File Found in " << test_path << "!" << std::endl;
+  if (0 == size) {
+    cout << "No File Found in general_test/native_test!" << endl;
     return 0;
   }
 
-  std::cout << "Begin to test the easypr accuracy!" << std::endl;
+  cout << "Begin to test the easypr accuracy!" << endl;
 
-  // æ€»çš„æµ‹è¯•å›¾ç‰‡æ•°é‡
+  // ×ÜµÄ²âÊÔÍ¼Æ¬ÊıÁ¿
   int count_all = 0;
-  // é”™è¯¯çš„å›¾ç‰‡æ•°é‡
+  // ´íÎóµÄÍ¼Æ¬ÊıÁ¿
   int count_err = 0;
-  // æœªè¯†åˆ«çš„å›¾ç‰‡æ•°é‡
+  // Î´Ê¶±ğµÄÍ¼Æ¬ÊıÁ¿
   int count_norecogin = 0;
 
-  // æ€»çš„å­—ç¬¦å·®è·
+  // ×ÜµÄ×Ö·û²î¾à
   float diff_all = 0;
-  // å¹³å‡å­—ç¬¦å·®è·
+  // Æ½¾ù×Ö·û²î¾à
   float diff_avg = 0;
-  // å®Œå…¨åŒ¹é…çš„è¯†åˆ«æ¬¡æ•°
+  // ÍêÈ«Æ¥ÅäµÄÊ¶±ğ´ÎÊı
   float match_count = 0;
-  // å®Œå…¨åŒ¹é…çš„è¯†åˆ«æ¬¡æ•°æ‰€å è¯†åˆ«å›¾ç‰‡ä¸­çš„æ¯”ä¾‹
+  // ÍêÈ«Æ¥ÅäµÄÊ¶±ğ´ÎÊıËùÕ¼Ê¶±ğÍ¼Æ¬ÖĞµÄ±ÈÀı
   float match_rate = 0;
 
-  // å¼€å§‹å’Œç»“æŸæ—¶é—´
+  // ¿ªÊ¼ºÍ½áÊøÊ±¼ä
   time_t begin, end;
   time(&begin);
 
-  for (int i = 0; i < files_num; i++) {
-    std::string filepath = files[i];
-    std::cout << "------------------" << std::endl;
+  for (int i = 0; i < size; i++) {
+    string filepath = files[i].c_str();
 
-    // è·å–çœŸå®çš„è½¦ç‰Œ
-    std::string plateLicense = Utils::getFileName(filepath);
-    std::cout << "åŸç‰Œ:" << plateLicense << std::endl;
+    // EasyPR¿ªÊ¼ÅĞ¶Ï³µÅÆ
+    Mat src = imread(filepath);
 
-    // EasyPRå¼€å§‹åˆ¤æ–­è½¦ç‰Œ
-    cv::Mat src = cv::imread(filepath);
+    // Èç¹ûÊÇ·ÇÍ¼ÏñÎÄ¼ş£¬Ö±½Ó¹ıÈ¥
+    if (!src.data) continue;
 
-    std::vector<std::string> plateVec;
-    int result = pr.plateRecognize(src, plateVec);
+    cout << "------------------" << endl;
+
+    // »ñÈ¡ÕæÊµµÄ³µÅÆ
+    string plateLicense = Utils::getFileName(filepath);
+    cout << "Ô­ÅÆ:" << plateLicense << endl;
+
+    vector<string> plateVec;
+    int result = pr.plateRecognize(src, plateVec, i);
     if (result == 0) {
-      size_t num = plateVec.size();
+      int num = plateVec.size();
 
       if (num == 0) {
-        std::cout << "æ— è½¦ç‰Œ" << std::endl;
-        if (plateLicense != "æ— è½¦ç‰Œ") count_norecogin++;
+        cout << "ÎŞ³µÅÆ" << endl;
+        if (plateLicense != "ÎŞ³µÅÆ") count_norecogin++;
       } else if (num > 1) {
-        // å¤šè½¦ç‰Œä½¿ç”¨diffæœ€å°çš„é‚£ä¸ªè®°å½•
+        // ¶à³µÅÆÊ¹ÓÃdiff×îĞ¡µÄÄÇ¸ö¼ÇÂ¼
         int mindiff = 10000;
         for (int j = 0; j < num; j++) {
-          std::cout << plateVec[j] << " (" << j + 1 << ")" << std::endl;
-          std::string colorplate = plateVec[j];
+          cout << plateVec[j] << " (" << j + 1 << ")" << endl;
+          string colorplate = plateVec[j];
 
-          // è®¡ç®—"è“ç‰Œ:è‹E7KU22"ä¸­å†’å·åé¢çš„è½¦ç‰Œå¤§å°"
-          auto spilt_plate = Utils::splitString(colorplate, ':');
+          // ¼ÆËã"À¶ÅÆ:ËÕE7KU22"ÖĞÃ°ºÅºóÃæµÄ³µÅÆ´óĞ¡"
+          vector<string> spilt_plate = Utils::splitString(colorplate, ':');
 
-          size_t size = spilt_plate.size();
+          int size = spilt_plate.size();
           if (size == 2 && spilt_plate[1] != "") {
-            int diff =
-                    Utils::levenshtein_distance(plateLicense,
-                                                spilt_plate[size - 1]);
+            int diff = utils::levenshtein_distance(plateLicense,
+                                                   spilt_plate[size - 1]);
             if (diff < mindiff) mindiff = diff;
           }
         }
 
-        std::cout << "å·®è·:" << mindiff << "ä¸ªå­—ç¬¦" << std::endl;
+        cout << "²î¾à:" << mindiff << "¸ö×Ö·û" << endl;
         if (mindiff == 0) {
-          // å®Œå…¨åŒ¹é…
+          // ÍêÈ«Æ¥Åä
           match_count++;
         }
         diff_all = diff_all + mindiff;
       } else {
-        // å•è½¦ç‰Œåªè®¡ç®—ä¸€æ¬¡diff
+        // µ¥³µÅÆÖ»¼ÆËãÒ»´Îdiff
         for (int j = 0; j < num; j++) {
-          std::cout << plateVec[j] << std::endl;
-          std::string colorplate = plateVec[j];
+          cout << plateVec[j] << endl;
+          string colorplate = plateVec[j];
 
-          // è®¡ç®—"è“ç‰Œ:è‹E7KU22"ä¸­å†’å·åé¢çš„è½¦ç‰Œå¤§å°"
-          std::vector<std::string> spilt_plate = Utils::splitString(colorplate,
-                                                                    ':');
+          // ¼ÆËã"À¶ÅÆ:ËÕE7KU22"ÖĞÃ°ºÅºóÃæµÄ³µÅÆ´óĞ¡"
+          vector<string> spilt_plate = Utils::splitString(colorplate, ':');
 
-          size_t size = spilt_plate.size();
+          int size = spilt_plate.size();
           if (size == 2 && spilt_plate[1] != "") {
-            int diff =
-                    Utils::levenshtein_distance(plateLicense,
-                                                spilt_plate[size - 1]);
-            std::cout << "å·®è·:" << diff << "ä¸ªå­—ç¬¦" << std::endl;
+            int diff = utils::levenshtein_distance(plateLicense,
+                                                   spilt_plate[size - 1]);
+            cout << "²î¾à:" << diff << "¸ö×Ö·û" << endl;
 
             if (diff == 0) {
-              // å®Œå…¨åŒ¹é…
+              // ÍêÈ«Æ¥Åä
               match_count++;
             }
             diff_all = diff_all + diff;
@@ -120,69 +125,67 @@ int accuracyTest(const char* test_path) {
         }
       }
     } else {
-      std::cout << "é”™è¯¯ç :" << result << std::endl;
+      cout << "´íÎóÂë:" << result << endl;
       count_err++;
     }
     count_all++;
   }
   time(&end);
 
-  std::cout << "------------------" << std::endl;
-  std::cout << "Easypr accuracy test end!" << std::endl;
-  std::cout << "------------------" << std::endl;
-  std::cout << std::endl;
-  std::cout << "ç»Ÿè®¡å‚æ•°:" << std::endl;
-  std::cout << "æ€»å›¾ç‰‡æ•°:" << count_all << "å¼ ,  ";
-  std::cout << "æœªè¯†å‡ºå›¾ç‰‡:" << count_norecogin << "å¼ ,  ";
+  cout << "------------------" << endl;
+  cout << "Easypr accuracy test end!" << endl;
+  cout << "------------------" << endl;
+  cout << endl;
+  cout << "Í³¼Æ²ÎÊı:" << endl;
+  cout << "×ÜÍ¼Æ¬Êı:" << count_all << "ÕÅ,  ";
+  cout << "Î´Ê¶³öÍ¼Æ¬:" << count_norecogin << "ÕÅ,  ";
 
   float count_recogin = count_all - (count_err + count_norecogin);
   float count_rate = count_recogin / count_all;
-
-  std::cout << "å®šä½ç‡:" << count_rate * 100 << "%  " << std::endl;
+  // float count_norate = 1 - count_rate;
+  cout << "¶¨Î»ÂÊ:" << count_rate * 100 << "%  " << endl;
 
   diff_avg = diff_all / count_recogin;
   match_rate = match_count / count_recogin * 100;
 
-  std::cout << "å¹³å‡å­—ç¬¦å·®è·:" << diff_avg << "ä¸ª,  ";
-  std::cout << "å®Œå…¨åŒ¹é…æ•°:" << match_count << "å¼ ,  ";
-  std::cout << "å®Œå…¨åŒ¹é…ç‡:" << match_rate << "%  " << std::endl;
+  cout << "Æ½¾ù×Ö·û²î¾à:" << diff_avg << "¸ö,  ";
+  cout << "ÍêÈ«Æ¥ÅäÊı:" << match_count << "ÕÅ,  ";
+  cout << "ÍêÈ«Æ¥ÅäÂÊ:" << match_rate << "%  " << endl;
 
   double seconds = difftime(end, begin);
   double avgsec = seconds / double(count_all);
 
-  std::cout << "æ€»æ—¶é—´:" << seconds << "ç§’,  ";
-  std::cout << "å¹³å‡æ‰§è¡Œæ—¶é—´:" << avgsec << "ç§’  " << std::endl;
+  cout << "×ÜÊ±¼ä:" << seconds << "Ãë,  ";
+  cout << "Æ½¾ùÖ´ĞĞÊ±¼ä:" << avgsec << "Ãë  " << endl;
 
-  std::cout << std::endl;
+  cout << endl;
 
-  std::cout << "------------------" << std::endl;
+  cout << "------------------" << endl;
 
-  std::ofstream myfile("accuracy.txt", std::ios::app | std::ios::out);
+  ofstream myfile("accuracy.txt", ios::app);
   if (myfile.is_open()) {
     time_t t = time(0);  // get time now
     struct tm* now = localtime(&t);
     char buf[80];
 
     strftime(buf, sizeof(buf), "%Y-%m-%d %X", now);
-    myfile << std::string(buf) << std::endl;
+    myfile << string(buf) << endl;
 
-    myfile << "æ€»å›¾ç‰‡æ•°:" << count_all << "å¼ ,  ";
-    myfile << "æœªè¯†å‡ºå›¾ç‰‡:" << count_norecogin << "å¼ ,  ";
-    myfile << "å®šä½ç‡:" << count_rate * 100 << "%  " << std::endl;
-    myfile << "å¹³å‡å­—ç¬¦å·®è·:" << diff_avg << "ä¸ª,  ";
-    myfile << "å®Œå…¨åŒ¹é…æ•°:" << match_count << "å¼ ,  ";
-    myfile << "å®Œå…¨åŒ¹é…ç‡:" << match_rate << "%  " << std::endl;
-    myfile << "æ€»æ—¶é—´:" << seconds << "ç§’,  ";
-    myfile << "å¹³å‡æ‰§è¡Œæ—¶é—´:" << avgsec << "ç§’" << std::endl;
+    myfile << "×ÜÍ¼Æ¬Êı:" << count_all << "ÕÅ,  ";
+    myfile << "Î´Ê¶³öÍ¼Æ¬:" << count_norecogin << "ÕÅ,  ";
+    myfile << "¶¨Î»ÂÊ:" << count_rate * 100 << "%  " << endl;
+    myfile << "Æ½¾ù×Ö·û²î¾à:" << diff_avg << "¸ö,  ";
+    myfile << "ÍêÈ«Æ¥ÅäÊı:" << match_count << "ÕÅ,  ";
+    myfile << "ÍêÈ«Æ¥ÅäÂÊ:" << match_rate << "%  " << endl;
+    myfile << "×ÜÊ±¼ä:" << seconds << "Ãë,  ";
+    myfile << "Æ½¾ùÖ´ĞĞÊ±¼ä:" << avgsec << "Ãë  " << endl;
     myfile.close();
   } else {
-    std::cout << "Unable to open file";
+    cout << "Unable to open file";
   }
   return 0;
 }
-
+}
 }
 
-}
-
-#endif //EASYPR_ACCURACY_HPP
+#endif  // EASYPR_ACCURACY_HPP

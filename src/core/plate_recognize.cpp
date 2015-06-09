@@ -5,67 +5,81 @@
 */
 namespace easypr {
 
-using namespace cv;
-using namespace std;
-
 CPlateRecognize::CPlateRecognize() {
-
+  // cout << "CPlateRecognize" << endl;
+  // m_plateDetect= new CPlateDetect();
+  // m_charsRecognise = new CCharsRecognise();
 }
 
-int CPlateRecognize::plateRecognize(Mat src, vector<string>& licenseVec) {
-  // è½¦ç‰Œæ–¹å—é›†åˆ
+// !³µÅÆÊ¶±ğÄ£¿é
+int CPlateRecognize::plateRecognize(Mat src, std::vector<string> &licenseVec,
+                                    int index) {
+  // ³µÅÆ·½¿é¼¯ºÏ
   vector<CPlate> plateVec;
 
-  // å¦‚æœè®¾ç½®äº†Debugæ¨¡å¼ï¼Œå°±ä¾æ¬¡æ˜¾ç¤ºæ‰€æœ‰çš„å›¾ç‰‡
-  // int showDetectArea = getPDDebug();
-  bool showDetectArea = false;
-  // è¿›è¡Œæ·±åº¦å®šä½ï¼Œä½¿ç”¨é¢œè‰²ä¿¡æ¯ä¸äºŒæ¬¡Sobel
-  int resultPD = plateDetectDeep(src, plateVec, showDetectArea, 0);
-
-  Mat result;
-  src.copyTo(result);
+  // ½øĞĞÉî¶È¶¨Î»£¬Ê¹ÓÃÑÕÉ«ĞÅÏ¢Óë¶ş´ÎSobel
+  int resultPD = plateDetectDeep(src, plateVec, getPDDebug(), 0);
 
   if (resultPD == 0) {
-    size_t num = plateVec.size();
+    int num = plateVec.size();
+    int index = 0;
 
+    //ÒÀ´ÎÊ¶±ğÃ¿¸ö³µÅÆÄÚµÄ·ûºÅ
     for (int j = 0; j < num; j++) {
       CPlate item = plateVec[j];
-
       Mat plate = item.getPlateMat();
 
-      //è·å–è½¦ç‰Œé¢œè‰²
+      //»ñÈ¡³µÅÆÑÕÉ«
       string plateType = getPlateColor(plate);
 
-      //è·å–è½¦ç‰Œå·
+      //»ñÈ¡³µÅÆºÅ
       string plateIdentify = "";
       int resultCR = charsRecognise(plate, plateIdentify);
       if (resultCR == 0) {
         string license = plateType + ":" + plateIdentify;
         licenseVec.push_back(license);
+      }
+    }
+    //ÍêÕûÊ¶±ğ¹ı³Ìµ½´Ë½áÊø
+
+    //Èç¹ûÊÇDebugÄ£Ê½£¬Ôò»¹ĞèÒª½«¶¨Î»µÄÍ¼Æ¬ÏÔÊ¾ÔÚÔ­Í¼×óÉÏ½Ç
+    if (getPDDebug() == true) {
+      Mat result;
+      src.copyTo(result);
+
+      for (int j = 0; j < num; j++) {
+        CPlate item = plateVec[j];
+        Mat plate = item.getPlateMat();
+
+        int height = 36;
+        int width = 136;
+        if (height * index + height < result.rows) {
+          Mat imageRoi = result(Rect(0, 0 + height * index, width, height));
+          addWeighted(imageRoi, 0, plate, 1, 0, imageRoi);
+        }
+        index++;
 
         RotatedRect minRect = item.getPlatePos();
         Point2f rect_points[4];
         minRect.points(rect_points);
 
-        if (item.bColored) {
-          for (int k = 0; k < 4; k++) {
-            line(result, rect_points[k], rect_points[(k + 1) % 4],
-                 Scalar(255, 255, 0), 2, 8);
-            //é¢œè‰²å®šä½è½¦ç‰Œï¼Œé»„è‰²æ–¹æ¡†
-          }
-        } else {
-          for (int m = 0; m < 4; m++) {
-            line(result, rect_points[m], rect_points[(m + 1) % 4],
-                 Scalar(0, 0, 255), 2, 8);//sobelå®šä½è½¦ç‰Œï¼Œçº¢è‰²æ–¹æ¡†
-          }
-        }
+        Scalar lineColor = Scalar(255, 255, 255);
+
+        if (item.getPlateLocateType() == SOBEL) lineColor = Scalar(255, 0, 0);
+
+        if (item.getPlateLocateType() == COLOR) lineColor = Scalar(0, 255, 0);
+
+        for (int j = 0; j < 4; j++)
+          line(result, rect_points[j], rect_points[(j + 1) % 4], lineColor, 2,
+               8);
       }
+
+      //ÏÔÊ¾¶¨Î»¿òµÄÍ¼Æ¬
+      showResult(result);
     }
   }
-  showResult(result);
 
   return resultPD;
 }
 
-}  /*! \namespace easypr*/
-
+} /*! \namespace easypr*/

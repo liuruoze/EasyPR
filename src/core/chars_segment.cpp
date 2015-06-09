@@ -1,385 +1,364 @@
 #include "easypr/chars_segment.h"
 #include "easypr/util.h"
 
+using namespace std;
+
 /*! \namespace easypr
 Namespace where all the C++ EasyPR functionality resides
 */
-namespace easypr{
-  using namespace cv;
-
-	const float DEFAULT_BLUEPERCEMT = 0.3;
-	const float	DEFAULT_WHITEPERCEMT = 0.1;
-
-	CCharsSegment::CCharsSegment()
-	{
-		//cout << "CCharsSegment" << endl;
-		m_LiuDingSize = DEFAULT_LIUDING_SIZE;
-		m_theMatWidth = DEFAULT_MAT_WIDTH;
-
-		//ï¼è½¦ç‰Œé¢œè‰²åˆ¤æ–­å‚æ•°
-		m_ColorThreshold = DEFAULT_COLORTHRESHOLD;
-		m_BluePercent = DEFAULT_BLUEPERCEMT;
-		m_WhitePercent = DEFAULT_WHITEPERCEMT;
-
-		m_debug = DEFAULT_DEBUG;
-	}
-
-	//! å­—ç¬¦å°ºå¯¸éªŒè¯
-	bool CCharsSegment::verifyCharSizes(Mat r){
-		//Char sizes 45x90
-		float aspect = 45.0f / 90.0f;
-		float charAspect = (float)r.cols / (float)r.rows;
-		float error = 0.7;
-		float minHeight = 10;
-		float maxHeight = 35;
-		//We have a different aspect ratio for number 1, and it can be ~0.2
-		float minAspect = 0.05;
-		float maxAspect = aspect + aspect*error;
-		//area of pixels
-		float area = countNonZero(r);
-		//bb area
-		float bbArea = r.cols*r.rows;
-		//% of pixel in area
-		float percPixels = area / bbArea;
-
-		if (percPixels <= 1 && charAspect > minAspect && charAspect < maxAspect && r.rows >= minHeight && r.rows < maxHeight)
-			return true;
-		else
-			return false;
-	}
-
-	//! å­—ç¬¦é¢„å¤„ç†
-	Mat CCharsSegment::preprocessChar(Mat in){
-		//Remap image
-		int h = in.rows;
-		int w = in.cols;
-		int charSize = CHAR_SIZE;	//ç»Ÿä¸€æ¯ä¸ªå­—ç¬¦çš„å¤§å°
-		Mat transformMat = Mat::eye(2, 3, CV_32F);
-		int m = max(w, h);
-		transformMat.at<float>(0, 2) = m / 2 - w / 2;
-		transformMat.at<float>(1, 2) = m / 2 - h / 2;
-
-		Mat warpImage(m, m, in.type());
-		warpAffine(in, warpImage, transformMat, warpImage.size(), INTER_LINEAR, BORDER_CONSTANT, Scalar(0));
-
-		Mat out;
-		resize(warpImage, out, Size(charSize, charSize));
-
-		return out;
-	}
-
-
-	// implementation of otsu algorithm
-	// author: onezeros(@yahoo.cn)
-	// reference: Rafael C. Gonzalez. Digital Image Processing Using MATLAB
-	
-	int staticIndex = 0;
-
-	int iTag = 0;
-	//! å­—ç¬¦åˆ†å‰²ä¸æ’åº
-	int CCharsSegment::charsSegment(Mat input, vector<Mat>& resultVec)
-	{
-		if (!input.data)
-			return -3;
-
-		int w = input.cols;
-		int h = input.rows;
-
-		Mat tmpMat = input(Rect(w*0.1,h*0.1,w*0.8,h*0.8));
-		//åˆ¤æ–­è½¦ç‰Œé¢œè‰²ä»¥æ­¤ç¡®è®¤thresholdæ–¹æ³•
-		Color plateType = getPlateType(tmpMat, true);
-
-		Mat input_grey;
-		cvtColor(input, input_grey, CV_BGR2GRAY);
-
-
-		Mat img_threshold ;
-		if (BLUE == plateType)
-		{
-			img_threshold = input_grey.clone();
-			
-			int w = input_grey.cols;
-			int h = input_grey.rows;
-			Mat tmp = input_grey(Rect(w*0.1,h*0.1,w*0.8,h*0.8));
-			int threadHoldV = ThresholdOtsu(tmp);
-      utils::imwrite("tmp/inputgray2.jpg",input_grey);
-		
-			threshold(input_grey, img_threshold,threadHoldV, 255, CV_THRESH_BINARY);
-
-
-			//threshold(input_grey, img_threshold, 5, 255, CV_THRESH_OTSU + CV_THRESH_BINARY);
-
-		}
-		else if (YELLOW == plateType)
-		{
-			img_threshold = input_grey.clone();
-			int w = input_grey.cols;
-			int h = input_grey.rows;
-			Mat tmp = input_grey(Rect(w*0.1,h*0.1,w*0.8,h*0.8));
-			int threadHoldV = ThresholdOtsu(tmp);
-      utils::imwrite("tmp/inputgray2.jpg",input_grey);
-
-			threshold(input_grey, img_threshold,threadHoldV, 255, CV_THRESH_BINARY_INV);
-
-
-			//threshold(input_grey, img_threshold, 10, 255, CV_THRESH_OTSU + CV_THRESH_BINARY_INV);
-		}
-		else
-			threshold(input_grey, img_threshold, 10, 255, CV_THRESH_OTSU + CV_THRESH_BINARY);
-		
-	
-		
-		if (m_debug)
-		{
-			std::stringstream ss(std::stringstream::in | std::stringstream::out);
-			ss << "tmp/debug_char_threshold" <<iTag<< ".jpg";
-      utils::imwrite(ss.str(), img_threshold);
-		}
-
-		//å»é™¤è½¦ç‰Œä¸Šæ–¹çš„æŸ³é’‰ä»¥åŠä¸‹æ–¹çš„æ¨ªçº¿ç­‰å¹²æ‰°
-		if(!clearLiuDing(img_threshold))
-		{
-			return -3;
-		}
-
-		if (m_debug)
-		{
-			std::stringstream ss(std::stringstream::in | std::stringstream::out);
-			ss << "tmp/debug_char_clearLiuDing" <<iTag<< ".jpg";
-      utils::imwrite(ss.str(), img_threshold);
-		}
-		iTag++;
-
-		Mat img_contours;
-		img_threshold.copyTo(img_contours);
-
-		vector< vector< Point> > contours;
-		findContours(img_contours,
-			contours, // a vector of contours
-			CV_RETR_EXTERNAL, // retrieve the external contours
-			CV_CHAIN_APPROX_NONE); // all pixels of each contours
-
-		//Start to iterate to each contour founded
-		vector<vector<Point> >::iterator itc = contours.begin();
-		vector<Rect> vecRect;
-
-		//Remove patch that are no inside limits of aspect ratio and area.  
-		//å°†ä¸ç¬¦åˆç‰¹å®šå°ºå¯¸çš„å›¾å—æ’é™¤å‡ºå»
-		while (itc != contours.end())
-		{
-			Rect mr = boundingRect(Mat(*itc));
-			Mat auxRoi(img_threshold, mr);
-			if (verifyCharSizes(auxRoi))
-				vecRect.push_back(mr);
-
-			++itc;
-		}
-
-		if (vecRect.size() == 0)
-			return -3;
-
-		vector<Rect> sortedRect;
-		////å¯¹ç¬¦åˆå°ºå¯¸çš„å›¾å—æŒ‰ç…§ä»å·¦åˆ°å³è¿›è¡Œæ’åº
-		SortRect(vecRect, sortedRect);
-
-		/*vector<Rect> sortedRect(vecRect);
-		std::sort
-		(sortedRect.begin(), sortedRect.end(), [](const Rect &r1, const Rect &r2)
-			{
-				return r1.x < r2.x;
-			}
-		);*/
-
-		int specIndex = 0;
-		//è·å¾—æŒ‡ç¤ºåŸå¸‚çš„ç‰¹å®šRect,å¦‚è‹Açš„"A"
-		specIndex = GetSpecificRect(sortedRect);
-
-		if (m_debug)
-		{
-			if (specIndex < sortedRect.size())
-			{
-				Mat specMat(img_threshold, sortedRect[specIndex]);
-				std::stringstream ss(std::stringstream::in | std::stringstream::out);
-				ss << "tmp/debug_specMat" << ".jpg";
-        utils::imwrite(ss.str(), specMat);
-			}
-		}
-
-		//æ ¹æ®ç‰¹å®šRectå‘å·¦åæ¨å‡ºä¸­æ–‡å­—ç¬¦
-		//è¿™æ ·åšçš„ä¸»è¦åŸå› æ˜¯æ ¹æ®findContoursæ–¹æ³•å¾ˆéš¾æ•æ‰åˆ°ä¸­æ–‡å­—ç¬¦çš„å‡†ç¡®Rectï¼Œå› æ­¤ä»…èƒ½
-		//é€€è¿‡ç‰¹å®šç®—æ³•æ¥æŒ‡å®š
-		Rect chineseRect;
-		if (specIndex < sortedRect.size())
-			chineseRect = GetChineseRect(sortedRect[specIndex]);
-		else
-			return -3;
-
-		if (m_debug)
-		{
-			Mat chineseMat(img_threshold, chineseRect);
-			std::stringstream ss(std::stringstream::in | std::stringstream::out);
-			ss << "tmp/debug_chineseMat" << ".jpg";
-      utils::imwrite(ss.str(), chineseMat);
-		}
-
-
-		//æ–°å»ºä¸€ä¸ªå…¨æ–°çš„æ’åºRect
-		//å°†ä¸­æ–‡å­—ç¬¦Rectç¬¬ä¸€ä¸ªåŠ è¿›æ¥ï¼Œå› ä¸ºå®ƒè‚¯å®šæ˜¯æœ€å·¦è¾¹çš„
-		//å…¶ä½™çš„RectåªæŒ‰ç…§é¡ºåºå»6ä¸ªï¼Œè½¦ç‰Œåªå¯èƒ½æ˜¯7ä¸ªå­—ç¬¦ï¼è¿™æ ·å¯ä»¥é¿å…é˜´å½±å¯¼è‡´çš„â€œ1â€å­—ç¬¦
-		vector<Rect> newSortedRect;
-		newSortedRect.push_back(chineseRect);
-		RebuildRect(sortedRect, newSortedRect, specIndex);
-
-		if (newSortedRect.size() == 0)
-			return -3;
-
-	
-		for (int i = 0; i < newSortedRect.size(); i++)
-		{
-			Rect mr = newSortedRect[i];
-			Mat auxRoi(img_threshold, mr);
-
-			if (1)
-			{
-				auxRoi = preprocessChar(auxRoi);
-				if (m_debug)
-				{
-					std::stringstream ss(std::stringstream::in | std::stringstream::out);
-					ss << "tmp/debug_char_auxRoi_" << (i+staticIndex) << ".jpg";
-          utils::imwrite(ss.str(), auxRoi);
-				}
-				resultVec.push_back(auxRoi);
-			}
-		}
-		staticIndex+=newSortedRect.size();
-
-		return 0;
-	}
-
-	//! å°†RectæŒ‰ä½ç½®ä»å·¦åˆ°å³è¿›è¡Œæ’åº
-	int CCharsSegment::SortRect(const vector<Rect>& vecRect, vector<Rect>& out)
-	{
-		vector<int> orderIndex;
-		vector<int> xpositions;
-
-		for (int i = 0; i < vecRect.size(); i++)
-		{
-			orderIndex.push_back(i);
-			xpositions.push_back(vecRect[i].x);
-		}
-
-		float min = xpositions[0];
-		int minIdx = 0;
-		for (int i = 0; i< xpositions.size(); i++)
-		{
-			min = xpositions[i];
-			minIdx = i;
-			for (int j = i; j<xpositions.size(); j++)
-			{
-				if (xpositions[j]<min){
-					min = xpositions[j];
-					minIdx = j;
-				}
-			}
-			int aux_i = orderIndex[i];
-			int aux_min = orderIndex[minIdx];
-			orderIndex[i] = aux_min;
-			orderIndex[minIdx] = aux_i;
-
-			float aux_xi = xpositions[i];
-			float aux_xmin = xpositions[minIdx];
-			xpositions[i] = aux_xmin;
-			xpositions[minIdx] = aux_xi;
-		}
-
-		for (int i = 0; i<orderIndex.size(); i++)
-		{
-			out.push_back(vecRect[orderIndex[i]]);
-		}
-
-		return 0;
-	}
-
-	//! æ ¹æ®ç‰¹æ®Šè½¦ç‰Œæ¥æ„é€ çŒœæµ‹ä¸­æ–‡å­—ç¬¦çš„ä½ç½®å’Œå¤§å°
-	Rect CCharsSegment::GetChineseRect(const Rect rectSpe)
-	{
-		int height = rectSpe.height;
-		float newwidth = rectSpe.width * 1.15;
-		int x = rectSpe.x;
-		int y = rectSpe.y;
-
-		int newx = x - int(newwidth * 1.15);
-		newx = newx > 0 ? newx : 0;
-
-		Rect a(newx, y, int(newwidth), height);
-
-		return a;
-	}
-
-	//! æ‰¾å‡ºæŒ‡ç¤ºåŸå¸‚çš„å­—ç¬¦çš„Rectï¼Œä¾‹å¦‚è‹A7003Xï¼Œå°±æ˜¯"A"çš„ä½ç½®
-	int CCharsSegment::GetSpecificRect(const vector<Rect>& vecRect)
-	{
-		vector<int> xpositions;
-		int maxHeight = 0;
-		int maxWidth = 0;
-
-		for (int i = 0; i < vecRect.size(); i++)
-		{
-			xpositions.push_back(vecRect[i].x);
-
-			if (vecRect[i].height > maxHeight)
-			{
-				maxHeight = vecRect[i].height;
-			}
-			if (vecRect[i].width > maxWidth)
-			{
-				maxWidth = vecRect[i].width;
-			}
-		}
-
-		int specIndex = 0;
-		for (int i = 0; i < vecRect.size(); i++)
-		{
-			Rect mr = vecRect[i];
-			int midx = mr.x + mr.width / 2;
-
-			//å¦‚æœä¸€ä¸ªå­—ç¬¦æœ‰ä¸€å®šçš„å¤§å°ï¼Œå¹¶ä¸”åœ¨æ•´ä¸ªè½¦ç‰Œçš„1/7åˆ°2/7ä¹‹é—´ï¼Œåˆ™æ˜¯æˆ‘ä»¬è¦æ‰¾çš„ç‰¹æ®Šå­—ç¬¦
-			//å½“å‰å­—ç¬¦å’Œä¸‹ä¸ªå­—ç¬¦çš„è·ç¦»åœ¨ä¸€å®šçš„èŒƒå›´å†…
-			if ((mr.width > maxWidth * 0.8 || mr.height > maxHeight * 0.8) &&
-				(midx < int(m_theMatWidth / 7) * 2 && midx > int(m_theMatWidth / 7) * 1))
-			{
-				specIndex = i;
-			}
-		}
-
-		return specIndex;
-	}
-
-	//! è¿™ä¸ªå‡½æ•°åšä¸¤ä¸ªäº‹æƒ…
-	//  1.æŠŠç‰¹æ®Šå­—ç¬¦Rectå·¦è¾¹çš„å…¨éƒ¨Rectå»æ‰ï¼Œåé¢å†é‡å»ºä¸­æ–‡å­—ç¬¦çš„ä½ç½®ã€‚
-	//  2.ä»ç‰¹æ®Šå­—ç¬¦Rectå¼€å§‹ï¼Œä¾æ¬¡é€‰æ‹©6ä¸ªRectï¼Œå¤šä½™çš„èˆå»ã€‚
-	int CCharsSegment::RebuildRect(const vector<Rect>& vecRect, vector<Rect>& outRect, int specIndex)
-	{
-		//æœ€å¤§åªèƒ½æœ‰7ä¸ªRect,å‡å»ä¸­æ–‡çš„å°±åªæœ‰6ä¸ªRect
-		//int count = 6;
-
-		//for (int i = 0; i < vecRect.size(); i++)
-		//{
-		//	//å°†ç‰¹æ®Šå­—ç¬¦å·¦è¾¹çš„Rectå»æ‰ï¼Œè¿™ä¸ªå¯èƒ½ä¼šå»æ‰ä¸­æ–‡Rectï¼Œä¸è¿‡æ²¡å…³ç³»ï¼Œæˆ‘ä»¬åé¢ä¼šé‡å»ºã€‚
-		//	if (i < specIndex)
-		//		continue;
-
-		//	outRect.push_back(vecRect[i]);
-		//	if (!--count)
-		//		break;
-		//}
-
-		int count = 6;
-		for (size_t i = specIndex; i < vecRect.size() && count; ++i, --count) {
-			outRect.push_back(vecRect[i]);
-		}
-
-		return 0;
-	}
-
-}	/*! \namespace easypr*/
+namespace easypr {
+
+const float DEFAULT_BLUEPERCEMT = 0.3;
+const float DEFAULT_WHITEPERCEMT = 0.1;
+
+CCharsSegment::CCharsSegment() {
+  // cout << "CCharsSegment" << endl;
+  m_LiuDingSize = DEFAULT_LIUDING_SIZE;
+  m_theMatWidth = DEFAULT_MAT_WIDTH;
+
+  //£¡³µÅÆÑÕÉ«ÅĞ¶Ï²ÎÊı
+  m_ColorThreshold = DEFAULT_COLORTHRESHOLD;
+  m_BluePercent = DEFAULT_BLUEPERCEMT;
+  m_WhitePercent = DEFAULT_WHITEPERCEMT;
+
+  m_debug = DEFAULT_DEBUG;
+}
+
+//! ×Ö·û³ß´çÑéÖ¤
+bool CCharsSegment::verifyCharSizes(Mat r) {
+  // Char sizes 45x90
+  float aspect = 45.0f / 90.0f;
+  float charAspect = (float)r.cols / (float)r.rows;
+  float error = 0.7;
+  float minHeight = 10;
+  float maxHeight = 35;
+  // We have a different aspect ratio for number 1, and it can be ~0.2
+  float minAspect = 0.05;
+  float maxAspect = aspect + aspect * error;
+  // area of pixels
+  float area = countNonZero(r);
+  // bb area
+  float bbArea = r.cols * r.rows;
+  //% of pixel in area
+  float percPixels = area / bbArea;
+
+  if (percPixels <= 1 && charAspect > minAspect && charAspect < maxAspect &&
+      r.rows >= minHeight && r.rows < maxHeight)
+    return true;
+  else
+    return false;
+}
+
+//! ×Ö·ûÔ¤´¦Àí
+Mat CCharsSegment::preprocessChar(Mat in) {
+  // Remap image
+  int h = in.rows;
+  int w = in.cols;
+  int charSize = CHAR_SIZE;  //Í³Ò»Ã¿¸ö×Ö·ûµÄ´óĞ¡
+  Mat transformMat = Mat::eye(2, 3, CV_32F);
+  int m = max(w, h);
+  transformMat.at<float>(0, 2) = m / 2 - w / 2;
+  transformMat.at<float>(1, 2) = m / 2 - h / 2;
+
+  Mat warpImage(m, m, in.type());
+  warpAffine(in, warpImage, transformMat, warpImage.size(), INTER_LINEAR,
+             BORDER_CONSTANT, Scalar(0));
+
+  //£¡ ½«ËùÓĞµÄ×Ö·ûµ÷Õû³ÉÍ³Ò»µÄ³ß´ç
+  Mat out;
+  resize(warpImage, out, Size(charSize, charSize));
+
+  return out;
+}
+
+// implementation of otsu algorithm
+// author: onezeros(@yahoo.cn)
+// reference: Rafael C. Gonzalez. Digital Image Processing Using MATLAB
+
+int staticIndex = 0;
+int iTag = 0;
+
+//! ×Ö·û·Ö¸îÓëÅÅĞò
+int CCharsSegment::charsSegment(Mat input, vector<Mat>& resultVec) {
+  // ÊäÈëÍ¼Æ¬ÎŞÊı¾İ£¬·µ»ØErrorCode=0x01
+  if (!input.data) return 0x01;
+
+  int w = input.cols;
+  int h = input.rows;
+
+  Mat tmpMat = input(Rect(w * 0.1, h * 0.1, w * 0.8, h * 0.8));
+
+  //ÅĞ¶Ï³µÅÆÑÕÉ«ÒÔ´ËÈ·ÈÏthreshold·½·¨
+  Color plateType = getPlateType(tmpMat, true);
+
+  Mat input_grey;
+  cvtColor(input, input_grey, CV_BGR2GRAY);
+
+  Mat img_threshold;
+  if (BLUE == plateType) {
+    // cout << "BLUE" << endl;
+    img_threshold = input_grey.clone();
+
+    int w = input_grey.cols;
+    int h = input_grey.rows;
+    Mat tmp = input_grey(Rect(w * 0.1, h * 0.1, w * 0.8, h * 0.8));
+    int threadHoldV = ThresholdOtsu(tmp);
+    utils::imwrite("E:/img_inputgray2.jpg", input_grey);
+
+    threshold(input_grey, img_threshold, threadHoldV, 255, CV_THRESH_BINARY);
+    utils::imwrite("E:/img_threshold.jpg", img_threshold);
+
+    // threshold(input_grey, img_threshold, 5, 255, CV_THRESH_OTSU +
+    // CV_THRESH_BINARY);
+
+  } else if (YELLOW == plateType) {
+    // cout << "YELLOW" << endl;
+    img_threshold = input_grey.clone();
+    int w = input_grey.cols;
+    int h = input_grey.rows;
+    Mat tmp = input_grey(Rect(w * 0.1, h * 0.1, w * 0.8, h * 0.8));
+    int threadHoldV = ThresholdOtsu(tmp);
+    utils::imwrite("resources/image/tmp/inputgray2.jpg", input_grey);
+
+    threshold(input_grey, img_threshold, threadHoldV, 255,
+              CV_THRESH_BINARY_INV);
+
+    // threshold(input_grey, img_threshold, 10, 255, CV_THRESH_OTSU +
+    // CV_THRESH_BINARY_INV);
+  } else if (WHITE == plateType) {
+    // cout << "WHITE" << endl;
+    /*img_threshold = input_grey.clone();
+    int w = input_grey.cols;
+    int h = input_grey.rows;
+    Mat tmp = input_grey(Rect(w*0.1, h*0.1, w*0.8, h*0.8));
+    int threadHoldV = ThresholdOtsu(tmp);
+    utils::imwrite("resources/image/tmp/inputgray2.jpg", input_grey);*/
+
+    threshold(input_grey, img_threshold, 10, 255,
+              CV_THRESH_OTSU + CV_THRESH_BINARY_INV);
+  } else {
+    // cout << "UNKNOWN" << endl;
+    threshold(input_grey, img_threshold, 10, 255,
+              CV_THRESH_OTSU + CV_THRESH_BINARY);
+  }
+
+  if (0) {
+    imshow("threshold", img_threshold);
+    waitKey(0);
+    destroyWindow("threshold");
+  }
+
+  if (m_debug) {
+    stringstream ss(stringstream::in | stringstream::out);
+    ss << "resources/image/tmp/debug_char_threshold" << iTag << ".jpg";
+    utils::imwrite(ss.str(), img_threshold);
+  }
+
+  // È¥³ı³µÅÆÉÏ·½µÄÁø¶¤ÒÔ¼°ÏÂ·½µÄºáÏßµÈ¸ÉÈÅ
+  // ²¢ÇÒÒ²ÅĞ¶ÏÁËÊÇ·ñÊÇ³µÅÆ
+  // ²¢ÇÒÔÚ´Ë¶Ô×Ö·ûµÄÌø±ä´ÎÊıÒÔ¼°×Ö·ûÑÕÉ«ËùÕ¼µÄ±ÈÖØ×öÁËÊÇ·ñÊÇ³µÅÆµÄÅĞ±ğÌõ¼ş
+  // Èç¹û²»ÊÇ³µÅÆ£¬·µ»ØErrorCode=0x02
+  if (!clearLiuDing(img_threshold)) return 0x02;
+
+  if (m_debug) {
+    stringstream ss(stringstream::in | stringstream::out);
+    ss << "resources/image/tmp/debug_char_clearLiuDing" << iTag << ".jpg";
+    utils::imwrite(ss.str(), img_threshold);
+  }
+  iTag++;
+
+  Mat img_contours;
+  img_threshold.copyTo(img_contours);
+
+  vector<vector<Point> > contours;
+  findContours(img_contours,
+               contours,               // a vector of contours
+               CV_RETR_EXTERNAL,       // retrieve the external contours
+               CV_CHAIN_APPROX_NONE);  // all pixels of each contours
+
+  vector<vector<Point> >::iterator itc = contours.begin();
+  vector<Rect> vecRect;
+
+  // ½«²»·ûºÏÌØ¶¨³ß´çµÄ×Ö·û¿éÅÅ³ı³öÈ¥
+  while (itc != contours.end()) {
+    Rect mr = boundingRect(Mat(*itc));
+    Mat auxRoi(img_threshold, mr);
+
+    if (verifyCharSizes(auxRoi)) vecRect.push_back(mr);
+    ++itc;
+  }
+
+  // Èç¹ûÕÒ²»µ½ÈÎºÎ×Ö·û¿é£¬Ôò·µ»ØErrorCode=0x03
+  if (vecRect.size() == 0) return 0x03;
+
+  // ¶Ô·ûºÏ³ß´çµÄÍ¼¿é°´ÕÕ´Ó×óµ½ÓÒ½øĞĞÅÅĞò;
+
+  /*vector<Rect> sortedRect;
+  SortRect(vecRect, sortedRect);*/
+
+  vector<Rect> sortedRect(vecRect);
+  std::sort(sortedRect.begin(), sortedRect.end(),
+            [](const Rect& r1, const Rect& r2) { return r1.x < r2.x; });
+
+  int specIndex = 0;
+
+  //»ñµÃÌØÊâ×Ö·û¶ÔÓ¦µÄRectt,ÈçËÕAµÄ"A"
+  specIndex = GetSpecificRect(sortedRect);
+
+  if (m_debug) {
+    if (specIndex < sortedRect.size()) {
+      Mat specMat(img_threshold, sortedRect[specIndex]);
+      stringstream ss(stringstream::in | stringstream::out);
+      ss << "resources/image/tmp/debug_specMat"
+         << ".jpg";
+      utils::imwrite(ss.str(), specMat);
+    }
+  }
+
+  //¸ù¾İÌØ¶¨RectÏò×ó·´ÍÆ³öÖĞÎÄ×Ö·û
+  //ÕâÑù×öµÄÖ÷ÒªÔ­ÒòÊÇ¸ù¾İfindContours·½·¨ºÜÄÑ²¶×½µ½ÖĞÎÄ×Ö·ûµÄ×¼È·Rect£¬Òò´Ë½öÄÜ
+  //ÍË¹ıÌØ¶¨Ëã·¨À´Ö¸¶¨
+  Rect chineseRect;
+  if (specIndex < sortedRect.size())
+    chineseRect = GetChineseRect(sortedRect[specIndex]);
+  else
+    return -3;
+
+  if (m_debug) {
+    Mat chineseMat(img_threshold, chineseRect);
+    stringstream ss(stringstream::in | stringstream::out);
+    ss << "resources/image/tmp/debug_chineseMat"
+       << ".jpg";
+    utils::imwrite(ss.str(), chineseMat);
+  }
+
+  //ĞÂ½¨Ò»¸öÈ«ĞÂµÄÅÅĞòRect
+  //½«ÖĞÎÄ×Ö·ûRectµÚÒ»¸ö¼Ó½øÀ´£¬ÒòÎªËü¿Ï¶¨ÊÇ×î×ó±ßµÄ
+  //ÆäÓàµÄRectÖ»°´ÕÕË³ĞòÈ¥6¸ö£¬³µÅÆÖ»¿ÉÄÜÊÇ7¸ö×Ö·û£¡ÕâÑù¿ÉÒÔ±ÜÃâÒõÓ°µ¼ÖÂµÄ¡°1¡±×Ö·û
+  vector<Rect> newSortedRect;
+  newSortedRect.push_back(chineseRect);
+  RebuildRect(sortedRect, newSortedRect, specIndex);
+
+  if (newSortedRect.size() == 0) return -3;
+
+  for (int i = 0; i < newSortedRect.size(); i++) {
+    Rect mr = newSortedRect[i];
+    Mat auxRoi(img_threshold, mr);
+
+    if (1) {
+      auxRoi = preprocessChar(auxRoi);
+      if (m_debug) {
+        stringstream ss(stringstream::in | stringstream::out);
+        ss << "resources/image/tmp/debug_char_auxRoi_" << (i + staticIndex) << ".jpg";
+        utils::imwrite(ss.str(), auxRoi);
+      }
+      resultVec.push_back(auxRoi);
+    }
+  }
+  staticIndex += newSortedRect.size();
+
+  return 0;
+}
+
+//! ½«Rect°´Î»ÖÃ´Ó×óµ½ÓÒ½øĞĞÅÅĞò
+int CCharsSegment::SortRect(const vector<Rect>& vecRect, vector<Rect>& out) {
+  vector<int> orderIndex;
+  vector<int> xpositions;
+
+  for (int i = 0; i < vecRect.size(); i++) {
+    orderIndex.push_back(i);
+    xpositions.push_back(vecRect[i].x);
+  }
+
+  float min = xpositions[0];
+  int minIdx = 0;
+  for (int i = 0; i < xpositions.size(); i++) {
+    min = xpositions[i];
+    minIdx = i;
+    for (int j = i; j < xpositions.size(); j++) {
+      if (xpositions[j] < min) {
+        min = xpositions[j];
+        minIdx = j;
+      }
+    }
+    int aux_i = orderIndex[i];
+    int aux_min = orderIndex[minIdx];
+    orderIndex[i] = aux_min;
+    orderIndex[minIdx] = aux_i;
+
+    float aux_xi = xpositions[i];
+    float aux_xmin = xpositions[minIdx];
+    xpositions[i] = aux_xmin;
+    xpositions[minIdx] = aux_xi;
+  }
+
+  for (int i = 0; i < orderIndex.size(); i++) {
+    out.push_back(vecRect[orderIndex[i]]);
+  }
+
+  return 0;
+}
+
+//! ¸ù¾İÌØÊâ³µÅÆÀ´¹¹Ôì²Â²âÖĞÎÄ×Ö·ûµÄÎ»ÖÃºÍ´óĞ¡
+Rect CCharsSegment::GetChineseRect(const Rect rectSpe) {
+  int height = rectSpe.height;
+  float newwidth = rectSpe.width * 1.15;
+  int x = rectSpe.x;
+  int y = rectSpe.y;
+
+  int newx = x - int(newwidth * 1.15);
+  newx = newx > 0 ? newx : 0;
+
+  Rect a(newx, y, int(newwidth), height);
+
+  return a;
+}
+
+//! ÕÒ³öÖ¸Ê¾³ÇÊĞµÄ×Ö·ûµÄRect£¬ÀıÈçËÕA7003X£¬¾ÍÊÇ"A"µÄÎ»ÖÃ
+int CCharsSegment::GetSpecificRect(const vector<Rect>& vecRect) {
+  vector<int> xpositions;
+  int maxHeight = 0;
+  int maxWidth = 0;
+
+  for (int i = 0; i < vecRect.size(); i++) {
+    xpositions.push_back(vecRect[i].x);
+
+    if (vecRect[i].height > maxHeight) {
+      maxHeight = vecRect[i].height;
+    }
+    if (vecRect[i].width > maxWidth) {
+      maxWidth = vecRect[i].width;
+    }
+  }
+
+  int specIndex = 0;
+  for (int i = 0; i < vecRect.size(); i++) {
+    Rect mr = vecRect[i];
+    int midx = mr.x + mr.width / 2;
+
+    //Èç¹ûÒ»¸ö×Ö·ûÓĞÒ»¶¨µÄ´óĞ¡£¬²¢ÇÒÔÚÕû¸ö³µÅÆµÄ1/7µ½2/7Ö®¼ä£¬ÔòÊÇÎÒÃÇÒªÕÒµÄÌØÊâ×Ö·û
+    //µ±Ç°×Ö·ûºÍÏÂ¸ö×Ö·ûµÄ¾àÀëÔÚÒ»¶¨µÄ·¶Î§ÄÚ
+    if ((mr.width > maxWidth * 0.8 || mr.height > maxHeight * 0.8) &&
+        (midx < int(m_theMatWidth / 7) * 2 &&
+         midx > int(m_theMatWidth / 7) * 1)) {
+      specIndex = i;
+    }
+  }
+
+  return specIndex;
+}
+
+//! Õâ¸öº¯Êı×öÁ½¸öÊÂÇé
+//  1.°ÑÌØÊâ×Ö·ûRect×ó±ßµÄÈ«²¿RectÈ¥µô£¬ºóÃæÔÙÖØ½¨ÖĞÎÄ×Ö·ûµÄÎ»ÖÃ¡£
+//  2.´ÓÌØÊâ×Ö·ûRect¿ªÊ¼£¬ÒÀ´ÎÑ¡Ôñ6¸öRect£¬¶àÓàµÄÉáÈ¥¡£
+int CCharsSegment::RebuildRect(const vector<Rect>& vecRect,
+                               vector<Rect>& outRect, int specIndex) {
+  int count = 6;
+  for (size_t i = specIndex; i < vecRect.size() && count; ++i, --count) {
+    outRect.push_back(vecRect[i]);
+  }
+
+  return 0;
+}
+
+} /*! \namespace easypr*/

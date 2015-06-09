@@ -12,8 +12,8 @@
 #ifndef __PLATE_RECOGNIZE_H__
 #define __PLATE_RECOGNIZE_H__
 
-#include "plate_detect.h"
-#include "chars_recognise.h"
+#include "easypr/plate_detect.h"
+#include "easypr/chars_recognise.h"
 
 /*! \namespace easypr
     Namespace where all the C++ EasyPR functionality resides
@@ -24,22 +24,20 @@ class CPlateRecognize : public CPlateDetect, public CCharsRecognise {
  public:
   CPlateRecognize();
 
-  //! è½¦ç‰Œæ£€æµ‹ä¸å­—ç¬¦è¯†åˆ«
-  int plateRecognize(cv::Mat src, std::vector<std::string>& licenseVec);
+  //! ³µÅÆ¼ì²âÓë×Ö·ûÊ¶±ğ
+  int plateRecognize(cv::Mat src, std::vector<std::string>& licenseVec,
+                     int index = 0);
 
-  //! ç”Ÿæ´»æ¨¡å¼ä¸å·¥ä¸šæ¨¡å¼åˆ‡æ¢
-  inline void setLifemode(bool param) {
-    CPlateDetect::setPDLifemode(param);
-  }
+  //! Éú»îÄ£Ê½Óë¹¤ÒµÄ£Ê½ÇĞ»»
+  inline void setLifemode(bool param) { CPlateDetect::setPDLifemode(param); }
 
-  //! æ˜¯å¦å¼€å¯è°ƒè¯•æ¨¡å¼
+  //! ÊÇ·ñ¿ªÆôµ÷ÊÔÄ£Ê½
   inline void setDebug(int param) {
     CPlateDetect::setPDDebug(param);
     CCharsRecognise::setCRDebug(param);
   }
-
 };
 
-}  /* \namespace easypr  */
+} /* \namespace easypr  */
 
 #endif /* endif __PLATE_RECOGNITION_H__ */

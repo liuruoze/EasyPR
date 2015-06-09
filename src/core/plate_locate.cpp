@@ -1,19 +1,18 @@
 #include "easypr/plate_locate.h"
 #include "easypr/util.h"
 
-/*! \namespace easypr
-    Namespace where all the C++ EasyPR functionality resides
-*/
-namespace easypr {
-
-using namespace cv;
 using namespace std;
 
-const float DEFAULT_ERROR = 0.6;
-//0.6
-const float DEFAULT_ASPECT = 3.75; //3.75 
+/*! \namespace easypr
+        Namespace where all the C++ EasyPR functionality resides
+        */
+namespace easypr {
+
+const float DEFAULT_ERROR = 0.9;    // 0.6
+const float DEFAULT_ASPECT = 3.75;  // 3.75
 
 CPlateLocate::CPlateLocate() {
+  // cout << "CPlateLocate" << endl;
   m_GaussianBlurSize = DEFAULT_GAUSSIANBLUR_SIZE;
   m_MorphSizeWidth = DEFAULT_MORPH_SIZE_WIDTH;
   m_MorphSizeHeight = DEFAULT_MORPH_SIZE_HEIGHT;
@@ -26,12 +25,11 @@ CPlateLocate::CPlateLocate() {
   m_angle = DEFAULT_ANGLE;
 
   m_debug = DEFAULT_DEBUG;
-
-  m_labItem = NULL;
 }
 
-//! ç”Ÿæ´»æ¨¡å¼ä¸å·¥ä¸šæ¨¡å¼åˆ‡æ¢
-//! å¦‚æœä¸ºçœŸï¼Œåˆ™è®¾ç½®å„é¡¹å‚æ•°ä¸ºå®šä½ç”Ÿæ´»åœºæ™¯ç…§ç‰‡ï¼ˆå¦‚ç™¾åº¦å›¾ç‰‡ï¼‰çš„å‚æ•°ï¼Œå¦åˆ™æ¢å¤é»˜è®¤å€¼ã€‚
+//! Éú»îÄ£Ê½Óë¹¤ÒµÄ£Ê½ÇĞ»»
+//!
+//Èç¹ûÎªÕæ£¬ÔòÉèÖÃ¸÷Ïî²ÎÊıÎª¶¨Î»Éú»î³¡¾°ÕÕÆ¬£¨Èç°Ù¶ÈÍ¼Æ¬£©µÄ²ÎÊı£¬·ñÔò»Ö¸´Ä¬ÈÏÖµ¡£
 void CPlateLocate::setLifemode(bool param) {
   if (param == true) {
     setGaussianBlurSize(5);
@@ -41,8 +39,7 @@ void CPlateLocate::setLifemode(bool param) {
     setVerifyAspect(4.0);
     setVerifyMin(1);
     setVerifyMax(200);
-  }
-  else {
+  } else {
     setGaussianBlurSize(DEFAULT_GAUSSIANBLUR_SIZE);
     setMorphSizeWidth(DEFAULT_MORPH_SIZE_WIDTH);
     setMorphSizeHeight(DEFAULT_MORPH_SIZE_HEIGHT);
@@ -53,35 +50,39 @@ void CPlateLocate::setLifemode(bool param) {
   }
 }
 
-
-//! å¯¹minAreaRectè·å¾—çš„æœ€å°å¤–æ¥çŸ©å½¢ï¼Œç”¨çºµæ¨ªæ¯”è¿›è¡Œåˆ¤æ–­
-bool CPlateLocate::verifySizes(cv::RotatedRect mr) {
+//! ¶ÔminAreaRect»ñµÃµÄ×îĞ¡Íâ½Ó¾ØĞÎ£¬ÓÃ×İºá±È½øĞĞÅĞ¶Ï
+bool CPlateLocate::verifySizes(RotatedRect mr) {
   float error = m_error;
-  //Spain car plate size: 52x11 aspect 4,7272
-  //China car plate size: 440mm*140mmï¼Œaspect 3.142857
+  // Spain car plate size: 52x11 aspect 4,7272
+  // China car plate size: 440mm*140mm£¬aspect 3.142857
 
-  //Real car plate size: 136 * 32, aspect 4
+  // Real car plate size: 136 * 32, aspect 4
   float aspect = m_aspect;
 
-  //Set a min and max area. All other patchs are discarded
-  //int min= 1*aspect*1; // minimum area
-  //int max= 2000*aspect*2000; // maximum area
-  int min = 34 * 8 * m_verifyMin; // minimum area
-  int max = 34 * 8 * m_verifyMax; // maximum area
+  // Set a min and max area. All other patchs are discarded
+  // int min= 1*aspect*1; // minimum area
+  // int max= 2000*aspect*2000; // maximum area
+  int min = 34 * 8 * m_verifyMin;  // minimum area
+  int max = 34 * 8 * m_verifyMax;  // maximum area
 
-  //Get only patchs that match to a respect ratio.
+  // Get only patchs that match to a respect ratio.
   float rmin = aspect - aspect * error;
   float rmax = aspect + aspect * error;
 
-  float area = mr.size.height * mr.size.width;
-  float r = mr.size.width / mr.size.height;
-  if (r < 1)
-    r = mr.size.height / mr.size.width;
+  int area = mr.size.height * mr.size.width;
+  float r = (float)mr.size.width / (float)mr.size.height;
+  if (r < 1) r = (float)mr.size.height / (float)mr.size.width;
 
-  return !((area < min || area > max) || (r < rmin || r > rmax));
+  // cout << "area:" << area << endl;
+  // cout << "r:" << r << endl;
+
+  if ((area < min || area > max) || (r < rmin || r > rmax))
+    return false;
+  else
+    return true;
 }
 
-//! æ˜¾ç¤ºæœ€ç»ˆç”Ÿæˆçš„è½¦ç‰Œå›¾åƒï¼Œä¾¿äºåˆ¤æ–­æ˜¯å¦æˆåŠŸè¿›è¡Œäº†æ—‹è½¬ã€‚
+//! ÏÔÊ¾×îÖÕÉú³ÉµÄ³µÅÆÍ¼Ïñ£¬±ãÓÚÅĞ¶ÏÊÇ·ñ³É¹¦½øĞĞÁËĞı×ª¡£
 Mat CPlateLocate::showResultMat(Mat src, Size rect_size, Point2f center,
                                 int index) {
   Mat img_crop;
@@ -90,7 +91,7 @@ Mat CPlateLocate::showResultMat(Mat src, Size rect_size, Point2f center,
 
   if (m_debug) {
     stringstream ss(stringstream::in | stringstream::out);
-    ss << "tmp/debug_crop_" << index << ".jpg";
+    ss << "resources/image/tmp/debug_crop_" << index << ".jpg";
     utils::imwrite(ss.str(), img_crop);
   }
 
@@ -101,60 +102,59 @@ Mat CPlateLocate::showResultMat(Mat src, Size rect_size, Point2f center,
 
   if (m_debug) {
     stringstream ss(stringstream::in | stringstream::out);
-    ss << "tmp/debug_resize_" << index << ".jpg";
+    ss << "resources/image/tmp/debug_resize_" << index << ".jpg";
     utils::imwrite(ss.str(), resultResized);
   }
 
   return resultResized;
 }
 
-
-// !åŸºäºHSVç©ºé—´çš„é¢œè‰²æœç´¢æ–¹æ³•
+// !»ùÓÚHSV¿Õ¼äµÄÑÕÉ«ËÑË÷·½·¨
 int CPlateLocate::colorSearch(const Mat& src, const Color r, Mat& out,
                               vector<RotatedRect>& outRects, int index) {
   Mat match_grey;
 
-  // widthå€¼å¯¹æœ€ç»ˆç»“æœå½±å“å¾ˆå¤§ï¼Œå¯ä»¥è€ƒè™‘è¿›è¡Œå¤šæ¬¡colorSerchï¼Œæ¯æ¬¡ä¸åŒçš„å€¼
-  // å¦ä¸€ç§è§£å†³æ–¹æ¡ˆå°±æ˜¯åœ¨ç»“æœè¾“å‡ºåˆ°SVMä¹‹å‰ï¼Œè¿›è¡Œçº¿ä¸è§’çš„å†çº æ­£
+  // widthÖµ¶Ô×îÖÕ½á¹ûÓ°ÏìºÜ´ó£¬¿ÉÒÔ¿¼ÂÇ½øĞĞ¶à´ÎcolorSerch£¬Ã¿´Î²»Í¬µÄÖµ
+  // ÁíÒ»ÖÖ½â¾ö·½°¸¾ÍÊÇÔÚ½á¹ûÊä³öµ½SVMÖ®Ç°£¬½øĞĞÏßÓë½ÇµÄÔÙ¾ÀÕı
   const int color_morph_width = 10;
   const int color_morph_height = 2;
 
-  // è¿›è¡Œé¢œè‰²æŸ¥æ‰¾
+  // ½øĞĞÑÕÉ«²éÕÒ
   colorMatch(src, match_grey, r, false);
 
-
-  imwrite("./tmp/match_grey.jpg", match_grey);
-
+  if (m_debug) {
+    utils::imwrite("resources/image/tmp/match_grey.jpg", match_grey);
+  }
 
   Mat src_threshold;
   threshold(match_grey, src_threshold, 0, 255,
             CV_THRESH_OTSU + CV_THRESH_BINARY);
 
-  Mat element = getStructuringElement(MORPH_RECT, Size(color_morph_width,
-                                                       color_morph_height));
+  Mat element = getStructuringElement(
+      MORPH_RECT, Size(color_morph_width, color_morph_height));
   morphologyEx(src_threshold, src_threshold, MORPH_CLOSE, element);
 
-
-  utils::imwrite("tmp/color.jpg", src_threshold);
-
+  if (m_debug) {
+    utils::imwrite("resources/image/tmp/color.jpg", src_threshold);
+  }
 
   src_threshold.copyTo(out);
 
-  // æŸ¥æ‰¾è½®å»“
-  vector<vector<Point> > contours;
+  // ²éÕÒÂÖÀª
+  vector<vector<Point>> contours;
 
-  // æ³¨æ„ï¼ŒfindContoursä¼šæ”¹å˜src_threshold
-  // å› æ­¤è¦è¾“å‡ºsrc_thresholdå¿…é¡»åœ¨è¿™ä¹‹å‰ä½¿ç”¨copyToæ–¹æ³•
+  // ×¢Òâ£¬findContours»á¸Ä±äsrc_threshold
+  // Òò´ËÒªÊä³ösrc_threshold±ØĞëÔÚÕâÖ®Ç°Ê¹ÓÃcopyTo·½·¨
   findContours(src_threshold,
-               contours, // a vector of contours
-               CV_RETR_EXTERNAL, // æå–å¤–éƒ¨è½®å»“
-               CV_CHAIN_APPROX_NONE); // all pixels of each contours
+               contours,               // a vector of contours
+               CV_RETR_EXTERNAL,       // ÌáÈ¡Íâ²¿ÂÖÀª
+               CV_CHAIN_APPROX_NONE);  // all pixels of each contours
 
   vector<vector<Point>>::iterator itc = contours.begin();
   while (itc != contours.end()) {
     RotatedRect mr = minAreaRect(Mat(*itc));
 
-    // éœ€è¦è¿›è¡Œå¤§å°å°ºå¯¸åˆ¤æ–­
+    // ĞèÒª½øĞĞ´óĞ¡³ß´çÅĞ¶Ï
     if (!verifySizes(mr))
       itc = contours.erase(itc);
     else {
@@ -167,8 +167,8 @@ int CPlateLocate::colorSearch(const Mat& src, const Color r, Mat& out,
 }
 
 bool CPlateLocate::sobelJudge(Mat roi) {
-  //Mat roi_blur;
-  //GaussianBlur(roi, roi_blur, Size(m_GaussianBlurSize, m_GaussianBlurSize),
+  // Mat roi_blur;
+  // GaussianBlur(roi, roi_blur, Size(m_GaussianBlurSize, m_GaussianBlurSize),
   //	0, 0, BORDER_DEFAULT );
   Mat grad;
 
@@ -193,37 +193,37 @@ bool CPlateLocate::sobelJudge(Mat roi) {
   Mat roi_threshold;
   threshold(grad, roi_threshold, 0, 255, CV_THRESH_OTSU + CV_THRESH_BINARY);
 
-  Mat element = getStructuringElement(MORPH_RECT, Size(m_MorphSizeWidth,
-                                                       m_MorphSizeHeight));
+  Mat element = getStructuringElement(
+      MORPH_RECT, Size(m_MorphSizeWidth, m_MorphSizeHeight));
   morphologyEx(roi_threshold, roi_threshold, MORPH_CLOSE, element);
 
+  float channels = roi_threshold.channels();
   float nRows = roi_threshold.rows;
   float nCols = roi_threshold.cols;
 
   float percent = float(countNonZero(roi_threshold)) / float(nRows * nCols);
+  // cout << "precent:" << percent << endl;
 
   if (percent >= 0.5)
     return true;
   else
     return false;
-
 }
 
-
-//! å­—ç¬¦å°ºå¯¸éªŒè¯
+//! ×Ö·û³ß´çÑéÖ¤
 bool CPlateLocate::verifyCharSizes(Mat r) {
-  //Char sizes 45x90
+  // Char sizes 45x90
   float aspect = 45.0f / 90.0f;
-  float charAspect = (float) r.cols / (float) r.rows;
+  float charAspect = (float)r.cols / (float)r.rows;
   float error = 0.7;
   float minHeight = 10;
   float maxHeight = 35;
-  //We have a different aspect ratio for number 1, and it can be ~0.2
+  // We have a different aspect ratio for number 1, and it can be ~0.2
   float minAspect = 0.05;
   float maxAspect = aspect + aspect * error;
-  //area of pixels
+  // area of pixels
   float area = countNonZero(r);
-  //bb area
+  // bb area
   float bbArea = r.cols * r.rows;
   //% of pixel in area
   float percPixels = area / bbArea;
@@ -235,25 +235,26 @@ bool CPlateLocate::verifyCharSizes(Mat r) {
     return false;
 }
 
-
-//! Sobelç¬¬ä¸€æ¬¡æœç´¢
-//! ä¸é™åˆ¶å¤§å°å’Œå½¢çŠ¶ï¼Œè·å–çš„BoundRectè¿›å…¥ä¸‹ä¸€æ­¥
+//! SobelµÚÒ»´ÎËÑË÷
+//! ²»ÏŞÖÆ´óĞ¡ºÍĞÎ×´£¬»ñÈ¡µÄBoundRect½øÈëÏÂÒ»²½
 int CPlateLocate::sobelFrtSearch(const Mat& src,
                                  vector<Rect_<float>>& outRects) {
   Mat src_threshold;
-  //sobleæ“ä½œï¼Œå¾—åˆ°äºŒå€¼å›¾åƒ
+  // soble²Ù×÷£¬µÃµ½¶şÖµÍ¼Ïñ
   sobelOper(src, src_threshold, m_GaussianBlurSize, m_MorphSizeWidth,
             m_MorphSizeHeight);
 
+  if (0) {
+    imshow("sobelFrtSearch", src_threshold);
+    waitKey(0);
+    destroyWindow("sobelFrtSearch");
+  }
 
-  utils::imwrite("tmp/sobelFrtSearch.jpg", src_threshold);
-
-
-  vector<vector<Point> > contours;
+  vector<vector<Point>> contours;
   findContours(src_threshold,
-               contours, // a vector of contours
-               CV_RETR_EXTERNAL, // æå–å¤–éƒ¨è½®å»“
-               CV_CHAIN_APPROX_NONE); // all pixels of each contours
+               contours,               // a vector of contours
+               CV_RETR_EXTERNAL,       // ÌáÈ¡Íâ²¿ÂÖÀª
+               CV_CHAIN_APPROX_NONE);  // all pixels of each contours
 
   vector<vector<Point>>::iterator itc = contours.begin();
 
@@ -262,83 +263,86 @@ int CPlateLocate::sobelFrtSearch(const Mat& src,
   while (itc != contours.end()) {
     RotatedRect mr = minAreaRect(Mat(*itc));
 
-    // éœ€è¦è¿›è¡Œå¤§å°å°ºå¯¸åˆ¤æ–­
-    if (!verifySizes(mr))
-      itc = contours.erase(itc);
-    else {
-      ++itc;
+    // ĞèÒª½øĞĞ´óĞ¡³ß´çÅĞ¶Ï
+    if (verifySizes(mr)) {
       first_rects.push_back(mr);
+
+      int area = mr.size.height * mr.size.width;
+      float r = (float)mr.size.width / (float)mr.size.height;
+      if (r < 1) r = (float)mr.size.height / (float)mr.size.width;
+
+      /*cout << "area:" << area << endl;
+      cout << "r:" << r << endl;*/
     }
+
+    ++itc;
   }
 
   for (int i = 0; i < first_rects.size(); i++) {
     RotatedRect roi_rect = first_rects[i];
 
     Rect_<float> safeBoundRect;
-    if (!calcSafeRect(roi_rect, src, safeBoundRect))
-      continue;
+    if (!calcSafeRect(roi_rect, src, safeBoundRect)) continue;
 
     outRects.push_back(safeBoundRect);
   }
   return 0;
 }
 
-
-//! Sobelç¬¬äºŒæ¬¡æœç´¢,å¯¹æ–­è£‚çš„éƒ¨åˆ†è¿›è¡Œå†æ¬¡çš„å¤„ç†
-//! å¯¹å¤§å°å’Œå½¢çŠ¶åšé™åˆ¶ï¼Œç”Ÿæˆå‚è€ƒåæ ‡
+//! SobelµÚ¶ş´ÎËÑË÷,¶Ô¶ÏÁÑµÄ²¿·Ö½øĞĞÔÙ´ÎµÄ´¦Àí
+//! ¶Ô´óĞ¡ºÍĞÎ×´×öÏŞÖÆ£¬Éú³É²Î¿¼×ø±ê
 int CPlateLocate::sobelSecSearchPart(Mat& bound, Point2f refpoint,
                                      vector<RotatedRect>& outRects) {
   Mat bound_threshold;
 
-  ////! ç¬¬äºŒæ¬¡å‚æ•°æ¯”ä¸€æ¬¡ç²¾ç»†ï¼Œä½†é’ˆå¯¹çš„æ˜¯å¾—åˆ°çš„å¤–æ¥çŸ©é˜µä¹‹åçš„å›¾åƒï¼Œå†sobelå¾—åˆ°äºŒå€¼å›¾åƒ
+  ////!
+  ///µÚ¶ş´Î²ÎÊı±ÈÒ»´Î¾«Ï¸£¬µ«Õë¶ÔµÄÊÇµÃµ½µÄÍâ½Ó¾ØÕóÖ®ºóµÄÍ¼Ïñ£¬ÔÙsobelµÃµ½¶şÖµÍ¼Ïñ
   sobelOperT(bound, bound_threshold, 3, 6, 2);
 
-  ////äºŒå€¼åŒ–å»æ‰ä¸¤è¾¹çš„è¾¹ç•Œ
+  ////¶şÖµ»¯È¥µôÁ½±ßµÄ±ß½ç
 
-  //Mat mat_gray;
-  //cvtColor(bound,mat_gray,CV_BGR2GRAY);
+  // Mat mat_gray;
+  // cvtColor(bound,mat_gray,CV_BGR2GRAY);
 
-  //bound_threshold = mat_gray.clone();
-  ////threshold(input_grey, img_threshold, 5, 255, CV_THRESH_OTSU + CV_THRESH_BINARY);
-  //int w = mat_gray.cols;
-  //int h = mat_gray.rows;
-  //Mat tmp = mat_gray(Rect(w*0.15,h*0.2,w*0.6,h*0.6));
-  //int threadHoldV = ThresholdOtsu(tmp);
-  //threshold(mat_gray, bound_threshold,threadHoldV, 255, CV_THRESH_BINARY);
+  // bound_threshold = mat_gray.clone();
+  ////threshold(input_grey, img_threshold, 5, 255, CV_THRESH_OTSU +
+  /// CV_THRESH_BINARY);
+  // int w = mat_gray.cols;
+  // int h = mat_gray.rows;
+  // Mat tmp = mat_gray(Rect(w*0.15,h*0.2,w*0.6,h*0.6));
+  // int threadHoldV = ThresholdOtsu(tmp);
+  // threshold(mat_gray, bound_threshold,threadHoldV, 255, CV_THRESH_BINARY);
 
   Mat tempBoundThread = bound_threshold.clone();
   ////
   clearLiuDingOnly(tempBoundThread);
 
-
   int posLeft = 0, posRight = 0;
   if (bFindLeftRightBound(tempBoundThread, posLeft, posRight)) {
-    //æ‰¾åˆ°ä¸¤ä¸ªè¾¹ç•Œåè¿›è¡Œè¿æ¥ä¿®è¡¥å¤„ç†
+    //ÕÒµ½Á½¸ö±ß½çºó½øĞĞÁ¬½ÓĞŞ²¹´¦Àí
     if (posRight != 0 && posLeft != 0 && posLeft < posRight) {
       int posY = bound_threshold.rows * 0.5;
-      for (int i = posLeft + bound_threshold.rows * 0.1;
-           i < posRight - 4; i++) {
+      for (int i = posLeft + bound_threshold.rows * 0.1; i < posRight - 4;
+           i++) {
         bound_threshold.data[posY * bound_threshold.cols + i] = 255;
       }
-
     }
 
-    utils::imwrite("tmp/repaireimg1.jpg", bound_threshold);
+    utils::imwrite("resources/image/tmp/repaireimg1.jpg", bound_threshold);
 
-    //ä¸¤è¾¹çš„åŒºåŸŸä¸è¦
+    //Á½±ßµÄÇøÓò²»Òª
     for (int i = 0; i < bound_threshold.rows; i++) {
       bound_threshold.data[i * bound_threshold.cols + posLeft] = 0;
       bound_threshold.data[i * bound_threshold.cols + posRight] = 0;
     }
-    utils::imwrite("tmp/repaireimg2.jpg", bound_threshold);
+    utils::imwrite("resources/image/tmp/repaireimg2.jpg", bound_threshold);
   }
 
-
-  vector<vector<Point> > contours;
+  vector<vector<Point>> contours;
   findContours(bound_threshold,
-               contours, // a vector of contours
-               CV_RETR_EXTERNAL, // æå–å¤–éƒ¨è½®å»“
-               CV_CHAIN_APPROX_NONE); // all pixels of each contours
+               contours,               // a vector of contours
+               CV_RETR_EXTERNAL,       // ÌáÈ¡Íâ²¿ÂÖÀª
+               CV_CHAIN_APPROX_NONE);  // all pixels of each contours
 
   vector<vector<Point>>::iterator itc = contours.begin();
 
@@ -364,23 +368,53 @@ int CPlateLocate::sobelSecSearchPart(Mat& bound, Point2f refpoint,
   return 0;
 }
 
-
-//! Sobelç¬¬äºŒæ¬¡æœç´¢
-//! å¯¹å¤§å°å’Œå½¢çŠ¶åšé™åˆ¶ï¼Œç”Ÿæˆå‚è€ƒåæ ‡
+//! SobelµÚ¶ş´ÎËÑË÷
+//! ¶Ô´óĞ¡ºÍĞÎ×´×öÏŞÖÆ£¬Éú³É²Î¿¼×ø±ê
 int CPlateLocate::sobelSecSearch(Mat& bound, Point2f refpoint,
                                  vector<RotatedRect>& outRects) {
   Mat bound_threshold;
 
-  //! ç¬¬äºŒæ¬¡å‚æ•°æ¯”ä¸€æ¬¡ç²¾ç»†ï¼Œä½†é’ˆå¯¹çš„æ˜¯å¾—åˆ°çš„å¤–æ¥çŸ©é˜µä¹‹åçš„å›¾åƒï¼Œå†sobelå¾—åˆ°äºŒå€¼å›¾åƒ
+  //!
+  //µÚ¶ş´Î²ÎÊı±ÈÒ»´Î¾«Ï¸£¬µ«Õë¶ÔµÄÊÇµÃµ½µÄÍâ½Ó¾ØÕóÖ®ºóµÄÍ¼Ïñ£¬ÔÙsobelµÃµ½¶şÖµÍ¼Ïñ
   sobelOper(bound, bound_threshold, 3, 10, 3);
 
-  utils::imwrite("tmp/sobelSecSearch.jpg", bound_threshold);
+  // Mat tempBoundThread = bound_threshold.clone();
+  //////
+  // tempBoundThread = clearLiuDing(tempBoundThread);
 
-  vector<vector<Point> > contours;
+  // int posLeft = 0,posRight = 0;
+  // if (bFindLeftRightBound2(tempBoundThread,posLeft,posRight))
+  //{
+  //	//ÕÒµ½Á½¸ö±ß½çºó½øĞĞÁ¬½ÓĞŞ²¹´¦Àí
+  //	if (posRight !=0 && posLeft != 0 && posLeft < posRight)
+  //	{
+  //		int posY = bound_threshold.rows*0.5;
+  //		for (int i=posLeft+bound_threshold.rows*0.1;i<posRight-4;i++)
+  //		{
+  //			bound_threshold.data[posY*bound_threshold.step[0]+i] =
+  // 255;
+  //		}
+
+  //	}
+
+  //	imwrite("resources/image/tmp/repaireimg1.jpg",bound_threshold);
+
+  //	//Á½±ßµÄÇøÓò²»Òª
+  //	for (int i=0;i<bound_threshold.rows;i++)
+  //	{
+  //		bound_threshold.data[i*bound_threshold.step[0]+posLeft] = 0;
+  //		bound_threshold.data[i*bound_threshold.step[0]+posRight] = 0;
+  //	}
+  //	imwrite("resources/image/tmp/repaireimg2.jpg",bound_threshold);
+  //}
+
+  utils::imwrite("resources/image/tmp/sobelSecSearch.jpg", bound_threshold);
+
+  vector<vector<Point>> contours;
   findContours(bound_threshold,
-               contours, // a vector of contours
-               CV_RETR_EXTERNAL, // æå–å¤–éƒ¨è½®å»“
-               CV_CHAIN_APPROX_NONE); // all pixels of each contours
+               contours,               // a vector of contours
+               CV_RETR_EXTERNAL,       // ÌáÈ¡Íâ²¿ÂÖÀª
+               CV_CHAIN_APPROX_NONE);  // all pixels of each contours
 
   vector<vector<Point>>::iterator itc = contours.begin();
 
@@ -406,9 +440,8 @@ int CPlateLocate::sobelSecSearch(Mat& bound, Point2f refpoint,
   return 0;
 }
 
-
-//! Sobelè¿ç®—//å¯¹å›¾åƒåˆ†å‰²ï¼Œè…èš€å’Œè†¨èƒ€çš„æ“ä½œ
-//! è¾“å…¥å½©è‰²å›¾åƒï¼Œè¾“å‡ºäºŒå€¼åŒ–å›¾åƒ
+//! SobelÔËËã//¶ÔÍ¼Ïñ·Ö¸î£¬¸¯Ê´ºÍÅòÕÍµÄ²Ù×÷
+//! ÊäÈë²ÊÉ«Í¼Ïñ£¬Êä³ö¶şÖµ»¯Í¼Ïñ
 int CPlateLocate::sobelOper(const Mat& in, Mat& out, int blurSize, int morphW,
                             int morphH) {
   Mat mat_blur;
@@ -420,9 +453,8 @@ int CPlateLocate::sobelOper(const Mat& in, Mat& out, int blurSize, int morphW,
     cvtColor(mat_blur, mat_gray, CV_RGB2GRAY);
   else
     mat_gray = mat_blur;
-  //mat_gray = m_bilateral.BilateralFilter(mat_gray,6);
 
-  //equalizeHist(mat_gray, mat_gray);
+  // equalizeHist(mat_gray, mat_gray);
 
   int scale = SOBEL_SCALE;
   int delta = SOBEL_DELTA;
@@ -430,26 +462,32 @@ int CPlateLocate::sobelOper(const Mat& in, Mat& out, int blurSize, int morphW,
 
   Mat grad_x, grad_y;
   Mat abs_grad_x, abs_grad_y;
-  //å¯¹X  soble
+  //¶ÔX  soble
   Sobel(mat_gray, grad_x, ddepth, 1, 0, 3, scale, delta, BORDER_DEFAULT);
   convertScaleAbs(grad_x, abs_grad_x);
-  //å¯¹Y  soble
-  Sobel(mat_gray, grad_y, ddepth, 0, 1, 3, scale, delta, BORDER_DEFAULT);
-  convertScaleAbs(grad_y, abs_grad_y);
-  //åœ¨ä¸¤ä¸ªæƒå€¼ç»„åˆ
+  //¶ÔY  soble
+  // Sobel(mat_gray, grad_y, ddepth, 0, 1, 3, scale, delta, BORDER_DEFAULT);
+  // convertScaleAbs(grad_y, abs_grad_y);
+  //ÔÚÁ½¸öÈ¨Öµ×éºÏ
+  //ÒòÎªY·½ÏòµÄÈ¨ÖØÊÇ0£¬Òò´ËÔÚ´Ë¾Í²»ÔÙ¼ÆËãY·½ÏòµÄsobelÁË
   Mat grad;
-  addWeighted(abs_grad_x, SOBEL_X_WEIGHT, abs_grad_y, SOBEL_Y_WEIGHT, 0, grad);
-  //åˆ†å‰²
+  addWeighted(abs_grad_x, SOBEL_X_WEIGHT, 0, 0, 0, grad);
+  //·Ö¸î
   Mat mat_threshold;
-  // double otsu_thresh_val =
-  threshold(grad, mat_threshold, 0, 255, CV_THRESH_OTSU + CV_THRESH_BINARY);
-  //è…èš€å’Œè†¨èƒ€
+  double otsu_thresh_val =
+      threshold(grad, mat_threshold, 0, 255, CV_THRESH_OTSU + CV_THRESH_BINARY);
+  //¸¯Ê´ºÍÅòÕÍ
   Mat element = getStructuringElement(MORPH_RECT, Size(morphW, morphH));
   morphologyEx(mat_threshold, mat_threshold, MORPH_CLOSE, element);
 
   out = mat_threshold;
-  //imshow("im",out);
-  //waitKey(0);
+
+  if (0) {
+    imshow("sobelOper", out);
+    waitKey(0);
+    destroyWindow("sobelOper");
+  }
+
   return 0;
 }
 
@@ -457,12 +495,11 @@ void DeleteNotArea(Mat& inmat) {
   Mat input_grey;
   cvtColor(inmat, input_grey, CV_BGR2GRAY);
 
-
   int w = inmat.cols;
   int h = inmat.rows;
 
   Mat tmpMat = inmat(Rect(w * 0.15, h * 0.1, w * 0.7, h * 0.7));
-  //åˆ¤æ–­è½¦ç‰Œé¢œè‰²ä»¥æ­¤ç¡®è®¤thresholdæ–¹æ³•
+  //ÅĞ¶Ï³µÅÆÑÕÉ«ÒÔ´ËÈ·ÈÏthreshold·½·¨
   Color plateType = getPlateType(tmpMat, true);
   Mat img_threshold;
   if (BLUE == plateType) {
@@ -471,12 +508,12 @@ void DeleteNotArea(Mat& inmat) {
     int threadHoldV = ThresholdOtsu(tmp);
 
     threshold(input_grey, img_threshold, threadHoldV, 255, CV_THRESH_BINARY);
-    //threshold(input_grey, img_threshold, 5, 255, CV_THRESH_OTSU + CV_THRESH_BINARY);
+    // threshold(input_grey, img_threshold, 5, 255, CV_THRESH_OTSU +
+    // CV_THRESH_BINARY);
 
-    utils::imwrite("tmp/inputgray2.jpg", img_threshold);
+    utils::imwrite("resources/image/tmp/inputgray2.jpg", img_threshold);
 
-  }
-  else if (YELLOW == plateType) {
+  } else if (YELLOW == plateType) {
     img_threshold = input_grey.clone();
     Mat tmp = input_grey(Rect(w * 0.1, h * 0.1, w * 0.8, h * 0.8));
     int threadHoldV = ThresholdOtsu(tmp);
@@ -484,13 +521,11 @@ void DeleteNotArea(Mat& inmat) {
     threshold(input_grey, img_threshold, threadHoldV, 255,
               CV_THRESH_BINARY_INV);
 
+    utils::imwrite("resources/image/tmp/inputgray2.jpg", img_threshold);
 
-    imwrite("./tmp/inputgray2.jpg", img_threshold);
-
-
-    //threshold(input_grey, img_threshold, 10, 255, CV_THRESH_OTSU + CV_THRESH_BINARY_INV);
-  }
-  else
+    // threshold(input_grey, img_threshold, 10, 255, CV_THRESH_OTSU +
+    // CV_THRESH_BINARY_INV);
+  } else
     threshold(input_grey, img_threshold, 10, 255,
               CV_THRESH_OTSU + CV_THRESH_BINARY);
 
@@ -507,24 +542,25 @@ void DeleteNotArea(Mat& inmat) {
     for (int i=posLeft;i<posRight;i++)
     {
 
-      inmat.data[posY+i] = 255;
+    inmat.data[posY+i] = 255;
     }
     */
     /*roiRect.x += posLeft;
     roiRect.width -=posLeft;*/
   }
-
 }
 
-//! æŠ—æ‰­æ–œå¤„ç†
+//! ¿¹Å¤Ğ±´¦Àí
 int CPlateLocate::deskew(const Mat& src, const Mat& src_b,
                          vector<RotatedRect>& inRects,
                          vector<CPlate>& outPlates) {
+  Mat mat_debug;
+  src.copyTo(mat_debug);
 
   for (int i = 0; i < inRects.size(); i++) {
     RotatedRect roi_rect = inRects[i];
 
-    float r = (float) roi_rect.size.width / (float) roi_rect.size.height;
+    float r = (float)roi_rect.size.width / (float)roi_rect.size.height;
     float roi_angle = roi_rect.angle;
 
     Size roi_rect_size = roi_rect.size;
@@ -532,12 +568,20 @@ int CPlateLocate::deskew(const Mat& src, const Mat& src_b,
       roi_angle = 90 + roi_angle;
       swap(roi_rect_size.width, roi_rect_size.height);
     }
-    //m_angle=60
+
+    if (m_debug) {
+      Point2f rect_points[4];
+      roi_rect.points(rect_points);
+      for (int j = 0; j < 4; j++)
+        line(mat_debug, rect_points[j], rect_points[(j + 1) % 4],
+             Scalar(0, 255, 255), 1, 8);
+    }
+
+    // m_angle=60
     if (roi_angle - m_angle < 0 && roi_angle + m_angle > 0) {
       Rect_<float> safeBoundRect;
       bool isFormRect = calcSafeRect(roi_rect, src, safeBoundRect);
-      if (!isFormRect)
-        continue;
+      if (!isFormRect) continue;
 
       Mat bound_mat = src(safeBoundRect);
       Mat bound_mat_b = src_b(safeBoundRect);
@@ -548,9 +592,8 @@ int CPlateLocate::deskew(const Mat& src, const Mat& src_b,
       if ((roi_angle - 3 < 0 && roi_angle + 3 > 0) || 90.0 == roi_angle ||
           -90.0 == roi_angle) {
         deskew_mat = bound_mat;
-      }
-      else {
-        // è§’åº¦åœ¨5åˆ°60åº¦ä¹‹é—´çš„ï¼Œé¦–å…ˆéœ€è¦æ—‹è½¬ rotation
+      } else {
+        // ½Ç¶ÈÔÚ5µ½60¶ÈÖ®¼äµÄ£¬Ê×ÏÈĞèÒªĞı×ª rotation
         Mat rotated_mat;
         Mat rotated_mat_b;
 
@@ -562,50 +605,67 @@ int CPlateLocate::deskew(const Mat& src, const Mat& src_b,
                       roi_angle))
           continue;
 
-        // å¦‚æœå›¾ç‰‡åæ–œï¼Œè¿˜éœ€è¦è§†è§’è½¬æ¢ affine
+        // Èç¹ûÍ¼Æ¬Æ«Ğ±£¬»¹ĞèÒªÊÓ½Ç×ª»» affine
         double roi_slope = 0;
-        //imshow("1roated_mat",rotated_mat);
-        //imshow("rotated_mat_b",rotated_mat_b);
-        if (isdeflection(rotated_mat_b, roi_angle,
-                         roi_slope)) {/*cout<<"roi_slopeçš„å¤§å°"<<roi_slope<<endl;*/
-          //cout << "roi_angle:" << roi_angle << endl;
-          //cout << "roi_slope:" << roi_slope << endl;
+        // imshow("1roated_mat",rotated_mat);
+        // imshow("rotated_mat_b",rotated_mat_b);
+        if (isdeflection(rotated_mat_b, roi_angle, roi_slope)) {
+          /*cout<<"roi_slopeµÄ´óĞ¡"<<roi_slope<<endl;*/
+          // cout << "roi_angle:" << roi_angle << endl;
+          // cout << "roi_slope:" << roi_slope << endl;
           affine(rotated_mat, deskew_mat, roi_slope);
-        }
-        else
+        } else
           deskew_mat = rotated_mat;
       }
 
       Mat plate_mat;
       plate_mat.create(HEIGHT, WIDTH, TYPE);
 
-
+      // haitungagaÌí¼Ó£¬É¾³ı·ÇÇøÓò£¬Õâ¸öº¯ÊıÓ°ÏìÁË25%µÄÍêÕû¶¨Î»ÂÊ
       DeleteNotArea(deskew_mat);
-      //å¦‚æœå›¾åƒå¤§äºæˆ‘ä»¬æ‰€è¦æ±‚çš„å›¾åƒï¼Œå¯¹å›¾åƒè¿›è¡Œä¸€ä¸ªå¤§å°å˜æ›´
-      if (deskew_mat.cols >= WIDTH || deskew_mat.rows >= HEIGHT)
-        resize(deskew_mat, plate_mat, plate_mat.size(), 0, 0, INTER_AREA);
-      else
-        resize(deskew_mat, plate_mat, plate_mat.size(), 0, 0, INTER_CUBIC);
 
-      //if (1)
-      //{
-      //	imshow("plate_mat", plate_mat);
-      //	waitKey(0);
-      //	destroyWindow("plate_mat");
-      //}
+      // ÕâÀï¶Ôdeskew_mat½øĞĞÁËÒ»¸öÉ¸Ñ¡
+      // Ê¹ÓÃÁË¾­ÑéÊıÖµ£º2.3ºÍ6
 
+      if (0) {
+        imshow("deskew_mat", deskew_mat);
+        waitKey(0);
+        destroyWindow("deskew_mat");
+      }
 
-      CPlate plate;
-      plate.setPlatePos(roi_rect);
-      plate.setPlateMat(plate_mat);
-      outPlates.push_back(plate);
+      //
+      if (deskew_mat.cols * 1.0 / deskew_mat.rows > 2.3 &&
+          deskew_mat.cols * 1.0 / deskew_mat.rows < 6) {
+        //Èç¹ûÍ¼Ïñ´óÓÚÎÒÃÇËùÒªÇóµÄÍ¼Ïñ£¬¶ÔÍ¼Ïñ½øĞĞÒ»¸ö´óĞ¡±ä¸ü
+        if (deskew_mat.cols >= WIDTH || deskew_mat.rows >= HEIGHT)
+          resize(deskew_mat, plate_mat, plate_mat.size(), 0, 0, INTER_AREA);
+        else
+          resize(deskew_mat, plate_mat, plate_mat.size(), 0, 0, INTER_CUBIC);
 
+        if (0) {
+          imshow("plate_mat", plate_mat);
+          waitKey(0);
+          destroyWindow("plate_mat");
+        }
+
+        CPlate plate;
+        plate.setPlatePos(roi_rect);
+        plate.setPlateMat(plate_mat);
+        outPlates.push_back(plate);
+      }
     }
   }
+
+  if (0) {
+    imshow("mat_debug", mat_debug);
+    waitKey(0);
+    destroyWindow("mat_debug");
+  }
+
   return 0;
 }
 
-//! æ—‹è½¬æ“ä½œ
+//! Ğı×ª²Ù×÷
 bool CPlateLocate::rotation(Mat& in, Mat& out, const Size rect_size,
                             const Point2f center, const double angle) {
   Mat in_large;
@@ -620,8 +680,7 @@ bool CPlateLocate::rotation(Mat& in, Mat& out, const Size rect_size,
   /*assert(width == in.cols);
   assert(height == in.rows);*/
 
-  if (width != in.cols || height != in.rows)
-    return false;
+  if (width != in.cols || height != in.rows) return false;
 
   Mat imageRoi = in_large(Rect(x, y, width, height));
   addWeighted(imageRoi, 0, in, 1, 0, imageRoi);
@@ -651,16 +710,13 @@ bool CPlateLocate::rotation(Mat& in, Mat& out, const Size rect_size,
   waitKey(0);*/
 
   return true;
-
-
 }
 
-
-//! æ˜¯å¦åæ–œ
-//! è¾“å…¥äºŒå€¼åŒ–å›¾åƒï¼Œè¾“å‡ºåˆ¤æ–­ç»“æœ
+//! ÊÇ·ñÆ«Ğ±
+//! ÊäÈë¶şÖµ»¯Í¼Ïñ£¬Êä³öÅĞ¶Ï½á¹û
 bool CPlateLocate::isdeflection(const Mat& in, const double angle,
-                                double& slope) {/*imshow("in",in);
-waitKey(0);*/
+                                double& slope) { /*imshow("in",in);
+                                                waitKey(0);*/
   int nRows = in.rows;
   int nCols = in.cols;
 
@@ -681,69 +737,67 @@ waitKey(0);*/
 
     int j = 0;
     int value = 0;
-    while (0 == value && j < nCols)
-      value = int(p[j++]);
+    while (0 == value && j < nCols) value = int(p[j++]);
 
     len[i] = j;
   }
 
-  //cout << "len[0]:" << len[0] << endl;
-  //cout << "len[1]:" << len[1] << endl;
-  //cout << "len[2]:" << len[2] << endl;
-  //len[0]/len[1]/len[2]è¿™ä¸‰ä¸ªåº”è¯¥æ˜¯å–è½¦ç‰Œè¾¹çº¿çš„å€¼ï¼Œæ¥è®¡ç®—è½¦ç‰Œè¾¹çº¿çš„æ–œç‡
+  // cout << "len[0]:" << len[0] << endl;
+  // cout << "len[1]:" << len[1] << endl;
+  // cout << "len[2]:" << len[2] << endl;
+  // len[0]/len[1]/len[2]ÕâÈı¸öÓ¦¸ÃÊÇÈ¡³µÅÆ±ßÏßµÄÖµ£¬À´¼ÆËã³µÅÆ±ßÏßµÄĞ±ÂÊ
   double maxlen = max(len[2], len[0]);
   double minlen = min(len[2], len[0]);
-  //double difflen = abs(len[2] - len[0]);
-  //cout << "nCols:" << nCols << endl;
+  double difflen = abs(len[2] - len[0]);
+  // cout << "nCols:" << nCols << endl;
 
   double PI = 3.14159265;
-  //angleæ˜¯æ ¹æ®æ°´å¹³é‚£æ ¹ç›´çº¿çš„æ–œç‡è½¬æ¢è¿‡æ¥çš„è§’åº¦
+  // angleÊÇ¸ù¾İË®Æ½ÄÇ¸ùÖ±ÏßµÄĞ±ÂÊ×ª»»¹ıÀ´µÄ½Ç¶È
   double g = tan(angle * PI / 180.0);
 
   if (maxlen - len[1] > nCols / 32 || len[1] - minlen > nCols / 32) {
-    // å¦‚æœæ–œç‡ä¸ºæ­£ï¼Œåˆ™åº•éƒ¨åœ¨ä¸‹ï¼Œåä¹‹åœ¨ä¸Š
+    // Èç¹ûĞ±ÂÊÎªÕı£¬Ôòµ×²¿ÔÚÏÂ£¬·´Ö®ÔÚÉÏ
     double slope_can_1 =
-            double(len[2] - len[0]) / double(comp_index[1]);//æ±‚ç›´çº¿çš„æ–œç‡
+        double(len[2] - len[0]) / double(comp_index[1]);  //ÇóÖ±ÏßµÄĞ±ÂÊ
     double slope_can_2 = double(len[1] - len[0]) / double(comp_index[0]);
-    //double slope_can_3 = double(len[2] - len[1]) / double(comp_index[0]);
-    //cout<<"angle:"<<angle<<endl;
-    //cout<<"g:"<<g<<endl;
-    //cout << "slope_can_1:" << slope_can_1 << endl;
-    //cout << "slope_can_2:" << slope_can_2 << endl;
-    //cout << "slope_can_3:" << slope_can_3 << endl;
-    //if(g>=0)
+    double slope_can_3 = double(len[2] - len[1]) / double(comp_index[0]);
+    // cout<<"angle:"<<angle<<endl;
+    // cout<<"g:"<<g<<endl;
+    // cout << "slope_can_1:" << slope_can_1 << endl;
+    // cout << "slope_can_2:" << slope_can_2 << endl;
+    // cout << "slope_can_3:" << slope_can_3 << endl;
+    // if(g>=0)
     slope = abs(slope_can_1 - g) <= abs(slope_can_2 - g) ? slope_can_1
                                                          : slope_can_2;
     // else
-    //slope = abs(slope_can_1 - g) >= abs(slope_can_2 - g) ? slope_can_1 : slope_can_2;
+    // slope = abs(slope_can_1 - g) >= abs(slope_can_2 - g) ? slope_can_1 :
+    // slope_can_2;
     /*slope = max(  double(len[2] - len[0]) / double(comp_index[1]),
-      double(len[1] - len[0]) / double(comp_index[0]));*/
+            double(len[1] - len[0]) / double(comp_index[0]));*/
 
-    //cout << "slope:" << slope << endl;
+    // cout << "slope:" << slope << endl;
     return true;
-  }
-  else {
+  } else {
     slope = 0;
   }
 
   return false;
 }
 
-
-//! æ‰­å˜æ“ä½œ//é€šè¿‡opencvçš„ä»¿å°„å˜æ¢
+//! Å¤±ä²Ù×÷//Í¨¹ıopencvµÄ·ÂÉä±ä»»
 void CPlateLocate::affine(const Mat& in, Mat& out, const double slope) {
-  //imshow("in", in);
-  //waitKey(0);
-  //è¿™é‡Œçš„slopeæ˜¯é€šè¿‡åˆ¤æ–­æ˜¯å¦å€¾æ–œå¾—å‡ºæ¥çš„å€¾æ–œç‡
+  // imshow("in", in);
+  // waitKey(0);
+  //ÕâÀïµÄslopeÊÇÍ¨¹ıÅĞ¶ÏÊÇ·ñÇãĞ±µÃ³öÀ´µÄÇãĞ±ÂÊ
   Point2f dstTri[3];
   Point2f plTri[3];
 
-  int height = in.rows;//è¡Œ
-  int width = in.cols;//åˆ—
+  int height = in.rows;  //ĞĞ
+  int width = in.cols;   //ÁĞ
   double xiff = abs(slope) * height;
 
   if (slope > 0) {
-    //å³åå‹ï¼Œæ–°èµ·ç‚¹åæ ‡ç³»åœ¨xiff/2ä½ç½®
+    //ÓÒÆ«ĞÍ£¬ĞÂÆğµã×ø±êÏµÔÚxiff/2Î»ÖÃ
     plTri[0] = Point2f(0, 0);
     plTri[1] = Point2f(width - xiff - 1, 0);
     plTri[2] = Point2f(0 + xiff, height - 1);
@@ -751,9 +805,8 @@ void CPlateLocate::affine(const Mat& in, Mat& out, const double slope) {
     dstTri[0] = Point2f(xiff / 2, 0);
     dstTri[1] = Point2f(width - 1 - xiff / 2, 0);
     dstTri[2] = Point2f(xiff / 2, height - 1);
-  }
-  else {
-    //å·¦åå‹ï¼Œæ–°èµ·ç‚¹åæ ‡ç³»åœ¨ -xiff/2ä½ç½®
+  } else {
+    //×óÆ«ĞÍ£¬ĞÂÆğµã×ø±êÏµÔÚ -xiff/2Î»ÖÃ
     plTri[0] = Point2f(0 + xiff, 0);
     plTri[1] = Point2f(width - 1, 0);
     plTri[2] = Point2f(0, height - 1);
@@ -774,53 +827,53 @@ void CPlateLocate::affine(const Mat& in, Mat& out, const double slope) {
 
   if (in.rows > HEIGHT || in.cols > WIDTH)
     warpAffine(in, affine_mat, warp_mat, affine_mat.size(),
-               CV_INTER_AREA);//ä»¿å°„å˜æ¢
+               CV_INTER_AREA);  //·ÂÉä±ä»»
   else
     warpAffine(in, affine_mat, warp_mat, affine_mat.size(), CV_INTER_CUBIC);
 
   out = affine_mat;
 
-  //imshow("out", out);
-  //waitKey(0);
+  // imshow("out", out);
+  // waitKey(0);
 }
 
-
-//! è®¡ç®—ä¸€ä¸ªå®‰å…¨çš„Rect
-//! å¦‚æœä¸å­˜åœ¨ï¼Œè¿”å›false
+//! ¼ÆËãÒ»¸ö°²È«µÄRect
+//! Èç¹û²»´æÔÚ£¬·µ»Øfalse
 bool CPlateLocate::calcSafeRect(const RotatedRect& roi_rect, const Mat& src,
                                 Rect_<float>& safeBoundRect) {
   Rect_<float> boudRect = roi_rect.boundingRect();
 
-  // boudRectçš„å·¦ä¸Šçš„xå’Œyæœ‰å¯èƒ½å°äº0
+  // boudRectµÄ×óÉÏµÄxºÍyÓĞ¿ÉÄÜĞ¡ÓÚ0
   float tl_x = boudRect.x > 0 ? boudRect.x : 0;
   float tl_y = boudRect.y > 0 ? boudRect.y : 0;
-  // boudRectçš„å³ä¸‹çš„xå’Œyæœ‰å¯èƒ½å¤§äºsrcçš„èŒƒå›´
-  float br_x = boudRect.x + boudRect.width < src.cols ?
-               boudRect.x + boudRect.width - 1 : src.cols - 1;
-  float br_y = boudRect.y + boudRect.height < src.rows ?
-               boudRect.y + boudRect.height - 1 : src.rows - 1;
+  // boudRectµÄÓÒÏÂµÄxºÍyÓĞ¿ÉÄÜ´óÓÚsrcµÄ·¶Î§
+  float br_x = boudRect.x + boudRect.width < src.cols
+                   ? boudRect.x + boudRect.width - 1
+                   : src.cols - 1;
+  float br_y = boudRect.y + boudRect.height < src.rows
+                   ? boudRect.y + boudRect.height - 1
+                   : src.rows - 1;
 
   float roi_width = br_x - tl_x;
   float roi_height = br_y - tl_y;
 
-  if (roi_width <= 0 || roi_height <= 0)
-    return false;
+  if (roi_width <= 0 || roi_height <= 0) return false;
 
-  // æ–°å»ºä¸€ä¸ªmatï¼Œç¡®ä¿åœ°å€ä¸è¶Šç•Œï¼Œä»¥é˜²matå®šä½roiæ—¶æŠ›å¼‚å¸¸
+  // ĞÂ½¨Ò»¸ömat£¬È·±£µØÖ·²»Ô½½ç£¬ÒÔ·Àmat¶¨Î»roiÊ±Å×Òì³£
   safeBoundRect = Rect_<float>(tl_x, tl_y, roi_width, roi_height);
 
   return true;
 }
 
-
 int CPlateLocate::deskewOld(Mat src, vector<RotatedRect>& inRects,
                             vector<RotatedRect>& outRects, vector<Mat>& outMats,
                             LocateType locateType) {
+  int k = 1;
   for (int i = 0; i < inRects.size(); i++) {
     RotatedRect minRect = inRects[i];
 
     if (verifySizes(minRect)) {
-      float r = (float) minRect.size.width / (float) minRect.size.height;
+      float r = (float)minRect.size.width / (float)minRect.size.height;
       float angle = minRect.angle;
       cout << "angle:" << angle << endl;
 
@@ -833,47 +886,46 @@ int CPlateLocate::deskewOld(Mat src, vector<RotatedRect>& inRects,
       if (angle - m_angle < 0 && angle + m_angle > 0) {
         Rect_<float> boudRect = minRect.boundingRect();
 
-        // boudRectçš„å·¦ä¸Šçš„xå’Œyæœ‰å¯èƒ½å°äº0
+        // boudRectµÄ×óÉÏµÄxºÍyÓĞ¿ÉÄÜĞ¡ÓÚ0
         float tl_x = boudRect.x > 0 ? boudRect.x : 0;
         float tl_y = boudRect.y > 0 ? boudRect.y : 0;
-        // boudRectçš„å³ä¸Šçš„xå’Œyæœ‰å¯èƒ½å¤§äºsrcçš„èŒƒå›´
-        float br_x = boudRect.x + boudRect.width < src.cols ?
-                     boudRect.x + boudRect.width - 1 : src.cols - 1;
-        float br_y = boudRect.y + boudRect.height < src.rows ?
-                     boudRect.y + boudRect.height - 1 : src.rows - 1;
+        // boudRectµÄÓÒÉÏµÄxºÍyÓĞ¿ÉÄÜ´óÓÚsrcµÄ·¶Î§
+        float br_x = boudRect.x + boudRect.width < src.cols
+                         ? boudRect.x + boudRect.width - 1
+                         : src.cols - 1;
+        float br_y = boudRect.y + boudRect.height < src.rows
+                         ? boudRect.y + boudRect.height - 1
+                         : src.rows - 1;
 
         float roi_width = br_x - tl_x;
         float roi_height = br_y - tl_y;
 
-        if (roi_width <= 0 || roi_height <= 0)
-          continue;
+        if (roi_width <= 0 || roi_height <= 0) continue;
 
-        // æ–°å»ºä¸€ä¸ªmatï¼Œç¡®ä¿åœ°å€ä¸è¶Šç•Œï¼Œä»¥é˜²matå®šä½roiæ—¶æŠ›å¼‚å¸¸
+        // ĞÂ½¨Ò»¸ömat£¬È·±£µØÖ·²»Ô½½ç£¬ÒÔ·Àmat¶¨Î»roiÊ±Å×Òì³£
         Rect_<float> roiRect = Rect_<float>(tl_x, tl_y, roi_width, roi_height);
 
         Mat src_mat = src(roiRect);
 
-        //imshow("src_mat", src_mat);
-        //waitKey(0);
+        // imshow("src_mat", src_mat);
+        // waitKey(0);
 
         if (locateType == COLOR) {
           Mat img_crop;
           if (0.0 == angle || 90.0 == angle || -90.0 == angle ||
               -0.0 == angle) {
-            //  å¦‚æœè§’åº¦ç­‰äºè¿™äº›å€¼ï¼Œåˆ™ä¸éœ€è¦æ—‹è½¬ï¼Œç›´æ¥å°±æ˜¯æ­£çŸ©å½¢
-            //  ä»¥å…å¸¦æ¥æ—‹è½¬ä¸è£å‰ªä¸­çš„çº¿æ€§æ’å€¼å¸¦æ¥çš„è¯¯å·®ä¸æ¨¡ç³Š
+            //  Èç¹û½Ç¶ÈµÈÓÚÕâĞ©Öµ£¬Ôò²»ĞèÒªĞı×ª£¬Ö±½Ó¾ÍÊÇÕı¾ØĞÎ
+            //  ÒÔÃâ´øÀ´Ğı×ªÓë²Ã¼ôÖĞµÄÏßĞÔ²åÖµ´øÀ´µÄÎó²îÓëÄ£ºı
             img_crop = src_mat;
-          }
-          else if (angle - 5 < 0 && angle + 5 > 0) {
-            //  å¦‚æœè§’åº¦å°äº5åº¦ï¼Œåˆ™ä¸å¿…æ—‹è½¬ï¼Œç›´æ¥æ˜¾ç¤º
-            //  ä»¥å…å¸¦æ¥æ—‹è½¬ä¸è£å‰ªä¸­çš„çº¿æ€§æ’å€¼å¸¦æ¥çš„è¯¯å·®ä¸æ¨¡ç³Š
+          } else if (angle - 5 < 0 && angle + 5 > 0) {
+            //  Èç¹û½Ç¶ÈĞ¡ÓÚ5¶È£¬Ôò²»±ØĞı×ª£¬Ö±½ÓÏÔÊ¾
+            //  ÒÔÃâ´øÀ´Ğı×ªÓë²Ã¼ôÖĞµÄÏßĞÔ²åÖµ´øÀ´µÄÎó²îÓëÄ£ºı
             img_crop = src_mat;
-          }
-          else {
-            //  å¦‚æœè§’åº¦åœ¨5åº¦åˆ°45åº¦ä¹‹é—´ï¼Œåˆ™éœ€è¦æ—‹è½¬
+          } else {
+            //  Èç¹û½Ç¶ÈÔÚ5¶Èµ½45¶ÈÖ®¼ä£¬ÔòĞèÒªĞı×ª
 
-            //vector<RotatedRect> rects_tmp;
-            //deskewP(src_mat, BLUE, rects_tmp);
+            // vector<RotatedRect> rects_tmp;
+            // deskewP(src_mat, BLUE, rects_tmp);
 
             Point2f newcenter(roiRect.width / 2, roiRect.height / 2);
             /*cout << "a:" << angle;*/
@@ -885,7 +937,7 @@ int CPlateLocate::deskewOld(Mat src, vector<RotatedRect>& inRects,
 
             /*imshow("img_rotated", img_rotated);
             waitKey(0);
-*/
+            */
             Mat middle_crop;
             getRectSubPix(img_rotated, rect_size, newcenter, middle_crop);
 
@@ -893,7 +945,7 @@ int CPlateLocate::deskewOld(Mat src, vector<RotatedRect>& inRects,
             waitKey(0);*/
 
             if (r <= 10) {
-              //Point2f srcTri[4];
+              Point2f srcTri[4];
               Point2f dstTri[3];
 
               Point2f plTri[3];
@@ -906,8 +958,7 @@ int CPlateLocate::deskewOld(Mat src, vector<RotatedRect>& inRects,
                 plTri[0] = Point2f(0 + xdiff, 0);
                 plTri[1] = Point2f(middle_crop.cols - 1, 0);
                 plTri[2] = Point2f(0, middle_crop.rows - 1);
-              }
-              else {
+              } else {
                 double PI = 3.14159265;
                 double g = tan(abs(angle) * PI / 180.0);
 
@@ -932,15 +983,12 @@ int CPlateLocate::deskewOld(Mat src, vector<RotatedRect>& inRects,
 
               /*imshow("img_crop", img_crop);
               waitKey(0);*/
-            }
-            else {
+            } else {
               img_crop = middle_crop;
             }
-
           }
 
           if (sobelJudge(img_crop)) {
-
             Mat plate_img;
             plate_img.create(HEIGHT, WIDTH, TYPE);
             if (img_crop.cols >= WIDTH || img_crop.rows >= HEIGHT)
@@ -956,14 +1004,16 @@ int CPlateLocate::deskewOld(Mat src, vector<RotatedRect>& inRects,
           }
         }
 
-        //if (locateType == SOBEL) {
+        // if (locateType == SOBEL) {
         //	vector<Mat> resultVec;
         //	vector<RotatedRect> resultRects;
         //	sobelFindAgn(src_mat, resultRects, resultVec);
 
         //	for (int j = 0; j < resultRects.size(); j++) {
-        //		Point2f origin_center = Point2f(tl_x, tl_y) + resultRects[j].center;
-        //		RotatedRect origin_rect(origin_center, resultRects[j].size, resultRects[j].angle);
+        //		Point2f origin_center = Point2f(tl_x, tl_y) +
+        // resultRects[j].center;
+        //		RotatedRect origin_rect(origin_center,
+        // resultRects[j].size, resultRects[j].angle);
         //		outRects.push_back(origin_rect);
         //	}
 
@@ -973,7 +1023,6 @@ int CPlateLocate::deskewOld(Mat src, vector<RotatedRect>& inRects,
         //		outMats.push_back(resultVec[j]);
         //	}
         //}
-
       }
     }
   }
@@ -981,8 +1030,7 @@ int CPlateLocate::deskewOld(Mat src, vector<RotatedRect>& inRects,
   return 0;
 }
 
-
-// !åŸºäºé¢œè‰²ä¿¡æ¯çš„è½¦ç‰Œå®šä½
+// !»ùÓÚÑÕÉ«ĞÅÏ¢µÄ³µÅÆ¶¨Î»
 int CPlateLocate::plateColorLocate(Mat src, vector<CPlate>& candPlates,
                                    int index) {
   vector<RotatedRect> rects_color_blue;
@@ -990,32 +1038,29 @@ int CPlateLocate::plateColorLocate(Mat src, vector<CPlate>& candPlates,
   vector<CPlate> plates;
   Mat src_b;
 
-  // æŸ¥æ‰¾è“è‰²è½¦ç‰Œ
-  // æŸ¥æ‰¾é¢œè‰²åŒ¹é…è½¦ç‰Œ
+  // ²éÕÒÀ¶É«³µÅÆ
+  // ²éÕÒÑÕÉ«Æ¥Åä³µÅÆ
   colorSearch(src, BLUE, src_b, rects_color_blue, index);
-  // è¿›è¡ŒæŠ—æ‰­æ–œå¤„ç†
+  // ½øĞĞ¿¹Å¤Ğ±´¦Àí
   deskew(src, src_b, rects_color_blue, plates);
 
-  // æŸ¥æ‰¾é»„è‰²è½¦ç‰Œ
+  // ²éÕÒ»ÆÉ«³µÅÆ
   colorSearch(src, YELLOW, src_b, rects_color_yellow, index);
   deskew(src, src_b, rects_color_yellow, plates);
 
   for (int i = 0; i < plates.size(); i++) {
     candPlates.push_back(plates[i]);
-    //imshow("123",plates[i].getPlateMat());
-    //waitKey(0);
   }
   return 0;
 }
 
-//! Sobelè¿ç®—
-//! è¾“å…¥å½©è‰²å›¾åƒï¼Œè¾“å‡ºäºŒå€¼åŒ–å›¾åƒ
+//! SobelÔËËã
+//! ÊäÈë²ÊÉ«Í¼Ïñ£¬Êä³ö¶şÖµ»¯Í¼Ïñ
 int CPlateLocate::sobelOperT(const Mat& in, Mat& out, int blurSize, int morphW,
                              int morphH) {
   Mat mat_blur;
   mat_blur = in.clone();
   GaussianBlur(in, mat_blur, Size(blurSize, blurSize), 0, 0, BORDER_DEFAULT);
-
 
   Mat mat_gray;
   if (mat_blur.channels() == 3)
@@ -1023,11 +1068,9 @@ int CPlateLocate::sobelOperT(const Mat& in, Mat& out, int blurSize, int morphW,
   else
     mat_gray = mat_blur;
 
-  //mat_gray = m_bilateral.BilateralFilter(mat_gray,6);
+  utils::imwrite("resources/image/tmp/grayblure.jpg", mat_gray);
 
-  utils::imwrite("tmp/grayblure.jpg", mat_gray);
-
-  //equalizeHist(mat_gray, mat_gray);
+  // equalizeHist(mat_gray, mat_gray);
 
   int scale = SOBEL_SCALE;
   int delta = SOBEL_DELTA;
@@ -1039,31 +1082,29 @@ int CPlateLocate::sobelOperT(const Mat& in, Mat& out, int blurSize, int morphW,
   Sobel(mat_gray, grad_x, ddepth, 1, 0, 3, scale, delta, BORDER_DEFAULT);
   convertScaleAbs(grad_x, abs_grad_x);
 
-  Sobel(mat_gray, grad_y, ddepth, 0, 1, 3, scale, delta, BORDER_DEFAULT);
-  convertScaleAbs(grad_y, abs_grad_y);
-
+  //ÒòÎªY·½ÏòµÄÈ¨ÖØÊÇ0£¬Òò´ËÔÚ´Ë¾Í²»ÔÙ¼ÆËãY·½ÏòµÄsobelÁË
   Mat grad;
-  addWeighted(abs_grad_x, 1, abs_grad_y, 0, 0, grad);
+  addWeighted(abs_grad_x, 1, 0, 0, 0, grad);
 
-  utils::imwrite("tmp/graygrad.jpg", grad);
+  utils::imwrite("resources/image/tmp/graygrad.jpg", grad);
 
   Mat mat_threshold;
-  //double otsu_thresh_val =
-  threshold(grad, mat_threshold, 0, 255, CV_THRESH_OTSU + CV_THRESH_BINARY);
+  double otsu_thresh_val =
+      threshold(grad, mat_threshold, 0, 255, CV_THRESH_OTSU + CV_THRESH_BINARY);
 
-  utils::imwrite("tmp/grayBINARY.jpg", mat_threshold);
+  utils::imwrite("resources/image/tmp/grayBINARY.jpg", mat_threshold);
 
   Mat element = getStructuringElement(MORPH_RECT, Size(morphW, morphH));
   morphologyEx(mat_threshold, mat_threshold, MORPH_CLOSE, element);
 
-  utils::imwrite("tmp/phologyEx.jpg", mat_threshold);
+  utils::imwrite("resources/image/tmp/phologyEx.jpg", mat_threshold);
 
   out = mat_threshold;
 
   return 0;
 }
 
-// !åŸºäºå‚ç›´çº¿æ¡çš„è½¦ç‰Œå®šä½
+// !»ùÓÚ´¹Ö±ÏßÌõµÄ³µÅÆ¶¨Î»
 int CPlateLocate::plateSobelLocate(Mat src, vector<CPlate>& candPlates,
                                    int index) {
   vector<RotatedRect> rects_sobel;
@@ -1072,17 +1113,17 @@ int CPlateLocate::plateSobelLocate(Mat src, vector<CPlate>& candPlates,
 
   vector<Rect_<float>> bound_rects;
 
-  // Sobelç¬¬ä¸€æ¬¡ç²—ç•¥æœç´¢
+  // SobelµÚÒ»´Î´ÖÂÔËÑË÷
   sobelFrtSearch(src, bound_rects);
 
-
   vector<Rect_<float>> bound_rects_part;
-  //å¯¹ä¸ç¬¦åˆè¦æ±‚çš„åŒºåŸŸè¿›è¡Œæ‰©å±•
+
+  //¶Ô²»·ûºÏÒªÇóµÄÇøÓò½øĞĞÀ©Õ¹
   for (int i = 0; i < bound_rects.size(); i++) {
     double fRatio = bound_rects[i].width * 1.0 / bound_rects[i].height;
     if (fRatio < 3.0 && fRatio > 1.0 && bound_rects[i].height < 120) {
       Rect_<float> itemRect = bound_rects[i];
-      //å®½åº¦è¿‡å°ï¼Œè¿›è¡Œæ‰©å±•
+      //¿í¶È¹ıĞ¡£¬½øĞĞÀ©Õ¹
       itemRect.x = itemRect.x - itemRect.height * (4 - fRatio);
       if (itemRect.x < 0) {
         itemRect.x = 0;
@@ -1097,9 +1138,8 @@ int CPlateLocate::plateSobelLocate(Mat src, vector<CPlate>& candPlates,
 
       bound_rects_part.push_back(itemRect);
     }
-
   }
-  //å¯¹æ–­è£‚çš„éƒ¨åˆ†è¿›è¡ŒäºŒæ¬¡å¤„ç†
+  //¶Ô¶ÏÁÑµÄ²¿·Ö½øĞĞ¶ş´Î´¦Àí
   for (int i = 0; i < bound_rects_part.size(); i++) {
     Rect_<float> bound_rect = bound_rects_part[i];
     Point2f refpoint(bound_rect.x, bound_rect.y);
@@ -1108,14 +1148,14 @@ int CPlateLocate::plateSobelLocate(Mat src, vector<CPlate>& candPlates,
     int y = bound_rect.y > 0 ? bound_rect.y : 0;
 
     int width =
-            x + bound_rect.width < src.cols ? bound_rect.width : src.cols - x;
+        x + bound_rect.width < src.cols ? bound_rect.width : src.cols - x;
     int height =
-            y + bound_rect.height < src.rows ? bound_rect.height : src.rows - y;
+        y + bound_rect.height < src.rows ? bound_rect.height : src.rows - y;
 
     Rect safe_bound_rect(x, y, width, height);
     Mat bound_mat = src(safe_bound_rect);
 
-    // Sobelç¬¬äºŒæ¬¡ç²¾ç»†æœç´¢
+    // SobelµÚ¶ş´Î¾«Ï¸ËÑË÷(²¿·Ö)
     sobelSecSearchPart(bound_mat, refpoint, rects_sobel);
   }
 
@@ -1127,36 +1167,35 @@ int CPlateLocate::plateSobelLocate(Mat src, vector<CPlate>& candPlates,
     int y = bound_rect.y > 0 ? bound_rect.y : 0;
 
     int width =
-            x + bound_rect.width < src.cols ? bound_rect.width : src.cols - x;
+        x + bound_rect.width < src.cols ? bound_rect.width : src.cols - x;
     int height =
-            y + bound_rect.height < src.rows ? bound_rect.height : src.rows - y;
+        y + bound_rect.height < src.rows ? bound_rect.height : src.rows - y;
 
     Rect safe_bound_rect(x, y, width, height);
     Mat bound_mat = src(safe_bound_rect);
 
-    // Sobelç¬¬äºŒæ¬¡ç²¾ç»†æœç´¢
+    // SobelµÚ¶ş´Î¾«Ï¸ËÑË÷
     sobelSecSearch(bound_mat, refpoint, rects_sobel);
-    //sobelSecSearchPart(bound_mat, refpoint, rects_sobel);
+    // sobelSecSearchPart(bound_mat, refpoint, rects_sobel);
   }
 
   Mat src_b;
   sobelOper(src, src_b, 3, 10, 3);
 
-  // è¿›è¡ŒæŠ—æ‰­æ–œå¤„ç†
+  // ½øĞĞ¿¹Å¤Ğ±´¦Àí
   deskew(src, src_b, rects_sobel, plates);
 
-  for (int i = 0; i < plates.size(); i++)
-    candPlates.push_back(plates[i]);
+  for (int i = 0; i < plates.size(); i++) candPlates.push_back(plates[i]);
 
   return 0;
 }
 
-//! æ–°çš„å®šä½è½¦ç‰Œå›¾åƒåŠŸèƒ½
-//! ä»£ç ç”±è´¡çŒ®
-//! å°†é¢œè‰²ä¿¡æ¯ä¸Sobelä¿¡æ¯ç»“åˆåšåˆ¤æ–­
-//! src åŸå§‹å›¾åƒ
-//! resultVec ä¸€ä¸ªMatçš„å‘é‡ï¼Œå­˜å‚¨æ‰€æœ‰æŠ“å–åˆ°çš„å›¾åƒ
-//! æˆåŠŸè¿”å›0ï¼Œå¦åˆ™è¿”å›-1
+//! ĞÂµÄ¶¨Î»³µÅÆÍ¼Ïñ¹¦ÄÜ
+//! ´úÂëÓÉ¹±Ï×
+//! ½«ÑÕÉ«ĞÅÏ¢ÓëSobelĞÅÏ¢½áºÏ×öÅĞ¶Ï
+//! src Ô­Ê¼Í¼Ïñ
+//! resultVec Ò»¸öMatµÄÏòÁ¿£¬´æ´¢ËùÓĞ×¥È¡µ½µÄÍ¼Ïñ
+//! ³É¹¦·µ»Ø0£¬·ñÔò·µ»Ø-1
 int CPlateLocate::plateLocate(Mat src, vector<Mat>& resultVec, int index) {
   Mat src_blur, src_gray;
   Mat grad;
@@ -1169,13 +1208,14 @@ int CPlateLocate::plateLocate(Mat src, vector<Mat>& resultVec, int index) {
     return -1;
   }
 
-  //é«˜æ–¯æ¨¡ç³Šã€‚Sizeä¸­çš„æ•°å­—å½±å“è½¦ç‰Œå®šä½çš„æ•ˆæœã€‚
-  GaussianBlur(src, src_blur, Size(m_GaussianBlurSize, m_GaussianBlurSize),
-               0, 0, BORDER_DEFAULT);
+  //¸ßË¹Ä£ºı¡£SizeÖĞµÄÊı×ÖÓ°Ïì³µÅÆ¶¨Î»µÄĞ§¹û¡£
+  GaussianBlur(src, src_blur, Size(m_GaussianBlurSize, m_GaussianBlurSize), 0,
+               0, BORDER_DEFAULT);
 
   if (m_debug) {
     stringstream ss(stringstream::in | stringstream::out);
-    ss << "tmp/debug_GaussianBlur" << ".jpg";
+    ss << "resources/image/tmp/debug_GaussianBlur"
+       << ".jpg";
     utils::imwrite(ss.str(), src_blur);
   }
 
@@ -1184,24 +1224,25 @@ int CPlateLocate::plateLocate(Mat src, vector<Mat>& resultVec, int index) {
 
   if (m_debug) {
     stringstream ss(stringstream::in | stringstream::out);
-    ss << "tmp/debug_gray" << ".jpg";
+    ss << "resources/image/tmp/debug_gray"
+       << ".jpg";
     utils::imwrite(ss.str(), src_gray);
   }
-  // RGBé¢œè‰²åˆå®šä½
+  // RGBÑÕÉ«³õ¶¨Î»
   // http://wenku.baidu.com/view/2329e5d2360cba1aa811da65.html?re=view
   // RGB -> HSV
-  //      è“         é»„         ç™½         é»‘
-  //H     200~255     25~55       /           /
-  //S     0.4~1       0.4~1       0~0.1       /
-  //V     0.3~1       0.3~1       0.9~1       0~0.35
-  //cvCvtColor(src,dst,CV_BGR2HSV);
-  //å…¶ä¸­ï¼Œsrcä¸ºä¸‰é€šé“çš„ï¼Œdstä¹Ÿä¸ºä¸‰é€šé“çš„ï¼Œ
-  //OPENCV ä¸­ Hã€Sã€Vã€é¡ºåºåˆ†åˆ«ä¸º3*x+0  3*x+1   3*x+2
-  //opencvä¸­çš„ Håˆ†é‡æ˜¯ 0~180ï¼Œ Såˆ†é‡æ˜¯0~255ï¼Œ Våˆ†é‡æ˜¯0~255
-  //ä½†æ˜¯HSVé¢œè‰²ç©ºé—´å´è§„å®šçš„æ˜¯ï¼ŒHèŒƒå›´0~360ï¼ŒSèŒƒå›´0~1ï¼ŒVèŒƒå›´0~1
-  //æ‰€ä»¥ä½ éœ€è¦è‡ªå·±è½¬æ¢ä¸€ä¸‹ï¼ŒH*2ï¼ŒS/255, V/255
+  //      À¶         »Æ         °×         ºÚ
+  // H     200~255     25~55       /           /
+  // S     0.4~1       0.4~1       0~0.1       /
+  // V     0.3~1       0.3~1       0.9~1       0~0.35
+  // cvCvtColor(src,dst,CV_BGR2HSV);
+  //ÆäÖĞ£¬srcÎªÈıÍ¨µÀµÄ£¬dstÒ²ÎªÈıÍ¨µÀµÄ£¬
+  // OPENCV ÖĞ H¡¢S¡¢V¡¢Ë³Ğò·Ö±ğÎª3*x+0  3*x+1   3*x+2
+  // opencvÖĞµÄ H·ÖÁ¿ÊÇ 0~180£¬ S·ÖÁ¿ÊÇ0~255£¬ V·ÖÁ¿ÊÇ0~255
+  //µ«ÊÇHSVÑÕÉ«¿Õ¼äÈ´¹æ¶¨µÄÊÇ£¬H·¶Î§0~360£¬S·¶Î§0~1£¬V·¶Î§0~1
+  //ËùÒÔÄãĞèÒª×Ô¼º×ª»»Ò»ÏÂ£¬H*2£¬S/255, V/255
 
-  // é»˜è®¤è“è‰²è½¦ç‰Œ
+  // Ä¬ÈÏÀ¶É«³µÅÆ
   cv::Mat tmp;
   cv::cvtColor(src, tmp, CV_BGR2HSV);
   vector<Mat> hsvSplit;
@@ -1211,32 +1252,33 @@ int CPlateLocate::plateLocate(Mat src, vector<Mat>& resultVec, int index) {
   for (int i = 0; i < tmp.rows; i++) {
     for (int j = 0; j < tmp.cols; j++) {
       int nH = hsvSplit[0].at<uchar>(i, j) * 2;
-      double fS = hsvSplit[1].at<uchar>(i, j) / 255.0;
-      double fV = hsvSplit[2].at<uchar>(i, j) / 255.0;
-      if (nH >= 200 && nH <= 255 && fS >= 0.4
-          && fS <= 1 && fV >= 0.3 && fV <= 1) // è“è‰²
+      float fS = hsvSplit[1].at<uchar>(i, j) / 255.0;
+      float fV = hsvSplit[2].at<uchar>(i, j) / 255.0;
+      if (nH >= 200 && nH <= 255 && fS >= 0.4 && fS <= 1 && fV >= 0.3 &&
+          fV <= 1)  // À¶É«
         dst_blue.at<uchar>(i, j) = 255;
       else
         dst_blue.at<uchar>(i, j) = 0;
     }
   }
-  // imshow("dst_blue", dst_blue);
+  // imshow("dst_blue",dst_blue);
   Mat element_blue = getStructuringElement(MORPH_ELLIPSE, Size(10, 10));
   morphologyEx(dst_blue, dst_blue, MORPH_CLOSE, element_blue);
-  //Find è½®å»“ of possibles plates
+  // Find ÂÖÀª of possibles plates
   cv::Mat con_blue = dst_blue.clone();
-  vector<vector<Point> > contours_blue;
+  vector<vector<Point>> contours_blue;
   findContours(con_blue,
-               contours_blue, // a vector of contours
-               CV_RETR_EXTERNAL, // æå–å¤–éƒ¨è½®å»“
-               CV_CHAIN_APPROX_NONE); // all pixels of each contours
-  //Start to iterate to each contour founded
-  auto itb = contours_blue.begin();
+               contours_blue,          // a vector of contours
+               CV_RETR_EXTERNAL,       // ÌáÈ¡Íâ²¿ÂÖÀª
+               CV_CHAIN_APPROX_NONE);  // all pixels of each contours
+  // Start to iterate to each contour founded
+  vector<vector<Point>>::iterator itb = contours_blue.begin();
 
-  //Remove patch that are no inside limits of aspect ratio and area.
+  // Remove patch that are no inside limits of aspect ratio and area.
+  int tb = 0;
   vector<cv::Rect> rects_blue;
   while (itb != contours_blue.end()) {
-    //Create bounding rect of object
+    // Create bounding rect of object
     RotatedRect mr = minAreaRect(Mat(*itb));
 
     Rect_<float> safeBoundRect;
@@ -1245,11 +1287,10 @@ int CPlateLocate::plateLocate(Mat src, vector<Mat>& resultVec, int index) {
       continue;
     }
 
-    //large the rect for more
+    // large the rect for more
     if (!verifySizes(mr)) {
       cv::Mat roi = dst_blue(safeBoundRect);
       roi.setTo(0);
-      // TODO
     } else {
       rects_blue.push_back(safeBoundRect);
     }
@@ -1259,31 +1300,33 @@ int CPlateLocate::plateLocate(Mat src, vector<Mat>& resultVec, int index) {
   for (int i = 0; i < tmp.rows; i++) {
     for (int j = 0; j < tmp.cols; j++) {
       int nH = hsvSplit[0].at<uchar>(i, j) * 2;
-      double fS = hsvSplit[1].at<uchar>(i, j) / 255.0;
-      double fV = hsvSplit[2].at<uchar>(i, j) / 255.0;
+      float fS = hsvSplit[1].at<uchar>(i, j) / 255.0;
+      float fV = hsvSplit[2].at<uchar>(i, j) / 255.0;
       if (nH >= 25 && nH <= 55 && fS >= 0.4 && fS <= 1 && fV >= 0.3 &&
-          fV <= 1) // é»„è‰²
+          fV <= 1)  // »ÆÉ«
         dst_yellow.at<uchar>(i, j) = 255;
       else
         dst_yellow.at<uchar>(i, j) = 0;
     }
   }
 
+  Mat element_yellow = getStructuringElement(MORPH_ELLIPSE, Size(10, 10));
   morphologyEx(dst_yellow, dst_yellow, MORPH_CLOSE, element_blue);
-  //Find è½®å»“ of possibles plates
+  // Find ÂÖÀª of possibles plates
   cv::Mat con_yellow = dst_yellow.clone();
-  vector<vector<Point> > contours_yellow;
+  vector<vector<Point>> contours_yellow;
   findContours(con_yellow,
-               contours_yellow, // a vector of contours
-               CV_RETR_EXTERNAL, // æå–å¤–éƒ¨è½®å»“
-               CV_CHAIN_APPROX_NONE); // all pixels of each contours
-  //Start to iterate to each contour founded
-  vector<vector<Point> >::iterator ity = contours_yellow.begin();
+               contours_yellow,        // a vector of contours
+               CV_RETR_EXTERNAL,       // ÌáÈ¡Íâ²¿ÂÖÀª
+               CV_CHAIN_APPROX_NONE);  // all pixels of each contours
+  // Start to iterate to each contour founded
+  vector<vector<Point>>::iterator ity = contours_yellow.begin();
 
-  //Remove patch that are no inside limits of aspect ratio and area.
+  // Remove patch that are no inside limits of aspect ratio and area.
+  tb = 0;
   vector<cv::Rect> rects_yellow;
   while (ity != contours_yellow.end()) {
-    //Create bounding rect of object
+    // Create bounding rect of object
     RotatedRect mr = minAreaRect(Mat(*ity));
 
     Rect_<float> safeBoundRect;
@@ -1292,11 +1335,10 @@ int CPlateLocate::plateLocate(Mat src, vector<Mat>& resultVec, int index) {
       continue;
     }
 
-    //large the rect for more
+    // large the rect for more
     if (!verifySizes(mr)) {
       cv::Mat roi = dst_yellow(safeBoundRect);
       roi.setTo(0);
-      // TODO
     } else {
       rects_yellow.push_back(safeBoundRect);
     }
@@ -1308,31 +1350,33 @@ int CPlateLocate::plateLocate(Mat src, vector<Mat>& resultVec, int index) {
   Mat abs_grad_x, abs_grad_y;
 
   /// Gradient X
-  //Scharr( src_gray, grad_x, ddepth, 1, 0, scale, delta, BORDER_DEFAULT );
+  // Scharr( src_gray, grad_x, ddepth, 1, 0, scale, delta, BORDER_DEFAULT );
   Sobel(src_gray, grad_x, ddepth, 1, 0, 3, scale, delta, BORDER_DEFAULT);
   convertScaleAbs(grad_x, abs_grad_x);
 
   /// Gradient Y
-  //Scharr( src_gray, grad_y, ddepth, 0, 1, scale, delta, BORDER_DEFAULT );
+  // Scharr( src_gray, grad_y, ddepth, 0, 1, scale, delta, BORDER_DEFAULT );
   Sobel(src_gray, grad_y, ddepth, 0, 1, 3, scale, delta, BORDER_DEFAULT);
   convertScaleAbs(grad_y, abs_grad_y);
 
   /// Total Gradient (approximate)
   addWeighted(abs_grad_x, SOBEL_X_WEIGHT, abs_grad_y, SOBEL_Y_WEIGHT, 0,
-              grad);//è®¡ç®—ä¸¤ä¸ªæ•°ç»„åŠ æƒå€¼çš„å’Œ
-  //imshow("grad",grad);
-  //Laplacian( src_gray, grad_x, ddepth, 3, scale, delta, BORDER_DEFAULT );
-  //convertScaleAbs( grad_x, grad );
+              grad);  //¼ÆËãÁ½¸öÊı×é¼ÓÈ¨ÖµµÄºÍ
+  // imshow("grad",grad);
+  // Laplacian( src_gray, grad_x, ddepth, 3, scale, delta, BORDER_DEFAULT );
+  // convertScaleAbs( grad_x, grad );
   cv::Mat out_blue;
   cv::multiply(grad, dst_blue, out_blue);
-  //imshow("out_blue",out_blue);
+  // imshow("out_blue",out_blue);
   cv::Mat out_yellow;
   cv::multiply(grad, dst_yellow, out_yellow);
   if (m_debug) {
     stringstream ss(stringstream::in | stringstream::out);
-    ss << "tmp/debug_Sobel_blue" << ".jpg";
+    ss << "resources/image/tmp/debug_Sobel_blue"
+       << ".jpg";
     utils::imwrite(ss.str(), out_blue);
-    ss << "tmp/debug_Sobel_yellow" << ".jpg";
+    ss << "resources/image/tmp/debug_Sobel_yellow"
+       << ".jpg";
     utils::imwrite(ss.str(), out_yellow);
   }
 
@@ -1342,74 +1386,78 @@ int CPlateLocate::plateLocate(Mat src, vector<Mat>& resultVec, int index) {
             CV_THRESH_OTSU + CV_THRESH_BINARY);
   threshold(out_yellow, img_threshold_yellow, 0, 255,
             CV_THRESH_OTSU + CV_THRESH_BINARY);
-  //threshold(grad, img_threshold, 75, 255, CV_THRESH_BINARY);
+  // threshold(grad, img_threshold, 75, 255, CV_THRESH_BINARY);
 
   if (m_debug) {
     stringstream ss(stringstream::in | stringstream::out);
-    ss << "tmp/debug_threshold_blue" << ".jpg";
+    ss << "resources/image/tmp/debug_threshold_blue"
+       << ".jpg";
     utils::imwrite(ss.str(), img_threshold_blue);
-    ss << "tmp/debug_threshold_yellow" << ".jpg";
+    ss << "resources/image/tmp/debug_threshold_yellow"
+       << ".jpg";
     utils::imwrite(ss.str(), img_threshold_yellow);
   }
 
-  Mat element = getStructuringElement(MORPH_RECT, Size(m_MorphSizeWidth,
-                                                       m_MorphSizeHeight));
+  Mat element = getStructuringElement(
+      MORPH_RECT, Size(m_MorphSizeWidth, m_MorphSizeHeight));
   morphologyEx(img_threshold_blue, img_threshold_blue, MORPH_CLOSE, element);
   morphologyEx(img_threshold_yellow, img_threshold_yellow, MORPH_CLOSE,
                element);
 
   if (m_debug) {
     stringstream ss(stringstream::in | stringstream::out);
-    ss << "tmp/debug_morphology_blue" << ".jpg";
+    ss << "resources/image/tmp/debug_morphology_blue"
+       << ".jpg";
     utils::imwrite(ss.str(), img_threshold_blue);
-    ss << "tmp/debug_morphology_yellow" << ".jpg";
+    ss << "resources/image/tmp/debug_morphology_yellow"
+       << ".jpg";
     utils::imwrite(ss.str(), img_threshold_yellow);
   }
 
-  //Find è½®å»“ of possibles plates
+  // Find ÂÖÀª of possibles plates
   contours_blue.clear();
   findContours(img_threshold_blue,
-               contours_blue, // a vector of contours
-               CV_RETR_EXTERNAL, // æå–å¤–éƒ¨è½®å»“
-               CV_CHAIN_APPROX_NONE); // all pixels of each contours
+               contours_blue,          // a vector of contours
+               CV_RETR_EXTERNAL,       // ÌáÈ¡Íâ²¿ÂÖÀª
+               CV_CHAIN_APPROX_NONE);  // all pixels of each contours
   contours_yellow.clear();
   findContours(img_threshold_yellow,
-               contours_yellow, // a vector of contours
-               CV_RETR_EXTERNAL, // æå–å¤–éƒ¨è½®å»“
-               CV_CHAIN_APPROX_NONE); // all pixels of each contours
+               contours_yellow,        // a vector of contours
+               CV_RETR_EXTERNAL,       // ÌáÈ¡Íâ²¿ÂÖÀª
+               CV_CHAIN_APPROX_NONE);  // all pixels of each contours
 
   Mat result;
   if (m_debug) {
     //// Draw blue contours on a white image
     src.copyTo(result);
     drawContours(result, contours_blue,
-                 -1, // draw all contours
-                 Scalar(0, 0, 255), // in blue
-                 1); // with a thickness of 1
+                 -1,                 // draw all contours
+                 Scalar(0, 0, 255),  // in blue
+                 1);                 // with a thickness of 1
     drawContours(result, contours_yellow,
-                 -1, // draw all contours
-                 Scalar(0, 0, 255), // in blue
-                 1); // with a thickness of 1
+                 -1,                 // draw all contours
+                 Scalar(0, 0, 255),  // in blue
+                 1);                 // with a thickness of 1
     stringstream ss(stringstream::in | stringstream::out);
-    ss << "tmp/debug_Contours" << ".jpg";
+    ss << "resources/image/tmp/debug_Contours"
+       << ".jpg";
     utils::imwrite(ss.str(), result);
   }
 
-
-  //Start to iterate to each contour founded
+  // Start to iterate to each contour founded
   itb = contours_blue.begin();
 
   vector<RotatedRect> rects;
-  //Remove patch that are no inside limits of aspect ratio and area.
+  // Remove patch that are no inside limits of aspect ratio and area.
+  int t = 0;
   while (itb != contours_blue.end()) {
-    //Create bounding rect of object
+    // Create bounding rect of object
     RotatedRect mr = minAreaRect(Mat(*itb));
 
-    //large the rect for more
+    // large the rect for more
     if (!verifySizes(mr)) {
       itb = contours_blue.erase(itb);
-    }
-    else {
+    } else {
       ++itb;
       rects.push_back(mr);
     }
@@ -1417,14 +1465,13 @@ int CPlateLocate::plateLocate(Mat src, vector<Mat>& resultVec, int index) {
 
   ity = contours_yellow.begin();
   while (ity != contours_yellow.end()) {
-    //Create bounding rect of object
+    // Create bounding rect of object
     RotatedRect mr = minAreaRect(Mat(*ity));
 
-    //large the rect for more
+    // large the rect for more
     if (!verifySizes(mr)) {
       ity = contours_yellow.erase(ity);
-    }
-    else {
+    } else {
       ++ity;
       rects.push_back(mr);
     }
@@ -1435,10 +1482,10 @@ int CPlateLocate::plateLocate(Mat src, vector<Mat>& resultVec, int index) {
     if (verifySizes(minRect)) {
       // rotated rectangle drawing
       // Get rotation matrix
-      // æ—‹è½¬è¿™éƒ¨åˆ†ä»£ç ç¡®å®å¯ä»¥å°†æŸäº›å€¾æ–œçš„è½¦ç‰Œè°ƒæ•´æ­£ï¼Œ
-      // ä½†æ˜¯å®ƒä¹Ÿä¼šè¯¯å°†æ›´å¤šæ­£çš„è½¦ç‰Œææˆå€¾æ–œï¼æ‰€ä»¥ç»¼åˆè€ƒè™‘ï¼Œè¿˜æ˜¯ä¸ä½¿ç”¨è¿™æ®µä»£ç ã€‚
-      // 2014-08-14,ç”±äºæ–°åˆ°çš„ä¸€æ‰¹å›¾ç‰‡ä¸­å‘ç°æœ‰å¾ˆå¤šè½¦ç‰Œæ˜¯å€¾æ–œçš„ï¼Œå› æ­¤å†³å®šå†æ¬¡å°è¯•
-      // è¿™æ®µä»£ç ã€‚
+      // Ğı×ªÕâ²¿·Ö´úÂëÈ·Êµ¿ÉÒÔ½«Ä³Ğ©ÇãĞ±µÄ³µÅÆµ÷ÕûÕı£¬
+      // µ«ÊÇËüÒ²»áÎó½«¸ü¶àÕıµÄ³µÅÆ¸ã³ÉÇãĞ±£¡ËùÒÔ×ÛºÏ¿¼ÂÇ£¬»¹ÊÇ²»Ê¹ÓÃÕâ¶Î´úÂë¡£
+      // 2014-08-14,ÓÉÓÚĞÂµ½µÄÒ»ÅúÍ¼Æ¬ÖĞ·¢ÏÖÓĞºÜ¶à³µÅÆÊÇÇãĞ±µÄ£¬Òò´Ë¾ö¶¨ÔÙ´Î³¢ÊÔ
+      // Õâ¶Î´úÂë¡£
       if (m_debug) {
         Point2f rect_points[4];
         minRect.points(rect_points);
@@ -1447,16 +1494,16 @@ int CPlateLocate::plateLocate(Mat src, vector<Mat>& resultVec, int index) {
                Scalar(0, 255, 255), 1, 8);
       }
 
-      float r = (float) minRect.size.width / (float) minRect.size.height;
+      float r = (float)minRect.size.width / (float)minRect.size.height;
       float angle = minRect.angle;
       Size rect_size = minRect.size;
       if (r < 1) {
         angle = 90 + angle;
         swap(rect_size.width, rect_size.height);
       }
-      //å¦‚æœæŠ“å–çš„æ–¹å—æ—‹è½¬è¶…è¿‡m_angleè§’åº¦ï¼Œåˆ™ä¸æ˜¯è½¦ç‰Œï¼Œæ”¾å¼ƒå¤„ç†
+      //Èç¹û×¥È¡µÄ·½¿éĞı×ª³¬¹ım_angle½Ç¶È£¬Ôò²»ÊÇ³µÅÆ£¬·ÅÆú´¦Àí
       if (angle - m_angle < 0 && angle + m_angle > 0) {
-        //Create and rotate image
+        // Create and rotate image
         Mat rotmat = getRotationMatrix2D(minRect.center, angle, 1);
         Mat img_rotated;
         warpAffine(src, img_rotated, rotmat, src.size(), CV_INTER_CUBIC);
@@ -1471,12 +1518,12 @@ int CPlateLocate::plateLocate(Mat src, vector<Mat>& resultVec, int index) {
 
   if (m_debug) {
     stringstream ss(stringstream::in | stringstream::out);
-    ss << "tmp/debug_result" << ".jpg";
+    ss << "resources/image/tmp/debug_result"
+       << ".jpg";
     utils::imwrite(ss.str(), result);
   }
 
   return 0;
 }
 
-
-}  /*! \namespace easypr*/
+} /*! \namespace easypr*/

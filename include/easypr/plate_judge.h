@@ -7,15 +7,15 @@
 // Copyright:   liuruoze
 // Reference:	Mastering OpenCV with Practical Computer Vision Projects
 // Reference:	CSDN Bloger taotao1233
-// Desciption:  
+// Desciption:
 // Defines CPlateLocate
 //////////////////////////////////////////////////////////////////////////
 #ifndef __PLATE_JUDGE_H__
 #define __PLATE_JUDGE_H__
 
-#include "plate.h"
-#include "feature.h"
-#include "core_func.h"
+#include "easypr/plate.h"
+#include "easypr/feature.h"
+#include "easypr/core_func.h"
 
 /*! \namespace easypr
     Namespace where all the C++ EasyPR functionality resides
@@ -26,30 +26,40 @@ class CPlateJudge {
  public:
   CPlateJudge();
 
-  //! å¯¹å¤šå¹…è½¦ç‰Œè¿›è¡ŒSVMåˆ¤æ–­
-  int plateJudge(const std::vector<CPlate>&, std::vector<CPlate>&);
+  //! ¶Ô¶à·ù³µÅÆ½øĞĞSVMÅĞ¶Ï
+  int plateJudge(const vector<CPlate>&, vector<CPlate>&);
 
-  //! è½¦ç‰Œåˆ¤æ–­
-  int plateJudge(const std::vector<cv::Mat>&, std::vector<cv::Mat>&);
+  //! ³µÅÆÅĞ¶Ï
+  int plateJudge(const vector<Mat>&, vector<Mat>&);
 
-  //! è½¦ç‰Œåˆ¤æ–­ï¼ˆä¸€å‰¯å›¾åƒï¼‰
-  int plateJudge(const cv::Mat& inMat, int& result);
+  //! ³µÅÆÅĞ¶Ï£¨Ò»¸±Í¼Ïñ£©
+  int plateJudge(const Mat& inMat, int& result);
 
-  //! ç›´æ–¹å›¾å‡è¡¡
-  cv::Mat histeq(cv::Mat);
+  //! Ö±·½Í¼¾ùºâ
+  Mat histeq(Mat);
 
-  //! è£…è½½SVMæ¨¡å‹
-  void LoadModel(const char* model);
+  //! ×°ÔØSVMÄ£ĞÍ
+  void LoadModel();
+
+  //! ×°ÔØSVMÄ£ĞÍ
+  void LoadModel(string s);
+
+  //! ÉèÖÃÓë¶ÁÈ¡Ä£ĞÍÂ·¾¶
+  inline void setModelPath(string path) { m_path = path; }
+  inline string getModelPath() const { return m_path; }
 
  private:
-  //ï¼ä½¿ç”¨çš„SVMæ¨¡å‹
+  //! Ê¹ÓÃµÄSVMÄ£ĞÍ
   CvSVM svm;
 
-  // ! EasyPRçš„getFeatureså›è°ƒå‡½æ•°
-  // ï¼ç”¨äºä»è½¦ç‰Œçš„imageç”Ÿæˆsvmçš„è®­ç»ƒç‰¹å¾features
+  //! EasyPRµÄgetFeatures»Øµ÷º¯Êı
+  //! ÓÃÓÚ´Ó³µÅÆµÄimageÉú³ÉsvmµÄÑµÁ·ÌØÕ÷features
   svmCallback m_getFeatures;
+
+  //! Ä£ĞÍ´æ´¢Â·¾¶
+  string m_path;
 };
 
-}  /*! \namespace easypr*/
+} /*! \namespace easypr*/
 
 #endif /* endif __PLATE_JUDGE_H__ */

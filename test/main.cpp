@@ -15,16 +15,11 @@ int accuracyTestMain() {
   bool isExit = false;
   while (!isExit) {
     std::cout << "////////////////////////////////////" << std::endl;
-    const char* options[] = {
-            "BatchTest Option:",
-            "1. general_test;",
-            "2. native_test;",
-            "3. è¿”å›ž;",
-            NULL
-    };
+    const char* options[] = {"BatchTest Option:", "1. general_test;",
+                             "2. native_test;", "3. ·µ»Ø;", NULL};
     Utils::print_str_lines(options);
     std::cout << "////////////////////////////////////" << std::endl;
-    std::cout << "è¯·é€‰æ‹©ä¸€é¡¹æ“ä½œ:";
+    std::cout << "ÇëÑ¡ÔñÒ»Ïî²Ù×÷:";
 
     int select = -1;
     bool isRepeat = true;
@@ -42,7 +37,7 @@ int accuracyTestMain() {
           isExit = true;
           break;
         default:
-          std::cout << "è¾“å…¥é”™è¯¯ï¼Œè¯·é‡æ–°è¾“å…¥:";
+          std::cout << "ÊäÈë´íÎó£¬ÇëÖØÐÂÊäÈë:";
           isRepeat = true;
           break;
       }
@@ -51,24 +46,24 @@ int accuracyTestMain() {
   return 0;
 }
 
-//int svmMain() {
+// int svmMain() {
 //  bool isExit = false;
 //  while (!isExit) {
 //    std::cout << "////////////////////////////////////" << std::endl;
 //    const char* options[] = {
 //            "SvmTrain Option:",
-//            "1. ç”Ÿæˆlearndata(è°ƒæ•´ä»£ç åˆ°ä½ çš„çŽ¯å¢ƒåŽå†ç”¨);",
-//            "2. æ ‡ç­¾learndata;",
-//            "3. è½¦ç‰Œæ£€æµ‹(not divide and train);",
-//            "4. è½¦ç‰Œæ£€æµ‹(not train);",
-//            "5. è½¦ç‰Œæ£€æµ‹(not divide);",
-//            "6. è½¦ç‰Œæ£€æµ‹;",
-//            "7. è¿”å›ž;",
+//            "1. Éú³Élearndata(µ÷Õû´úÂëµ½ÄãµÄ»·¾³ºóÔÙÓÃ);",
+//            "2. ±êÇ©learndata;",
+//            "3. ³µÅÆ¼ì²â(not divide and train);",
+//            "4. ³µÅÆ¼ì²â(not train);",
+//            "5. ³µÅÆ¼ì²â(not divide);",
+//            "6. ³µÅÆ¼ì²â;",
+//            "7. ·µ»Ø;",
 //            NULL
 //    };
 //    Utils::print_str_lines(options);
 //    std::cout << "////////////////////////////////////" << std::endl;
-//    std::cout << "è¯·é€‰æ‹©ä¸€é¡¹æ“ä½œ:";
+//    std::cout << "ÇëÑ¡ÔñÒ»Ïî²Ù×÷:";
 //
 //    int select = -1;
 //    bool isRepeat = true;
@@ -101,7 +96,7 @@ int accuracyTestMain() {
 //          isExit = true;
 //          break;
 //        default:
-//          std::cout << "è¾“å…¥é”™è¯¯ï¼Œè¯·é‡æ–°è¾“å…¥:";
+//          std::cout << "ÊäÈë´íÎó£¬ÇëÖØÐÂÊäÈë:";
 //          isRepeat = true;
 //          break;
 //      }
@@ -115,21 +110,17 @@ int testMain() {
   while (!isExit) {
     std::cout << "////////////////////////////////////" << std::endl;
     const char* options[] = {
-            "EasyPR Test:",
-            "1. test plate_locate(è½¦ç‰Œå®šä½);"    /* è½¦ç‰Œå®šä½ */,
-            "2. test plate_judge(è½¦ç‰Œåˆ¤æ–­);"    /* è½¦ç‰Œåˆ¤æ–­ */,
-            "3. test plate_detect(è½¦ç‰Œæ£€æµ‹);"    /* è½¦ç‰Œæ£€æµ‹ï¼ˆåŒ…å«è½¦ç‰Œå®šä½ä¸Žè½¦ç‰Œåˆ¤æ–­ï¼‰ */,
-            "4. test chars_segment(å­—ç¬¦åˆ†éš”);"    /* å­—ç¬¦åˆ†éš” */,
-            "5. test chars_identify(å­—ç¬¦é‰´åˆ«);"    /* å­—ç¬¦é‰´åˆ« */,
-            "6. test chars_recognise(å­—ç¬¦è¯†åˆ«);"    /* å­—ç¬¦è¯†åˆ«ï¼ˆåŒ…å«å­—ç¬¦åˆ†éš”ä¸Žå­—ç¬¦é‰´åˆ«ï¼‰ */,
-            "7. test plate_recognize(è½¦ç‰Œè¯†åˆ«);"    /* è½¦ç‰Œè¯†åˆ« */,
-            "8. test all(æµ‹è¯•å…¨éƒ¨);"    /* ä»¥ä¸Šå…¨éƒ¨ */,
-            "9. è¿”å›ž;"    /* é€€å‡º */,
-            NULL
-    };
+        "EasyPR Test:", "1. test plate_locate(³µÅÆ¶¨Î»);" /* ³µÅÆ¶¨Î» */,
+        "2. test plate_judge(³µÅÆÅÐ¶Ï);" /* ³µÅÆÅÐ¶Ï */,
+        "3. test plate_detect(³µÅÆ¼ì²â);" /* ³µÅÆ¼ì²â£¨°üº¬³µÅÆ¶¨Î»Óë³µÅÆÅÐ¶Ï£© */,
+        "4. test chars_segment(×Ö·û·Ö¸ô);" /* ×Ö·û·Ö¸ô */,
+        "5. test chars_identify(×Ö·û¼ø±ð);" /* ×Ö·û¼ø±ð */,
+        "6. test chars_recognise(×Ö·ûÊ¶±ð);" /* ×Ö·ûÊ¶±ð£¨°üº¬×Ö·û·Ö¸ôÓë×Ö·û¼ø±ð£© */,
+        "7. test plate_recognize(³µÅÆÊ¶±ð);" /* ³µÅÆÊ¶±ð */,
+        "8. test all(²âÊÔÈ«²¿);" /* ÒÔÉÏÈ«²¿ */, "9. ·µ»Ø;" /* ÍË³ö */, NULL};
     Utils::print_str_lines(options);
     std::cout << "////////////////////////////////////" << std::endl;
-    std::cout << "è¯·é€‰æ‹©ä¸€é¡¹æ“ä½œ:";
+    std::cout << "ÇëÑ¡ÔñÒ»Ïî²Ù×÷:";
 
     int select = -1;
     bool isRepeat = true;
@@ -173,7 +164,7 @@ int testMain() {
           isExit = true;
           break;
         default:
-          std::cout << "è¾“å…¥é”™è¯¯ï¼Œè¯·é‡æ–°è¾“å…¥:";
+          std::cout << "ÊäÈë´íÎó£¬ÇëÖØÐÂÊäÈë:";
           isRepeat = true;
           break;
       }
@@ -183,58 +174,61 @@ int testMain() {
   return 0;
 }
 
-} // namespace demo
+}  // namespace demo
 
-} // namespace easypr
-
+}  // namespace easypr
 
 void command_line_handler(int argc, const char* argv[]) {
   program_options::Generator options;
 
-  options.add_subroutine("svm", "svm operations")
-          .make_usage("Usage:");
+  options.add_subroutine("svm", "svm operations").make_usage("Usage:");
   options("h,help", "show help information");
-  options(",svm", "resources/model/svm.xml", "the svm model file," \
-          " this option is used for '--tag'(required)" \
+  options(",svm", "resources/model/svm.xml",
+          "the svm model file,"
+          " this option is used for '--tag'(required)"
           " and '--train'(save svm model to) functions");
   // create
-  options(",create", "create learn data, this function " \
-          "will intercept (--max) raw images (--in) and preprocess into (--out)");
+  options(
+      ",create",
+      "create learn data, this function "
+      "will intercept (--max) raw images (--in) and preprocess into (--out)");
   options("i,in", "", "where is the raw images");
   options("o,out", "", "where to put the preprocessed images");
   options("m,max", "5000", "how many learn data would you want to create");
   // tag
-  options(",tag", "tag learn data, this function " \
-          "will find plate blocks in your images(--source) " \
+  options(",tag",
+          "tag learn data, this function "
+          "will find plate blocks in your images(--source) "
           "as well as classify them into (--has) and (--no)");
   options("s,source", "", "where is your images to be classified");
   options(",has", "", "put plates in this folder");
   options(",no", "", "put images without plate in this folder");
   // train
-  options(",train", "train given data, " \
+  options(",train",
+          "train given data, "
           "including the forward(has plate) and the inverse(no plate).");
   options(",has-plate", "", "where is the forward data");
   options(",no-plate", "", "where is the inverse data");
   options(",divide",
           "whether divide train data into two parts by --percentage or not");
-  options(",percentage", "0.7", "70% train data will be used for training," \
+  options(",percentage", "0.7",
+          "70% train data will be used for training,"
           " others will be used for testing");
   options(",not-train", "don't train again, run testing directly");
 
   options.add_subroutine("locate", "locate plates in an image")
-          .make_usage("Usage:");
+      .make_usage("Usage:");
   options("h,help", "show help information");
   options("f,file", "", "the target picture which contains one or more plates");
 
-  options.add_subroutine("judge",
-                         "determine whether an image block is the license plate")
-          .make_usage("Usage:");
+  options.add_subroutine(
+             "judge", "determine whether an image block is the license plate")
+      .make_usage("Usage:");
   options("h,help", "show help information");
   options("f,file", "the target image block");
   options(",svm", "resources/model/svm.xml", "the svm model file");
 
-  options.add_subroutine("recognize", "plate recognition")
-          .make_usage("Usage:");
+  options.add_subroutine("recognize", "plate recognition").make_usage("Usage:");
   options("h,help", "show help information");
   options("p,path", "", "where is the target picture or target folder");
   options("b,batch", "do batch recognition, if set, --path means a folder");
@@ -283,7 +277,7 @@ void command_line_handler(int argc, const char* argv[]) {
       easypr::preprocess::tag_data(source.c_str(), has_path.c_str(),
                                    no_path.c_str(), svm.c_str());
       std::cout << "Tagging finished, check out output images "
-      << "and classify the wrong images manually." << std::endl;
+                << "and classify the wrong images manually." << std::endl;
     }
 
     if (parser->has("train")) {
@@ -320,8 +314,9 @@ void command_line_handler(int argc, const char* argv[]) {
   } else if (subname == "judge") {
     if (parser->has("help") || argc <= 2) {
       std::cout << options("judge");
-      std::cout << "Note that the input image's size should " <<
-      "be the same as the one you gived to svm train." << std::endl;
+      std::cout << "Note that the input image's size should "
+                << "be the same as the one you gived to svm train."
+                << std::endl;
       return;
     }
 
@@ -334,9 +329,9 @@ void command_line_handler(int argc, const char* argv[]) {
 
       const char* true_or_false[2] = {"false", "true"};
 
-      std::cout << true_or_false[
-              easypr::api::plate_judge(image.c_str(), svm.c_str())
-      ] << std::endl;
+      std::cout
+          << true_or_false[easypr::api::plate_judge(image.c_str(), svm.c_str())]
+          << std::endl;
     }
 
     return;
@@ -358,16 +353,15 @@ void command_line_handler(int argc, const char* argv[]) {
         if (parser->has("color")) {
           // return plate color
           const char* colors[2] = {"blue", "yellow"};
-          std::cout << colors[easypr::api::get_plate_color(image.c_str())] <<
-          std::endl;
+          std::cout << colors[easypr::api::get_plate_color(image.c_str())]
+                    << std::endl;
         } else {
           // return strings
           auto svm = parser->get("svm")->val();
           auto ann = parser->get("ann")->val();
 
           auto results = easypr::api::plate_recognize(image.c_str(),
-                                                      svm.c_str(),
-                                                      ann.c_str());
+                                                      svm.c_str(), ann.c_str());
           for (auto s : results) {
             std::cout << s << std::endl;
           }
@@ -380,12 +374,11 @@ void command_line_handler(int argc, const char* argv[]) {
   }
 
   // no case matched, print all commands.
-  std::cout
-  << "There are several sub commands listed below, "
-  << "choose one by typing:\n\n"
-  << "    " << easypr::Utils::getFileName(argv[0]) << " command [options]\n\n"
-  << "The commands are:\n"
-  << std::endl;
+  std::cout << "There are several sub commands listed below, "
+            << "choose one by typing:\n\n"
+            << "    " << easypr::Utils::getFileName(argv[0])
+            << " command [options]\n\n"
+            << "The commands are:\n" << std::endl;
   auto subs = options.get_subroutine_list();
   for (auto sub : subs) {
     fprintf(stdout, "%s    %s\n", sub.first.c_str(), sub.second.c_str());
@@ -403,21 +396,13 @@ int main(int argc, const char* argv[]) {
   bool isExit = false;
   while (!isExit) {
     std::cout << "////////////////////////////////////" << std::endl;
-    const char* options[] = {
-            "EasyPR Option:",
-            "1. æµ‹è¯•;",
-            "2. æ‰¹é‡æµ‹è¯•;",
-            "3. SVMè®­ç»ƒ;",
-            "4. ANNè®­ç»ƒ(æœªå¼€æ”¾);",
-            "5. GDTSç”Ÿæˆ;",
-            "6. å¼€å‘å›¢é˜Ÿ;",
-            "7. æ„Ÿè°¢åå•;",
-            "8. é€€å‡º;",
-            NULL
-    };
+    const char* options[] = {"EasyPR Option:", "1. ²âÊÔ;", "2. ÅúÁ¿²âÊÔ;",
+                             "3. SVMÑµÁ·;", "4. ANNÑµÁ·(Î´¿ª·Å);",
+                             "5. GDTSÉú³É;", "6. ¿ª·¢ÍÅ¶Ó;", "7. ¸ÐÐ»Ãûµ¥;",
+                             "8. ÍË³ö;", NULL};
     easypr::Utils::print_str_lines(options);
     std::cout << "////////////////////////////////////" << std::endl;
-    std::cout << "è¯·é€‰æ‹©ä¸€é¡¹æ“ä½œ:";
+    std::cout << "ÇëÑ¡ÔñÒ»Ïî²Ù×÷:";
 
     int select = -1;
     bool isRepeat = true;
@@ -442,31 +427,35 @@ int main(int argc, const char* argv[]) {
           easypr::preprocess::generate_gdts();
           break;
         case 6: {
-          // å¼€å‘å›¢é˜Ÿ;
+          // ¿ª·¢ÍÅ¶Ó;
           std::cout << std::endl;
           const char* recruitment[] = {
-                  "æˆ‘ä»¬EasyPRå›¢é˜Ÿç›®å‰æœ‰ä¸€ä¸ª5äººå·¦å³çš„å°ç»„åœ¨è¿›è¡ŒEasyPRåŽç»­ç‰ˆæœ¬çš„å¼€å‘å·¥ä½œã€‚",
-                  "å¦‚æžœä½ å¯¹æœ¬é¡¹ç›®æ„Ÿå…´è¶£ï¼Œå¹¶ä¸”æ„¿æ„ä¸ºå¼€æºè´¡çŒ®ä¸€ä»½åŠ›é‡ï¼Œæˆ‘ä»¬å¾ˆæ¬¢è¿Žä½ çš„åŠ å…¥ã€‚",
-                  "ç›®å‰æ‹›è˜çš„ä¸»è¦äººæ‰æ˜¯ï¼šè½¦ç‰Œå®šä½ï¼Œå›¾åƒè¯†åˆ«ï¼Œæ·±åº¦å­¦ä¹ ï¼Œç½‘ç«™å»ºè®¾ç›¸å…³æ–¹é¢çš„ç‰›äººã€‚",
-                  "å¦‚æžœä½ è§‰å¾—è‡ªå·±ç¬¦åˆæ¡ä»¶ï¼Œè¯·å‘é‚®ä»¶åˆ°åœ°å€(easypr_dev@163.com)ï¼ŒæœŸå¾…ä½ çš„åŠ å…¥ï¼",
-                  NULL
-          };
+              "ÎÒÃÇEasyPRÍÅ¶ÓÄ¿Ç°ÓÐÒ»¸ö5ÈË×óÓÒµÄÐ¡×éÔÚ½øÐÐEasyPRºóÐø°æ±¾µÄ¿ª·¢"
+              "¹¤×÷¡£",
+              "Èç¹ûÄã¶Ô±¾ÏîÄ¿¸ÐÐËÈ¤£¬²¢ÇÒÔ¸ÒâÎª¿ªÔ´¹±Ï×Ò»·ÝÁ¦Á¿£¬ÎÒÃÇºÜ»¶Ó­ÄãµÄ"
+              "¼ÓÈë¡£",
+              "Ä¿Ç°ÕÐÆ¸µÄÖ÷ÒªÈË²ÅÊÇ£º³µÅÆ¶¨Î»£¬Í¼ÏñÊ¶±ð£¬Éî¶ÈÑ§Ï°£¬ÍøÕ¾½¨ÉèÏà¹Ø"
+              "·½ÃæµÄÅ£ÈË¡£",
+              "Èç¹ûÄã¾õµÃ×Ô¼º·ûºÏÌõ¼þ£¬Çë·¢ÓÊ¼þµ½µØÖ·(easypr_dev@163.com)"
+              "£¬ÆÚ´ýÄãµÄ¼ÓÈë£¡",
+              NULL};
           easypr::Utils::print_str_lines(recruitment);
           std::cout << std::endl;
           break;
         }
         case 7: {
-          // æ„Ÿè°¢åå•
+          // ¸ÐÐ»Ãûµ¥
           std::cout << std::endl;
           const char* thanks[] = {
-                  "æœ¬é¡¹ç›®åœ¨å»ºè®¾è¿‡ç¨‹ä¸­ï¼Œå—åˆ°äº†å¾ˆå¤šäººçš„å¸®åŠ©ï¼Œå…¶ä¸­ä»¥ä¸‹æ˜¯å¯¹æœ¬é¡¹ç›®åšå‡ºçªå‡ºè´¡çŒ®çš„",
-                  "(è´¡çŒ®åŒ…æ‹¬æœ‰ç›Šå»ºè®®ï¼Œä»£ç è°ƒä¼˜ï¼Œæ•°æ®æä¾›ç­‰ç­‰,æŽ’åæŒ‰æ—¶é—´é¡ºåº)ï¼š",
-                  "taotao1233ï¼Œé‚±é”¦å±±ï¼Œå”å¤§ä¾ ï¼Œjsxyheluï¼Œå¦‚æžœæœ‰ä¸€å¤©(zhoushiwei)ï¼Œ",
-                  "å­¦ä¹ å¥‹æ–—ï¼Œè¢æ‰¿å¿—ï¼Œåœ£åŸŽå°çŸ³åŒ ï¼Œgoldriverï¼ŒMicoozï¼Œæ¢¦é‡Œæ—¶å…‰ï¼Œ",
-                  "Rain Wangï¼Œahccomsï¼Œæ˜Ÿå¤œè½å°˜ï¼Œæµ·è±šå˜Žå˜Ž",
-                  "è¿˜æœ‰å¾ˆå¤šçš„åŒå­¦å¯¹æœ¬é¡¹ç›®ä¹Ÿç»™äºˆäº†é¼“åŠ±ä¸Žæ”¯æŒï¼Œåœ¨æ­¤ä¹Ÿä¸€å¹¶è¡¨ç¤ºçœŸè¯šçš„è°¢æ„ï¼",
-                  NULL
-          };
+              "±¾ÏîÄ¿ÔÚ½¨Éè¹ý³ÌÖÐ£¬ÊÜµ½ÁËºÜ¶àÈËµÄ°ïÖú£¬ÆäÖÐÒÔÏÂÊÇ¶Ô±¾ÏîÄ¿×ö³öÍ»"
+              "³ö¹±Ï×µÄ",
+              "(¹±Ï×°üÀ¨ÓÐÒæ½¨Òé£¬´úÂëµ÷ÓÅ£¬Êý¾ÝÌá¹©µÈµÈ,ÅÅÃû°´Ê±¼äË³Ðò)£º",
+              "taotao1233£¬Çñ½õÉ½£¬ÌÆ´óÏÀ£¬jsxyhelu£¬Èç¹ûÓÐÒ»Ìì(zhoushiwei)£¬",
+              "Ñ§Ï°·Ü¶·£¬Ô¬³ÐÖ¾£¬Ê¥³ÇÐ¡Ê¯½³£¬goldriver£¬Micooz£¬ÃÎÀïÊ±¹â£¬",
+              "Rain Wang£¬ahccoms£¬ÐÇÒ¹Âä³¾£¬º£ëà¸Â¸Â",
+              "»¹ÓÐºÜ¶àµÄÍ¬Ñ§¶Ô±¾ÏîÄ¿Ò²¸øÓèÁË¹ÄÀøÓëÖ§³Ö£¬ÔÚ´ËÒ²Ò»²¢±íÊ¾Õæ³ÏµÄÐ»"
+              "Òâ£¡",
+              NULL};
           easypr::Utils::print_str_lines(thanks);
           std::cout << std::endl;
           break;
@@ -475,7 +464,7 @@ int main(int argc, const char* argv[]) {
           isExit = true;
           break;
         default:
-          std::cout << "è¾“å…¥é”™è¯¯ï¼Œè¯·é‡æ–°è¾“å…¥:";
+          std::cout << "ÊäÈë´íÎó£¬ÇëÖØÐÂÊäÈë:";
           isRepeat = true;
           break;
       }

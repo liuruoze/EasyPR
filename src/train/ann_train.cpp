@@ -1,8 +1,8 @@
-// ann_train.cpp : annæ¨¡å‹çš„è®­ç»ƒæ–‡ä»¶ï¼Œä¸»è¦ç”¨åœ¨OCRä¸­
+// ann_train.cpp : annÄ£ĞÍµÄÑµÁ·ÎÄ¼ş£¬Ö÷ÒªÓÃÔÚOCRÖĞ
 
 #include <opencv2/opencv.hpp>
-#include "easypr/util.h"
 #include "easypr/plate_recognize.h"
+#include "easypr/util.h"
 
 #ifdef OS_WINDOWS
 #include <windows.h>
@@ -20,42 +20,39 @@ using namespace easypr;
 using namespace cv;
 using namespace std;
 
-#define HORIZONTAL    1
-#define VERTICAL    0
+#define HORIZONTAL 1
+#define VERTICAL 0
 
 CvANN_MLP ann;
 
-//ä¸­å›½è½¦ç‰Œ
-const char strCharacters[] = {
-        '0', '1', '2', '3', '4', '5', \
-    '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', /* æ²¡æœ‰I */\
-    'J', 'K', 'L', 'M', 'N', /* æ²¡æœ‰O */ 'P', 'Q', 'R', 'S', 'T', \
-    'U', 'V', 'W', 'X', 'Y', 'Z'
-};
+//ÖĞ¹ú³µÅÆ
+const char strCharacters[] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
+                              'A', 'B', 'C', 'D', 'E', 'F', 'G',
+                              'H', /* Ã»ÓĞI */
+                              'J', 'K', 'L', 'M', 'N', /* Ã»ÓĞO */ 'P', 'Q',
+                              'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'};
 const int numCharacter = 34;
-/* æ²¡æœ‰Iå’ŒO,10ä¸ªæ•°å­—ä¸24ä¸ªè‹±æ–‡å­—ç¬¦ä¹‹å’Œ */
+/* Ã»ÓĞIºÍO,10¸öÊı×ÖÓë24¸öÓ¢ÎÄ×Ö·ûÖ®ºÍ */
 
-//ä»¥ä¸‹éƒ½æ˜¯æˆ‘è®­ç»ƒæ—¶ç”¨åˆ°çš„ä¸­æ–‡å­—ç¬¦æ•°æ®ï¼Œå¹¶ä¸å…¨é¢ï¼Œæœ‰äº›çœä»½æ²¡æœ‰è®­ç»ƒæ•°æ®æ‰€ä»¥æ²¡æœ‰å­—ç¬¦
-//æœ‰äº›åé¢åŠ æ•°å­—2çš„è¡¨ç¤ºåœ¨è®­ç»ƒæ—¶å¸¸çœ‹åˆ°å­—ç¬¦çš„ä¸€ç§å˜å½¢ï¼Œä¹Ÿä½œä¸ºè®­ç»ƒæ•°æ®å­˜å‚¨
+//ÒÔÏÂ¶¼ÊÇÎÒÑµÁ·Ê±ÓÃµ½µÄÖĞÎÄ×Ö·ûÊı¾İ£¬²¢²»È«Ãæ£¬ÓĞĞ©Ê¡·İÃ»ÓĞÑµÁ·Êı¾İËùÒÔÃ»ÓĞ×Ö·û
+//ÓĞĞ©ºóÃæ¼ÓÊı×Ö2µÄ±íÊ¾ÔÚÑµÁ·Ê±³£¿´µ½×Ö·ûµÄÒ»ÖÖ±äĞÎ£¬Ò²×÷ÎªÑµÁ·Êı¾İ´æ´¢
 const std::string strChinese[] = {
-        "zh_cuan" /* å· */, "zh_e" /* é„‚ */, "zh_gan" /* èµ£*/, \
-  "zh_gan1"/*ç”˜*/, "zh_gui"/* è´µ */, "zh_gui1"/* æ¡‚ */, \
-  "zh_hei" /* é»‘ */, "zh_hu" /* æ²ª */, "zh_ji" /* å†€ */, \
-  "zh_jin" /* æ´¥ */, "zh_jing" /* äº¬ */, "zh_jl" /* å‰ */, \
-  "zh_liao" /* è¾½ */, "zh_lu" /* é² */, "zh_meng" /* è’™ */, \
-  "zh_min" /* é—½ */, "zh_ning" /* å® */, "zh_qing" /* é’ */, \
-  "zh_qiong" /* ç¼ */, "zh_shan" /* é™• */, "zh_su" /* è‹ */, \
-  "zh_sx" /* æ™‹ */, "zh_wan" /* çš– */, "zh_xiang" /* æ¹˜ */, \
-  "zh_xin" /* æ–° */, "zh_yu" /* è±« */, "zh_yu1" /* æ¸ */, \
-  "zh_yue" /* ç²¤ */, "zh_yun" /* äº‘ */, "zh_zang" /* è— */, \
-  "zh_zhe" /* æµ™ */};
+    "zh_cuan" /* ´¨ */,  "zh_e" /* ¶õ */,    "zh_gan" /* ¸Ó*/,
+    "zh_gan1" /*¸Ê*/,    "zh_gui" /* ¹ó */,  "zh_gui1" /* ¹ğ */,
+    "zh_hei" /* ºÚ */,   "zh_hu" /* »¦ */,   "zh_ji" /* ¼½ */,
+    "zh_jin" /* ½ò */,   "zh_jing" /* ¾© */, "zh_jl" /* ¼ª */,
+    "zh_liao" /* ÁÉ */,  "zh_lu" /* Â³ */,   "zh_meng" /* ÃÉ */,
+    "zh_min" /* Ãö */,   "zh_ning" /* Äş */, "zh_qing" /* Çà */,
+    "zh_qiong" /* Çí */, "zh_shan" /* ÉÂ */, "zh_su" /* ËÕ */,
+    "zh_sx" /* ½ú */,    "zh_wan" /* Íî */,  "zh_xiang" /* Ïæ */,
+    "zh_xin" /* ĞÂ */,   "zh_yu" /* Ô¥ */,   "zh_yu1" /* Óå */,
+    "zh_yue" /* ÔÁ */,   "zh_yun" /* ÔÆ */,  "zh_zang" /* ²Ø */,
+    "zh_zhe" /* Õã */};
 
 const int numChinese = 31;
 const int numAll = 65;
 
 /* 34+20=54 */
-
-
 
 void annTrain(Mat TrainData, Mat classes, int nNeruns) {
   ann.clear();
@@ -65,13 +62,13 @@ void annTrain(Mat TrainData, Mat classes, int nNeruns) {
   layers.at<int>(2) = numAll;
   ann.create(layers, CvANN_MLP::SIGMOID_SYM, 1, 1);
 
-  //Prepare trainClases
-  //Create a mat with n trained data by m classes
+  // Prepare trainClases
+  // Create a mat with n trained data by m classes
   Mat trainClasses;
   trainClasses.create(TrainData.rows, numAll, CV_32FC1);
   for (int i = 0; i < trainClasses.rows; i++) {
     for (int k = 0; k < trainClasses.cols; k++) {
-      //If class of data i is same than a k class
+      // If class of data i is same than a k class
       if (k == classes.at<int>(i))
         trainClasses.at<float>(i, k) = 1;
       else
@@ -80,10 +77,10 @@ void annTrain(Mat TrainData, Mat classes, int nNeruns) {
   }
   Mat weights(1, TrainData.rows, CV_32FC1, Scalar::all(1));
 
-  //Learn classifier
+  // Learn classifier
   // ann.train( TrainData, trainClasses, weights );
 
-  //Setup the BPNetwork
+  // Setup the BPNetwork
 
   // Set up BPNetwork's parameters
   CvANN_MLP_TrainParams params;
@@ -91,15 +88,14 @@ void annTrain(Mat TrainData, Mat classes, int nNeruns) {
   params.bp_dw_scale = 0.1;
   params.bp_moment_scale = 0.1;
 
-  //params.train_method=CvANN_MLP_TrainParams::RPROP;
-  // params.rp_dw0 = 0.1; 
-  // params.rp_dw_plus = 1.2; 
+  // params.train_method=CvANN_MLP_TrainParams::RPROP;
+  // params.rp_dw0 = 0.1;
+  // params.rp_dw_plus = 1.2;
   // params.rp_dw_minus = 0.5;
-  // params.rp_dw_min = FLT_EPSILON; 
+  // params.rp_dw_min = FLT_EPSILON;
   // params.rp_dw_max = 50.;
 
   ann.train(TrainData, trainClasses, Mat(), Mat(), params);
-
 }
 
 int saveTrainData() {
@@ -133,7 +129,7 @@ int saveTrainData() {
       trainingDataf10.push_back(f10);
       trainingDataf15.push_back(f15);
       trainingDataf20.push_back(f20);
-      trainingLabels.push_back(i);      //æ¯ä¸€å¹…å­—ç¬¦å›¾ç‰‡æ‰€å¯¹åº”çš„å­—ç¬¦ç±»åˆ«ç´¢å¼•ä¸‹æ ‡
+      trainingLabels.push_back(i);  //Ã¿Ò»·ù×Ö·ûÍ¼Æ¬Ëù¶ÔÓ¦µÄ×Ö·ûÀà±ğË÷ÒıÏÂ±ê
     }
   }
 
@@ -199,9 +195,9 @@ void saveModel(int _predictsize, int _neurons) {
   fs[training] >> TrainingData;
   fs["classes"] >> Classes;
 
-  //train the Ann
+  // train the Ann
   cout << "Begin to saveModelChar predictSize:" << _predictsize
-  << " neurons:" << _neurons << endl;
+       << " neurons:" << _neurons << endl;
 
   long start = Utils::getTimestamp();
   annTrain(TrainingData, Classes, _neurons);
@@ -212,7 +208,7 @@ void saveModel(int _predictsize, int _neurons) {
   cout << "End the saveModelChar" << endl;
 
   string model_name = "resources/train/ann.xml";
-  //if(1)
+  // if(1)
   //{
   //	stringstream ss(stringstream::in | stringstream::out);
   //	ss << "ann_prd" << _predictsize << "_neu"<< _neurons << ".xml";
@@ -228,8 +224,8 @@ int annMain() {
 
   saveTrainData();
 
-  //å¯æ ¹æ®éœ€è¦è®­ç»ƒä¸åŒçš„predictSizeæˆ–è€…neuronsçš„ANNæ¨¡å‹
-  //for (int i = 2; i <= 2; i ++)
+  //¿É¸ù¾İĞèÒªÑµÁ·²»Í¬µÄpredictSize»òÕßneuronsµÄANNÄ£ĞÍ
+  // for (int i = 2; i <= 2; i ++)
   //{
   //	int size = i * 5;
   //	for (int j = 5; j <= 10; j++)
@@ -239,8 +235,8 @@ int annMain() {
   //	}
   //}
 
-  //è¿™é‡Œæ¼”ç¤ºåªè®­ç»ƒmodelæ–‡ä»¶å¤¹ä¸‹çš„ann.xmlï¼Œæ­¤æ¨¡å‹æ˜¯ä¸€ä¸ªpredictSize=10,neurons=40çš„ANNæ¨¡å‹ã€‚
-  //æ ¹æ®æœºå™¨çš„ä¸åŒï¼Œè®­ç»ƒæ—¶é—´ä¸ä¸€æ ·ï¼Œä½†ä¸€èˆ¬éœ€è¦10åˆ†é’Ÿå·¦å³ï¼Œæ‰€ä»¥æ…¢æ…¢ç­‰ä¸€ä¼šå§ã€‚
+  //ÕâÀïÑİÊ¾Ö»ÑµÁ·modelÎÄ¼ş¼ĞÏÂµÄann.xml£¬´ËÄ£ĞÍÊÇÒ»¸öpredictSize=10,neurons=40µÄANNÄ£ĞÍ¡£
+  //¸ù¾İ»úÆ÷µÄ²»Í¬£¬ÑµÁ·Ê±¼ä²»Ò»Ñù£¬µ«Ò»°ãĞèÒª10·ÖÖÓ×óÓÒ£¬ËùÒÔÂıÂıµÈÒ»»á°É¡£
   saveModel(10, 40);
 
   cout << "To be end." << endl;

@@ -7,55 +7,57 @@
 // Reference:	Mastering OpenCV with Practical Computer Vision Projects
 // Reference:	CSDN Bloger taotao1233
 // Desciption:
-// Defines CCharsIdentify 
+// Defines CCharsIdentify
 //////////////////////////////////////////////////////////////////////////
 #ifndef __CHARS_IDENTIFY_H__
 #define __CHARS_IDENTIFY_H__
 
 #include <opencv2/opencv.hpp>
-#include <string>
 
+using namespace cv;
+using namespace std;
+
+/*! \namespace easypr
+    Namespace where all the C++ EasyPR functionality resides
+*/
 namespace easypr {
 
 class CCharsIdentify {
  public:
   CCharsIdentify();
 
-  //! å­—ç¬¦é‰´åˆ«
-  std::string charsIdentify(cv::Mat, bool, bool);
+  //! ×Ö·û·Ö¸î
+  string charsIdentify(Mat, bool, bool);
+  string charsIdentify(Mat input);
 
-  std::string charsIdentify(cv::Mat input);
+  //! ×Ö·û·ÖÀà
+  int classify(Mat, bool, bool);
+  int classify(Mat f);
 
-  //! å­—ç¬¦åˆ†ç±»
-  int classify(cv::Mat, bool, bool);
-
-  int classify(cv::Mat f);
-
-  //! è£…è½½ANNæ¨¡å‹
+  //! ×°ÔØANNÄ£ĞÍ
   void LoadModel();
 
-  //! è£…è½½ANNæ¨¡å‹
-  void LoadModel(std::string s);
+  //! ×°ÔØANNÄ£ĞÍ
+  void LoadModel(string s);
 
-  //! è®¾ç½®ä¸è¯»å–æ¨¡å‹è·¯å¾„
-  inline void setModelPath(std::string path) { m_path = path; }
-
-  inline std::string getModelPath() const { return m_path; }
+  //! ÉèÖÃÓë¶ÁÈ¡Ä£ĞÍÂ·¾¶
+  inline void setModelPath(string path) { m_path = path; }
+  inline string getModelPath() const { return m_path; }
 
  private:
-  //ï¼ä½¿ç”¨çš„ANNæ¨¡å‹
+  //£¡Ê¹ÓÃµÄANNÄ£ĞÍ
   CvANN_MLP ann;
 
-  //! æ¨¡å‹å­˜å‚¨è·¯å¾„
-  std::string m_path;
+  //! Ä£ĞÍ´æ´¢Â·¾¶
+  string m_path;
 
-  //! ç‰¹å¾å°ºå¯¸
+  //! ÌØÕ÷³ß´ç
   int m_predictSize;
 
-  //! çœä»½å¯¹åº”map
-  std::map<std::string, std::string> m_map;
+  //! Ê¡·İ¶ÔÓ¦map
+  std::map<string, string> m_map;
 };
 
-}  /* \namespace easypr  */
+} /* \namespace easypr  */
 
 #endif /* endif __CHARS_IDENTIFY_H__ */

@@ -12,8 +12,8 @@
 #ifndef __CHARS_RECOGNISE_H__
 #define __CHARS_RECOGNISE_H__
 
-#include "chars_segment.h"
-#include "chars_identify.h"
+#include "easypr/chars_segment.h"
+#include "easypr/chars_identify.h"
 
 /*! \namespace easypr
 Namespace where all the C++ EasyPR functionality resides
@@ -24,65 +24,57 @@ class CCharsRecognise {
  public:
   CCharsRecognise();
 
-  //! å­—ç¬¦åˆ†å‰²ä¸è¯†åˆ«
-  int charsRecognise(cv::Mat, std::string&, int = 0);
+  //! ×Ö·û·Ö¸îÓëÊ¶±ğ
+  int charsRecognise(Mat, String&);
 
-  cv::string charsRecognise(cv::Mat plate);
+  string charsRecognise(Mat plate);
 
-  //! è£…è½½ANNæ¨¡å‹
-  void LoadANN(cv::string s);
+  //! ×°ÔØANNÄ£ĞÍ
+  void LoadANN(string s);
 
-  //! æ˜¯å¦å¼€å¯è°ƒè¯•æ¨¡å¼
+  //! ÊÇ·ñ¿ªÆôµ÷ÊÔÄ£Ê½
   inline void setCRDebug(int param) { m_charsSegment->setDebug(param); }
 
-  //! è·å–è°ƒè¯•æ¨¡å¼çŠ¶æ€
+  //! »ñÈ¡µ÷ÊÔÄ£Ê½×´Ì¬
   inline int getCRDebug() { return m_charsSegment->getDebug(); }
 
-
-  //! è·å¾—è½¦ç‰Œé¢œè‰²
-  inline cv::string getPlateColor(cv::Mat input) const {
-    cv::string color = "æœªçŸ¥";
+  //! »ñµÃ³µÅÆÑÕÉ«
+  inline string getPlateColor(Mat input) const {
+    string color = "Î´Öª";
     Color result = getPlateType(input, true);
-    if (BLUE == result)
-      color = "è“ç‰Œ";
-    if (YELLOW == result)
-      color = "é»„ç‰Œ";
+    if (BLUE == result) color = "À¶ÅÆ";
+    if (YELLOW == result) color = "»ÆÅÆ";
     return color;
   }
 
-  //! è®¾ç½®å˜é‡
+  //! ÉèÖÃ±äÁ¿
   inline void setLiuDingSize(int param) {
     m_charsSegment->setLiuDingSize(param);
   }
-
   inline void setColorThreshold(int param) {
     m_charsSegment->setColorThreshold(param);
   }
-
   inline void setBluePercent(float param) {
     m_charsSegment->setBluePercent(param);
   }
-
   inline float getBluePercent() const {
     return m_charsSegment->getBluePercent();
   }
-
   inline void setWhitePercent(float param) {
     m_charsSegment->setWhitePercent(param);
   }
-
   inline float getWhitePercent() const {
     return m_charsSegment->getWhitePercent();
   }
 
  private:
-  //ï¼å­—ç¬¦åˆ†å‰²
+  //£¡×Ö·û·Ö¸î
   CCharsSegment* m_charsSegment;
 
-  //! å­—ç¬¦è¯†åˆ«
+  //! ×Ö·ûÊ¶±ğ
   CCharsIdentify* m_charsIdentify;
 };
 
-}  /* \namespace easypr  */
+} /* \namespace easypr  */
 
 #endif /* endif __CHARS_RECOGNISE_H__ */

@@ -4,46 +4,53 @@
 // Date:	    2015-03-12
 // Author:	    liuruoze
 // Copyright:   liuruoze
-// Desciption:  
-// Defines CPlate
+// Desciption:
+// An abstract class for car plate.
 //////////////////////////////////////////////////////////////////////////
 #ifndef __PLATE_H__
 #define __PLATE_H__
 
-#include <opencv2/opencv.hpp>
+#include "core_func.h"
 
+/*! \namespace easypr
+Namespace where all the C++ EasyPR functionality resides
+*/
 namespace easypr {
 
 class CPlate {
  public:
   bool bColored;
 
+  //! ¹¹Ôìº¯Êı
   CPlate();
 
-  //! è®¾ç½®ä¸è¯»å–å˜é‡
-  inline void setPlateMat(cv::Mat param) { m_plateMat = param; }
+  //! ÉèÖÃÓë¶ÁÈ¡±äÁ¿
+  inline void setPlateMat(Mat param) { m_plateMat = param; }
+  inline Mat getPlateMat() const { return m_plateMat; }
 
-  inline cv::Mat getPlateMat() const { return m_plateMat; }
+  inline void setPlatePos(RotatedRect param) { m_platePos = param; }
+  inline RotatedRect getPlatePos() const { return m_platePos; }
 
-  inline void setPlatePos(cv::RotatedRect param) { m_platePos = param; }
+  inline void setPlateStr(String param) { m_plateStr = param; }
+  inline String getPlateStr() const { return m_plateStr; }
 
-  inline cv::RotatedRect getPlatePos() const { return m_platePos; }
-
-  inline void setPlateStr(std::string param) { m_plateStr = param; }
-
-  inline std::string getPlateStr() const { return m_plateStr; }
+  inline void setPlateLocateType(LocateType param) { m_locateType = param; }
+  inline LocateType getPlateLocateType() const { return m_locateType; }
 
  private:
-  //! è½¦ç‰Œçš„å›¾å—
-  cv::Mat m_plateMat;
+  //! ³µÅÆµÄÍ¼¿é
+  Mat m_plateMat;
 
-  //! è½¦ç‰Œåœ¨åŸå›¾çš„ä½ç½®
-  cv::RotatedRect m_platePos;
+  //! ³µÅÆÔÚÔ­Í¼µÄÎ»ÖÃ
+  RotatedRect m_platePos;
 
-  //! è½¦ç‰Œå­—ç¬¦ä¸²
-  std::string m_plateStr;
+  //! ³µÅÆ×Ö·û´®
+  String m_plateStr;
+
+  //! ³µÅÆ¶¨Î»µÄ·½·¨
+  LocateType m_locateType;
 };
 
-}  /*! \namespace easypr*/
+} /*! \namespace easypr*/
 
 #endif /* endif __PLATE_H__ */
