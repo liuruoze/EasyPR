@@ -103,10 +103,10 @@ int CCharsSegment::charsSegment(Mat input, vector<Mat>& resultVec) {
     int h = input_grey.rows;
     Mat tmp = input_grey(Rect(w * 0.1, h * 0.1, w * 0.8, h * 0.8));
     int threadHoldV = ThresholdOtsu(tmp);
-    utils::imwrite("E:/img_inputgray2.jpg", input_grey);
+    // utils::imwrite("E:/img_inputgray2.jpg", input_grey);
 
     threshold(input_grey, img_threshold, threadHoldV, 255, CV_THRESH_BINARY);
-    utils::imwrite("E:/img_threshold.jpg", img_threshold);
+    // utils::imwrite("E:/img_threshold.jpg", img_threshold);
 
     // threshold(input_grey, img_threshold, 5, 255, CV_THRESH_OTSU +
     // CV_THRESH_BINARY);
@@ -249,7 +249,8 @@ int CCharsSegment::charsSegment(Mat input, vector<Mat>& resultVec) {
       auxRoi = preprocessChar(auxRoi);
       if (m_debug) {
         stringstream ss(stringstream::in | stringstream::out);
-        ss << "resources/image/tmp/debug_char_auxRoi_" << (i + staticIndex) << ".jpg";
+        ss << "resources/image/tmp/debug_char_auxRoi_" << (i + staticIndex)
+           << ".jpg";
         utils::imwrite(ss.str(), auxRoi);
       }
       resultVec.push_back(auxRoi);
