@@ -4,46 +4,53 @@
 // Date:	    2015-03-12
 // Author:	    liuruoze
 // Copyright:   liuruoze
-// Desciption:  
-// Defines CPlate
+// Desciption:
+// An abstract class for car plate.
 //////////////////////////////////////////////////////////////////////////
 #ifndef __PLATE_H__
 #define __PLATE_H__
 
-#include <opencv2/opencv.hpp>
+#include "core_func.h"
 
+/*! \namespace easypr
+Namespace where all the C++ EasyPR functionality resides
+*/
 namespace easypr {
 
 class CPlate {
  public:
   bool bColored;
 
+  //! 构造函数
   CPlate();
 
   //! 设置与读取变量
-  inline void setPlateMat(cv::Mat param) { m_plateMat = param; }
+  inline void setPlateMat(Mat param) { m_plateMat = param; }
+  inline Mat getPlateMat() const { return m_plateMat; }
 
-  inline cv::Mat getPlateMat() const { return m_plateMat; }
+  inline void setPlatePos(RotatedRect param) { m_platePos = param; }
+  inline RotatedRect getPlatePos() const { return m_platePos; }
 
-  inline void setPlatePos(cv::RotatedRect param) { m_platePos = param; }
+  inline void setPlateStr(String param) { m_plateStr = param; }
+  inline String getPlateStr() const { return m_plateStr; }
 
-  inline cv::RotatedRect getPlatePos() const { return m_platePos; }
-
-  inline void setPlateStr(std::string param) { m_plateStr = param; }
-
-  inline std::string getPlateStr() const { return m_plateStr; }
+  inline void setPlateLocateType(LocateType param) { m_locateType = param; }
+  inline LocateType getPlateLocateType() const { return m_locateType; }
 
  private:
   //! 车牌的图块
-  cv::Mat m_plateMat;
+  Mat m_plateMat;
 
   //! 车牌在原图的位置
-  cv::RotatedRect m_platePos;
+  RotatedRect m_platePos;
 
   //! 车牌字符串
-  std::string m_plateStr;
+  String m_plateStr;
+
+  //! 车牌定位的方法
+  LocateType m_locateType;
 };
 
-}  /*! \namespace easypr*/
+} /*! \namespace easypr*/
 
 #endif /* endif __PLATE_H__ */

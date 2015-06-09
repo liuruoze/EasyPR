@@ -1,8 +1,8 @@
 // ann_train.cpp : ann模型的训练文件，主要用在OCR中
 
 #include <opencv2/opencv.hpp>
-#include "easypr/util.h"
 #include "easypr/plate_recognize.h"
+#include "easypr/util.h"
 
 #ifdef OS_WINDOWS
 #include <windows.h>
@@ -20,42 +20,39 @@ using namespace easypr;
 using namespace cv;
 using namespace std;
 
-#define HORIZONTAL    1
-#define VERTICAL    0
+#define HORIZONTAL 1
+#define VERTICAL 0
 
 CvANN_MLP ann;
 
 //中国车牌
-const char strCharacters[] = {
-        '0', '1', '2', '3', '4', '5', \
-    '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', /* 没有I */\
-    'J', 'K', 'L', 'M', 'N', /* 没有O */ 'P', 'Q', 'R', 'S', 'T', \
-    'U', 'V', 'W', 'X', 'Y', 'Z'
-};
+const char strCharacters[] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
+                              'A', 'B', 'C', 'D', 'E', 'F', 'G',
+                              'H', /* 没有I */
+                              'J', 'K', 'L', 'M', 'N', /* 没有O */ 'P', 'Q',
+                              'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'};
 const int numCharacter = 34;
 /* 没有I和O,10个数字与24个英文字符之和 */
 
 //以下都是我训练时用到的中文字符数据，并不全面，有些省份没有训练数据所以没有字符
 //有些后面加数字2的表示在训练时常看到字符的一种变形，也作为训练数据存储
 const std::string strChinese[] = {
-        "zh_cuan" /* 川 */, "zh_e" /* 鄂 */, "zh_gan" /* 赣*/, \
-  "zh_gan1"/*甘*/, "zh_gui"/* 贵 */, "zh_gui1"/* 桂 */, \
-  "zh_hei" /* 黑 */, "zh_hu" /* 沪 */, "zh_ji" /* 冀 */, \
-  "zh_jin" /* 津 */, "zh_jing" /* 京 */, "zh_jl" /* 吉 */, \
-  "zh_liao" /* 辽 */, "zh_lu" /* 鲁 */, "zh_meng" /* 蒙 */, \
-  "zh_min" /* 闽 */, "zh_ning" /* 宁 */, "zh_qing" /* 青 */, \
-  "zh_qiong" /* 琼 */, "zh_shan" /* 陕 */, "zh_su" /* 苏 */, \
-  "zh_sx" /* 晋 */, "zh_wan" /* 皖 */, "zh_xiang" /* 湘 */, \
-  "zh_xin" /* 新 */, "zh_yu" /* 豫 */, "zh_yu1" /* 渝 */, \
-  "zh_yue" /* 粤 */, "zh_yun" /* 云 */, "zh_zang" /* 藏 */, \
-  "zh_zhe" /* 浙 */};
+    "zh_cuan" /* 川 */,  "zh_e" /* 鄂 */,    "zh_gan" /* 赣*/,
+    "zh_gan1" /*甘*/,    "zh_gui" /* 贵 */,  "zh_gui1" /* 桂 */,
+    "zh_hei" /* 黑 */,   "zh_hu" /* 沪 */,   "zh_ji" /* 冀 */,
+    "zh_jin" /* 津 */,   "zh_jing" /* 京 */, "zh_jl" /* 吉 */,
+    "zh_liao" /* 辽 */,  "zh_lu" /* 鲁 */,   "zh_meng" /* 蒙 */,
+    "zh_min" /* 闽 */,   "zh_ning" /* 宁 */, "zh_qing" /* 青 */,
+    "zh_qiong" /* 琼 */, "zh_shan" /* 陕 */, "zh_su" /* 苏 */,
+    "zh_sx" /* 晋 */,    "zh_wan" /* 皖 */,  "zh_xiang" /* 湘 */,
+    "zh_xin" /* 新 */,   "zh_yu" /* 豫 */,   "zh_yu1" /* 渝 */,
+    "zh_yue" /* 粤 */,   "zh_yun" /* 云 */,  "zh_zang" /* 藏 */,
+    "zh_zhe" /* 浙 */};
 
 const int numChinese = 31;
 const int numAll = 65;
 
 /* 34+20=54 */
-
-
 
 void annTrain(Mat TrainData, Mat classes, int nNeruns) {
   ann.clear();
@@ -65,13 +62,13 @@ void annTrain(Mat TrainData, Mat classes, int nNeruns) {
   layers.at<int>(2) = numAll;
   ann.create(layers, CvANN_MLP::SIGMOID_SYM, 1, 1);
 
-  //Prepare trainClases
-  //Create a mat with n trained data by m classes
+  // Prepare trainClases
+  // Create a mat with n trained data by m classes
   Mat trainClasses;
   trainClasses.create(TrainData.rows, numAll, CV_32FC1);
   for (int i = 0; i < trainClasses.rows; i++) {
     for (int k = 0; k < trainClasses.cols; k++) {
-      //If class of data i is same than a k class
+      // If class of data i is same than a k class
       if (k == classes.at<int>(i))
         trainClasses.at<float>(i, k) = 1;
       else
@@ -80,10 +77,10 @@ void annTrain(Mat TrainData, Mat classes, int nNeruns) {
   }
   Mat weights(1, TrainData.rows, CV_32FC1, Scalar::all(1));
 
-  //Learn classifier
+  // Learn classifier
   // ann.train( TrainData, trainClasses, weights );
 
-  //Setup the BPNetwork
+  // Setup the BPNetwork
 
   // Set up BPNetwork's parameters
   CvANN_MLP_TrainParams params;
@@ -91,15 +88,14 @@ void annTrain(Mat TrainData, Mat classes, int nNeruns) {
   params.bp_dw_scale = 0.1;
   params.bp_moment_scale = 0.1;
 
-  //params.train_method=CvANN_MLP_TrainParams::RPROP;
-  // params.rp_dw0 = 0.1; 
-  // params.rp_dw_plus = 1.2; 
+  // params.train_method=CvANN_MLP_TrainParams::RPROP;
+  // params.rp_dw0 = 0.1;
+  // params.rp_dw_plus = 1.2;
   // params.rp_dw_minus = 0.5;
-  // params.rp_dw_min = FLT_EPSILON; 
+  // params.rp_dw_min = FLT_EPSILON;
   // params.rp_dw_max = 50.;
 
   ann.train(TrainData, trainClasses, Mat(), Mat(), params);
-
 }
 
 int saveTrainData() {
@@ -133,7 +129,7 @@ int saveTrainData() {
       trainingDataf10.push_back(f10);
       trainingDataf15.push_back(f15);
       trainingDataf20.push_back(f20);
-      trainingLabels.push_back(i);      //每一幅字符图片所对应的字符类别索引下标
+      trainingLabels.push_back(i);  //每一幅字符图片所对应的字符类别索引下标
     }
   }
 
@@ -199,9 +195,9 @@ void saveModel(int _predictsize, int _neurons) {
   fs[training] >> TrainingData;
   fs["classes"] >> Classes;
 
-  //train the Ann
+  // train the Ann
   cout << "Begin to saveModelChar predictSize:" << _predictsize
-  << " neurons:" << _neurons << endl;
+       << " neurons:" << _neurons << endl;
 
   long start = Utils::getTimestamp();
   annTrain(TrainingData, Classes, _neurons);
@@ -212,7 +208,7 @@ void saveModel(int _predictsize, int _neurons) {
   cout << "End the saveModelChar" << endl;
 
   string model_name = "resources/train/ann.xml";
-  //if(1)
+  // if(1)
   //{
   //	stringstream ss(stringstream::in | stringstream::out);
   //	ss << "ann_prd" << _predictsize << "_neu"<< _neurons << ".xml";
@@ -229,7 +225,7 @@ int annMain() {
   saveTrainData();
 
   //可根据需要训练不同的predictSize或者neurons的ANN模型
-  //for (int i = 2; i <= 2; i ++)
+  // for (int i = 2; i <= 2; i ++)
   //{
   //	int size = i * 5;
   //	for (int j = 5; j <= 10; j++)

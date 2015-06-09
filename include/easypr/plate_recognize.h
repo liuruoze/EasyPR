@@ -12,8 +12,8 @@
 #ifndef __PLATE_RECOGNIZE_H__
 #define __PLATE_RECOGNIZE_H__
 
-#include "plate_detect.h"
-#include "chars_recognise.h"
+#include "easypr/plate_detect.h"
+#include "easypr/chars_recognise.h"
 
 /*! \namespace easypr
     Namespace where all the C++ EasyPR functionality resides
@@ -25,21 +25,19 @@ class CPlateRecognize : public CPlateDetect, public CCharsRecognise {
   CPlateRecognize();
 
   //! 车牌检测与字符识别
-  int plateRecognize(cv::Mat src, std::vector<std::string>& licenseVec);
+  int plateRecognize(cv::Mat src, std::vector<std::string>& licenseVec,
+                     int index = 0);
 
   //! 生活模式与工业模式切换
-  inline void setLifemode(bool param) {
-    CPlateDetect::setPDLifemode(param);
-  }
+  inline void setLifemode(bool param) { CPlateDetect::setPDLifemode(param); }
 
   //! 是否开启调试模式
   inline void setDebug(int param) {
     CPlateDetect::setPDDebug(param);
     CCharsRecognise::setCRDebug(param);
   }
-
 };
 
-}  /* \namespace easypr  */
+} /* \namespace easypr  */
 
 #endif /* endif __PLATE_RECOGNITION_H__ */

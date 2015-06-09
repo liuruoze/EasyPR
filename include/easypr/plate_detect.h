@@ -7,14 +7,14 @@
 // Copyright:   liuruoze
 // Reference:	Mastering OpenCV with Practical Computer Vision Projects
 // Reference:	CSDN Bloger taotao1233
-// Desciption:  
+// Desciption:
 // Defines CPlateDetect
 //////////////////////////////////////////////////////////////////////////
 #ifndef __PLATE_DETECT_H__
 #define __PLATE_DETECT_H__
 
-#include "plate_locate.h"
-#include "plate_judge.h"
+#include "easypr/plate_locate.h"
+#include "easypr/plate_judge.h"
 
 /*! \namespace easypr
     Namespace where all the C++ EasyPR functionality resides
@@ -26,16 +26,17 @@ class CPlateDetect {
   CPlateDetect();
 
   //! 车牌检测：车牌定位与判断
-  int plateDetect(cv::Mat, std::vector<cv::Mat>&, int index = 0);
+  int plateDetect(Mat, vector<Mat>&, int index = 0);
 
   //! 深度车牌检测，使用颜色与二次Sobel法综合
-  int plateDetectDeep(cv::Mat src, std::vector<CPlate>& resultVec,
+  int plateDetectDeep(Mat src, vector<CPlate>& resultVec,
                       bool showDetectArea = true, int index = 0);
 
-  int showResult(const cv::Mat& result);
+  //! 展示中间的结果
+  int showResult(const Mat& result);
 
   //! 装载SVM模型
-  void LoadSVM(std::string s);
+  void LoadSVM(string s);
 
   //! 生活模式与工业模式切换
   inline void setPDLifemode(bool param) { m_plateLocate->setLifemode(param); }
@@ -50,7 +51,6 @@ class CPlateDetect {
   inline void setGaussianBlurSize(int param) {
     m_plateLocate->setGaussianBlurSize(param);
   }
-
   inline int getGaussianBlurSize() const {
     return m_plateLocate->getGaussianBlurSize();
   }
@@ -58,7 +58,6 @@ class CPlateDetect {
   inline void setMorphSizeWidth(int param) {
     m_plateLocate->setMorphSizeWidth(param);
   }
-
   inline int getMorphSizeWidth() const {
     return m_plateLocate->getMorphSizeWidth();
   }
@@ -66,7 +65,6 @@ class CPlateDetect {
   inline void setMorphSizeHeight(int param) {
     m_plateLocate->setMorphSizeHeight(param);
   }
-
   inline int getMorphSizeHeight() const {
     return m_plateLocate->getMorphSizeHeight();
   }
@@ -74,27 +72,22 @@ class CPlateDetect {
   inline void setVerifyError(float param) {
     m_plateLocate->setVerifyError(param);
   }
-
   inline float getVerifyError() const {
     return m_plateLocate->getVerifyError();
   }
-
   inline void setVerifyAspect(float param) {
     m_plateLocate->setVerifyAspect(param);
   }
-
   inline float getVerifyAspect() const {
     return m_plateLocate->getVerifyAspect();
   }
 
   inline void setVerifyMin(int param) { m_plateLocate->setVerifyMin(param); }
-
   inline void setVerifyMax(int param) { m_plateLocate->setVerifyMax(param); }
 
   inline void setJudgeAngle(int param) { m_plateLocate->setJudgeAngle(param); }
 
   inline void setMaxPlates(float param) { m_maxPlates = param; }
-
   inline float getMaxPlates() const { return m_maxPlates; }
 
  private:
@@ -108,6 +101,6 @@ class CPlateDetect {
   CPlateJudge* m_plateJudge;
 };
 
-}  /*! \namespace easypr*/
+} /*! \namespace easypr*/
 
 #endif /* endif __PLATE_DETECT_H__ */

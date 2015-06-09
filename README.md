@@ -10,11 +10,9 @@ EasyPR是一个中文的开源车牌识别系统，其目标是成为一个简�
 
 ### 更新
 
-本次更新是1.3alpha版，主要改进在于提升了字符识别模块的准确性：
+本次更新是1.3beta版，主要改进在于提升了字符识别模块的准确性：
 
-平均字符差距从2.0降低到0.7，完整匹配度从25%左右上升到目前的68%。
-
-同时，车牌定位模块准确率进一步提升，从上一个版本的94%上升到现在的99%。见下图：
+平均字符差距从0.7降低到0.4，完整匹配度从68%左右上升到目前的81%，平均执行时间从2秒降低到1.5秒。见下图：
 
 ![1.3版综合效果](resources/doc/res/testresult_1.3.png)
 
@@ -24,7 +22,7 @@ EasyPR是一个中文的开源车牌识别系统，其目标是成为一个简�
 
 * 使用了更鲁棒性的办法提升了车牌定位模块的准确率。
 
-目前版本的问题是处理时间大幅度上升，1.3正式版本中会对这个问题进行fix。
+目前版本的问题是处理时间还是偏高，1.3正式版本中会对这个问题进行fix。
 
 ### 跨平台
 
@@ -34,8 +32,8 @@ EasyPR是一个中文的开源车牌识别系统，其目标是成为一个简�
 |------|-------|-------|-------
 | android |  goldriver  |  1.1  |  [linuxxx/EasyPR_Android](https://github.com/linuxxx/EasyPR_Android)
 | linux | Micooz  |  1.3  |  已跟EasyPR整合
-| ios | zhoushiwei |  1.1  |  [zhoushiwei/EasyPR-iOS](https://github.com/zhoushiwei/EasyPR-iOS)
-| mac | zhoushiwei |  1.1  | [zhoushiwei/EasyPR](https://github.com/zhoushiwei/EasyPR)
+| ios | zhoushiwei |  1.3  |  [zhoushiwei/EasyPR-iOS](https://github.com/zhoushiwei/EasyPR-iOS)
+| mac | zhoushiwei,Micooz |  1.3  | 已跟EasyPR整合
 | java | fan-wenjie |  1.2  | [fan-wenjie/EasyPR-Java](https://github.com/fan-wenjie/EasyPR-Java)
 
 ### 兼容性
@@ -55,6 +53,14 @@ EasyPR是基于opencv2.4.8版本开发的，2.4.8以上的版本应该可以兼�
 接着，我们对图块进行OCR过程，在EasyPR中，叫做字符识别（CharsRecognize）。我们得到了一个包含车牌颜色与字符的字符串：
 
 “蓝牌：苏EUK722”
+
+### 版权
+
+EasyPR的源代码与训练数据遵循Apache v2.0协议开源。
+
+EasyPR的resources/image/general_test文件夹下的图片数据遵循[GDSL协议](image/GDSL.txt)（通用数据共享协议）进行开放。
+
+请确保在使用前了解以上协议的内容。
 
 ### 目录结构
 
@@ -207,17 +213,19 @@ $ ./easypr_test svm --train --has-plate=has/ --no-plate=no/ --divide --svm=save/
 
 ### Contributors
 
-* liuruoze：1.0-1.2版核心代码作者
+* liuruoze：1.0-1.2版核心代码作者，1.3版整合工作
 
-* 海豚嘎嘎：1.3版作者，提升了字符识别准确率
+* 海豚嘎嘎：1.3alpha-beta版作者，提升了车牌定位与字符识别的准确率
 
-* Micooz：linux平台编译，性能优化，util类
+* Micooz：linux与mac的跨平台编译，性能优化，util类
 
 * jsxyhelu：deface版本一
 
 * zhoushiwei：deface版本二
 
 * ahccom：新的plateLocate函数
+
+* 阿水：1.3版整合，数据标注等工作
 
 ### 鸣谢
 

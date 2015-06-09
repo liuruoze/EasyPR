@@ -1,4 +1,5 @@
 #include "easypr/util.h"
+#include <string>
 
 #ifdef OS_WINDOWS
 #include <windows.h>
@@ -117,7 +118,7 @@ std::vector<std::string> Utils::getFiles(const std::string& folder,
   subfolders.push_back(folder);
 #ifdef OS_WINDOWS
   while (!subfolders.empty()) {
-    string current_folder(subfolders.back());
+    std::string current_folder(subfolders.back());
 
     if (*(current_folder.end() - 1) != '/') {
       current_folder.append("/*");
@@ -141,7 +142,7 @@ std::vector<std::string> Utils::getFiles(const std::string& folder,
         // it's a sub folder
         if (all) {
           // will search sub folder
-          string folder(current_folder);
+          std::string folder(current_folder);
           folder.pop_back();
           folder.append(file_info.name);
 
@@ -149,7 +150,7 @@ std::vector<std::string> Utils::getFiles(const std::string& folder,
         }
       } else {
         // it's a file
-        string file_path;
+		std::string file_path;
         // current_folder.pop_back();
         file_path.assign(current_folder.c_str()).pop_back();
         file_path.append(file_info.name);

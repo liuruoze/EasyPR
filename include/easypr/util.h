@@ -23,7 +23,6 @@
 #endif
 
 namespace easypr {
-
 class Utils {
  public:
   static long getTimestamp();
@@ -44,7 +43,7 @@ class Utils {
   /*
    * returns the smaller of the two numbers
    */
-  template<typename T>
+  template <typename T>
   static T min(const T& v1, const T& v2) {
     return (v1 < v2) ? v1 : v2;
   }
@@ -78,21 +77,18 @@ class Utils {
     }
   }
 
-  //! levenshtein距离，用于计算两个车牌的距离
-  //！EasyPR中用levenshtein距离衡量车牌识别与真实车牌的误差
-  template<class T>
+  template <class T>
   static unsigned int levenshtein_distance(const T& s1, const T& s2) {
     const size_t len1 = s1.size(), len2 = s2.size();
     std::vector<unsigned int> col(len2 + 1), prevCol(len2 + 1);
 
-    for (unsigned int i = 0; i < prevCol.size(); i++)
-      prevCol[i] = i;
+    for (unsigned int i = 0; i < prevCol.size(); i++) prevCol[i] = i;
     for (unsigned int i = 0; i < len1; i++) {
       col[0] = i + 1;
       for (unsigned int j = 0; j < len2; j++)
         col[j + 1] = easypr::Utils::min(
-                easypr::Utils::min(prevCol[1 + j] + 1, col[j] + 1), \
-                prevCol[j] + (s1[i] == s2[j] ? 0 : 1));
+            easypr::Utils::min(prevCol[1 + j] + 1, col[j] + 1),
+            prevCol[j] + (s1[i] == s2[j] ? 0 : 1));
       col.swap(prevCol);
     }
     return prevCol[len2];
@@ -108,14 +104,10 @@ class Utils {
    * if not, create it, then call cv::imwrite.
    */
   static bool imwrite(const std::string& file, const cv::Mat& image);
-
 };
 
 typedef Utils utils;
 
-} // namespace easypr
+}  // namespace easypr
 
-/// general_test_prepare.cpp中方法
-int general_test();
-
-#endif // EASYPR_UTIL_H_
+#endif  // EASYPR_UTIL_H_

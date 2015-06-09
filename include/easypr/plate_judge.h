@@ -7,15 +7,15 @@
 // Copyright:   liuruoze
 // Reference:	Mastering OpenCV with Practical Computer Vision Projects
 // Reference:	CSDN Bloger taotao1233
-// Desciption:  
+// Desciption:
 // Defines CPlateLocate
 //////////////////////////////////////////////////////////////////////////
 #ifndef __PLATE_JUDGE_H__
 #define __PLATE_JUDGE_H__
 
-#include "plate.h"
-#include "feature.h"
-#include "core_func.h"
+#include "easypr/plate.h"
+#include "easypr/feature.h"
+#include "easypr/core_func.h"
 
 /*! \namespace easypr
     Namespace where all the C++ EasyPR functionality resides
@@ -27,29 +27,39 @@ class CPlateJudge {
   CPlateJudge();
 
   //! 对多幅车牌进行SVM判断
-  int plateJudge(const std::vector<CPlate>&, std::vector<CPlate>&);
+  int plateJudge(const vector<CPlate>&, vector<CPlate>&);
 
   //! 车牌判断
-  int plateJudge(const std::vector<cv::Mat>&, std::vector<cv::Mat>&);
+  int plateJudge(const vector<Mat>&, vector<Mat>&);
 
   //! 车牌判断（一副图像）
-  int plateJudge(const cv::Mat& inMat, int& result);
+  int plateJudge(const Mat& inMat, int& result);
 
   //! 直方图均衡
-  cv::Mat histeq(cv::Mat);
+  Mat histeq(Mat);
 
   //! 装载SVM模型
-  void LoadModel(const char* model);
+  void LoadModel();
+
+  //! 装载SVM模型
+  void LoadModel(string s);
+
+  //! 设置与读取模型路径
+  inline void setModelPath(string path) { m_path = path; }
+  inline string getModelPath() const { return m_path; }
 
  private:
-  //！使用的SVM模型
+  //! 使用的SVM模型
   CvSVM svm;
 
-  // ! EasyPR的getFeatures回调函数
-  // ！用于从车牌的image生成svm的训练特征features
+  //! EasyPR的getFeatures回调函数
+  //! 用于从车牌的image生成svm的训练特征features
   svmCallback m_getFeatures;
+
+  //! 模型存储路径
+  string m_path;
 };
 
-}  /*! \namespace easypr*/
+} /*! \namespace easypr*/
 
 #endif /* endif __PLATE_JUDGE_H__ */
