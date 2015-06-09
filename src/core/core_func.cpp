@@ -1,6 +1,6 @@
-// Õâ¸öÎÄ¼ş¶¨ÒåÁËEasyPRÀïËùÓĞplateÅĞ¶ÏµÄÍ¨ÓÃº¯Êı
-// ËùÊôÃüÃû¿Õ¼äÎªeasypr
-// Õâ¸ö²¿·ÖÖĞµÄº¯ÊıÇáÒ×²»Òª¸Ä¶¯
+// è¿™ä¸ªæ–‡ä»¶å®šä¹‰äº†EasyPRé‡Œæ‰€æœ‰plateåˆ¤æ–­çš„é€šç”¨å‡½æ•°
+// æ‰€å±å‘½åç©ºé—´ä¸ºeasypr
+// è¿™ä¸ªéƒ¨åˆ†ä¸­çš„å‡½æ•°è½»æ˜“ä¸è¦æ”¹åŠ¨
 
 #include <opencv2/opencv.hpp>
 #include "easypr/core_func.h"
@@ -12,34 +12,34 @@ Namespace where all the C++ EasyPR functionality resides
 */
 namespace easypr {
 
-//! ¸ù¾İÒ»·ùÍ¼ÏñÓëÑÕÉ«Ä£°å»ñÈ¡¶ÔÓ¦µÄ¶şÖµÍ¼
-//! ÊäÈëRGBÍ¼Ïñ, ÑÕÉ«Ä£°å£¨À¶É«¡¢»ÆÉ«£©
-//! Êä³ö»Ò¶ÈÍ¼£¨Ö»ÓĞ0ºÍ255Á½¸öÖµ£¬255´ú±íÆ¥Åä£¬0´ú±í²»Æ¥Åä£©
+//! æ ¹æ®ä¸€å¹…å›¾åƒä¸é¢œè‰²æ¨¡æ¿è·å–å¯¹åº”çš„äºŒå€¼å›¾
+//! è¾“å…¥RGBå›¾åƒ, é¢œè‰²æ¨¡æ¿ï¼ˆè“è‰²ã€é»„è‰²ï¼‰
+//! è¾“å‡ºç°åº¦å›¾ï¼ˆåªæœ‰0å’Œ255ä¸¤ä¸ªå€¼ï¼Œ255ä»£è¡¨åŒ¹é…ï¼Œ0ä»£è¡¨ä¸åŒ¹é…ï¼‰
 Mat colorMatch(const Mat& src, Mat& match, const Color r,
                const bool adaptive_minsv) {
-  // SºÍVµÄ×îĞ¡ÖµÓÉadaptive_minsvÕâ¸öboolÖµÅĞ¶Ï
-  // Èç¹ûÎªtrue£¬Ôò×îĞ¡ÖµÈ¡¾öÓÚHÖµ£¬°´±ÈÀıË¥¼õ
-  // Èç¹ûÎªfalse£¬Ôò²»ÔÙ×ÔÊÊÓ¦£¬Ê¹ÓÃ¹Ì¶¨µÄ×îĞ¡Öµminabs_sv
-  // Ä¬ÈÏÎªfalse
+  // Så’ŒVçš„æœ€å°å€¼ç”±adaptive_minsvè¿™ä¸ªboolå€¼åˆ¤æ–­
+  // å¦‚æœä¸ºtrueï¼Œåˆ™æœ€å°å€¼å–å†³äºHå€¼ï¼ŒæŒ‰æ¯”ä¾‹è¡°å‡
+  // å¦‚æœä¸ºfalseï¼Œåˆ™ä¸å†è‡ªé€‚åº”ï¼Œä½¿ç”¨å›ºå®šçš„æœ€å°å€¼minabs_sv
+  // é»˜è®¤ä¸ºfalse
   const float max_sv = 255;
   const float minref_sv = 64;
 
   const float minabs_sv = 95;
 
-  // blueµÄH·¶Î§
+  // blueçš„HèŒƒå›´
   const int min_blue = 100;  // 100
   const int max_blue = 140;  // 140
 
-  // yellowµÄH·¶Î§
+  // yellowçš„HèŒƒå›´
   const int min_yellow = 15;  // 15
   const int max_yellow = 40;  // 40
 
-  // whiteµÄH·¶Î§
+  // whiteçš„HèŒƒå›´
   const int min_white = 0;   // 15
   const int max_white = 30;  // 40
 
   Mat src_hsv;
-  // ×ªµ½HSV¿Õ¼ä½øĞĞ´¦Àí£¬ÑÕÉ«ËÑË÷Ö÷ÒªÊ¹ÓÃµÄÊÇH·ÖÁ¿½øĞĞÀ¶É«Óë»ÆÉ«µÄÆ¥Åä¹¤×÷
+  // è½¬åˆ°HSVç©ºé—´è¿›è¡Œå¤„ç†ï¼Œé¢œè‰²æœç´¢ä¸»è¦ä½¿ç”¨çš„æ˜¯Håˆ†é‡è¿›è¡Œè“è‰²ä¸é»„è‰²çš„åŒ¹é…å·¥ä½œ
   cvtColor(src, src_hsv, CV_BGR2HSV);
 
   vector<Mat> hsvSplit;
@@ -47,7 +47,7 @@ Mat colorMatch(const Mat& src, Mat& match, const Color r,
   equalizeHist(hsvSplit[2], hsvSplit[2]);
   merge(hsvSplit, src_hsv);
 
-  //Æ¥ÅäÄ£°å»ùÉ«,ÇĞ»»ÒÔ²éÕÒÏëÒªµÄ»ùÉ«
+  //åŒ¹é…æ¨¡æ¿åŸºè‰²,åˆ‡æ¢ä»¥æŸ¥æ‰¾æƒ³è¦çš„åŸºè‰²
   int min_h = 0;
   int max_h = 0;
   switch (r) {
@@ -70,10 +70,10 @@ Mat colorMatch(const Mat& src, Mat& match, const Color r,
 
   int channels = src_hsv.channels();
   int nRows = src_hsv.rows;
-  //Í¼ÏñÊı¾İÁĞĞèÒª¿¼ÂÇÍ¨µÀÊıµÄÓ°Ïì£»
+  //å›¾åƒæ•°æ®åˆ—éœ€è¦è€ƒè™‘é€šé“æ•°çš„å½±å“ï¼›
   int nCols = src_hsv.cols * channels;
 
-  if (src_hsv.isContinuous())  //Á¬Ğø´æ´¢µÄÊı¾İ£¬°´Ò»ĞĞ´¦Àí
+  if (src_hsv.isContinuous())  //è¿ç»­å­˜å‚¨çš„æ•°æ®ï¼ŒæŒ‰ä¸€è¡Œå¤„ç†
   {
     nCols *= nRows;
     nRows = 1;
@@ -106,9 +106,9 @@ Mat colorMatch(const Mat& src, Mat& match, const Color r,
 
         float Hdiff_p = float(Hdiff) / diff_h;
 
-        // SºÍVµÄ×îĞ¡ÖµÓÉadaptive_minsvÕâ¸öboolÖµÅĞ¶Ï
-        // Èç¹ûÎªtrue£¬Ôò×îĞ¡ÖµÈ¡¾öÓÚHÖµ£¬°´±ÈÀıË¥¼õ
-        // Èç¹ûÎªfalse£¬Ôò²»ÔÙ×ÔÊÊÓ¦£¬Ê¹ÓÃ¹Ì¶¨µÄ×îĞ¡Öµminabs_sv
+        // Så’ŒVçš„æœ€å°å€¼ç”±adaptive_minsvè¿™ä¸ªboolå€¼åˆ¤æ–­
+        // å¦‚æœä¸ºtrueï¼Œåˆ™æœ€å°å€¼å–å†³äºHå€¼ï¼ŒæŒ‰æ¯”ä¾‹è¡°å‡
+        // å¦‚æœä¸ºfalseï¼Œåˆ™ä¸å†è‡ªé€‚åº”ï¼Œä½¿ç”¨å›ºå®šçš„æœ€å°å€¼minabs_sv
         float min_sv = 0;
         if (true == adaptive_minsv)
           min_sv =
@@ -137,7 +137,7 @@ Mat colorMatch(const Mat& src, Mat& match, const Color r,
   // cout << "avg_s:" << s_all / count << endl;
   // cout << "avg_v:" << v_all / count << endl;
 
-  // »ñÈ¡ÑÕÉ«Æ¥ÅäºóµÄ¶şÖµ»Ò¶ÈÍ¼
+  // è·å–é¢œè‰²åŒ¹é…åçš„äºŒå€¼ç°åº¦å›¾
   Mat src_grey;
   vector<Mat> hsvSplit_done;
   split(src_hsv, hsvSplit_done);
@@ -149,9 +149,9 @@ Mat colorMatch(const Mat& src, Mat& match, const Color r,
 }
 
 bool bFindLeftRightBound1(Mat& bound_threshold, int& posLeft, int& posRight) {
-  //´ÓÁ½±ßÑ°ÕÒ±ß½ç
+  //ä»ä¸¤è¾¹å¯»æ‰¾è¾¹ç•Œ
   int span = bound_threshold.rows * 0.2;
-  //×ó±ß½ç¼ì²â
+  //å·¦è¾¹ç•Œæ£€æµ‹
   for (int i = 0; i < bound_threshold.cols - span - 1; i += 3) {
     int whiteCount = 0;
     for (int k = 0; k < bound_threshold.rows; k++) {
@@ -167,7 +167,7 @@ bool bFindLeftRightBound1(Mat& bound_threshold, int& posLeft, int& posRight) {
     }
   }
   span = bound_threshold.rows * 0.2;
-  //ÓÒ±ß½ç¼ì²â
+  //å³è¾¹ç•Œæ£€æµ‹
   for (int i = bound_threshold.cols - 1; i > span; i -= 2) {
     int whiteCount = 0;
     for (int k = 0; k < bound_threshold.rows; k++) {
@@ -197,9 +197,9 @@ bool bFindLeftRightBound1(Mat& bound_threshold, int& posLeft, int& posRight) {
 }
 
 bool bFindLeftRightBound(Mat& bound_threshold, int& posLeft, int& posRight) {
-  //´ÓÁ½±ßÑ°ÕÒ±ß½ç
+  //ä»ä¸¤è¾¹å¯»æ‰¾è¾¹ç•Œ
   int span = bound_threshold.rows * 0.2;
-  //×ó±ß½ç¼ì²â
+  //å·¦è¾¹ç•Œæ£€æµ‹
   for (int i = 0; i < bound_threshold.cols - span - 1; i += 2) {
     int whiteCount = 0;
     for (int k = 0; k < bound_threshold.rows; k++) {
@@ -215,7 +215,7 @@ bool bFindLeftRightBound(Mat& bound_threshold, int& posLeft, int& posRight) {
     }
   }
   span = bound_threshold.rows * 0.2;
-  //ÓÒ±ß½ç¼ì²â
+  //å³è¾¹ç•Œæ£€æµ‹
   for (int i = bound_threshold.cols - 1; i > span; i -= 2) {
     int whiteCount = 0;
     for (int k = 0; k < bound_threshold.rows; k++) {
@@ -239,9 +239,9 @@ bool bFindLeftRightBound(Mat& bound_threshold, int& posLeft, int& posRight) {
 }
 
 bool bFindLeftRightBound2(Mat& bound_threshold, int& posLeft, int& posRight) {
-  //´ÓÁ½±ßÑ°ÕÒ±ß½ç
+  //ä»ä¸¤è¾¹å¯»æ‰¾è¾¹ç•Œ
   int span = bound_threshold.rows * 0.2;
-  //×ó±ß½ç¼ì²â
+  //å·¦è¾¹ç•Œæ£€æµ‹
   for (int i = 0; i < bound_threshold.cols - span - 1; i += 3) {
     int whiteCount = 0;
     for (int k = 0; k < bound_threshold.rows; k++) {
@@ -257,7 +257,7 @@ bool bFindLeftRightBound2(Mat& bound_threshold, int& posLeft, int& posRight) {
     }
   }
   span = bound_threshold.rows * 0.2;
-  //ÓÒ±ß½ç¼ì²â
+  //å³è¾¹ç•Œæ£€æµ‹
   for (int i = bound_threshold.cols - 1; i > span; i -= 3) {
     int whiteCount = 0;
     for (int k = 0; k < bound_threshold.rows; k++) {
@@ -280,12 +280,12 @@ bool bFindLeftRightBound2(Mat& bound_threshold, int& posLeft, int& posRight) {
   return false;
 }
 
-//! ÅĞ¶ÏÒ»¸ö³µÅÆµÄÑÕÉ«
-//! ÊäÈë³µÅÆmatÓëÑÕÉ«Ä£°å
-//! ·µ»Øtrue»òfasle
+//! åˆ¤æ–­ä¸€ä¸ªè½¦ç‰Œçš„é¢œè‰²
+//! è¾“å…¥è½¦ç‰Œmatä¸é¢œè‰²æ¨¡æ¿
+//! è¿”å›trueæˆ–fasle
 bool plateColorJudge(const Mat& src, const Color r, const bool adaptive_minsv,
                      float& percent) {
-  // ÅĞ¶ÏãĞÖµ
+  // åˆ¤æ–­é˜ˆå€¼
   const float thresh = 0.45;
 
   Mat src_gray;
@@ -302,7 +302,7 @@ bool plateColorJudge(const Mat& src, const Color r, const bool adaptive_minsv,
 }
 
 // getPlateType
-//ÅĞ¶Ï³µÅÆµÄÀàĞÍ
+//åˆ¤æ–­è½¦ç‰Œçš„ç±»å‹
 Color getPlateType(const Mat& src, const bool adaptive_minsv) {
   float max_percent = 0;
   Color max_color = UNKNOWN;
@@ -325,7 +325,7 @@ Color getPlateType(const Mat& src, const bool adaptive_minsv) {
   } else {
     // cout << "OTHER" << endl;
 
-    // Èç¹ûÈÎÒâÒ»Õß¶¼²»´óÓÚãĞÖµ£¬ÔòÈ¡Öµ×î´óÕß
+    // å¦‚æœä»»æ„ä¸€è€…éƒ½ä¸å¤§äºé˜ˆå€¼ï¼Œåˆ™å–å€¼æœ€å¤§è€…
     max_percent = blue_percent > yellow_percent ? blue_percent : yellow_percent;
     max_color = blue_percent > yellow_percent ? BLUE : YELLOW;
 
@@ -360,9 +360,9 @@ void clearLiuDingOnly(Mat& img) {
   }
 }
 
-//È¥³ı³µÅÆÉÏ·½µÄÅ¥¶¤
-//¼ÆËãÃ¿ĞĞÔªËØµÄ½×Ô¾Êı£¬Èç¹ûĞ¡ÓÚXÈÏÎªÊÇÁø¶¡£¬½«´ËĞĞÈ«²¿Ìî0£¨Í¿ºÚ£©
-// XµÄÍÆ¼öÖµÎª£¬¿É¸ù¾İÊµ¼Êµ÷Õû
+//å»é™¤è½¦ç‰Œä¸Šæ–¹çš„é’®é’‰
+//è®¡ç®—æ¯è¡Œå…ƒç´ çš„é˜¶è·ƒæ•°ï¼Œå¦‚æœå°äºXè®¤ä¸ºæ˜¯æŸ³ä¸ï¼Œå°†æ­¤è¡Œå…¨éƒ¨å¡«0ï¼ˆæ¶‚é»‘ï¼‰
+// Xçš„æ¨èå€¼ä¸ºï¼Œå¯æ ¹æ®å®é™…è°ƒæ•´
 bool clearLiuDing(Mat& img) {
   vector<float> fJump;
   int whiteCount = 0;
@@ -386,17 +386,17 @@ bool clearLiuDing(Mat& img) {
   for (int i = 0; i < img.rows; i++) {
     fJump.push_back(jump.at<float>(i));
     if (jump.at<float>(i) >= 16 && jump.at<float>(i) <= 45) {
-      //³µÅÆ×Ö·ûÂú×ãÒ»¶¨Ìø±äÌõ¼ş
+      //è½¦ç‰Œå­—ç¬¦æ»¡è¶³ä¸€å®šè·³å˜æ¡ä»¶
       iCount++;
     }
   }
 
-  ////ÕâÑùµÄ²»ÊÇ³µÅÆ
+  ////è¿™æ ·çš„ä¸æ˜¯è½¦ç‰Œ
   if (iCount * 1.0 / img.rows <= 0.40) {
-    //Âú×ãÌõ¼şµÄÌø±äµÄĞĞÊıÒ²ÒªÔÚÒ»¶¨µÄãĞÖµÄÚ
+    //æ»¡è¶³æ¡ä»¶çš„è·³å˜çš„è¡Œæ•°ä¹Ÿè¦åœ¨ä¸€å®šçš„é˜ˆå€¼å†…
     return false;
   }
-  //²»Âú×ã³µÅÆµÄÌõ¼ş
+  //ä¸æ»¡è¶³è½¦ç‰Œçš„æ¡ä»¶
   if (whiteCount * 1.0 / (img.rows * img.cols) < 0.15 ||
       whiteCount * 1.0 / (img.rows * img.cols) > 0.50) {
     return false;
@@ -435,7 +435,7 @@ void clearLiuDing(Mat mask, int& top, int& bottom) {
     top = 0;
   }
 
-  // ok,ÕÒµ½ÉÏÏÂ±ß½ç
+  // ok,æ‰¾åˆ°ä¸Šä¸‹è¾¹ç•Œ
   for (int i = mask.rows - 1; i >= mask.rows / 2; i--) {
     int jumpCount = 0;
     int whiteCount = 0;
@@ -503,7 +503,7 @@ int ThresholdOtsu(Mat mat) {
   return thresholdV;
 }
 
-//! Ö±·½Í¼¾ùºâ
+//! ç›´æ–¹å›¾å‡è¡¡
 Mat histeq(Mat in) {
   Mat out(in.size(), in.type());
   if (in.channels() == 3) {
@@ -531,9 +531,9 @@ Mat CutTheRect(Mat& in, Rect& rect) {
   int x = (int)floor((float)(size - rect.width) / 2.0f);
   int y = (int)floor((float)(size - rect.height) / 2.0f);
 
-  //°ÑrectÖĞµÄÊı¾İ ¿¼È¡µ½dstMatµÄÖĞ¼ä
+  //æŠŠrectä¸­çš„æ•°æ® è€ƒå–åˆ°dstMatçš„ä¸­é—´
   for (int i = 0; i < rect.height; ++i) {
-    //¿í
+    //å®½
     for (int j = 0; j < rect.width; ++j) {
       dstMat.data[dstMat.step[0] * (i + y) + j + x] =
           in.data[in.step[0] * (i + rect.y) + j + rect.x];
@@ -548,7 +548,7 @@ Rect GetCenterRect(Mat& in) {
 
   int top = 0;
   int bottom = in.rows - 1;
-  //ÉÏÏÂ
+  //ä¸Šä¸‹
   for (int i = 0; i < in.rows; ++i) {
     bool bFind = false;
     for (int j = 0; j < in.cols; ++j) {
@@ -562,7 +562,7 @@ Rect GetCenterRect(Mat& in) {
       break;
     }
 
-    //Í³¼ÆÕâÒ»ĞĞ»òÒ»ÁĞÖĞ£¬·ÇÁãÔªËØµÄ¸öÊı
+    //ç»Ÿè®¡è¿™ä¸€è¡Œæˆ–ä¸€åˆ—ä¸­ï¼Œéé›¶å…ƒç´ çš„ä¸ªæ•°
   }
   for (int i = in.rows - 1; i >= 0; --i) {
     bool bFind = false;
@@ -576,10 +576,10 @@ Rect GetCenterRect(Mat& in) {
     if (bFind) {
       break;
     }
-    //Í³¼ÆÕâÒ»ĞĞ»òÒ»ÁĞÖĞ£¬·ÇÁãÔªËØµÄ¸öÊı
+    //ç»Ÿè®¡è¿™ä¸€è¡Œæˆ–ä¸€åˆ—ä¸­ï¼Œéé›¶å…ƒç´ çš„ä¸ªæ•°
   }
 
-  //×óÓÒ
+  //å·¦å³
   int left = 0;
   int right = in.cols - 1;
   for (int j = 0; j < in.cols; ++j) {
@@ -594,7 +594,7 @@ Rect GetCenterRect(Mat& in) {
     if (bFind) {
       break;
     }
-    //Í³¼ÆÕâÒ»ĞĞ»òÒ»ÁĞÖĞ£¬·ÇÁãÔªËØµÄ¸öÊı
+    //ç»Ÿè®¡è¿™ä¸€è¡Œæˆ–ä¸€åˆ—ä¸­ï¼Œéé›¶å…ƒç´ çš„ä¸ªæ•°
   }
   for (int j = in.cols - 1; j >= 0; --j) {
     bool bFind = false;
@@ -609,7 +609,7 @@ Rect GetCenterRect(Mat& in) {
     if (bFind) {
       break;
     }
-    //Í³¼ÆÕâÒ»ĞĞ»òÒ»ÁĞÖĞ£¬·ÇÁãÔªËØµÄ¸öÊı
+    //ç»Ÿè®¡è¿™ä¸€è¡Œæˆ–ä¸€åˆ—ä¸­ï¼Œéé›¶å…ƒç´ çš„ä¸ªæ•°
   }
 
   _rect.x = left;
@@ -621,7 +621,7 @@ Rect GetCenterRect(Mat& in) {
 }
 
 Mat features(Mat in, int sizeData) {
-  //¿ÙÈ¡ÖĞ¼äÇøÓò
+  //æŠ å–ä¸­é—´åŒºåŸŸ
   Rect _rect = GetCenterRect(in);
 
   Mat tmpIn = CutTheRect(in, _rect);
@@ -639,7 +639,7 @@ Mat features(Mat in, int sizeData) {
 
   Mat out = Mat::zeros(1, numCols, CV_32F);
   // Asign values to
-  // feature,ANNµÄÑù±¾ÌØÕ÷ÎªË®Æ½¡¢´¹Ö±Ö±·½Í¼ºÍµÍ·Ö±æÂÊÍ¼ÏñËù×é³ÉµÄÊ¸Á¿
+  // feature,ANNçš„æ ·æœ¬ç‰¹å¾ä¸ºæ°´å¹³ã€å‚ç›´ç›´æ–¹å›¾å’Œä½åˆ†è¾¨ç‡å›¾åƒæ‰€ç»„æˆçš„çŸ¢é‡
   int j = 0;
   for (int i = 0; i < vhist.cols; i++) {
     out.at<float>(j) = vhist.at<float>(i);
@@ -689,7 +689,7 @@ float countOfBigValue(Mat& mat, int iValue) {
     return iCount;
   }
 }
-// £¡»ñÈ¡´¹Ö±ºÍË®Æ½·½ÏòÖ±·½Í¼
+// ï¼è·å–å‚ç›´å’Œæ°´å¹³æ–¹å‘ç›´æ–¹å›¾
 Mat ProjectedHistogram(Mat img, int t) {
   int sz = (t) ? img.rows : img.cols;
   Mat mhist = Mat::zeros(1, sz, CV_32F);
@@ -698,7 +698,7 @@ Mat ProjectedHistogram(Mat img, int t) {
     Mat data = (t) ? img.row(j) : img.col(j);
 
     mhist.at<float>(j) = countOfBigValue(
-        data, 20);  //Í³¼ÆÕâÒ»ĞĞ»òÒ»ÁĞÖĞ£¬·ÇÁãÔªËØµÄ¸öÊı£¬²¢±£´æµ½mhistÖĞ
+        data, 20);  //ç»Ÿè®¡è¿™ä¸€è¡Œæˆ–ä¸€åˆ—ä¸­ï¼Œéé›¶å…ƒç´ çš„ä¸ªæ•°ï¼Œå¹¶ä¿å­˜åˆ°mhistä¸­
   }
 
   // Normalize histogram
@@ -707,7 +707,7 @@ Mat ProjectedHistogram(Mat img, int t) {
 
   if (max > 0)
     mhist.convertTo(mhist, -1, 1.0f / max,
-                    0);  //ÓÃmhistÖ±·½Í¼ÖĞµÄ×î´óÖµ£¬¹éÒ»»¯Ö±·½Í¼
+                    0);  //ç”¨mhistç›´æ–¹å›¾ä¸­çš„æœ€å¤§å€¼ï¼Œå½’ä¸€åŒ–ç›´æ–¹å›¾
 
   return mhist;
 }

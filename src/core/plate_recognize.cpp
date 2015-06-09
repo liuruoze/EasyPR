@@ -11,28 +11,28 @@ CPlateRecognize::CPlateRecognize() {
   // m_charsRecognise = new CCharsRecognise();
 }
 
-// !³µÅÆÊ¶±ğÄ£¿é
+// !è½¦ç‰Œè¯†åˆ«æ¨¡å—
 int CPlateRecognize::plateRecognize(Mat src, std::vector<string> &licenseVec,
                                     int index) {
-  // ³µÅÆ·½¿é¼¯ºÏ
+  // è½¦ç‰Œæ–¹å—é›†åˆ
   vector<CPlate> plateVec;
 
-  // ½øĞĞÉî¶È¶¨Î»£¬Ê¹ÓÃÑÕÉ«ĞÅÏ¢Óë¶ş´ÎSobel
+  // è¿›è¡Œæ·±åº¦å®šä½ï¼Œä½¿ç”¨é¢œè‰²ä¿¡æ¯ä¸äºŒæ¬¡Sobel
   int resultPD = plateDetectDeep(src, plateVec, getPDDebug(), 0);
 
   if (resultPD == 0) {
     int num = plateVec.size();
     int index = 0;
 
-    //ÒÀ´ÎÊ¶±ğÃ¿¸ö³µÅÆÄÚµÄ·ûºÅ
+    //ä¾æ¬¡è¯†åˆ«æ¯ä¸ªè½¦ç‰Œå†…çš„ç¬¦å·
     for (int j = 0; j < num; j++) {
       CPlate item = plateVec[j];
       Mat plate = item.getPlateMat();
 
-      //»ñÈ¡³µÅÆÑÕÉ«
+      //è·å–è½¦ç‰Œé¢œè‰²
       string plateType = getPlateColor(plate);
 
-      //»ñÈ¡³µÅÆºÅ
+      //è·å–è½¦ç‰Œå·
       string plateIdentify = "";
       int resultCR = charsRecognise(plate, plateIdentify);
       if (resultCR == 0) {
@@ -40,9 +40,9 @@ int CPlateRecognize::plateRecognize(Mat src, std::vector<string> &licenseVec,
         licenseVec.push_back(license);
       }
     }
-    //ÍêÕûÊ¶±ğ¹ı³Ìµ½´Ë½áÊø
+    //å®Œæ•´è¯†åˆ«è¿‡ç¨‹åˆ°æ­¤ç»“æŸ
 
-    //Èç¹ûÊÇDebugÄ£Ê½£¬Ôò»¹ĞèÒª½«¶¨Î»µÄÍ¼Æ¬ÏÔÊ¾ÔÚÔ­Í¼×óÉÏ½Ç
+    //å¦‚æœæ˜¯Debugæ¨¡å¼ï¼Œåˆ™è¿˜éœ€è¦å°†å®šä½çš„å›¾ç‰‡æ˜¾ç¤ºåœ¨åŸå›¾å·¦ä¸Šè§’
     if (getPDDebug() == true) {
       Mat result;
       src.copyTo(result);
@@ -74,7 +74,7 @@ int CPlateRecognize::plateRecognize(Mat src, std::vector<string> &licenseVec,
                8);
       }
 
-      //ÏÔÊ¾¶¨Î»¿òµÄÍ¼Æ¬
+      //æ˜¾ç¤ºå®šä½æ¡†çš„å›¾ç‰‡
       showResult(result);
     }
   }

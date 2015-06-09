@@ -24,14 +24,14 @@ class CPlateRecognize : public CPlateDetect, public CCharsRecognise {
  public:
   CPlateRecognize();
 
-  //! ³µÅÆ¼ì²âÓë×Ö·ûÊ¶±ğ
+  //! è½¦ç‰Œæ£€æµ‹ä¸å­—ç¬¦è¯†åˆ«
   int plateRecognize(cv::Mat src, std::vector<std::string>& licenseVec,
                      int index = 0);
 
-  //! Éú»îÄ£Ê½Óë¹¤ÒµÄ£Ê½ÇĞ»»
+  //! ç”Ÿæ´»æ¨¡å¼ä¸å·¥ä¸šæ¨¡å¼åˆ‡æ¢
   inline void setLifemode(bool param) { CPlateDetect::setPDLifemode(param); }
 
-  //! ÊÇ·ñ¿ªÆôµ÷ÊÔÄ£Ê½
+  //! æ˜¯å¦å¼€å¯è°ƒè¯•æ¨¡å¼
   inline void setDebug(int param) {
     CPlateDetect::setPDDebug(param);
     CCharsRecognise::setCRDebug(param);

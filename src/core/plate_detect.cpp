@@ -11,14 +11,14 @@ CPlateDetect::CPlateDetect() {
   m_plateLocate = new CPlateLocate();
   m_plateJudge = new CPlateJudge();
 
-  // Ä¬ÈÏEasyPRÔÚÒ»·ùÍ¼ÖĞ¶¨Î»×î¶à3¸ö³µ
+  // é»˜è®¤EasyPRåœ¨ä¸€å¹…å›¾ä¸­å®šä½æœ€å¤š3ä¸ªè½¦
   m_maxPlates = 3;
 }
 
 void CPlateDetect::LoadSVM(string s) { m_plateJudge->LoadModel(s.c_str()); }
 
 int CPlateDetect::plateDetect(Mat src, vector<Mat>& resultVec, int index) {
-  //¿ÉÄÜÊÇ³µÅÆµÄÍ¼¿é¼¯ºÏ
+  //å¯èƒ½æ˜¯è½¦ç‰Œçš„å›¾å—é›†åˆ
   vector<Mat> matVec;
 
   int resultLo = m_plateLocate->plateLocate(src, matVec);
@@ -55,7 +55,7 @@ int CPlateDetect::plateDetectDeep(Mat src, vector<CPlate>& resultVec,
 
   vector<CPlate> all_result_Plates;
 
-  //Èç¹ûÑÕÉ«²éÕÒÕÒµ½n¸öÒÔÉÏ£¨°üº¬n¸ö£©µÄ³µÅÆ£¬¾Í²»ÔÙ½øĞĞSobel²éÕÒÁË¡£
+  //å¦‚æœé¢œè‰²æŸ¥æ‰¾æ‰¾åˆ°nä¸ªä»¥ä¸Šï¼ˆåŒ…å«nä¸ªï¼‰çš„è½¦ç‰Œï¼Œå°±ä¸å†è¿›è¡ŒSobelæŸ¥æ‰¾äº†ã€‚
   const int color_find_max = m_maxPlates;
 
   m_plateLocate->plateColorLocate(src, color_Plates, index);
@@ -73,7 +73,7 @@ int CPlateDetect::plateDetectDeep(Mat src, vector<CPlate>& resultVec,
     all_result_Plates.push_back(plate);
   }
 
-  //ÑÕÉ«ºÍ±ß½ç±Õ²Ù×÷Í¬Ê±²ÉÓÃ
+  //é¢œè‰²å’Œè¾¹ç•Œé—­æ“ä½œåŒæ—¶é‡‡ç”¨
   {
     m_plateLocate->plateSobelLocate(src, sobel_Plates, index);
     m_plateJudge->plateJudge(sobel_Plates, sobel_result_Plates);
@@ -100,7 +100,7 @@ int CPlateDetect::plateDetectDeep(Mat src, vector<CPlate>& resultVec,
   }
 
   for (int i = 0; i < all_result_Plates.size(); i++) {
-    // °Ñ½ØÈ¡µÄ³µÅÆÍ¼ÏñÒÀ´Î·Åµ½×óÉÏ½Ç
+    // æŠŠæˆªå–çš„è½¦ç‰Œå›¾åƒä¾æ¬¡æ”¾åˆ°å·¦ä¸Šè§’
     CPlate plate = all_result_Plates[i];
     resultVec.push_back(plate);
   }
