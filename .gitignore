@@ -215,8 +215,3 @@ tmp/
 
 # native_test files
 native_test/
-
-*.vcxproj
-*.vcxproj.filters
-*.sln
-

@@ -1,464 +1,268 @@
-// svm_train.cpp : svm模型的训练文件，主要用在plate_detect中
+#include "easypr/svm_train.h"
+#include <ctime>
+#include "easypr/core_func.h"
+#include "easypr/util.h"
 
-#include "../include/plate_recognize.h"
-#include "../include/feature.h"
-#include "../include/util.h"
+namespace easypr {
 
-/*! \namespace easypr
-    Namespace where all the C++ EasyPR functionality resides
-*/
-namespace easypr{
+Svm::Svm(const char* forward_data_folder, const char* inverse_data_folder)
+        : forward_(forward_data_folder), inverse_(inverse_data_folder) {
+  assert(forward_);
+  assert(inverse_);
+}
 
-void learn2HasPlate(float bound = 0.7)
-{
+void Svm::divide(const char* images_folder, float percentage /* = 0.7 */) {
+  auto files = Utils::getFiles(images_folder);
+  if (files.empty()) {
+    std::cout << "No file found in " << images_folder << std::endl;
+    return;
+  }
 
-	const char * filePath = "train/data/plate_detect_svm/learn/HasPlate";
+  srand(unsigned(time(NULL)));
+  random_shuffle(files.begin(), files.end());
 
-	////获取该路径下的所有文件
-        auto files = Utils::getFiles(filePath);
-
-	int size = files.size();
-    if (0 == size) {
-		cout << "File not found in " << filePath << endl;
-        return;
+  size_t split_index = size_t(files.size() * percentage);
+  for (size_t i = 0; i < files.size(); ++i) {
+    // TODO: Move files directly to improve efficiency.
+    auto f = files[i];
+    auto file_name = Utils::getFileName(f, true).c_str();
+    auto image = cv::imread(f);
+    char save_to[255] = {0};
+    assert(!image.empty());
+    if (i < split_index) {
+      sprintf(save_to, "%s/train/%s", images_folder, file_name);
+    } else {
+      sprintf(save_to, "%s/test/%s", images_folder, file_name);
     }
-	////随机选取70%作为训练数据，30%作为测试数据
-	srand(unsigned(time(NULL)));
-	random_shuffle(files.begin(), files.end());
-
-	int boundry = bound * size;
-
-	cout << "Save HasPlate train!" << endl;
-	for (int i = 0; i < boundry; i++)
-	{
-		cout << files[i].c_str() << endl;
-		Mat img = imread(files[i].c_str());
-		if(1)
-		{
-			stringstream ss(stringstream::in | stringstream::out);
-			ss << "train/data/plate_detect_svm/train/HasPlate/hasplate_" << i << ".jpg";
-			imwrite(ss.str(), img);
-		}
-	}
-
-	cout << "Save HasPlate test!" << endl;
-	for (int i = boundry; i < size; i++)
-	{
-		cout << files[i].c_str() << endl;
-		Mat img = imread(files[i].c_str());
-		if(1)
-		{
-			stringstream ss(stringstream::in | stringstream::out);
-			ss << "train/data/plate_detect_svm/test/HasPlate/hasplate_" << i << ".jpg";
-			imwrite(ss.str(), img);
-		}
-	}
+    utils::imwrite(save_to, image);
+    std::cout << f << " -> " << save_to << std::endl;
+  }
 }
 
-void learn2NoPlate(float bound = 0.7)
-{
+void Svm::get_train() {
+  std::cout << "Collecting train data..." << std::endl;
 
-	const char * filePath = "train/data/plate_detect_svm/learn/NoPlate";
+  std::vector<int> labels;
+  auto folder = std::string(forward_).append("/train");
 
-	////获取该路径下的所有文件
-        auto files = Utils::getFiles(filePath);
-	int size = files.size();
-    if (0 == size) {
-		cout << "File not found in " << filePath << endl;
-        return;
+  // iterate forward data
+
+  auto files = Utils::getFiles(folder);
+
+  if (files.empty()) {
+    std::cout << "No file found in " << folder << std::endl;
+    return;
+  }
+
+  std::cout << "Collecting train data in " << folder << std::endl;
+  for (auto f : files) {
+    auto image = cv::imread(f);
+
+    auto features = easypr::histeq(image);
+    features = features.reshape(1, 1);
+
+    this->trainingData_.push_back(features);
+    labels.push_back(Label::kForward); // Note here
+  }
+
+  // iterate inverse data
+
+  files.clear();
+  folder = std::string(inverse_).append("/train");
+  files = Utils::getFiles(folder);
+
+  if (files.empty()) {
+    std::cout << "No file found in " << folder << std::endl;
+    return;
+  }
+
+  std::cout << "Collecting train data in " << folder << std::endl;
+  for (auto f : files) {
+    auto image = cv::imread(f);
+
+    auto features = easypr::histeq(image);
+    features = features.reshape(1, 1);
+
+    this->trainingData_.push_back(features);
+    labels.push_back(Label::kInverse); // Note here
+  }
+
+  //
+  cv::Mat out;
+  this->trainingData_.convertTo(out, CV_32FC1);
+  out.copyTo(this->trainingData_);
+  cv::Mat(labels).copyTo(this->classes_);
+}
+
+void Svm::get_test() {
+  std::cout << "Tesing preparation..." << std::endl;
+
+  auto folder = std::string(forward_).append("/test");
+  auto files = Utils::getFiles(folder);
+
+  size_t size = files.size();
+  if (0 == size) {
+    std::cout << "No file found in " << folder << std::endl;
+    return;
+  }
+  std::cout << "Prepare testing data in " << folder << std::endl;
+  for (auto f : files) {
+    auto img = cv::imread(f);
+    test_imgaes_.push_back(img);
+    test_labels_.push_back(kForward);
+  }
+
+  //
+
+  folder.clear();
+  folder = std::string(inverse_).append("/test");
+  files = Utils::getFiles(folder);
+
+  size = files.size();
+  if (0 == size) {
+    std::cout << "No file found in " << folder << std::endl;
+    return;
+  }
+  std::cout << "Prepare testing data in " << folder << std::endl;
+  for (auto f : files) {
+    auto img = cv::imread(f);
+    test_imgaes_.push_back(img);
+    test_labels_.push_back(kInverse);
+  }
+}
+
+void Svm::train(bool divide /* = true */, float divide_percentage /* = 0.7 */,
+                bool train /* = true */,
+                const char* out_svm_path /* = NULL */) {
+  if (out_svm_path == NULL) {
+    out_svm_path = "resources/model/svm.xml";
+  }
+
+  if (divide) {
+    std::cout << "Dividing data to be trained and tested..." << std::endl;
+    this->divide(forward_, divide_percentage);
+    this->divide(inverse_, divide_percentage);
+  }
+
+  CvSVM svm;
+
+  // 70% training procedure
+  if (train) {
+    this->get_train();
+
+    if (!this->classes_.empty() && !this->trainingData_.empty()) {
+      // need to be trained first
+      CvSVMParams SVM_params;
+      SVM_params.svm_type = CvSVM::C_SVC;
+      //SVM_params.kernel_type = CvSVM::LINEAR; //CvSVM::LINEAR;   线型，也就是无核
+      SVM_params.kernel_type = CvSVM::RBF; //CvSVM::RBF 径向基函数，也就是高斯核
+      SVM_params.degree = 0.1;
+      SVM_params.gamma = 1;
+      SVM_params.coef0 = 0.1;
+      SVM_params.C = 1;
+      SVM_params.nu = 0.1;
+      SVM_params.p = 0.1;
+      SVM_params.term_crit = cvTermCriteria(CV_TERMCRIT_ITER, 100000, 0.0001);
+
+      std::cout << "Generating svm model file, please wait..." << std::endl;
+
+      try {
+        //CvSVM svm(trainingData, classes, cv::Mat(), cv::Mat(), SVM_params);
+        svm.train_auto(this->trainingData_, this->classes_, cv::Mat(),
+                       cv::Mat(),
+                       SVM_params,
+                       10,
+                       CvSVM::get_default_grid(CvSVM::C),
+                       CvSVM::get_default_grid(CvSVM::GAMMA),
+                       CvSVM::get_default_grid(CvSVM::P),
+                       CvSVM::get_default_grid(CvSVM::NU),
+                       CvSVM::get_default_grid(CvSVM::COEF),
+                       CvSVM::get_default_grid(CvSVM::DEGREE),
+                       true);
+      } catch (const cv::Exception& err) {
+        std::cout << err.what() << std::endl;
+      }
+
+      cv::FileStorage fsTo(out_svm_path, cv::FileStorage::WRITE);
+      svm.write(*fsTo, "svm");
+
+      std::cout << "Generate done! The model file is located at " <<
+      out_svm_path << std::endl;
+    } else {
+      // don't train, use ready-made model file
+      try {
+        svm.load("resources/train/svm.xml", "svm");
+      } catch (const cv::Exception& err) {
+        std::cout << err.what() << std::endl;
+      }
     }
-	////随机选取70%作为训练数据，30%作为测试数据
-	srand(unsigned(time(NULL)));
-	random_shuffle(files.begin(), files.end());
+  } // if train
 
-	int boundry = bound * size;
+  // TODO Check whether the model file exists or not.
+  svm.load(out_svm_path, "svm"); // make sure svm model was loaded
 
-	cout << "Save NoPlate train!" << endl;
-	for (int i = 0; i < boundry; i++)
-	{
-		cout << files[i].c_str() << endl;
-		Mat img = imread(files[i].c_str());
-		if(1)
-		{
-			stringstream ss(stringstream::in | stringstream::out);
-			ss << "train/data/plate_detect_svm/train/NoPlate/noplate_" << i << ".jpg";
-			imwrite(ss.str(), img);
-		}
-	}
+  // 30% testing procedure
+  this->get_test();
 
-	cout << "Save NoPlate test!" << endl;
-	for (int i = boundry; i < size; i++)
-	{
-		cout << files[i].c_str() << endl;
-		Mat img = imread(files[i].c_str());
-		if(1)
-		{
-			stringstream ss(stringstream::in | stringstream::out);
-			ss << "train/data/plate_detect_svm/test/NoPlate/noplate_" << i << ".jpg";
-			imwrite(ss.str(), img);
-		}
-	}
+  std::cout << "Testing..." << std::endl;
+
+  double count_all = test_imgaes_.size();
+  double ptrue_rtrue = 0;
+  double ptrue_rfalse = 0;
+  double pfalse_rtrue = 0;
+  double pfalse_rfalse = 0;
+
+  size_t label_index = 0;
+  for (auto image : test_imgaes_) {
+    //调用回调函数决定特征
+    auto features = easypr::histeq(image);
+    features = features.reshape(1, 1);
+    cv::Mat out;
+    features.convertTo(out, CV_32FC1);
+
+    Label predict = ((int) svm.predict(out)) == 1 ? kForward : kInverse;
+    Label real = test_labels_[label_index++];
+
+    if (predict == kForward && real == kForward)
+      ptrue_rtrue++;
+    if (predict == kForward && real == kInverse)
+      ptrue_rfalse++;
+    if (predict == kInverse && real == kForward)
+      pfalse_rtrue++;
+    if (predict == kInverse && real == kInverse)
+      pfalse_rfalse++;
+  }
+
+  std::cout << "count_all: " << count_all << std::endl;
+  std::cout << "ptrue_rtrue: " << ptrue_rtrue << std::endl;
+  std::cout << "ptrue_rfalse: " << ptrue_rfalse << std::endl;
+  std::cout << "pfalse_rtrue: " << pfalse_rtrue << std::endl;
+  std::cout << "pfalse_rfalse: " << pfalse_rfalse << std::endl;
+
+  double precise = 0;
+  if (ptrue_rtrue + ptrue_rfalse != 0) {
+    precise = ptrue_rtrue / (ptrue_rtrue + ptrue_rfalse);
+    std::cout << "precise: " << precise << std::endl;
+  } else {
+    std::cout << "precise: " << "NA" << std::endl;
+  }
+
+  double recall = 0;
+  if (ptrue_rtrue + pfalse_rtrue != 0) {
+    recall = ptrue_rtrue / (ptrue_rtrue + pfalse_rtrue);
+    std::cout << "recall: " << recall << std::endl;
+  } else {
+    std::cout << "recall: " << "NA" << std::endl;
+  }
+
+  double Fsocre = 0;
+  if (precise + recall != 0) {
+    Fsocre = 2 * (precise * recall) / (precise + recall);
+    std::cout << "Fsocre: " << Fsocre << std::endl;
+  } else {
+    std::cout << "Fsocre: " << "NA" << std::endl;
+  }
+
 }
 
-void getHasPlateTrain(Mat& trainingImages, vector<int>& trainingLabels,
-	svmCallback getFeatures = getHisteqFeatures)
-{
-	int label = 1;
-	const char * filePath = "train/data/plate_detect_svm/train/HasPlate";
-
-	////获取该路径下的所有文件
-        auto files = Utils::getFiles(filePath);
-
-	int size = files.size();
-    if (0 == size) {
-		cout << "File not found in " << filePath << endl;
-        return;
-    }
-	cout << "get HasPlate train!" << endl;
-	for (int i = 0; i < size; i++)
-	{
-		//cout << files[i].c_str() << endl;
-		Mat img = imread(files[i].c_str());
-
-		//调用回调函数决定特征
-		Mat features;
-		getFeatures(img, features);
-		features = features.reshape(1, 1);
-
-        trainingImages.push_back(features);
-        trainingLabels.push_back(label);
-	}
-}
-
-
-void getNoPlateTrain(Mat& trainingImages, vector<int>& trainingLabels,
-	svmCallback getFeatures = getHisteqFeatures)
-{
-	int label = 0;
-	const char * filePath = "train/data/plate_detect_svm/train/NoPlate";
-
-	////获取该路径下的所有文件
-        auto files = Utils::getFiles(filePath);
-
-	int size = files.size();
-    if (0 == size) {
-		cout << "File not found in " << filePath << endl;
-        return;
-    }
-	cout << "get NoPlate train!" << endl;
-	for (int i = 0; i < size; i++)
-	{
-		//cout << files[i].c_str() << endl;
-		Mat img = imread(files[i].c_str());
-
-		//调用回调函数决定特征
-		Mat features;
-		getFeatures(img, features);
-		features = features.reshape(1, 1);
-
-        trainingImages.push_back(features);
-        trainingLabels.push_back(label);
-	}
-}
-
-void getHasPlateTest(vector<Mat>& testingImages, vector<int>& testingLabels)
-{
-	int label = 1;
-	const char * filePath = "train/data/plate_detect_svm/test/HasPlate";
-
-	////获取该路径下的所有文件
-        auto files = Utils::getFiles(filePath);
-
-	int size = files.size();
-    if (0 == size) {
-		cout << "File not found in " << filePath << endl;
-        return;
-    }
-	cout << "get HasPlate test!" << endl;
-	for (int i = 0; i < size; i++)
-	{
-		//cout << files[i].c_str() << endl;
-		Mat img = imread(files[i].c_str());
-
-        testingImages.push_back(img);
-        testingLabels.push_back(label);
-	}
-}
-
-void getNoPlateTest(vector<Mat>& testingImages, vector<int>& testingLabels)
-{
-	int label = 0;
-	const char * filePath = "train/data/plate_detect_svm/test/NoPlate";
-
-	////获取该路径下的所有文件
-        auto files = Utils::getFiles(filePath);
-
-	int size = files.size();
-    if (0 == size) {
-		cout << "File not found in " << filePath << endl;
-        return;
-    }
-	cout << "get NoPlate test!" << endl;
-	for (int i = 0; i < size; i++)
-	{
-		//cout << files[i].c_str() << endl;
-		Mat img = imread(files[i].c_str());
-
-        testingImages.push_back(img);
-        testingLabels.push_back(label);
-	}
-}
-
-
-//! 测试SVM的准确率，回归率以及FScore
-void getAccuracy(Mat& testingclasses_preditc, Mat& testingclasses_real)
-{
-	int channels = testingclasses_preditc.channels();
-	cout << "channels: " << channels << endl;
-	int nRows = testingclasses_preditc.rows;
-	cout << "nRows: " << nRows << endl;
-	int nCols = testingclasses_preditc.cols * channels;
-	cout << "nCols: " << nCols << endl;
-
-	int channels_real = testingclasses_real.channels();
-	cout << "channels_real: " << channels_real << endl;
-	int nRows_real = testingclasses_real.rows;
-	cout << "nRows_real: " << nRows_real << endl;
-	int nCols_real = testingclasses_real.cols * channels;
-	cout << "nCols_real: " << nCols_real << endl;
-
-	double count_all = 0;
-	double ptrue_rtrue = 0;
-	double ptrue_rfalse = 0;
-	double pfalse_rtrue = 0;
-	double pfalse_rfalse = 0;
-
-	for (int i = 0; i < nRows; i++)
-	{
-		const uchar* inData = testingclasses_preditc.ptr<uchar>(i);
-		const uchar* outData = testingclasses_real.ptr<uchar>(i);
-
-		//float predict = testingclasses_preditc.at<float>(i);
-		//float real = testingclasses_real.at<float>(i);
-
-		float predict = inData[0];
-		float real = outData[0];
-
-		count_all ++;
-
-		//cout << "predict:" << predict << endl;
-		//cout << "real:" << real << endl;
-
-		if (predict == 1.0 && real == 1.0)
-			ptrue_rtrue ++;
-		if (predict == 1.0 && real == 0)
-			ptrue_rfalse ++;
-		if (predict == 0 && real == 1.0)
-			pfalse_rtrue ++;
-		if (predict == 0 && real == 0)
-			pfalse_rfalse ++;
-	}
-
-	cout << "count_all: " << count_all << endl;
-	cout << "ptrue_rtrue: " << ptrue_rtrue << endl;
-	cout << "ptrue_rfalse: " << ptrue_rfalse << endl;
-	cout << "pfalse_rtrue: " << pfalse_rtrue << endl;
-	cout << "pfalse_rfalse: " << pfalse_rfalse << endl;
-
-	double precise = 0;
-	if (ptrue_rtrue + ptrue_rfalse != 0)
-	{
-		precise = ptrue_rtrue/(ptrue_rtrue + ptrue_rfalse);
-		cout << "precise: " << precise << endl;
-	}
-	else
-	{
-		cout << "precise: " << "NA" << endl;
-	}
-
-	double recall = 0;
-	if (ptrue_rtrue + pfalse_rtrue != 0)
-	{
-		recall = ptrue_rtrue/(ptrue_rtrue + pfalse_rtrue);
-		cout << "recall: " << recall << endl;
-	}
-	else
-	{
-		cout << "recall: " << "NA" << endl;
-	}
-
-	double F = 0;
-	if (precise + recall != 0)
-	{
-		F = (precise * recall)/(precise + recall);
-		cout << "F: " << F << endl;
-	}
-	else
-	{
-		cout << "F: " << "NA" << endl;
-	}
-}
-
-
-int svmTrain(bool dividePrepared = true, bool trainPrepared = true,
-	svmCallback getFeatures = getHistogramFeatures)
-{
-
-	Mat classes;
-    Mat trainingData;
-
-    Mat trainingImages;
-    vector<int> trainingLabels;
-
-	if (dividePrepared == false)
-	{
-		//分割learn里的数据到train和test里
-		cout << "Divide learn to train and test" << endl;
-		learn2HasPlate();
-		learn2NoPlate();
-	}
-
-	//将训练数据加载入内存
-	if (trainPrepared == false)
-	{
-		cout << "Begin to get train data to memory" << endl;
-		getHasPlateTrain(trainingImages, trainingLabels, getFeatures);
-		getNoPlateTrain(trainingImages, trainingLabels, getFeatures);
-
-		Mat(trainingImages).copyTo(trainingData);
-		trainingData.convertTo(trainingData, CV_32FC1);
-		Mat(trainingLabels).copyTo(classes);
-	}
-
-	//Test SVM
-	vector<Mat> testingImages;
-    vector<int> testingLabels_real;
-
-	//将测试数据加载入内存
-	cout << "Begin to get test data to memory" << endl;
-	getHasPlateTest(testingImages, testingLabels_real);
-	getNoPlateTest(testingImages, testingLabels_real);
-
-	CvSVM svm;
-	if (trainPrepared == false && !classes.empty() && !trainingData.empty())
-	{
-		CvSVMParams SVM_params;
-		SVM_params.svm_type = CvSVM::C_SVC;
-		//SVM_params.kernel_type = CvSVM::LINEAR; //CvSVM::LINEAR;   线型，也就是无核
-		SVM_params.kernel_type = CvSVM::RBF; //CvSVM::RBF 径向基函数，也就是高斯核
-		SVM_params.degree = 0.1;
-		SVM_params.gamma = 1;
-		SVM_params.coef0 = 0.1;
-		SVM_params.C = 1;
-		SVM_params.nu = 0.1;
-		SVM_params.p = 0.1;
-		SVM_params.term_crit = cvTermCriteria(CV_TERMCRIT_ITER, 100000, 0.0001);
-
-		//Train SVM
-		cout << "Begin to generate svm" << endl;
-
-        try {
-            //CvSVM svm(trainingData, classes, Mat(), Mat(), SVM_params);
-            svm.train_auto(trainingData, classes, Mat(), Mat(), SVM_params, 10,
-                           CvSVM::get_default_grid(CvSVM::C),
-                           CvSVM::get_default_grid(CvSVM::GAMMA),
-                           CvSVM::get_default_grid(CvSVM::P),
-                           CvSVM::get_default_grid(CvSVM::NU),
-                           CvSVM::get_default_grid(CvSVM::COEF),
-                           CvSVM::get_default_grid(CvSVM::DEGREE),
-                           true);
-        } catch (const Exception &err) {
-            cout << err.what() << endl;
-        }
-
-		cout << "Svm generate done!" << endl;
-
-		FileStorage fsTo("train/svm.xml", cv::FileStorage::WRITE);
-		svm.write(*fsTo, "svm");
-	}
-	else
-	{
-        try {
-            string path = "train/svm.xml";
-            svm.load(path.c_str(), "svm");
-        } catch (const Exception &err) {
-            cout << err.what() << endl;
-            return 0; //next predict requires svm
-        }
-	}
-
-	cout << "Begin to predict" << endl;
-
-	double count_all = 0;
-	double ptrue_rtrue = 0;
-	double ptrue_rfalse = 0;
-	double pfalse_rtrue = 0;
-	double pfalse_rfalse = 0;
-
-	int size = testingImages.size();
-	for (int i = 0; i < size; i++)
-	{
-		//cout << files[i].c_str() << endl;
-		Mat p = testingImages[i];
-
-		//调用回调函数决定特征
-		Mat features;
-		getFeatures(p, features);
-
-		features = features.reshape(1, 1);
-		features.convertTo(features, CV_32FC1);
-
-		int predict = (int)svm.predict(features);
-		int real = testingLabels_real[i];
-
-		if (predict == 1 && real == 1)
-			ptrue_rtrue ++;
-		if (predict == 1 && real == 0)
-			ptrue_rfalse ++;
-		if (predict == 0 && real == 1)
-			pfalse_rtrue ++;
-		if (predict == 0 && real == 0)
-			pfalse_rfalse ++;
-	}
-
-	count_all = double(size);
-
-	cout << "Get the Accuracy!" << endl;
-
-	cout << "count_all: " << count_all << endl;
-	cout << "ptrue_rtrue: " << ptrue_rtrue  << endl;
-	cout << "ptrue_rfalse: " << ptrue_rfalse << endl;
-	cout << "pfalse_rtrue: " << pfalse_rtrue  << endl;
-	cout << "pfalse_rfalse: " << pfalse_rfalse  << endl;
-
-	double precise = 0;
-	if (ptrue_rtrue + ptrue_rfalse != 0)
-	{
-		precise = ptrue_rtrue / (ptrue_rtrue + ptrue_rfalse);
-		cout << "precise: " << precise << endl;
-	}
-	else
-		cout << "precise: " << "NA" << endl;
-
-	double recall = 0;
-	if (ptrue_rtrue + pfalse_rtrue != 0)
-	{
-		recall = ptrue_rtrue / (ptrue_rtrue + pfalse_rtrue);
-		cout << "recall: " << recall << endl;
-	}
-	else
-		cout << "recall: " << "NA" << endl;
-
-	double Fsocre = 0;
-	if (precise + recall != 0)
-	{
-		Fsocre = 2 * (precise * recall) / (precise + recall);
-		cout << "Fsocre: " << Fsocre << endl;
-	}
-	else
-		cout << "Fsocre: " << "NA" << endl;
-
-	return 0;
-}
-
-}	/*! \namespace easypr*/
+} // namespace easypr
