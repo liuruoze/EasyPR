@@ -16,7 +16,7 @@ int test_chars_segment() {
   int result = plate.charsSegment(src, resultVec);
   if (result == 0) {
     size_t num = resultVec.size();
-    for (int j = 0; j < num; j++) {
+    for (size_t j = 0; j < num; j++) {
       cv::Mat resultMat = resultVec[j];
       cv::imshow("chars_segment", resultMat);
       cv::waitKey(0);
@@ -41,7 +41,7 @@ int test_chars_identify() {
   int result = cs.charsSegment(src, resultVec);
   if (result == 0) {
     size_t num = resultVec.size();
-    for (int j = 0; j < num; j++) {
+    for (size_t j = 0; j < num; j++) {
       cv::Mat resultMat = resultVec[j];
       bool isChinses = false;
       bool isSpec = false;

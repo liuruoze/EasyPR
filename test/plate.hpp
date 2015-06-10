@@ -11,7 +11,11 @@ using namespace std;
 int test_plate_locate() {
   cout << "test_plate_locate" << endl;
 
-  cv::Mat src = imread("resources/image/test.jpg");
+  const string file = "resources/image/test.jpg";
+
+  cv::Mat src = imread(file);
+  
+  //TODO：原plateLocate需要被替换
 
   vector<cv::Mat> resultVec;
   CPlateLocate plate;
@@ -21,7 +25,7 @@ int test_plate_locate() {
   int result = plate.plateLocate(src, resultVec);
   if (result == 0) {
     size_t num = resultVec.size();
-    for (int j = 0; j < num; j++) {
+    for (size_t j = 0; j < num; j++) {
       cv::Mat resultMat = resultVec[j];
       imshow("plate_locate", resultMat);
       waitKey(0);
@@ -54,7 +58,7 @@ int test_plate_judge() {
 
   cout << "plate_locate_img" << endl;
   size_t num = matVec.size();
-  for (int j = 0; j < num; j++) {
+  for (size_t j = 0; j < num; j++) {
     Mat resultMat = matVec[j];
     imshow("plate_judge", resultMat);
     waitKey(0);
@@ -70,7 +74,7 @@ int test_plate_judge() {
 
   cout << "plate_judge_img" << endl;
   num = resultVec.size();
-  for (int j = 0; j < num; j++) {
+  for (size_t j = 0; j < num; j++) {
     Mat resultMat = resultVec[j];
     imshow("plate_judge", resultMat);
     waitKey(0);
@@ -92,7 +96,7 @@ int test_plate_detect() {
   int result = pd.plateDetectDeep(src, resultVec);
   if (result == 0) {
     size_t num = resultVec.size();
-    for (int j = 0; j < num; j++) {
+    for (size_t j = 0; j < num; j++) {
       CPlate resultMat = resultVec[j];
 
       imshow("plate_detect", resultMat.getPlateMat());

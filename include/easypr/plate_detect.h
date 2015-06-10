@@ -87,8 +87,8 @@ class CPlateDetect {
 
   inline void setJudgeAngle(int param) { m_plateLocate->setJudgeAngle(param); }
 
-  inline void setMaxPlates(float param) { m_maxPlates = param; }
-  inline float getMaxPlates() const { return m_maxPlates; }
+  inline void setMaxPlates(int param) { m_maxPlates = param; }
+  inline int getMaxPlates() const { return m_maxPlates; }
 
  private:
   //! 设置一幅图中最多有多少车牌
