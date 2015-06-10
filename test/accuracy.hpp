@@ -140,7 +140,7 @@ int accuracyTest(const char* test_path) {
   cout << "总图片数:" << count_all << "张,  ";
   cout << "未识出图片:" << count_norecogin << "张,  ";
 
-  float count_recogin = count_all - (count_err + count_norecogin);
+  float count_recogin = float(count_all - (count_err + count_norecogin));
   float count_rate = count_recogin / count_all;
   // float count_norate = 1 - count_rate;
   cout << "定位率:" << count_rate * 100 << "%  " << endl;

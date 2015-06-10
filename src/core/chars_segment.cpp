@@ -249,7 +249,8 @@ int CCharsSegment::charsSegment(Mat input, vector<Mat>& resultVec) {
       auxRoi = preprocessChar(auxRoi);
       if (m_debug) {
         stringstream ss(stringstream::in | stringstream::out);
-        ss << "resources/image/tmp/debug_char_auxRoi_" << (i + staticIndex) << ".jpg";
+        ss << "resources/image/tmp/debug_char_auxRoi_" << (i + staticIndex)
+           << ".jpg";
         utils::imwrite(ss.str(), auxRoi);
       }
       resultVec.push_back(auxRoi);
