@@ -154,7 +154,4 @@
     <Text Include="resources\image\使用说明.txt" />
     <Text Include="resources\image\GDSL.txt" />
   </ItemGroup>
-  <ItemGroup>
-    <None Include="ClassDiagram.cd" />
-  </ItemGroup>
 </Project>

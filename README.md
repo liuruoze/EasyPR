@@ -10,19 +10,23 @@ EasyPR是一个中文的开源车牌识别系统，其目标是成为一个简�
 
 ### 更新
 
-本次更新是1.3beta版，主要改进在于提升了字符识别模块的准确性：
+本次更新是1.3 测试版，主要改进在于几个方面：
 
-平均字符差距从0.7降低到0.4，完整匹配度从68%左右上升到目前的81%，平均执行时间从2秒降低到1.5秒。见下图：
+1.增加了50张左右的新图片。见下图：
 
-![1.3版综合效果](resources/doc/res/testresult_1.3.png)
+![新图片](resources/doc/res/new50.jpg)
 
-主要改动如下：
+2.增加了extreme_test文件夹，这里的图片以极端难处理情况为主。见下图：
 
-* 改进了字符识别算法，重新训练了ANN模型，从而使得字符识别准确率大幅度提升。
+![extreme_test](resources/doc/res/extreme_test.jpg)
 
-* 使用了更鲁棒性的办法提升了车牌定位模块的准确率。
+3.重构了整体架构，将EasyPR核心以静态库的方式编译，分离出通用接口等等。此部分改善由Micooz贡献。见下图：
 
-目前版本的问题是处理时间还是偏高，1.3正式版本中会对这个问题进行fix。
+![架构重构](resources/doc/res/arch.jpg)
+
+4.代码优化，提高易懂与可读性。
+
+下个版本会正式发布1.3 正式版。
 
 ### 跨平台
 
@@ -30,7 +34,7 @@ EasyPR是一个中文的开源车牌识别系统，其目标是成为一个简�
 
 |版本 | 开发者 | 版本 | 地址 
 |------|-------|-------|-------
-| android |  goldriver  |  1.1  |  [linuxxx/EasyPR_Android](https://github.com/linuxxx/EasyPR_Android)
+| android |  goldriver  |  1.3  |  [linuxxx/EasyPR_Android](https://github.com/linuxxx/EasyPR_Android)
 | linux | Micooz  |  1.3  |  已跟EasyPR整合
 | ios | zhoushiwei |  1.3  |  [zhoushiwei/EasyPR-iOS](https://github.com/zhoushiwei/EasyPR-iOS)
 | mac | zhoushiwei,Micooz |  1.3  | 已跟EasyPR整合
@@ -213,11 +217,11 @@ $ ./easypr_test svm --train --has-plate=has/ --no-plate=no/ --divide --svm=save/
 
 ### Contributors
 
-* liuruoze：1.0-1.2版核心代码作者，1.3版整合工作
+* liuruoze：1.0-1.2版作者，1.3版整合工作
 
-* 海豚嘎嘎：1.3alpha-beta版作者，提升了车牌定位与字符识别的准确率
+* 海豚嘎嘎：1.3alpha-beta版主要贡献者，提升了车牌定位与字符识别的准确率
 
-* Micooz：linux与mac的跨平台编译，性能优化，util类
+* Micooz：架构优化，代码重构，linux与mac的跨平台编译等
 
 * jsxyhelu：deface版本一
 
