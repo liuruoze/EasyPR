@@ -63,6 +63,9 @@ Mat colorMatch(const Mat& src, Mat& match, const Color r,
       min_h = min_white;
       max_h = max_white;
       break;
+    default:
+      // Color::UNKNOWN
+      break;
   }
 
   float diff_h = float((max_h - min_h) / 2);
@@ -343,7 +346,7 @@ void clearLiuDingOnly(Mat& img) {
     for (int j = 0; j < img.cols - 1; j++) {
       if (img.at<char>(i, j) != img.at<char>(i, j + 1)) jumpCount++;
 
-      if (img.at<char>(i, j) == 255) {
+      if (img.at<uchar>(i, j) == 255) {
         whiteCount++;
       }
     }
