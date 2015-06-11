@@ -685,8 +685,8 @@ bool CPlateLocate::rotation(Mat& in, Mat& out, const Size rect_size,
   Mat imageRoi = in_large(Rect_<float>(x, y, width, height));
   addWeighted(imageRoi, 0, in, 1, 0, imageRoi);
 
-  Point2f center_diff(in.cols / 2, in.rows / 2);
-  Point2f new_center(in_large.cols / 2, in_large.rows / 2);
+  Point2f center_diff(in.cols / 2.f, in.rows / 2.f);
+  Point2f new_center(in_large.cols / 2.f, in_large.rows / 2.f);
 
   Mat rot_mat = getRotationMatrix2D(new_center, angle, 1);
 
@@ -792,9 +792,9 @@ void CPlateLocate::affine(const Mat& in, Mat& out, const double slope) {
   Point2f dstTri[3];
   Point2f plTri[3];
 
-  int height = in.rows;  //行
-  int width = in.cols;   //列
-  double xiff = abs(slope) * height;
+  float height = (float)in.rows;  //行
+  float width = (float)in.cols;   //列
+  float xiff = (float)abs(slope) * height;
 
   if (slope > 0) {
     //右偏型，新起点坐标系在xiff/2位置
@@ -816,14 +816,10 @@ void CPlateLocate::affine(const Mat& in, Mat& out, const double slope) {
     dstTri[2] = Point2f(xiff / 2, height - 1);
   }
 
-  /*dstTri[0] = Point2f(0, 0);
-  dstTri[1] = Point2f(WIDTH - 1, 0);
-  dstTri[2] = Point2f(0, HEIGHT - 1);*/
-
   Mat warp_mat = getAffineTransform(plTri, dstTri);
 
   Mat affine_mat;
-  affine_mat.create(height, width, TYPE);
+  affine_mat.create((int)height, (int)width, TYPE);
 
   if (in.rows > HEIGHT || in.cols > WIDTH)
     warpAffine(in, affine_mat, warp_mat, affine_mat.size(),
@@ -954,18 +950,18 @@ int CPlateLocate::deskewOld(Mat src, vector<RotatedRect>& inRects,
                 double PI = 3.14159265;
                 double g = tan((angle + 90) * PI / 180.0);
 
-                double xdiff = double(middle_crop.rows) * g;
-                plTri[0] = Point2f(0 + xdiff, 0);
-                plTri[1] = Point2f(middle_crop.cols - 1, 0);
-                plTri[2] = Point2f(0, middle_crop.rows - 1);
+                double xdiff = middle_crop.rows * g;
+                plTri[0] = Point2f(0 + (float)xdiff, 0);
+                plTri[1] = Point2f(middle_crop.cols - 1.f, 0);
+                plTri[2] = Point2f(0, middle_crop.rows - 1.f);
               } else {
                 double PI = 3.14159265;
                 double g = tan(abs(angle) * PI / 180.0);
 
                 double xdiff = double(middle_crop.rows) * g;
                 plTri[0] = Point2f(0, 0);
-                plTri[1] = Point2f(middle_crop.cols - 1, 0);
-                plTri[2] = Point2f(0 + (float)xdiff, middle_crop.rows - 1);
+                plTri[1] = Point2f(middle_crop.cols - 1.f, 0);
+                plTri[2] = Point2f(0 + (float)xdiff, middle_crop.rows - 1.f);
               }
 			 
               dstTri[0] = Point2f(0, 0);
