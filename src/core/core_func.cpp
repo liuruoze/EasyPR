@@ -69,7 +69,7 @@ Mat colorMatch(const Mat& src, Mat& match, const Color r,
   }
 
   float diff_h = float((max_h - min_h) / 2);
-  int avg_h = min_h + diff_h;
+  float avg_h = min_h + diff_h;
 
   int channels = src_hsv.channels();
   int nRows = src_hsv.rows;
@@ -101,7 +101,7 @@ Mat colorMatch(const Mat& src, Mat& match, const Color r,
       bool colorMatched = false;
 
       if (H > min_h && H < max_h) {
-        int Hdiff = 0;
+        float Hdiff = 0;
         if (H > avg_h)
           Hdiff = H - avg_h;
         else
@@ -153,7 +153,7 @@ Mat colorMatch(const Mat& src, Mat& match, const Color r,
 
 bool bFindLeftRightBound1(Mat& bound_threshold, int& posLeft, int& posRight) {
   //¥”¡Ω±ﬂ—∞’“±ﬂΩÁ
-  int span = bound_threshold.rows * 0.2;
+  float span = bound_threshold.rows * 0.2f;
   //◊Û±ﬂΩÁºÏ≤‚
   for (int i = 0; i < bound_threshold.cols - span - 1; i += 3) {
     int whiteCount = 0;
@@ -169,7 +169,7 @@ bool bFindLeftRightBound1(Mat& bound_threshold, int& posLeft, int& posRight) {
       break;
     }
   }
-  span = bound_threshold.rows * 0.2;
+  span = bound_threshold.rows * 0.2f;
   //”“±ﬂΩÁºÏ≤‚
   for (int i = bound_threshold.cols - 1; i > span; i -= 2) {
     int whiteCount = 0;
@@ -201,7 +201,7 @@ bool bFindLeftRightBound1(Mat& bound_threshold, int& posLeft, int& posRight) {
 
 bool bFindLeftRightBound(Mat& bound_threshold, int& posLeft, int& posRight) {
   //¥”¡Ω±ﬂ—∞’“±ﬂΩÁ
-  int span = bound_threshold.rows * 0.2;
+  float span = bound_threshold.rows * 0.2f;
   //◊Û±ﬂΩÁºÏ≤‚
   for (int i = 0; i < bound_threshold.cols - span - 1; i += 2) {
     int whiteCount = 0;
@@ -217,7 +217,7 @@ bool bFindLeftRightBound(Mat& bound_threshold, int& posLeft, int& posRight) {
       break;
     }
   }
-  span = bound_threshold.rows * 0.2;
+  span = bound_threshold.rows * 0.2f;
   //”“±ﬂΩÁºÏ≤‚
   for (int i = bound_threshold.cols - 1; i > span; i -= 2) {
     int whiteCount = 0;
@@ -243,7 +243,7 @@ bool bFindLeftRightBound(Mat& bound_threshold, int& posLeft, int& posRight) {
 
 bool bFindLeftRightBound2(Mat& bound_threshold, int& posLeft, int& posRight) {
   //¥”¡Ω±ﬂ—∞’“±ﬂΩÁ
-  int span = bound_threshold.rows * 0.2;
+  float span = bound_threshold.rows * 0.2f;
   //◊Û±ﬂΩÁºÏ≤‚
   for (int i = 0; i < bound_threshold.cols - span - 1; i += 3) {
     int whiteCount = 0;
@@ -259,7 +259,7 @@ bool bFindLeftRightBound2(Mat& bound_threshold, int& posLeft, int& posRight) {
       break;
     }
   }
-  span = bound_threshold.rows * 0.2;
+  span = bound_threshold.rows * 0.2f;
   //”“±ﬂΩÁºÏ≤‚
   for (int i = bound_threshold.cols - 1; i > span; i -= 3) {
     int whiteCount = 0;
@@ -289,8 +289,8 @@ bool bFindLeftRightBound2(Mat& bound_threshold, int& posLeft, int& posRight) {
 bool plateColorJudge(const Mat& src, const Color r, const bool adaptive_minsv,
                      float& percent) {
   // ≈–∂œ„–÷µ
-  const float thresh = 0.45;
-
+  const float thresh = 0.45f;
+  
   Mat src_gray;
   colorMatch(src, src_gray, r, adaptive_minsv);
 
@@ -351,7 +351,7 @@ void clearLiuDingOnly(Mat& img) {
       }
     }
 
-    jump.at<float>(i) = jumpCount;
+    jump.at<float>(i) = (float)jumpCount;
   }
 
   for (int i = 0; i < img.rows; i++) {
@@ -382,7 +382,7 @@ bool clearLiuDing(Mat& img) {
       }
     }
 
-    jump.at<float>(i) = jumpCount;
+    jump.at<float>(i) = (float)jumpCount;
   }
 
   int iCount = 0;
