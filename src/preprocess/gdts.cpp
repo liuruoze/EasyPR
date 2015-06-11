@@ -65,7 +65,7 @@ int generate_gdts() {
 cv::Mat imageProcess(cv::Mat img) {
   int width = img.size().width;
   int height = img.size().height;
-  cv::Rect rect(width * 0.01, height * 0.01, width * 0.99, height * 0.99);
+  cv::Rect_<double> rect(width * 0.01, height * 0.01, width * 0.99, height * 0.99);
 
   cv::Mat dst = img(rect);
   //GaussianBlur( dst, dst, Size(1, 1), 0, 0, BORDER_DEFAULT );
