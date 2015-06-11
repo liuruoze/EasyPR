@@ -322,7 +322,7 @@ int CPlateLocate::sobelSecSearchPart(Mat& bound, Point2f refpoint,
     //找到两个边界后进行连接修补处理
     if (posRight != 0 && posLeft != 0 && posLeft < posRight) {
       int posY = int(bound_threshold.rows * 0.5);
-      for (int i = posLeft + bound_threshold.rows * 0.1; i < posRight - 4;
+      for (int i = posLeft + (int)(bound_threshold.rows * 0.1); i < posRight - 4;
            i++) {
         bound_threshold.data[posY * bound_threshold.cols + i] = 255;
       }
@@ -671,18 +671,18 @@ bool CPlateLocate::rotation(Mat& in, Mat& out, const Size rect_size,
   Mat in_large;
   in_large.create(in.rows * 1.5, in.cols * 1.5, in.type());
 
-  int x = in_large.cols / 2 - center.x > 0 ? in_large.cols / 2 - center.x : 0;
-  int y = in_large.rows / 2 - center.y > 0 ? in_large.rows / 2 - center.y : 0;
+  float x = in_large.cols / 2 - center.x > 0 ? in_large.cols / 2 - center.x : 0;
+  float y = in_large.rows / 2 - center.y > 0 ? in_large.rows / 2 - center.y : 0;
 
-  int width = x + in.cols < in_large.cols ? in.cols : in_large.cols - x;
-  int height = y + in.rows < in_large.rows ? in.rows : in_large.rows - y;
+  float width = x + in.cols < in_large.cols ? in.cols : in_large.cols - x;
+  float height = y + in.rows < in_large.rows ? in.rows : in_large.rows - y;
 
   /*assert(width == in.cols);
   assert(height == in.rows);*/
 
   if (width != in.cols || height != in.rows) return false;
 
-  Mat imageRoi = in_large(Rect(x, y, width, height));
+  Mat imageRoi = in_large(Rect_<float>(x, y, width, height));
   addWeighted(imageRoi, 0, in, 1, 0, imageRoi);
 
   Point2f center_diff(in.cols / 2, in.rows / 2);
@@ -967,7 +967,7 @@ int CPlateLocate::deskewOld(Mat src, vector<RotatedRect>& inRects,
                 plTri[1] = Point2f(middle_crop.cols - 1, 0);
                 plTri[2] = Point2f(0 + (float)xdiff, middle_crop.rows - 1);
               }
-
+			 
               dstTri[0] = Point2f(0, 0);
               dstTri[1] = Point2f(WIDTH - 1, 0);
               dstTri[2] = Point2f(0, HEIGHT - 1);
