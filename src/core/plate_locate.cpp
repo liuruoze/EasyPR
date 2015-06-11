@@ -7,9 +7,9 @@ using namespace std;
         Namespace where all the C++ EasyPR functionality resides
         */
 namespace easypr {
-
-const float DEFAULT_ERROR = 0.9;    // 0.6
-const float DEFAULT_ASPECT = 3.75;  // 3.75
+	
+const float DEFAULT_ERROR = 0.9f;    // 0.6
+const float DEFAULT_ASPECT = 3.75f;  // 3.75
 
 CPlateLocate::CPlateLocate() {
   // cout << "CPlateLocate" << endl;
@@ -69,7 +69,7 @@ bool CPlateLocate::verifySizes(RotatedRect mr) {
   float rmin = aspect - aspect * error;
   float rmax = aspect + aspect * error;
 
-  int area = mr.size.height * mr.size.width;
+  float area = mr.size.height * mr.size.width;
   float r = (float)mr.size.width / (float)mr.size.height;
   if (r < 1) r = (float)mr.size.height / (float)mr.size.width;
 
@@ -197,9 +197,9 @@ bool CPlateLocate::sobelJudge(Mat roi) {
       MORPH_RECT, Size(m_MorphSizeWidth, m_MorphSizeHeight));
   morphologyEx(roi_threshold, roi_threshold, MORPH_CLOSE, element);
 
-  float channels = roi_threshold.channels();
-  float nRows = roi_threshold.rows;
-  float nCols = roi_threshold.cols;
+  int channels = roi_threshold.channels();
+  int nRows = roi_threshold.rows;
+  int nCols = roi_threshold.cols;
 
   float percent = float(countNonZero(roi_threshold)) / float(nRows * nCols);
   // cout << "precent:" << percent << endl;
@@ -215,18 +215,18 @@ bool CPlateLocate::verifyCharSizes(Mat r) {
   // Char sizes 45x90
   float aspect = 45.0f / 90.0f;
   float charAspect = (float)r.cols / (float)r.rows;
-  float error = 0.7;
-  float minHeight = 10;
-  float maxHeight = 35;
+  float error = 0.7f;
+  float minHeight = 10.f;
+  float maxHeight = 35.f;
   // We have a different aspect ratio for number 1, and it can be ~0.2
-  float minAspect = 0.05;
+  float minAspect = 0.05f;
   float maxAspect = aspect + aspect * error;
   // area of pixels
-  float area = countNonZero(r);
+  int area = cv::countNonZero(r);
   // bb area
-  float bbArea = r.cols * r.rows;
+  int bbArea = r.cols * r.rows;
   //% of pixel in area
-  float percPixels = area / bbArea;
+  int percPixels = area / bbArea;
 
   if (percPixels <= 1 && charAspect > minAspect && charAspect < maxAspect &&
       r.rows >= minHeight && r.rows < maxHeight)
@@ -267,7 +267,7 @@ int CPlateLocate::sobelFrtSearch(const Mat& src,
     if (verifySizes(mr)) {
       first_rects.push_back(mr);
 
-      int area = mr.size.height * mr.size.width;
+      float area = mr.size.height * mr.size.width;
       float r = (float)mr.size.width / (float)mr.size.height;
       if (r < 1) r = (float)mr.size.height / (float)mr.size.width;
 
@@ -321,7 +321,7 @@ int CPlateLocate::sobelSecSearchPart(Mat& bound, Point2f refpoint,
   if (bFindLeftRightBound(tempBoundThread, posLeft, posRight)) {
     //找到两个边界后进行连接修补处理
     if (posRight != 0 && posLeft != 0 && posLeft < posRight) {
-      int posY = bound_threshold.rows * 0.5;
+      int posY = int(bound_threshold.rows * 0.5);
       for (int i = posLeft + bound_threshold.rows * 0.1; i < posRight - 4;
            i++) {
         bound_threshold.data[posY * bound_threshold.cols + i] = 255;
@@ -358,7 +358,7 @@ int CPlateLocate::sobelSecSearchPart(Mat& bound, Point2f refpoint,
     if (verifySizes(roi)) {
       Point2f refcenter = roi.center + refpoint;
       Size2f size = roi.size;
-      double angle = roi.angle;
+      float angle = roi.angle;
 
       RotatedRect refroi(refcenter, size, angle);
       outRects.push_back(refroi);
@@ -430,7 +430,7 @@ int CPlateLocate::sobelSecSearch(Mat& bound, Point2f refpoint,
     if (verifySizes(roi)) {
       Point2f refcenter = roi.center + refpoint;
       Size2f size = roi.size;
-      double angle = roi.angle;
+      float angle = roi.angle;
 
       RotatedRect refroi(refcenter, size, angle);
       outRects.push_back(refroi);
@@ -498,13 +498,13 @@ void DeleteNotArea(Mat& inmat) {
   int w = inmat.cols;
   int h = inmat.rows;
 
-  Mat tmpMat = inmat(Rect(w * 0.15, h * 0.1, w * 0.7, h * 0.7));
+  Mat tmpMat = inmat(Rect_<double>(w * 0.15, h * 0.1, w * 0.7, h * 0.7));
   //判断车牌颜色以此确认threshold方法
   Color plateType = getPlateType(tmpMat, true);
   Mat img_threshold;
   if (BLUE == plateType) {
     img_threshold = input_grey.clone();
-    Mat tmp = input_grey(Rect(w * 0.15, h * 0.15, w * 0.7, h * 0.7));
+	Mat tmp = input_grey(Rect_<double>(w * 0.15, h * 0.15, w * 0.7, h * 0.7));
     int threadHoldV = ThresholdOtsu(tmp);
 
     threshold(input_grey, img_threshold, threadHoldV, 255, CV_THRESH_BINARY);
@@ -515,7 +515,7 @@ void DeleteNotArea(Mat& inmat) {
 
   } else if (YELLOW == plateType) {
     img_threshold = input_grey.clone();
-    Mat tmp = input_grey(Rect(w * 0.1, h * 0.1, w * 0.8, h * 0.8));
+	Mat tmp = input_grey(Rect_<double>(w * 0.1, h * 0.1, w * 0.8, h * 0.8));
     int threadHoldV = ThresholdOtsu(tmp);
 
     threshold(input_grey, img_threshold, threadHoldV, 255,
@@ -1252,8 +1252,8 @@ int CPlateLocate::plateLocate(Mat src, vector<Mat>& resultVec, int index) {
   for (int i = 0; i < tmp.rows; i++) {
     for (int j = 0; j < tmp.cols; j++) {
       int nH = hsvSplit[0].at<uchar>(i, j) * 2;
-      float fS = hsvSplit[1].at<uchar>(i, j) / 255.0;
-      float fV = hsvSplit[2].at<uchar>(i, j) / 255.0;
+      float fS = hsvSplit[1].at<uchar>(i, j) / 255.0f;
+      float fV = hsvSplit[2].at<uchar>(i, j) / 255.0f;
       if (nH >= 200 && nH <= 255 && fS >= 0.4 && fS <= 1 && fV >= 0.3 &&
           fV <= 1)  // 蓝色
         dst_blue.at<uchar>(i, j) = 255;
@@ -1300,8 +1300,8 @@ int CPlateLocate::plateLocate(Mat src, vector<Mat>& resultVec, int index) {
   for (int i = 0; i < tmp.rows; i++) {
     for (int j = 0; j < tmp.cols; j++) {
       int nH = hsvSplit[0].at<uchar>(i, j) * 2;
-      float fS = hsvSplit[1].at<uchar>(i, j) / 255.0;
-      float fV = hsvSplit[2].at<uchar>(i, j) / 255.0;
+      float fS = hsvSplit[1].at<uchar>(i, j) / 255.0f;
+      float fV = hsvSplit[2].at<uchar>(i, j) / 255.0f;
       if (nH >= 25 && nH <= 55 && fS >= 0.4 && fS <= 1 && fV >= 0.3 &&
           fV <= 1)  // 黄色
         dst_yellow.at<uchar>(i, j) = 255;
