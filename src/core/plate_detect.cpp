@@ -83,7 +83,7 @@ int CPlateDetect::plateDetectDeep(Mat src, vector<CPlate>& resultVec,
             sobel_result_Plates.push_back(sobel_Plates[i]);
     }*/
 
-	for (size_t i = 0; i < sobel_result_Plates.size(); i++) {
+    for (size_t i = 0; i < sobel_result_Plates.size(); i++) {
       CPlate plate = sobel_result_Plates[i];
 
       if (0) {
@@ -110,7 +110,7 @@ int CPlateDetect::plateDetectDeep(Mat src, vector<CPlate>& resultVec,
 int CPlateDetect::showResult(const Mat& result) {
   namedWindow("EasyPR", CV_WINDOW_AUTOSIZE);
 
-  const int RESULTWIDTH = 640;  // 640 930
+  const int RESULTWIDTH = 640;   // 640 930
   const int RESULTHEIGHT = 540;  // 540 710
 
   Mat img_window;

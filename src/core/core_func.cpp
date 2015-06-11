@@ -290,7 +290,7 @@ bool plateColorJudge(const Mat& src, const Color r, const bool adaptive_minsv,
                      float& percent) {
   // ≈–∂œ„–÷µ
   const float thresh = 0.45f;
-  
+
   Mat src_gray;
   colorMatch(src, src_gray, r, adaptive_minsv);
 

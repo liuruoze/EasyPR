@@ -7,7 +7,7 @@ using namespace std;
         Namespace where all the C++ EasyPR functionality resides
         */
 namespace easypr {
-	
+
 const float DEFAULT_ERROR = 0.9f;    // 0.6
 const float DEFAULT_ASPECT = 3.75f;  // 3.75
 
@@ -322,8 +322,8 @@ int CPlateLocate::sobelSecSearchPart(Mat& bound, Point2f refpoint,
     //找到两个边界后进行连接修补处理
     if (posRight != 0 && posLeft != 0 && posLeft < posRight) {
       int posY = int(bound_threshold.rows * 0.5);
-      for (int i = posLeft + (int)(bound_threshold.rows * 0.1); i < posRight - 4;
-           i++) {
+      for (int i = posLeft + (int)(bound_threshold.rows * 0.1);
+           i < posRight - 4; i++) {
         bound_threshold.data[posY * bound_threshold.cols + i] = 255;
       }
     }
@@ -504,7 +504,7 @@ void DeleteNotArea(Mat& inmat) {
   Mat img_threshold;
   if (BLUE == plateType) {
     img_threshold = input_grey.clone();
-	Mat tmp = input_grey(Rect_<double>(w * 0.15, h * 0.15, w * 0.7, h * 0.7));
+    Mat tmp = input_grey(Rect_<double>(w * 0.15, h * 0.15, w * 0.7, h * 0.7));
     int threadHoldV = ThresholdOtsu(tmp);
 
     threshold(input_grey, img_threshold, threadHoldV, 255, CV_THRESH_BINARY);
@@ -515,7 +515,7 @@ void DeleteNotArea(Mat& inmat) {
 
   } else if (YELLOW == plateType) {
     img_threshold = input_grey.clone();
-	Mat tmp = input_grey(Rect_<double>(w * 0.1, h * 0.1, w * 0.8, h * 0.8));
+    Mat tmp = input_grey(Rect_<double>(w * 0.1, h * 0.1, w * 0.8, h * 0.8));
     int threadHoldV = ThresholdOtsu(tmp);
 
     threshold(input_grey, img_threshold, threadHoldV, 255,
@@ -963,7 +963,7 @@ int CPlateLocate::deskewOld(Mat src, vector<RotatedRect>& inRects,
                 plTri[1] = Point2f(middle_crop.cols - 1.f, 0);
                 plTri[2] = Point2f(0 + (float)xdiff, middle_crop.rows - 1.f);
               }
-			 
+
               dstTri[0] = Point2f(0, 0);
               dstTri[1] = Point2f(WIDTH - 1, 0);
               dstTri[2] = Point2f(0, HEIGHT - 1);
@@ -1141,11 +1141,11 @@ int CPlateLocate::plateSobelLocate(Mat src, vector<CPlate>& candPlates,
     Point2f refpoint(bound_rect.x, bound_rect.y);
 
     float x = bound_rect.x > 0 ? bound_rect.x : 0;
-	float y = bound_rect.y > 0 ? bound_rect.y : 0;
+    float y = bound_rect.y > 0 ? bound_rect.y : 0;
 
-	float width =
+    float width =
         x + bound_rect.width < src.cols ? bound_rect.width : src.cols - x;
-	float height =
+    float height =
         y + bound_rect.height < src.rows ? bound_rect.height : src.rows - y;
 
     Rect_<float> safe_bound_rect(x, y, width, height);
@@ -1159,15 +1159,15 @@ int CPlateLocate::plateSobelLocate(Mat src, vector<CPlate>& candPlates,
     Rect_<float> bound_rect = bound_rects[i];
     Point2f refpoint(bound_rect.x, bound_rect.y);
 
-	float x = bound_rect.x > 0 ? bound_rect.x : 0;
-	float y = bound_rect.y > 0 ? bound_rect.y : 0;
+    float x = bound_rect.x > 0 ? bound_rect.x : 0;
+    float y = bound_rect.y > 0 ? bound_rect.y : 0;
 
-	float width =
+    float width =
         x + bound_rect.width < src.cols ? bound_rect.width : src.cols - x;
-	float height =
+    float height =
         y + bound_rect.height < src.rows ? bound_rect.height : src.rows - y;
 
-	Rect_<float> safe_bound_rect(x, y, width, height);
+    Rect_<float> safe_bound_rect(x, y, width, height);
     Mat bound_mat = src(safe_bound_rect);
 
     // Sobel第二次精细搜索

@@ -101,7 +101,7 @@ int CCharsSegment::charsSegment(Mat input, vector<Mat>& resultVec) {
 
     int w = input_grey.cols;
     int h = input_grey.rows;
-	Mat tmp = input_grey(Rect_<double>(w * 0.1, h * 0.1, w * 0.8, h * 0.8));
+    Mat tmp = input_grey(Rect_<double>(w * 0.1, h * 0.1, w * 0.8, h * 0.8));
     int threadHoldV = ThresholdOtsu(tmp);
     // utils::imwrite("E:/img_inputgray2.jpg", input_grey);
 
@@ -116,7 +116,7 @@ int CCharsSegment::charsSegment(Mat input, vector<Mat>& resultVec) {
     img_threshold = input_grey.clone();
     int w = input_grey.cols;
     int h = input_grey.rows;
-	Mat tmp = input_grey(Rect_<double>(w * 0.1, h * 0.1, w * 0.8, h * 0.8));
+    Mat tmp = input_grey(Rect_<double>(w * 0.1, h * 0.1, w * 0.8, h * 0.8));
     int threadHoldV = ThresholdOtsu(tmp);
     utils::imwrite("resources/image/tmp/inputgray2.jpg", input_grey);
 
@@ -270,13 +270,13 @@ int CCharsSegment::SortRect(const vector<Rect>& vecRect, vector<Rect>& out) {
     orderIndex.push_back(i);
     xpositions.push_back(vecRect[i].x);
   }
-  
+
   int min = xpositions[0];
   int minIdx = 0;
   for (size_t i = 0; i < xpositions.size(); i++) {
     min = xpositions[i];
     minIdx = i;
-	for (size_t j = i; j < xpositions.size(); j++) {
+    for (size_t j = i; j < xpositions.size(); j++) {
       if (xpositions[j] < min) {
         min = xpositions[j];
         minIdx = j;

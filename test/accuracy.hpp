@@ -40,6 +40,8 @@ int accuracyTest(const char* test_path) {
   int count_err = 0;
   // 未识别的图片数量
   int count_norecogin = 0;
+  // not recognized pictures
+  std::list<std::string> not_recognized_files;
 
   // 总的字符差距
   float diff_all = 0;
@@ -76,7 +78,10 @@ int accuracyTest(const char* test_path) {
 
       if (num == 0) {
         cout << "无车牌" << endl;
-        if (plateLicense != "无车牌") count_norecogin++;
+        if (plateLicense != "无车牌") {
+          not_recognized_files.push_back(plateLicense);
+          count_norecogin++;
+        }
       } else if (num > 1) {
         // 多车牌使用diff最小的那个记录
         int mindiff = 10000;
@@ -142,11 +147,15 @@ int accuracyTest(const char* test_path) {
 
   float count_recogin = float(count_all - (count_err + count_norecogin));
   float count_rate = count_recogin / count_all;
-  // float count_norate = 1 - count_rate;
   cout << "定位率:" << count_rate * 100 << "%  " << endl;
 
-  diff_avg = diff_all / count_recogin;
-  match_rate = match_count / count_recogin * 100;
+  if (count_recogin > 0) {
+    diff_avg = diff_all / count_recogin;
+  }
+
+  if (count_recogin > 0) {
+    match_rate = match_count / count_recogin * 100;
+  }
 
   cout << "平均字符差距:" << diff_avg << "个,  ";
   cout << "完全匹配数:" << match_count << "张,  ";
@@ -156,7 +165,14 @@ int accuracyTest(const char* test_path) {
   double avgsec = seconds / double(count_all);
 
   cout << "总时间:" << seconds << "秒,  ";
-  cout << "平均执行时间:" << avgsec << "秒  " << endl;
+  cout << "平均执行时间:" << avgsec << "秒" << endl;
+
+  cout << "未识出图片:" << endl;
+
+  for (auto it = not_recognized_files.begin(); it != not_recognized_files.end();
+       ++it) {
+    cout << *it << endl;
+  }
 
   cout << endl;
 
@@ -178,7 +194,7 @@ int accuracyTest(const char* test_path) {
     myfile << "完全匹配数:" << match_count << "张,  ";
     myfile << "完全匹配率:" << match_rate << "%  " << endl;
     myfile << "总时间:" << seconds << "秒,  ";
-    myfile << "平均执行时间:" << avgsec << "秒  " << endl;
+    myfile << "平均执行时间:" << avgsec << "秒" << endl;
     myfile.close();
   } else {
     cout << "Unable to open file";
