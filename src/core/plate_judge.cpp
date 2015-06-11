@@ -52,7 +52,7 @@ int CPlateJudge::plateJudge(const Mat& inMat, int& result) {
   p.convertTo(p, CV_32FC1);
 
   float response = svm.predict(p);
-  result = response;
+  result = (int)response;
 
   return 0;
 }
