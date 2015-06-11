@@ -965,7 +965,7 @@ int CPlateLocate::deskewOld(Mat src, vector<RotatedRect>& inRects,
                 double xdiff = double(middle_crop.rows) * g;
                 plTri[0] = Point2f(0, 0);
                 plTri[1] = Point2f(middle_crop.cols - 1, 0);
-                plTri[2] = Point2f(0 + xdiff, middle_crop.rows - 1);
+                plTri[2] = Point2f(0 + (float)xdiff, middle_crop.rows - 1);
               }
 
               dstTri[0] = Point2f(0, 0);
@@ -1120,7 +1120,7 @@ int CPlateLocate::plateSobelLocate(Mat src, vector<CPlate>& candPlates,
 
   //对不符合要求的区域进行扩展
   for (size_t i = 0; i < bound_rects.size(); i++) {
-    double fRatio = bound_rects[i].width * 1.0 / bound_rects[i].height;
+    float fRatio = bound_rects[i].width * 1.0f / bound_rects[i].height;
     if (fRatio < 3.0 && fRatio > 1.0 && bound_rects[i].height < 120) {
       Rect_<float> itemRect = bound_rects[i];
       //宽度过小，进行扩展
@@ -1133,8 +1133,8 @@ int CPlateLocate::plateSobelLocate(Mat src, vector<CPlate>& candPlates,
         itemRect.width = src.cols - itemRect.x;
       }
 
-      itemRect.y = itemRect.y - itemRect.height * 0.08;
-      itemRect.height = itemRect.height * 1.16;
+      itemRect.y = itemRect.y - itemRect.height * 0.08f;
+      itemRect.height = itemRect.height * 1.16f;
 
       bound_rects_part.push_back(itemRect);
     }
@@ -1144,15 +1144,15 @@ int CPlateLocate::plateSobelLocate(Mat src, vector<CPlate>& candPlates,
     Rect_<float> bound_rect = bound_rects_part[i];
     Point2f refpoint(bound_rect.x, bound_rect.y);
 
-    int x = bound_rect.x > 0 ? bound_rect.x : 0;
-    int y = bound_rect.y > 0 ? bound_rect.y : 0;
+    float x = bound_rect.x > 0 ? bound_rect.x : 0;
+	float y = bound_rect.y > 0 ? bound_rect.y : 0;
 
-    int width =
+	float width =
         x + bound_rect.width < src.cols ? bound_rect.width : src.cols - x;
-    int height =
+	float height =
         y + bound_rect.height < src.rows ? bound_rect.height : src.rows - y;
 
-    Rect safe_bound_rect(x, y, width, height);
+    Rect_<float> safe_bound_rect(x, y, width, height);
     Mat bound_mat = src(safe_bound_rect);
 
     // Sobel第二次精细搜索(部分)
@@ -1163,15 +1163,15 @@ int CPlateLocate::plateSobelLocate(Mat src, vector<CPlate>& candPlates,
     Rect_<float> bound_rect = bound_rects[i];
     Point2f refpoint(bound_rect.x, bound_rect.y);
 
-    int x = bound_rect.x > 0 ? bound_rect.x : 0;
-    int y = bound_rect.y > 0 ? bound_rect.y : 0;
+	float x = bound_rect.x > 0 ? bound_rect.x : 0;
+	float y = bound_rect.y > 0 ? bound_rect.y : 0;
 
-    int width =
+	float width =
         x + bound_rect.width < src.cols ? bound_rect.width : src.cols - x;
-    int height =
+	float height =
         y + bound_rect.height < src.rows ? bound_rect.height : src.rows - y;
 
-    Rect safe_bound_rect(x, y, width, height);
+	Rect_<float> safe_bound_rect(x, y, width, height);
     Mat bound_mat = src(safe_bound_rect);
 
     // Sobel第二次精细搜索
