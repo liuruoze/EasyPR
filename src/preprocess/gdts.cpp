@@ -30,7 +30,7 @@ int generate_gdts() {
 
   std::cout << "Begin to prepare generate_gdts!" << std::endl;
 
-  for (int i = 0; i < size; i++) {
+  for (size_t i = 0; i < size; i++) {
     std::string filepath = files[i].c_str();
     std::cout << "------------------" << std::endl;
     std::cout << filepath << std::endl;

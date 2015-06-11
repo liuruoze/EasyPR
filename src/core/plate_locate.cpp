@@ -278,7 +278,7 @@ int CPlateLocate::sobelFrtSearch(const Mat& src,
     ++itc;
   }
 
-  for (int i = 0; i < first_rects.size(); i++) {
+  for (size_t i = 0; i < first_rects.size(); i++) {
     RotatedRect roi_rect = first_rects[i];
 
     Rect_<float> safeBoundRect;
@@ -353,7 +353,7 @@ int CPlateLocate::sobelSecSearchPart(Mat& bound, Point2f refpoint,
     ++itc;
   }
 
-  for (int i = 0; i < second_rects.size(); i++) {
+  for (size_t i = 0; i < second_rects.size(); i++) {
     RotatedRect roi = second_rects[i];
     if (verifySizes(roi)) {
       Point2f refcenter = roi.center + refpoint;
@@ -425,7 +425,7 @@ int CPlateLocate::sobelSecSearch(Mat& bound, Point2f refpoint,
     ++itc;
   }
 
-  for (int i = 0; i < second_rects.size(); i++) {
+  for (size_t i = 0; i < second_rects.size(); i++) {
     RotatedRect roi = second_rects[i];
     if (verifySizes(roi)) {
       Point2f refcenter = roi.center + refpoint;
@@ -557,7 +557,7 @@ int CPlateLocate::deskew(const Mat& src, const Mat& src_b,
   Mat mat_debug;
   src.copyTo(mat_debug);
 
-  for (int i = 0; i < inRects.size(); i++) {
+  for (size_t i = 0; i < inRects.size(); i++) {
     RotatedRect roi_rect = inRects[i];
 
     float r = (float)roi_rect.size.width / (float)roi_rect.size.height;
@@ -869,7 +869,7 @@ int CPlateLocate::deskewOld(Mat src, vector<RotatedRect>& inRects,
                             vector<RotatedRect>& outRects, vector<Mat>& outMats,
                             LocateType locateType) {
   int k = 1;
-  for (int i = 0; i < inRects.size(); i++) {
+  for (size_t i = 0; i < inRects.size(); i++) {
     RotatedRect minRect = inRects[i];
 
     if (verifySizes(minRect)) {
@@ -1048,7 +1048,7 @@ int CPlateLocate::plateColorLocate(Mat src, vector<CPlate>& candPlates,
   colorSearch(src, YELLOW, src_b, rects_color_yellow, index);
   deskew(src, src_b, rects_color_yellow, plates);
 
-  for (int i = 0; i < plates.size(); i++) {
+  for (size_t i = 0; i < plates.size(); i++) {
     candPlates.push_back(plates[i]);
   }
   return 0;
@@ -1119,7 +1119,7 @@ int CPlateLocate::plateSobelLocate(Mat src, vector<CPlate>& candPlates,
   vector<Rect_<float>> bound_rects_part;
 
   //对不符合要求的区域进行扩展
-  for (int i = 0; i < bound_rects.size(); i++) {
+  for (size_t i = 0; i < bound_rects.size(); i++) {
     double fRatio = bound_rects[i].width * 1.0 / bound_rects[i].height;
     if (fRatio < 3.0 && fRatio > 1.0 && bound_rects[i].height < 120) {
       Rect_<float> itemRect = bound_rects[i];
@@ -1140,7 +1140,7 @@ int CPlateLocate::plateSobelLocate(Mat src, vector<CPlate>& candPlates,
     }
   }
   //对断裂的部分进行二次处理
-  for (int i = 0; i < bound_rects_part.size(); i++) {
+  for (size_t i = 0; i < bound_rects_part.size(); i++) {
     Rect_<float> bound_rect = bound_rects_part[i];
     Point2f refpoint(bound_rect.x, bound_rect.y);
 
@@ -1159,7 +1159,7 @@ int CPlateLocate::plateSobelLocate(Mat src, vector<CPlate>& candPlates,
     sobelSecSearchPart(bound_mat, refpoint, rects_sobel);
   }
 
-  for (int i = 0; i < bound_rects.size(); i++) {
+  for (size_t i = 0; i < bound_rects.size(); i++) {
     Rect_<float> bound_rect = bound_rects[i];
     Point2f refpoint(bound_rect.x, bound_rect.y);
 
@@ -1185,7 +1185,7 @@ int CPlateLocate::plateSobelLocate(Mat src, vector<CPlate>& candPlates,
   // 进行抗扭斜处理
   deskew(src, src_b, rects_sobel, plates);
 
-  for (int i = 0; i < plates.size(); i++) candPlates.push_back(plates[i]);
+  for (size_t i = 0; i < plates.size(); i++) candPlates.push_back(plates[i]);
 
   return 0;
 }
@@ -1477,7 +1477,7 @@ int CPlateLocate::plateLocate(Mat src, vector<Mat>& resultVec, int index) {
     }
   }
   int k = 1;
-  for (int i = 0; i < rects.size(); i++) {
+  for (size_t i = 0; i < rects.size(); i++) {
     RotatedRect minRect = rects[i];
     if (verifySizes(minRect)) {
       // rotated rectangle drawing
