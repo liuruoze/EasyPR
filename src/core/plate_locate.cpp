@@ -669,7 +669,7 @@ int CPlateLocate::deskew(const Mat& src, const Mat& src_b,
 bool CPlateLocate::rotation(Mat& in, Mat& out, const Size rect_size,
                             const Point2f center, const double angle) {
   Mat in_large;
-  in_large.create(in.rows * 1.5, in.cols * 1.5, in.type());
+  in_large.create(int(in.rows * 1.5), int(in.cols * 1.5), in.type());
 
   float x = in_large.cols / 2 - center.x > 0 ? in_large.cols / 2 - center.x : 0;
   float y = in_large.rows / 2 - center.y > 0 ? in_large.rows / 2 - center.y : 0;
