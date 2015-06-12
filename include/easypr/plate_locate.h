@@ -114,10 +114,10 @@ class CPlateLocate {
   inline void setJudgeAngle(int param) { m_angle = param; }
 
   //! 是否开启调试模式
-  inline void setDebug(int param) { m_debug = param; }
+  inline void setDebug(bool param) { m_debug = param; }
 
   //! 获取调试模式状态
-  inline int getDebug() { return m_debug; }
+  inline bool getDebug() { return m_debug; }
 
   //! PlateLocate所用常量
   static const int DEFAULT_GAUSSIANBLUR_SIZE = 5;
@@ -162,7 +162,7 @@ class CPlateLocate {
   int m_angle;
 
   //! 是否开启调试模式，0关闭，非0开启
-  int m_debug;
+  bool m_debug;
 };
 
 } /*! \namespace easypr*/

@@ -8,8 +8,8 @@ Namespace where all the C++ EasyPR functionality resides
 */
 namespace easypr {
 
-const float DEFAULT_BLUEPERCEMT = 0.3;
-const float DEFAULT_WHITEPERCEMT = 0.1;
+const float DEFAULT_BLUEPERCEMT = 0.3f;
+const float DEFAULT_WHITEPERCEMT = 0.1f;
 
 CCharsSegment::CCharsSegment() {
   // cout << "CCharsSegment" << endl;
@@ -29,18 +29,18 @@ bool CCharsSegment::verifyCharSizes(Mat r) {
   // Char sizes 45x90
   float aspect = 45.0f / 90.0f;
   float charAspect = (float)r.cols / (float)r.rows;
-  float error = 0.7;
-  float minHeight = 10;
-  float maxHeight = 35;
+  float error = 0.7f;
+  float minHeight = 10.f;
+  float maxHeight = 35.f;
   // We have a different aspect ratio for number 1, and it can be ~0.2
-  float minAspect = 0.05;
+  float minAspect = 0.05f;
   float maxAspect = aspect + aspect * error;
   // area of pixels
-  float area = countNonZero(r);
+  int area = cv::countNonZero(r);
   // bb area
-  float bbArea = r.cols * r.rows;
+  int bbArea = r.cols * r.rows;
   //% of pixel in area
-  float percPixels = area / bbArea;
+  int percPixels = area / bbArea;
 
   if (percPixels <= 1 && charAspect > minAspect && charAspect < maxAspect &&
       r.rows >= minHeight && r.rows < maxHeight)
@@ -57,8 +57,8 @@ Mat CCharsSegment::preprocessChar(Mat in) {
   int charSize = CHAR_SIZE;  //统一每个字符的大小
   Mat transformMat = Mat::eye(2, 3, CV_32F);
   int m = max(w, h);
-  transformMat.at<float>(0, 2) = m / 2 - w / 2;
-  transformMat.at<float>(1, 2) = m / 2 - h / 2;
+  transformMat.at<float>(0, 2) = float(m / 2 - w / 2);
+  transformMat.at<float>(1, 2) = float(m / 2 - h / 2);
 
   Mat warpImage(m, m, in.type());
   warpAffine(in, warpImage, transformMat, warpImage.size(), INTER_LINEAR,
@@ -86,7 +86,7 @@ int CCharsSegment::charsSegment(Mat input, vector<Mat>& resultVec) {
   int w = input.cols;
   int h = input.rows;
 
-  Mat tmpMat = input(Rect(w * 0.1, h * 0.1, w * 0.8, h * 0.8));
+  Mat tmpMat = input(Rect_<double>(w * 0.1, h * 0.1, w * 0.8, h * 0.8));
 
   //判断车牌颜色以此确认threshold方法
   Color plateType = getPlateType(tmpMat, true);
@@ -101,7 +101,7 @@ int CCharsSegment::charsSegment(Mat input, vector<Mat>& resultVec) {
 
     int w = input_grey.cols;
     int h = input_grey.rows;
-    Mat tmp = input_grey(Rect(w * 0.1, h * 0.1, w * 0.8, h * 0.8));
+    Mat tmp = input_grey(Rect_<double>(w * 0.1, h * 0.1, w * 0.8, h * 0.8));
     int threadHoldV = ThresholdOtsu(tmp);
     // utils::imwrite("E:/img_inputgray2.jpg", input_grey);
 
@@ -116,7 +116,7 @@ int CCharsSegment::charsSegment(Mat input, vector<Mat>& resultVec) {
     img_threshold = input_grey.clone();
     int w = input_grey.cols;
     int h = input_grey.rows;
-    Mat tmp = input_grey(Rect(w * 0.1, h * 0.1, w * 0.8, h * 0.8));
+    Mat tmp = input_grey(Rect_<double>(w * 0.1, h * 0.1, w * 0.8, h * 0.8));
     int threadHoldV = ThresholdOtsu(tmp);
     utils::imwrite("resources/image/tmp/inputgray2.jpg", input_grey);
 
@@ -200,7 +200,7 @@ int CCharsSegment::charsSegment(Mat input, vector<Mat>& resultVec) {
   std::sort(sortedRect.begin(), sortedRect.end(),
             [](const Rect& r1, const Rect& r2) { return r1.x < r2.x; });
 
-  int specIndex = 0;
+  size_t specIndex = 0;
 
   //获得特殊字符对应的Rectt,如苏A的"A"
   specIndex = GetSpecificRect(sortedRect);
@@ -241,7 +241,7 @@ int CCharsSegment::charsSegment(Mat input, vector<Mat>& resultVec) {
 
   if (newSortedRect.size() == 0) return -3;
 
-  for (int i = 0; i < newSortedRect.size(); i++) {
+  for (size_t i = 0; i < newSortedRect.size(); i++) {
     Rect mr = newSortedRect[i];
     Mat auxRoi(img_threshold, mr);
 
@@ -266,17 +266,17 @@ int CCharsSegment::SortRect(const vector<Rect>& vecRect, vector<Rect>& out) {
   vector<int> orderIndex;
   vector<int> xpositions;
 
-  for (int i = 0; i < vecRect.size(); i++) {
+  for (size_t i = 0; i < vecRect.size(); i++) {
     orderIndex.push_back(i);
     xpositions.push_back(vecRect[i].x);
   }
 
-  float min = xpositions[0];
+  int min = xpositions[0];
   int minIdx = 0;
-  for (int i = 0; i < xpositions.size(); i++) {
+  for (size_t i = 0; i < xpositions.size(); i++) {
     min = xpositions[i];
     minIdx = i;
-    for (int j = i; j < xpositions.size(); j++) {
+    for (size_t j = i; j < xpositions.size(); j++) {
       if (xpositions[j] < min) {
         min = xpositions[j];
         minIdx = j;
@@ -287,13 +287,13 @@ int CCharsSegment::SortRect(const vector<Rect>& vecRect, vector<Rect>& out) {
     orderIndex[i] = aux_min;
     orderIndex[minIdx] = aux_i;
 
-    float aux_xi = xpositions[i];
-    float aux_xmin = xpositions[minIdx];
+    int aux_xi = xpositions[i];
+    int aux_xmin = xpositions[minIdx];
     xpositions[i] = aux_xmin;
     xpositions[minIdx] = aux_xi;
   }
 
-  for (int i = 0; i < orderIndex.size(); i++) {
+  for (size_t i = 0; i < orderIndex.size(); i++) {
     out.push_back(vecRect[orderIndex[i]]);
   }
 
@@ -303,7 +303,7 @@ int CCharsSegment::SortRect(const vector<Rect>& vecRect, vector<Rect>& out) {
 //! 根据特殊车牌来构造猜测中文字符的位置和大小
 Rect CCharsSegment::GetChineseRect(const Rect rectSpe) {
   int height = rectSpe.height;
-  float newwidth = rectSpe.width * 1.15;
+  float newwidth = rectSpe.width * 1.15f;
   int x = rectSpe.x;
   int y = rectSpe.y;
 
@@ -321,7 +321,7 @@ int CCharsSegment::GetSpecificRect(const vector<Rect>& vecRect) {
   int maxHeight = 0;
   int maxWidth = 0;
 
-  for (int i = 0; i < vecRect.size(); i++) {
+  for (size_t i = 0; i < vecRect.size(); i++) {
     xpositions.push_back(vecRect[i].x);
 
     if (vecRect[i].height > maxHeight) {
@@ -333,7 +333,7 @@ int CCharsSegment::GetSpecificRect(const vector<Rect>& vecRect) {
   }
 
   int specIndex = 0;
-  for (int i = 0; i < vecRect.size(); i++) {
+  for (size_t i = 0; i < vecRect.size(); i++) {
     Rect mr = vecRect[i];
     int midx = mr.x + mr.width / 2;
 

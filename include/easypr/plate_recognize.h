@@ -32,7 +32,7 @@ class CPlateRecognize : public CPlateDetect, public CCharsRecognise {
   inline void setLifemode(bool param) { CPlateDetect::setPDLifemode(param); }
 
   //! 是否开启调试模式
-  inline void setDebug(int param) {
+  inline void setDebug(bool param) {
     CPlateDetect::setPDDebug(param);
     CCharsRecognise::setCRDebug(param);
   }

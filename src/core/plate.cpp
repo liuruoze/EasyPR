@@ -3,12 +3,10 @@
 /*! \namespace easypr
 Namespace where all the C++ EasyPR functionality resides
 */
-namespace easypr{
+namespace easypr {
 
-	CPlate::CPlate()
-	{
-		//cout << "CPlate" << endl;
-		bColored = true;
-	}
+CPlate::CPlate() {
+  bColored = true;
+}
 
-}	/*! \namespace easypr*/
+} /*! \namespace easypr*/

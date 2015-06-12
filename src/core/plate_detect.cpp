@@ -66,7 +66,7 @@ int CPlateDetect::plateDetectDeep(Mat src, vector<CPlate>& resultVec,
   //	color_result_Plates.push_back(color_Plates[i]);
   //}
 
-  for (int i = 0; i < color_result_Plates.size(); i++) {
+  for (size_t i = 0; i < color_result_Plates.size(); i++) {
     CPlate plate = color_result_Plates[i];
 
     plate.setPlateLocateType(COLOR);
@@ -83,7 +83,7 @@ int CPlateDetect::plateDetectDeep(Mat src, vector<CPlate>& resultVec,
             sobel_result_Plates.push_back(sobel_Plates[i]);
     }*/
 
-    for (int i = 0; i < sobel_result_Plates.size(); i++) {
+    for (size_t i = 0; i < sobel_result_Plates.size(); i++) {
       CPlate plate = sobel_result_Plates[i];
 
       if (0) {
@@ -99,7 +99,7 @@ int CPlateDetect::plateDetectDeep(Mat src, vector<CPlate>& resultVec,
     }
   }
 
-  for (int i = 0; i < all_result_Plates.size(); i++) {
+  for (size_t i = 0; i < all_result_Plates.size(); i++) {
     // 把截取的车牌图像依次放到左上角
     CPlate plate = all_result_Plates[i];
     resultVec.push_back(plate);
@@ -110,7 +110,7 @@ int CPlateDetect::plateDetectDeep(Mat src, vector<CPlate>& resultVec,
 int CPlateDetect::showResult(const Mat& result) {
   namedWindow("EasyPR", CV_WINDOW_AUTOSIZE);
 
-  const int RESULTWIDTH = 640;  // 640 930
+  const int RESULTWIDTH = 640;   // 640 930
   const int RESULTHEIGHT = 540;  // 540 710
 
   Mat img_window;

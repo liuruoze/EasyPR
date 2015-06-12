@@ -117,7 +117,7 @@ int saveTrainData() {
     auto files = Utils::getFiles(ss.str());
 
     size_t size = files.size();
-    for (int j = 0; j < size; j++) {
+	for (size_t j = 0; j < size; j++) {
       cout << files[j].c_str() << endl;
       Mat img = imread(files[j].c_str(), 0);
       Mat f5 = features(img, 5);
