@@ -30,7 +30,7 @@ int generate_gdts() {
 
   std::cout << "Begin to prepare generate_gdts!" << std::endl;
 
-  for (int i = 0; i < size; i++) {
+  for (size_t i = 0; i < size; i++) {
     std::string filepath = files[i].c_str();
     std::cout << "------------------" << std::endl;
     std::cout << filepath << std::endl;
@@ -65,7 +65,7 @@ int generate_gdts() {
 cv::Mat imageProcess(cv::Mat img) {
   int width = img.size().width;
   int height = img.size().height;
-  cv::Rect rect(width * 0.01, height * 0.01, width * 0.99, height * 0.99);
+  cv::Rect_<double> rect(width * 0.01, height * 0.01, width * 0.99, height * 0.99);
 
   cv::Mat dst = img(rect);
   //GaussianBlur( dst, dst, Size(1, 1), 0, 0, BORDER_DEFAULT );
