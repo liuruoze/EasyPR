@@ -6,6 +6,13 @@
 #include <direct.h>
 #include <io.h>
 #define PATH_DELIMITER '\\'
+#ifdef min
+#undef min
+#endif
+
+#ifdef max
+#undef max
+#endif
 #elif defined(OS_LINUX) || defined(OS_UNIX)
 
 #include <cstring>
@@ -53,24 +60,7 @@ long Utils::getTimestamp() {
 std::string Utils::getFileName(const std::string& path,
                                const bool postfix /* = false */) {
   if (!path.empty()) {
-#ifdef OS_WINDOWS
-    size_t last_slash_1 = path.find_last_of("\\");
-    size_t last_slash_2 = path.find_last_of("/");
-    size_t last_slash;
-
-    if (last_slash_1 != std::string::npos &&
-        last_slash_2 != std::string::npos) {
-      // C:/path\\to/file.postfix
-      last_slash = max(last_slash_1, last_slash_2);
-    } else {
-      // C:\\path\\to\\file.postfix
-      // C:/path/to/file.postfix
-      last_slash =
-          (last_slash_1 == std::string::npos) ? last_slash_2 : last_slash_1;
-    }
-#else
-    size_t last_slash = path.find_last_of('/');
-#endif
+    size_t last_slash = utils::get_last_slash(path);
     size_t last_dot = path.find_last_of('.');
 
     if (last_dot < last_slash || last_dot == std::string::npos) {
@@ -150,7 +140,7 @@ std::vector<std::string> Utils::getFiles(const std::string& folder,
         }
       } else {
         // it's a file
-		std::string file_path;
+        std::string file_path;
         // current_folder.pop_back();
         file_path.assign(current_folder.c_str()).pop_back();
         file_path.append(file_info.name);
@@ -234,13 +224,13 @@ bool Utils::mkdir(const std::string folder) {
     if (c == PATH_DELIMITER || it == folder.end() - 1) {
       folder_builder.append(sub);
 #ifdef OS_WINDOWS
-	  if (0 != ::_access(folder_builder.c_str(), 0)) {
+      if (0 != ::_access(folder_builder.c_str(), 0)) {
 #else
       if (0 != ::access(folder_builder.c_str(), 0)) {
 #endif
-        // this folder not exist
+// this folder not exist
 #ifdef OS_WINDOWS
-		if (0 != ::_mkdir(folder_builder.c_str())) {
+        if (0 != ::_mkdir(folder_builder.c_str())) {
 #else
         if (0 != ::mkdir(folder_builder.c_str(), S_IRWXU)) {
 #endif
@@ -255,9 +245,30 @@ bool Utils::mkdir(const std::string folder) {
 }
 
 bool Utils::imwrite(const std::string& file, const cv::Mat& image) {
-  auto folder = file.substr(0, file.find_last_of(PATH_DELIMITER));
+  auto folder = file.substr(0, utils::get_last_slash(file));
   Utils::mkdir(folder);
   return cv::imwrite(file, image);
 }
 
-} // namespace easypr
+std::size_t Utils::get_last_slash(const std::string& path) {
+#ifdef OS_WINDOWS
+  size_t last_slash_1 = path.find_last_of("\\");
+  size_t last_slash_2 = path.find_last_of("/");
+  size_t last_slash;
+
+  if (last_slash_1 != std::string::npos && last_slash_2 != std::string::npos) {
+    // C:/path\\to/file.postfix
+    last_slash = std::max(last_slash_1, last_slash_2);
+  } else {
+    // C:\\path\\to\\file.postfix
+    // C:/path/to/file.postfix
+    last_slash =
+        (last_slash_1 == std::string::npos) ? last_slash_2 : last_slash_1;
+  }
+#else
+  size_t last_slash = path.find_last_of('/');
+#endif
+  return last_slash;
+}
+
+}  // namespace easypr
