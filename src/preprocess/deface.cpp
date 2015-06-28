@@ -21,7 +21,7 @@ cv::Mat detectAndMaskFace(cv::Mat& img, cv::CascadeClassifier& cascade,
                            cv::Size(30, 30));
   for (auto r = faces.begin(); r != faces.end(); r++) {
     cv::Rect facerect = *r;
-    cv::Mat roi = img(cv::Rect(facerect.x * scale, facerect.y * scale,
+    cv::Mat roi = img(cv::Rect_<double>(facerect.x * scale, facerect.y * scale,
                                facerect.width * scale,
                                facerect.height * scale));
     int W = 18;

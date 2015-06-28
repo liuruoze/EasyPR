@@ -14,14 +14,6 @@
 #define OS_LINUX
 #endif
 
-#ifdef min
-#undef min
-#endif
-
-#ifdef max
-#undef max
-#endif
-
 namespace easypr {
 class Utils {
  public:
@@ -104,6 +96,12 @@ class Utils {
    * if not, create it, then call cv::imwrite.
    */
   static bool imwrite(const std::string& file, const cv::Mat& image);
+
+ private:
+  /*
+   * Get the last slash from a path, compatible with Windows and *unix.
+   */
+  static std::size_t get_last_slash(const std::string& path);
 };
 
 typedef Utils utils;

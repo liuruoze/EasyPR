@@ -8,8 +8,8 @@ using namespace std;
         */
 namespace easypr {
 
-const float DEFAULT_ERROR = 0.9;    // 0.6
-const float DEFAULT_ASPECT = 3.75;  // 3.75
+const float DEFAULT_ERROR = 0.9f;    // 0.6
+const float DEFAULT_ASPECT = 3.75f;  // 3.75
 
 CPlateLocate::CPlateLocate() {
   // cout << "CPlateLocate" << endl;
@@ -69,7 +69,7 @@ bool CPlateLocate::verifySizes(RotatedRect mr) {
   float rmin = aspect - aspect * error;
   float rmax = aspect + aspect * error;
 
-  int area = mr.size.height * mr.size.width;
+  float area = mr.size.height * mr.size.width;
   float r = (float)mr.size.width / (float)mr.size.height;
   if (r < 1) r = (float)mr.size.height / (float)mr.size.width;
 
@@ -197,9 +197,9 @@ bool CPlateLocate::sobelJudge(Mat roi) {
       MORPH_RECT, Size(m_MorphSizeWidth, m_MorphSizeHeight));
   morphologyEx(roi_threshold, roi_threshold, MORPH_CLOSE, element);
 
-  float channels = roi_threshold.channels();
-  float nRows = roi_threshold.rows;
-  float nCols = roi_threshold.cols;
+  int channels = roi_threshold.channels();
+  int nRows = roi_threshold.rows;
+  int nCols = roi_threshold.cols;
 
   float percent = float(countNonZero(roi_threshold)) / float(nRows * nCols);
   // cout << "precent:" << percent << endl;
@@ -215,18 +215,18 @@ bool CPlateLocate::verifyCharSizes(Mat r) {
   // Char sizes 45x90
   float aspect = 45.0f / 90.0f;
   float charAspect = (float)r.cols / (float)r.rows;
-  float error = 0.7;
-  float minHeight = 10;
-  float maxHeight = 35;
+  float error = 0.7f;
+  float minHeight = 10.f;
+  float maxHeight = 35.f;
   // We have a different aspect ratio for number 1, and it can be ~0.2
-  float minAspect = 0.05;
+  float minAspect = 0.05f;
   float maxAspect = aspect + aspect * error;
   // area of pixels
-  float area = countNonZero(r);
+  int area = cv::countNonZero(r);
   // bb area
-  float bbArea = r.cols * r.rows;
+  int bbArea = r.cols * r.rows;
   //% of pixel in area
-  float percPixels = area / bbArea;
+  int percPixels = area / bbArea;
 
   if (percPixels <= 1 && charAspect > minAspect && charAspect < maxAspect &&
       r.rows >= minHeight && r.rows < maxHeight)
@@ -267,7 +267,7 @@ int CPlateLocate::sobelFrtSearch(const Mat& src,
     if (verifySizes(mr)) {
       first_rects.push_back(mr);
 
-      int area = mr.size.height * mr.size.width;
+      float area = mr.size.height * mr.size.width;
       float r = (float)mr.size.width / (float)mr.size.height;
       if (r < 1) r = (float)mr.size.height / (float)mr.size.width;
 
@@ -278,7 +278,7 @@ int CPlateLocate::sobelFrtSearch(const Mat& src,
     ++itc;
   }
 
-  for (int i = 0; i < first_rects.size(); i++) {
+  for (size_t i = 0; i < first_rects.size(); i++) {
     RotatedRect roi_rect = first_rects[i];
 
     Rect_<float> safeBoundRect;
@@ -321,9 +321,9 @@ int CPlateLocate::sobelSecSearchPart(Mat& bound, Point2f refpoint,
   if (bFindLeftRightBound(tempBoundThread, posLeft, posRight)) {
     //找到两个边界后进行连接修补处理
     if (posRight != 0 && posLeft != 0 && posLeft < posRight) {
-      int posY = bound_threshold.rows * 0.5;
-      for (int i = posLeft + bound_threshold.rows * 0.1; i < posRight - 4;
-           i++) {
+      int posY = int(bound_threshold.rows * 0.5);
+      for (int i = posLeft + (int)(bound_threshold.rows * 0.1);
+           i < posRight - 4; i++) {
         bound_threshold.data[posY * bound_threshold.cols + i] = 255;
       }
     }
@@ -353,12 +353,12 @@ int CPlateLocate::sobelSecSearchPart(Mat& bound, Point2f refpoint,
     ++itc;
   }
 
-  for (int i = 0; i < second_rects.size(); i++) {
+  for (size_t i = 0; i < second_rects.size(); i++) {
     RotatedRect roi = second_rects[i];
     if (verifySizes(roi)) {
       Point2f refcenter = roi.center + refpoint;
       Size2f size = roi.size;
-      double angle = roi.angle;
+      float angle = roi.angle;
 
       RotatedRect refroi(refcenter, size, angle);
       outRects.push_back(refroi);
@@ -425,12 +425,12 @@ int CPlateLocate::sobelSecSearch(Mat& bound, Point2f refpoint,
     ++itc;
   }
 
-  for (int i = 0; i < second_rects.size(); i++) {
+  for (size_t i = 0; i < second_rects.size(); i++) {
     RotatedRect roi = second_rects[i];
     if (verifySizes(roi)) {
       Point2f refcenter = roi.center + refpoint;
       Size2f size = roi.size;
-      double angle = roi.angle;
+      float angle = roi.angle;
 
       RotatedRect refroi(refcenter, size, angle);
       outRects.push_back(refroi);
@@ -498,13 +498,13 @@ void DeleteNotArea(Mat& inmat) {
   int w = inmat.cols;
   int h = inmat.rows;
 
-  Mat tmpMat = inmat(Rect(w * 0.15, h * 0.1, w * 0.7, h * 0.7));
+  Mat tmpMat = inmat(Rect_<double>(w * 0.15, h * 0.1, w * 0.7, h * 0.7));
   //判断车牌颜色以此确认threshold方法
   Color plateType = getPlateType(tmpMat, true);
   Mat img_threshold;
   if (BLUE == plateType) {
     img_threshold = input_grey.clone();
-    Mat tmp = input_grey(Rect(w * 0.15, h * 0.15, w * 0.7, h * 0.7));
+    Mat tmp = input_grey(Rect_<double>(w * 0.15, h * 0.15, w * 0.7, h * 0.7));
     int threadHoldV = ThresholdOtsu(tmp);
 
     threshold(input_grey, img_threshold, threadHoldV, 255, CV_THRESH_BINARY);
@@ -515,7 +515,7 @@ void DeleteNotArea(Mat& inmat) {
 
   } else if (YELLOW == plateType) {
     img_threshold = input_grey.clone();
-    Mat tmp = input_grey(Rect(w * 0.1, h * 0.1, w * 0.8, h * 0.8));
+    Mat tmp = input_grey(Rect_<double>(w * 0.1, h * 0.1, w * 0.8, h * 0.8));
     int threadHoldV = ThresholdOtsu(tmp);
 
     threshold(input_grey, img_threshold, threadHoldV, 255,
@@ -557,7 +557,7 @@ int CPlateLocate::deskew(const Mat& src, const Mat& src_b,
   Mat mat_debug;
   src.copyTo(mat_debug);
 
-  for (int i = 0; i < inRects.size(); i++) {
+  for (size_t i = 0; i < inRects.size(); i++) {
     RotatedRect roi_rect = inRects[i];
 
     float r = (float)roi_rect.size.width / (float)roi_rect.size.height;
@@ -669,24 +669,24 @@ int CPlateLocate::deskew(const Mat& src, const Mat& src_b,
 bool CPlateLocate::rotation(Mat& in, Mat& out, const Size rect_size,
                             const Point2f center, const double angle) {
   Mat in_large;
-  in_large.create(in.rows * 1.5, in.cols * 1.5, in.type());
+  in_large.create(int(in.rows * 1.5), int(in.cols * 1.5), in.type());
 
-  int x = in_large.cols / 2 - center.x > 0 ? in_large.cols / 2 - center.x : 0;
-  int y = in_large.rows / 2 - center.y > 0 ? in_large.rows / 2 - center.y : 0;
+  float x = in_large.cols / 2 - center.x > 0 ? in_large.cols / 2 - center.x : 0;
+  float y = in_large.rows / 2 - center.y > 0 ? in_large.rows / 2 - center.y : 0;
 
-  int width = x + in.cols < in_large.cols ? in.cols : in_large.cols - x;
-  int height = y + in.rows < in_large.rows ? in.rows : in_large.rows - y;
+  float width = x + in.cols < in_large.cols ? in.cols : in_large.cols - x;
+  float height = y + in.rows < in_large.rows ? in.rows : in_large.rows - y;
 
   /*assert(width == in.cols);
   assert(height == in.rows);*/
 
   if (width != in.cols || height != in.rows) return false;
 
-  Mat imageRoi = in_large(Rect(x, y, width, height));
+  Mat imageRoi = in_large(Rect_<float>(x, y, width, height));
   addWeighted(imageRoi, 0, in, 1, 0, imageRoi);
 
-  Point2f center_diff(in.cols / 2, in.rows / 2);
-  Point2f new_center(in_large.cols / 2, in_large.rows / 2);
+  Point2f center_diff(in.cols / 2.f, in.rows / 2.f);
+  Point2f new_center(in_large.cols / 2.f, in_large.rows / 2.f);
 
   Mat rot_mat = getRotationMatrix2D(new_center, angle, 1);
 
@@ -792,9 +792,9 @@ void CPlateLocate::affine(const Mat& in, Mat& out, const double slope) {
   Point2f dstTri[3];
   Point2f plTri[3];
 
-  int height = in.rows;  //行
-  int width = in.cols;   //列
-  double xiff = abs(slope) * height;
+  float height = (float)in.rows;  //行
+  float width = (float)in.cols;   //列
+  float xiff = (float)abs(slope) * height;
 
   if (slope > 0) {
     //右偏型，新起点坐标系在xiff/2位置
@@ -816,14 +816,10 @@ void CPlateLocate::affine(const Mat& in, Mat& out, const double slope) {
     dstTri[2] = Point2f(xiff / 2, height - 1);
   }
 
-  /*dstTri[0] = Point2f(0, 0);
-  dstTri[1] = Point2f(WIDTH - 1, 0);
-  dstTri[2] = Point2f(0, HEIGHT - 1);*/
-
   Mat warp_mat = getAffineTransform(plTri, dstTri);
 
   Mat affine_mat;
-  affine_mat.create(height, width, TYPE);
+  affine_mat.create((int)height, (int)width, TYPE);
 
   if (in.rows > HEIGHT || in.cols > WIDTH)
     warpAffine(in, affine_mat, warp_mat, affine_mat.size(),
@@ -869,7 +865,7 @@ int CPlateLocate::deskewOld(Mat src, vector<RotatedRect>& inRects,
                             vector<RotatedRect>& outRects, vector<Mat>& outMats,
                             LocateType locateType) {
   int k = 1;
-  for (int i = 0; i < inRects.size(); i++) {
+  for (size_t i = 0; i < inRects.size(); i++) {
     RotatedRect minRect = inRects[i];
 
     if (verifySizes(minRect)) {
@@ -954,18 +950,18 @@ int CPlateLocate::deskewOld(Mat src, vector<RotatedRect>& inRects,
                 double PI = 3.14159265;
                 double g = tan((angle + 90) * PI / 180.0);
 
-                double xdiff = double(middle_crop.rows) * g;
-                plTri[0] = Point2f(0 + xdiff, 0);
-                plTri[1] = Point2f(middle_crop.cols - 1, 0);
-                plTri[2] = Point2f(0, middle_crop.rows - 1);
+                double xdiff = middle_crop.rows * g;
+                plTri[0] = Point2f(0 + (float)xdiff, 0);
+                plTri[1] = Point2f(middle_crop.cols - 1.f, 0);
+                plTri[2] = Point2f(0, middle_crop.rows - 1.f);
               } else {
                 double PI = 3.14159265;
                 double g = tan(abs(angle) * PI / 180.0);
 
                 double xdiff = double(middle_crop.rows) * g;
                 plTri[0] = Point2f(0, 0);
-                plTri[1] = Point2f(middle_crop.cols - 1, 0);
-                plTri[2] = Point2f(0 + xdiff, middle_crop.rows - 1);
+                plTri[1] = Point2f(middle_crop.cols - 1.f, 0);
+                plTri[2] = Point2f(0 + (float)xdiff, middle_crop.rows - 1.f);
               }
 
               dstTri[0] = Point2f(0, 0);
@@ -1048,7 +1044,7 @@ int CPlateLocate::plateColorLocate(Mat src, vector<CPlate>& candPlates,
   colorSearch(src, YELLOW, src_b, rects_color_yellow, index);
   deskew(src, src_b, rects_color_yellow, plates);
 
-  for (int i = 0; i < plates.size(); i++) {
+  for (size_t i = 0; i < plates.size(); i++) {
     candPlates.push_back(plates[i]);
   }
   return 0;
@@ -1119,8 +1115,8 @@ int CPlateLocate::plateSobelLocate(Mat src, vector<CPlate>& candPlates,
   vector<Rect_<float>> bound_rects_part;
 
   //对不符合要求的区域进行扩展
-  for (int i = 0; i < bound_rects.size(); i++) {
-    double fRatio = bound_rects[i].width * 1.0 / bound_rects[i].height;
+  for (size_t i = 0; i < bound_rects.size(); i++) {
+    float fRatio = bound_rects[i].width * 1.0f / bound_rects[i].height;
     if (fRatio < 3.0 && fRatio > 1.0 && bound_rects[i].height < 120) {
       Rect_<float> itemRect = bound_rects[i];
       //宽度过小，进行扩展
@@ -1133,45 +1129,45 @@ int CPlateLocate::plateSobelLocate(Mat src, vector<CPlate>& candPlates,
         itemRect.width = src.cols - itemRect.x;
       }
 
-      itemRect.y = itemRect.y - itemRect.height * 0.08;
-      itemRect.height = itemRect.height * 1.16;
+      itemRect.y = itemRect.y - itemRect.height * 0.08f;
+      itemRect.height = itemRect.height * 1.16f;
 
       bound_rects_part.push_back(itemRect);
     }
   }
   //对断裂的部分进行二次处理
-  for (int i = 0; i < bound_rects_part.size(); i++) {
+  for (size_t i = 0; i < bound_rects_part.size(); i++) {
     Rect_<float> bound_rect = bound_rects_part[i];
     Point2f refpoint(bound_rect.x, bound_rect.y);
 
-    int x = bound_rect.x > 0 ? bound_rect.x : 0;
-    int y = bound_rect.y > 0 ? bound_rect.y : 0;
+    float x = bound_rect.x > 0 ? bound_rect.x : 0;
+    float y = bound_rect.y > 0 ? bound_rect.y : 0;
 
-    int width =
+    float width =
         x + bound_rect.width < src.cols ? bound_rect.width : src.cols - x;
-    int height =
+    float height =
         y + bound_rect.height < src.rows ? bound_rect.height : src.rows - y;
 
-    Rect safe_bound_rect(x, y, width, height);
+    Rect_<float> safe_bound_rect(x, y, width, height);
     Mat bound_mat = src(safe_bound_rect);
 
     // Sobel第二次精细搜索(部分)
     sobelSecSearchPart(bound_mat, refpoint, rects_sobel);
   }
 
-  for (int i = 0; i < bound_rects.size(); i++) {
+  for (size_t i = 0; i < bound_rects.size(); i++) {
     Rect_<float> bound_rect = bound_rects[i];
     Point2f refpoint(bound_rect.x, bound_rect.y);
 
-    int x = bound_rect.x > 0 ? bound_rect.x : 0;
-    int y = bound_rect.y > 0 ? bound_rect.y : 0;
+    float x = bound_rect.x > 0 ? bound_rect.x : 0;
+    float y = bound_rect.y > 0 ? bound_rect.y : 0;
 
-    int width =
+    float width =
         x + bound_rect.width < src.cols ? bound_rect.width : src.cols - x;
-    int height =
+    float height =
         y + bound_rect.height < src.rows ? bound_rect.height : src.rows - y;
 
-    Rect safe_bound_rect(x, y, width, height);
+    Rect_<float> safe_bound_rect(x, y, width, height);
     Mat bound_mat = src(safe_bound_rect);
 
     // Sobel第二次精细搜索
@@ -1185,7 +1181,7 @@ int CPlateLocate::plateSobelLocate(Mat src, vector<CPlate>& candPlates,
   // 进行抗扭斜处理
   deskew(src, src_b, rects_sobel, plates);
 
-  for (int i = 0; i < plates.size(); i++) candPlates.push_back(plates[i]);
+  for (size_t i = 0; i < plates.size(); i++) candPlates.push_back(plates[i]);
 
   return 0;
 }
@@ -1252,8 +1248,8 @@ int CPlateLocate::plateLocate(Mat src, vector<Mat>& resultVec, int index) {
   for (int i = 0; i < tmp.rows; i++) {
     for (int j = 0; j < tmp.cols; j++) {
       int nH = hsvSplit[0].at<uchar>(i, j) * 2;
-      float fS = hsvSplit[1].at<uchar>(i, j) / 255.0;
-      float fV = hsvSplit[2].at<uchar>(i, j) / 255.0;
+      float fS = hsvSplit[1].at<uchar>(i, j) / 255.0f;
+      float fV = hsvSplit[2].at<uchar>(i, j) / 255.0f;
       if (nH >= 200 && nH <= 255 && fS >= 0.4 && fS <= 1 && fV >= 0.3 &&
           fV <= 1)  // 蓝色
         dst_blue.at<uchar>(i, j) = 255;
@@ -1300,8 +1296,8 @@ int CPlateLocate::plateLocate(Mat src, vector<Mat>& resultVec, int index) {
   for (int i = 0; i < tmp.rows; i++) {
     for (int j = 0; j < tmp.cols; j++) {
       int nH = hsvSplit[0].at<uchar>(i, j) * 2;
-      float fS = hsvSplit[1].at<uchar>(i, j) / 255.0;
-      float fV = hsvSplit[2].at<uchar>(i, j) / 255.0;
+      float fS = hsvSplit[1].at<uchar>(i, j) / 255.0f;
+      float fV = hsvSplit[2].at<uchar>(i, j) / 255.0f;
       if (nH >= 25 && nH <= 55 && fS >= 0.4 && fS <= 1 && fV >= 0.3 &&
           fV <= 1)  // 黄色
         dst_yellow.at<uchar>(i, j) = 255;
@@ -1477,7 +1473,7 @@ int CPlateLocate::plateLocate(Mat src, vector<Mat>& resultVec, int index) {
     }
   }
   int k = 1;
-  for (int i = 0; i < rects.size(); i++) {
+  for (size_t i = 0; i < rects.size(); i++) {
     RotatedRect minRect = rects[i];
     if (verifySizes(minRect)) {
       // rotated rectangle drawing

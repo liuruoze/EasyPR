@@ -6,13 +6,13 @@
 namespace easypr {
 
 Svm::Svm(const char* forward_data_folder, const char* inverse_data_folder)
-        : forward_(forward_data_folder), inverse_(inverse_data_folder) {
+    : forward_(forward_data_folder), inverse_(inverse_data_folder) {
   assert(forward_);
   assert(inverse_);
 }
 
 void Svm::divide(const char* images_folder, float percentage /* = 0.7 */) {
-  auto files = Utils::getFiles(images_folder);
+  auto files = utils::getFiles(images_folder);
   if (files.empty()) {
     std::cout << "No file found in " << images_folder << std::endl;
     return;
@@ -25,14 +25,14 @@ void Svm::divide(const char* images_folder, float percentage /* = 0.7 */) {
   for (size_t i = 0; i < files.size(); ++i) {
     // TODO: Move files directly to improve efficiency.
     auto f = files[i];
-    auto file_name = Utils::getFileName(f, true).c_str();
+    auto file_name = utils::getFileName(f, true);
     auto image = cv::imread(f);
     char save_to[255] = {0};
     assert(!image.empty());
     if (i < split_index) {
-      sprintf(save_to, "%s/train/%s", images_folder, file_name);
+      sprintf(save_to, "%s/train/%s", images_folder, file_name.c_str());
     } else {
-      sprintf(save_to, "%s/test/%s", images_folder, file_name);
+      sprintf(save_to, "%s/test/%s", images_folder, file_name.c_str());
     }
     utils::imwrite(save_to, image);
     std::cout << f << " -> " << save_to << std::endl;
@@ -62,7 +62,7 @@ void Svm::get_train() {
     features = features.reshape(1, 1);
 
     this->trainingData_.push_back(features);
-    labels.push_back(Label::kForward); // Note here
+    labels.push_back(Label::kForward);  // Note here
   }
 
   // iterate inverse data
@@ -84,7 +84,7 @@ void Svm::get_train() {
     features = features.reshape(1, 1);
 
     this->trainingData_.push_back(features);
-    labels.push_back(Label::kInverse); // Note here
+    labels.push_back(Label::kInverse);  // Note here
   }
 
   //
@@ -154,8 +154,10 @@ void Svm::train(bool divide /* = true */, float divide_percentage /* = 0.7 */,
       // need to be trained first
       CvSVMParams SVM_params;
       SVM_params.svm_type = CvSVM::C_SVC;
-      //SVM_params.kernel_type = CvSVM::LINEAR; //CvSVM::LINEAR;   线型，也就是无核
-      SVM_params.kernel_type = CvSVM::RBF; //CvSVM::RBF 径向基函数，也就是高斯核
+      // SVM_params.kernel_type = CvSVM::LINEAR; //CvSVM::LINEAR;
+      // 线型，也就是无核
+      SVM_params.kernel_type =
+          CvSVM::RBF;  // CvSVM::RBF 径向基函数，也就是高斯核
       SVM_params.degree = 0.1;
       SVM_params.gamma = 1;
       SVM_params.coef0 = 0.1;
@@ -167,27 +169,25 @@ void Svm::train(bool divide /* = true */, float divide_percentage /* = 0.7 */,
       std::cout << "Generating svm model file, please wait..." << std::endl;
 
       try {
-        //CvSVM svm(trainingData, classes, cv::Mat(), cv::Mat(), SVM_params);
+        // CvSVM svm(trainingData, classes, cv::Mat(), cv::Mat(), SVM_params);
         svm.train_auto(this->trainingData_, this->classes_, cv::Mat(),
-                       cv::Mat(),
-                       SVM_params,
-                       10,
+                       cv::Mat(), SVM_params, 10,
                        CvSVM::get_default_grid(CvSVM::C),
                        CvSVM::get_default_grid(CvSVM::GAMMA),
                        CvSVM::get_default_grid(CvSVM::P),
                        CvSVM::get_default_grid(CvSVM::NU),
                        CvSVM::get_default_grid(CvSVM::COEF),
-                       CvSVM::get_default_grid(CvSVM::DEGREE),
-                       true);
+                       CvSVM::get_default_grid(CvSVM::DEGREE), true);
       } catch (const cv::Exception& err) {
         std::cout << err.what() << std::endl;
       }
 
+      utils::mkdir(out_svm_path);
       cv::FileStorage fsTo(out_svm_path, cv::FileStorage::WRITE);
       svm.write(*fsTo, "svm");
 
-      std::cout << "Generate done! The model file is located at " <<
-      out_svm_path << std::endl;
+      std::cout << "Generate done! The model file is located at "
+                << out_svm_path << std::endl;
     } else {
       // don't train, use ready-made model file
       try {
@@ -196,10 +196,10 @@ void Svm::train(bool divide /* = true */, float divide_percentage /* = 0.7 */,
         std::cout << err.what() << std::endl;
       }
     }
-  } // if train
+  }  // if train
 
   // TODO Check whether the model file exists or not.
-  svm.load(out_svm_path, "svm"); // make sure svm model was loaded
+  svm.load(out_svm_path, "svm");  // make sure svm model was loaded
 
   // 30% testing procedure
   this->get_test();
@@ -220,17 +220,13 @@ void Svm::train(bool divide /* = true */, float divide_percentage /* = 0.7 */,
     cv::Mat out;
     features.convertTo(out, CV_32FC1);
 
-    Label predict = ((int) svm.predict(out)) == 1 ? kForward : kInverse;
+    Label predict = ((int)svm.predict(out)) == 1 ? kForward : kInverse;
     Label real = test_labels_[label_index++];
 
-    if (predict == kForward && real == kForward)
-      ptrue_rtrue++;
-    if (predict == kForward && real == kInverse)
-      ptrue_rfalse++;
-    if (predict == kInverse && real == kForward)
-      pfalse_rtrue++;
-    if (predict == kInverse && real == kInverse)
-      pfalse_rfalse++;
+    if (predict == kForward && real == kForward) ptrue_rtrue++;
+    if (predict == kForward && real == kInverse) ptrue_rfalse++;
+    if (predict == kInverse && real == kForward) pfalse_rtrue++;
+    if (predict == kInverse && real == kInverse) pfalse_rfalse++;
   }
 
   std::cout << "count_all: " << count_all << std::endl;
@@ -244,7 +240,8 @@ void Svm::train(bool divide /* = true */, float divide_percentage /* = 0.7 */,
     precise = ptrue_rtrue / (ptrue_rtrue + ptrue_rfalse);
     std::cout << "precise: " << precise << std::endl;
   } else {
-    std::cout << "precise: " << "NA" << std::endl;
+    std::cout << "precise: "
+              << "NA" << std::endl;
   }
 
   double recall = 0;
@@ -252,7 +249,8 @@ void Svm::train(bool divide /* = true */, float divide_percentage /* = 0.7 */,
     recall = ptrue_rtrue / (ptrue_rtrue + pfalse_rtrue);
     std::cout << "recall: " << recall << std::endl;
   } else {
-    std::cout << "recall: " << "NA" << std::endl;
+    std::cout << "recall: "
+              << "NA" << std::endl;
   }
 
   double Fsocre = 0;
@@ -260,9 +258,9 @@ void Svm::train(bool divide /* = true */, float divide_percentage /* = 0.7 */,
     Fsocre = 2 * (precise * recall) / (precise + recall);
     std::cout << "Fsocre: " << Fsocre << std::endl;
   } else {
-    std::cout << "Fsocre: " << "NA" << std::endl;
+    std::cout << "Fsocre: "
+              << "NA" << std::endl;
   }
-
 }
 
-} // namespace easypr
+}  // namespace easypr
