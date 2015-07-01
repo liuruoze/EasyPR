@@ -219,9 +219,9 @@ $ ./easypr_test svm --train --has-plate=has/ --no-plate=no/ --divide --svm=save/
 
 * liuruoze：1.0-1.2版作者，1.3版整合工作
 
-* 海豚嘎嘎：1.3alpha-beta版主要贡献者，提升了车牌定位与字符识别的准确率
+* 海豚嘎嘎：1.3版算法贡献者，提升了车牌定位与字符识别的准确率
 
-* Micooz：架构优化，代码重构，linux与mac的跨平台编译等
+* Micooz：1.3版架构改善与重构，linux与mac的跨平台编译等
 
 * jsxyhelu：deface版本一
 
