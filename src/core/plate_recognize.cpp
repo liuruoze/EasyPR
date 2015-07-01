@@ -18,7 +18,7 @@ int CPlateRecognize::plateRecognize(Mat src, std::vector<string> &licenseVec,
   vector<CPlate> plateVec;
 
   // 进行深度定位，使用颜色信息与二次Sobel
-  int resultPD = plateDetectDeep(src, plateVec, getPDDebug(), 0);
+  int resultPD = plateDetect(src, plateVec, getPDDebug(), 0);
 
   if (resultPD == 0) {
     int num = plateVec.size();

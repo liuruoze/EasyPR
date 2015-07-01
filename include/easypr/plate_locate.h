@@ -73,11 +73,6 @@ class CPlateLocate {
 
   //! 未使用函数与代码
   //! 开始------------
-  bool sobelJudge(Mat roi);
-  int deskewOld(Mat src, vector<RotatedRect>& inRects,
-                vector<RotatedRect>& outRects, vector<Mat>& outMats,
-                LocateType locateType);
-  bool verifyCharSizes(Mat r);
   //! 结束------------
   //! 未使用函数与代码
 
@@ -86,9 +81,6 @@ class CPlateLocate {
 
   //! 车牌的尺寸验证
   bool verifySizes(RotatedRect mr);
-
-  //! 结果车牌显示
-  Mat showResultMat(Mat src, Size rect_size, Point2f center, int index);
 
   //! 生活模式与工业模式切换
   void setLifemode(bool param);

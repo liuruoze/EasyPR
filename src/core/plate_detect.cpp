@@ -5,7 +5,7 @@
     Namespace where all the C++ EasyPR functionality resides
 */
 namespace easypr {
-// int iiname=0;
+
 CPlateDetect::CPlateDetect() {
   // cout << "CPlateDetect" << endl;
   m_plateLocate = new CPlateLocate();
@@ -17,34 +17,7 @@ CPlateDetect::CPlateDetect() {
 
 void CPlateDetect::LoadSVM(string s) { m_plateJudge->LoadModel(s.c_str()); }
 
-int CPlateDetect::plateDetect(Mat src, vector<Mat>& resultVec, int index) {
-  //可能是车牌的图块集合
-  vector<Mat> matVec;
-
-  int resultLo = m_plateLocate->plateLocate(src, matVec);
-
-  if (0 != resultLo) return -1;
-
-  int resultJu = m_plateJudge->plateJudge(matVec, resultVec);
-
-  if (getPDDebug()) {
-    int size = resultVec.size();
-    for (int i = 0; i < size; i++) {
-      Mat img = resultVec[i];
-      if (1) {
-        std::stringstream ss;
-        ss << "resources/image/tmp/plate_judge_result_" << i << ".jpg";
-        utils::imwrite(ss.str(), img);
-      }
-    }
-  }
-
-  if (0 != resultJu) return -2;
-
-  return 0;
-}
-
-int CPlateDetect::plateDetectDeep(Mat src, vector<CPlate>& resultVec,
+int CPlateDetect::plateDetect(Mat src, vector<CPlate>& resultVec,
                                   bool showDetectArea, int index) {
   vector<Mat> resultPlates;
 

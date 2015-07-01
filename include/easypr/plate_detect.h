@@ -25,11 +25,8 @@ class CPlateDetect {
  public:
   CPlateDetect();
 
-  //! 车牌检测：车牌定位与判断
-  int plateDetect(Mat, vector<Mat>&, int index = 0);
-
   //! 深度车牌检测，使用颜色与二次Sobel法综合
-  int plateDetectDeep(Mat src, vector<CPlate>& resultVec,
+  int plateDetect(Mat src, vector<CPlate>& resultVec,
                       bool showDetectArea = true, int index = 0);
 
   //! 展示中间的结果
