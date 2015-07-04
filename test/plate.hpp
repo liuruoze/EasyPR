@@ -93,7 +93,7 @@ int test_plate_detect() {
   CPlateDetect pd;
   pd.setPDLifemode(true);
 
-  int result = pd.plateDetectDeep(src, resultVec);
+  int result = pd.plateDetect(src, resultVec);
   if (result == 0) {
     size_t num = resultVec.size();
     for (size_t j = 0; j < num; j++) {

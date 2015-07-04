@@ -4,7 +4,7 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup>
     <IncludePath>$(OPENCV)\include;$(IncludePath)</IncludePath>
-    <LibraryPath Condition="'$(Platform)'=='Win32'">$(OPENCV)\x86\vc10\lib;$(LibraryPath)</LibraryPath>
+    <LibraryPath Condition="'$(Platform)'=='Win32'">$(OPENCV)\x86\vc12\lib;$(LibraryPath)</LibraryPath>
     <LibraryPath Condition="'$(Platform)'=='X64'">$(OPENCV)\x64\vc10\lib;$(LibraryPath)</LibraryPath>
     <SourcePath>G:\opencv\opencv\sources;$(SourcePath)</SourcePath>
   </PropertyGroup>
