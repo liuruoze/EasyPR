@@ -15,10 +15,15 @@ CPlateDetect::CPlateDetect() {
   m_maxPlates = 3;
 }
 
+CPlateDetect::~CPlateDetect() {
+  SAFE_RELEASE(m_plateLocate);
+  SAFE_RELEASE(m_plateJudge);
+}
+
 void CPlateDetect::LoadSVM(string s) { m_plateJudge->LoadModel(s.c_str()); }
 
 int CPlateDetect::plateDetect(Mat src, vector<CPlate>& resultVec,
-                                  bool showDetectArea, int index) {
+                              bool showDetectArea, int index) {
   vector<Mat> resultPlates;
 
   vector<CPlate> color_Plates;

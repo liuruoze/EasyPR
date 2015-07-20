@@ -24,6 +24,8 @@ class CCharsRecognise {
  public:
   CCharsRecognise();
 
+  ~CCharsRecognise();
+
   //! 字符分割与识别
   int charsRecognise(Mat, String&);
 

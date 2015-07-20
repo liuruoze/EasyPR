@@ -133,9 +133,13 @@ EasyPR支持当前主流的操作系统，通常不需要对源代码进行更�
 
 **Note**: 无论在哪个平台使用EasyPR，都要安装对应平台版本的[opencv](http://opencv.org/)，建议使用正式稳定版本。
 
+windows平台下的opencv的配置可以参考这份[博客](http://my.phirobot.com/blog/2014-02-opencv_configuration_in_vs.html)。
+
 #### Windows
 
-Windows下的配置以Visual Studio 2013为例，其他版本大同小异。
+Windows下的配置建议使用最新的Visual Studio 2013版本。
+
+目前2010与2012下会存在编译问题，这是由于老版本对C++ 11特性支持的不足导致的。
 
 * 打开项目目录下的解决方案文件`EasyPR.sln`。
 
@@ -219,7 +223,7 @@ $ ./easypr_test svm --train --has-plate=has/ --no-plate=no/ --divide --svm=save/
 
 * liuruoze：1.0-1.2版作者，1.3版整合工作
 
-* 海豚嘎嘎：1.3版算法贡献者，提升了车牌定位与字符识别的准确率
+* 海豚嘎嘎(车主之家)：1.3版算法贡献者，提升了车牌定位与字符识别的准确率
 
 * Micooz：1.3版架构改善与重构，linux与mac的跨平台编译等
 
@@ -235,4 +239,4 @@ $ ./easypr_test svm --train --has-plate=has/ --no-plate=no/ --divide --svm=save/
 
 taotao1233，邱锦山，唐大侠，jsxyhelu，如果有一天(zhoushiwei)，学习奋斗，袁承志，
 
-圣城小石匠，goldriver，Micooz，梦里时光，Rain Wang，任薛纪，ahccom，星夜落尘，海豚嘎嘎
+圣城小石匠，goldriver，Micooz，梦里时光，Rain Wang，任薛纪，ahccom，星夜落尘，海豚嘎嘎(车主之家)，刘超。
