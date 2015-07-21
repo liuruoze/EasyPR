@@ -46,7 +46,7 @@ int test_chars_identify() {
       bool isChinses = false;
       bool isSpec = false;
 
-      //默认首个字符块是中文字符
+      //榛樿棣栦釜瀛楃鍧楁槸涓枃瀛楃
       if (j == 0)
         isChinses = true;
 
@@ -58,7 +58,7 @@ int test_chars_identify() {
     }
   }
 
-  const std::string plateLicense = "苏E771H6";
+  const std::string plateLicense = "鑻廍771H6";
 
   std::cout << "plateLicense: " << plateLicense << std::endl;
   std::cout << "plateIdentify: " << plateIdentify << std::endl;
