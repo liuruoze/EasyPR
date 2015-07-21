@@ -12,8 +12,7 @@ CPlateRecognize::CPlateRecognize() {
 }
 
 // !车牌识别模块
-int CPlateRecognize::plateRecognize(Mat src, std::vector<string> &licenseVec,
-                                    int index) {
+int CPlateRecognize::plateRecognize(Mat src, std::vector<string> &licenseVec) {
   // 车牌方块集合
   vector<CPlate> plateVec;
 
