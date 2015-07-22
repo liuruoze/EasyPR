@@ -80,7 +80,7 @@ int iTag = 0;
 
 //! 字符分割与排序
 int CCharsSegment::charsSegment(Mat input, vector<Mat>& resultVec) {
-  // 输入图片无数据，返回ErrorCode=0x01
+
   if (!input.data) return 0x01;
 
   int w = input.cols;
@@ -88,13 +88,17 @@ int CCharsSegment::charsSegment(Mat input, vector<Mat>& resultVec) {
 
   Mat tmpMat = input(Rect_<double>(w * 0.1, h * 0.1, w * 0.8, h * 0.8));
 
-  //判断车牌颜色以此确认threshold方法
+  // 判断车牌颜色以此确认threshold方法
   Color plateType = getPlateType(tmpMat, true);
 
   Mat input_grey;
   cvtColor(input, input_grey, CV_BGR2GRAY);
 
   Mat img_threshold;
+
+  // 二值化
+  // 根据车牌的不同颜色使用不同的阈值判断方法
+  // TODO：使用MSER来提取这些轮廓
   if (BLUE == plateType) {
     // cout << "BLUE" << endl;
     img_threshold = input_grey.clone();
@@ -167,6 +171,7 @@ int CCharsSegment::charsSegment(Mat input, vector<Mat>& resultVec) {
   }
   iTag++;
 
+  // 在二值化图像中提取轮廓
   Mat img_contours;
   img_threshold.copyTo(img_contours);
 
@@ -192,13 +197,9 @@ int CCharsSegment::charsSegment(Mat input, vector<Mat>& resultVec) {
   if (vecRect.size() == 0) return 0x03;
 
   // 对符合尺寸的图块按照从左到右进行排序;
-
-  /*vector<Rect> sortedRect;
-  SortRect(vecRect, sortedRect);*/
-
+  // 直接使用stl的sort方法，更有效率
   vector<Rect> sortedRect(vecRect);
-  std::sort(sortedRect.begin(), sortedRect.end(),
-            [](const Rect& r1, const Rect& r2) { return r1.x < r2.x; });
+  std::sort(sortedRect.begin(), sortedRect.end(),[](const Rect& r1, const Rect& r2) { return r1.x < r2.x; });
 
   size_t specIndex = 0;
 
@@ -257,45 +258,6 @@ int CCharsSegment::charsSegment(Mat input, vector<Mat>& resultVec) {
     }
   }
   staticIndex += newSortedRect.size();
-
-  return 0;
-}
-
-//! 将Rect按位置从左到右进行排序
-int CCharsSegment::SortRect(const vector<Rect>& vecRect, vector<Rect>& out) {
-  vector<int> orderIndex;
-  vector<int> xpositions;
-
-  for (size_t i = 0; i < vecRect.size(); i++) {
-    orderIndex.push_back(i);
-    xpositions.push_back(vecRect[i].x);
-  }
-
-  int min = xpositions[0];
-  int minIdx = 0;
-  for (size_t i = 0; i < xpositions.size(); i++) {
-    min = xpositions[i];
-    minIdx = i;
-    for (size_t j = i; j < xpositions.size(); j++) {
-      if (xpositions[j] < min) {
-        min = xpositions[j];
-        minIdx = j;
-      }
-    }
-    int aux_i = orderIndex[i];
-    int aux_min = orderIndex[minIdx];
-    orderIndex[i] = aux_min;
-    orderIndex[minIdx] = aux_i;
-
-    int aux_xi = xpositions[i];
-    int aux_xmin = xpositions[minIdx];
-    xpositions[i] = aux_xmin;
-    xpositions[minIdx] = aux_xi;
-  }
-
-  for (size_t i = 0; i < orderIndex.size(); i++) {
-    out.push_back(vecRect[orderIndex[i]]);
-  }
 
   return 0;
 }
