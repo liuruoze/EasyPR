@@ -1,4 +1,5 @@
 #include "easypr/chars_recognise.h"
+#include "easypr/util.h"
 
 /*! \namespace easypr
 Namespace where all the C++ EasyPR functionality resides
@@ -6,9 +7,13 @@ Namespace where all the C++ EasyPR functionality resides
 namespace easypr {
 
 CCharsRecognise::CCharsRecognise() {
-  // cout << "CCharsRecognise" << endl;
   m_charsSegment = new CCharsSegment();
   m_charsIdentify = new CCharsIdentify();
+}
+
+CCharsRecognise::~CCharsRecognise() {
+  SAFE_RELEASE(m_charsSegment);
+  SAFE_RELEASE(m_charsIdentify);
 }
 
 void CCharsRecognise::LoadANN(string s) {
