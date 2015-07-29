@@ -123,7 +123,11 @@ EasyPR的resources/image/general_test文件夹下的图片数据遵循[GDSL协�
 
 ### 使用
 
-EasyPR的所有源代码可在Github上的[项目主页](https://github.com/liuruoze/EasyPR)直接打包下载得到，如果你熟悉git版本控制工具，可以使用下面的命令来克隆代码：
+EasyPR的所有源代码可在Github上的[项目主页](https://github.com/liuruoze/EasyPR)直接打包下载得到。
+
+由于Github在中国有时下载速度较慢，可以使用oschina的镜像[地址](http://git.oschina.net/easypr/EasyPR)来下载。
+
+如果你熟悉git版本控制工具，可以使用下面的命令来从Github里克隆代码：
 
 ```
 $ git clone https://github.com/liuruoze/EasyPR
