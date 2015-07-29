@@ -204,7 +204,7 @@ int CCharsSegment::charsSegment(Mat input, vector<Mat>& resultVec) {
   if (specIndex < sortedRect.size())
     chineseRect = GetChineseRect(sortedRect[specIndex]);
   else
-    return -3;
+    return 0x04;
 
   if (m_debug) {
     Mat chineseMat(img_threshold, chineseRect);
@@ -221,22 +221,20 @@ int CCharsSegment::charsSegment(Mat input, vector<Mat>& resultVec) {
   newSortedRect.push_back(chineseRect);
   RebuildRect(sortedRect, newSortedRect, specIndex);
 
-  if (newSortedRect.size() == 0) return -3;
+  if (newSortedRect.size() == 0) return 0x05;
 
   for (size_t i = 0; i < newSortedRect.size(); i++) {
     Rect mr = newSortedRect[i];
     Mat auxRoi(img_threshold, mr);
 
-    if (1) {
-      auxRoi = preprocessChar(auxRoi);
-      if (m_debug) {
-        stringstream ss(stringstream::in | stringstream::out);
-        ss << "resources/image/tmp/debug_char_auxRoi_" << (i)
-           << ".jpg";
-        utils::imwrite(ss.str(), auxRoi);
-      }
-      resultVec.push_back(auxRoi);
+    auxRoi = preprocessChar(auxRoi);
+    if (m_debug) {
+      stringstream ss(stringstream::in | stringstream::out);
+      ss << "resources/image/tmp/debug_char_auxRoi_" << (i)
+        << ".jpg";
+      utils::imwrite(ss.str(), auxRoi);
     }
+    resultVec.push_back(auxRoi);
   }
 
   return 0;
