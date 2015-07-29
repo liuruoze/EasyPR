@@ -239,4 +239,4 @@ $ ./easypr_test svm --train --has-plate=has/ --no-plate=no/ --divide --svm=save/
 
 taotao1233，邱锦山，唐大侠，jsxyhelu，如果有一天(zhoushiwei)，学习奋斗，袁承志，
 
-圣城小石匠，goldriver，Micooz，梦里时光，Rain Wang，任薛纪，ahccom，星夜落尘，海豚嘎嘎(车主之家)，刘超。
+圣城小石匠，goldriver，Micooz，梦里时光，Rain Wang，任薛纪，ahccom，星夜落尘，海豚嘎嘎(车主之家)，刘超，以及所有对EasyPR贡献数据的热心同学。
