@@ -71,12 +71,6 @@ Mat CCharsSegment::preprocessChar(Mat in) {
   return out;
 }
 
-// implementation of otsu algorithm
-// author: onezeros(@yahoo.cn)
-// reference: Rafael C. Gonzalez. Digital Image Processing Using MATLAB
-
-int staticIndex = 0;
-int iTag = 0;
 
 //! 字符分割与排序
 int CCharsSegment::charsSegment(Mat input, vector<Mat>& resultVec) {
@@ -107,13 +101,8 @@ int CCharsSegment::charsSegment(Mat input, vector<Mat>& resultVec) {
     int h = input_grey.rows;
     Mat tmp = input_grey(Rect_<double>(w * 0.1, h * 0.1, w * 0.8, h * 0.8));
     int threadHoldV = ThresholdOtsu(tmp);
-    // utils::imwrite("E:/img_inputgray2.jpg", input_grey);
 
     threshold(input_grey, img_threshold, threadHoldV, 255, CV_THRESH_BINARY);
-    // utils::imwrite("E:/img_threshold.jpg", img_threshold);
-
-    // threshold(input_grey, img_threshold, 5, 255, CV_THRESH_OTSU +
-    // CV_THRESH_BINARY);
 
   } else if (YELLOW == plateType) {
     // cout << "YELLOW" << endl;
@@ -122,21 +111,13 @@ int CCharsSegment::charsSegment(Mat input, vector<Mat>& resultVec) {
     int h = input_grey.rows;
     Mat tmp = input_grey(Rect_<double>(w * 0.1, h * 0.1, w * 0.8, h * 0.8));
     int threadHoldV = ThresholdOtsu(tmp);
-    utils::imwrite("resources/image/tmp/inputgray2.jpg", input_grey);
+    // utils::imwrite("resources/image/tmp/inputgray2.jpg", input_grey);
 
     threshold(input_grey, img_threshold, threadHoldV, 255,
               CV_THRESH_BINARY_INV);
 
-    // threshold(input_grey, img_threshold, 10, 255, CV_THRESH_OTSU +
-    // CV_THRESH_BINARY_INV);
   } else if (WHITE == plateType) {
     // cout << "WHITE" << endl;
-    /*img_threshold = input_grey.clone();
-    int w = input_grey.cols;
-    int h = input_grey.rows;
-    Mat tmp = input_grey(Rect(w*0.1, h*0.1, w*0.8, h*0.8));
-    int threadHoldV = ThresholdOtsu(tmp);
-    utils::imwrite("resources/image/tmp/inputgray2.jpg", input_grey);*/
 
     threshold(input_grey, img_threshold, 10, 255,
               CV_THRESH_OTSU + CV_THRESH_BINARY_INV);
@@ -154,7 +135,7 @@ int CCharsSegment::charsSegment(Mat input, vector<Mat>& resultVec) {
 
   if (m_debug) {
     stringstream ss(stringstream::in | stringstream::out);
-    ss << "resources/image/tmp/debug_char_threshold" << iTag << ".jpg";
+    ss << "resources/image/tmp/debug_char_threshold"  << ".jpg";
     utils::imwrite(ss.str(), img_threshold);
   }
 
@@ -166,10 +147,10 @@ int CCharsSegment::charsSegment(Mat input, vector<Mat>& resultVec) {
 
   if (m_debug) {
     stringstream ss(stringstream::in | stringstream::out);
-    ss << "resources/image/tmp/debug_char_clearLiuDing" << iTag << ".jpg";
+    ss << "resources/image/tmp/debug_char_clearLiuDing" << ".jpg";
     utils::imwrite(ss.str(), img_threshold);
   }
-  iTag++;
+
 
   // 在二值化图像中提取轮廓
   Mat img_contours;
@@ -250,14 +231,13 @@ int CCharsSegment::charsSegment(Mat input, vector<Mat>& resultVec) {
       auxRoi = preprocessChar(auxRoi);
       if (m_debug) {
         stringstream ss(stringstream::in | stringstream::out);
-        ss << "resources/image/tmp/debug_char_auxRoi_" << (i + staticIndex)
+        ss << "resources/image/tmp/debug_char_auxRoi_" << (i)
            << ".jpg";
         utils::imwrite(ss.str(), auxRoi);
       }
       resultVec.push_back(auxRoi);
     }
   }
-  staticIndex += newSortedRect.size();
 
   return 0;
 }
