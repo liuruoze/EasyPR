@@ -227,46 +227,46 @@ int CCharsSegment::charsSegment(Mat input, vector<Mat>& resultVec, int index) {
   for (size_t i = 0; i < newSortedRect.size(); i++) {
     Rect mr = newSortedRect[i];
 
-    Mat auxRoi(img_threshold, mr);
+    //Mat auxRoi(img_threshold, mr);
 
     // 使用灰度图来截取图块，然后依次对每个图块进行大津阈值来二值化
-    //Mat auxRoi(input_grey, mr);
-    //Mat newRoi;
+    Mat auxRoi(input_grey, mr);
+    Mat newRoi;
 
-    //if (BLUE == plateType) {
+    if (BLUE == plateType) {
 
-    // /* img_threshold = auxRoi.clone();
-    //  int w = input_grey.cols;
-    //  int h = input_grey.rows;
-    //  Mat tmp = input_grey(Rect_<double>(w * 0.1, h * 0.1, w * 0.8, h * 0.8));
-    //  int threadHoldV = ThresholdOtsu(tmp);*/
+     /* img_threshold = auxRoi.clone();
+      int w = input_grey.cols;
+      int h = input_grey.rows;
+      Mat tmp = input_grey(Rect_<double>(w * 0.1, h * 0.1, w * 0.8, h * 0.8));
+      int threadHoldV = ThresholdOtsu(tmp);*/
 
-    //  threshold(auxRoi, newRoi, 5, 255, CV_THRESH_BINARY + CV_THRESH_OTSU);
-    //}
-    //else if (YELLOW == plateType) {
-    //  threshold(auxRoi, newRoi, 5, 255, CV_THRESH_BINARY_INV + CV_THRESH_OTSU);
+      threshold(auxRoi, newRoi, 5, 255, CV_THRESH_BINARY + CV_THRESH_OTSU);
+    }
+    else if (YELLOW == plateType) {
+      threshold(auxRoi, newRoi, 5, 255, CV_THRESH_BINARY_INV + CV_THRESH_OTSU);
 
-    //}
-    //else if (WHITE == plateType) {
-    //  threshold(auxRoi, newRoi, 5, 255, CV_THRESH_OTSU + CV_THRESH_BINARY_INV);
-    //}
-    //else {
-    //  threshold(auxRoi, newRoi, 5, 255, CV_THRESH_OTSU + CV_THRESH_BINARY);
-    //}
+    }
+    else if (WHITE == plateType) {
+      threshold(auxRoi, newRoi, 5, 255, CV_THRESH_OTSU + CV_THRESH_BINARY_INV);
+    }
+    else {
+      threshold(auxRoi, newRoi, 5, 255, CV_THRESH_OTSU + CV_THRESH_BINARY);
+    }
 
     // 归一化大小
-    auxRoi = preprocessChar(auxRoi);
+    newRoi = preprocessChar(newRoi);
 
     // 假设我们要重新训练ANN模型，在这里需要把训练样板输出
     if (i == 0) {
       stringstream ss(stringstream::in | stringstream::out);
       ss << "resources/image/tmp/debug_char_auxRoi_" << index << "_" << (i)
         << ".jpg";
-      utils::imwrite(ss.str(), auxRoi);
+      utils::imwrite(ss.str(), newRoi);
     }
 
     // 每个字符图块输入到下面的步骤进行处理
-    resultVec.push_back(auxRoi);
+    resultVec.push_back(newRoi);
   }
 
   return 0;

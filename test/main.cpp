@@ -5,9 +5,6 @@
 #include "chars.hpp"
 #include "plate.hpp"
 
-
-extern int annMain();
-
 namespace easypr {
 
 namespace demo {
@@ -424,7 +421,7 @@ int main(int argc, const char* argv[]) {
           std::cout << "Run \"easypr_test svm\" for more usage." << std::endl;
           break;
         case 4:
-          annMain();
+          // TODO
           break;
         case 5:
           easypr::preprocess::generate_gdts();
