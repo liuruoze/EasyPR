@@ -12,16 +12,16 @@ CPlateRecognize::CPlateRecognize() {
 }
 
 // !车牌识别模块
-int CPlateRecognize::plateRecognize(Mat src, std::vector<string> &licenseVec) {
+int CPlateRecognize::plateRecognize(Mat src, std::vector<string> &licenseVec, int index) {
   // 车牌方块集合
   vector<CPlate> plateVec;
 
   // 进行深度定位，使用颜色信息与二次Sobel
-  int resultPD = plateDetect(src, plateVec, getPDDebug(), 0);
+  int resultPD = plateDetect(src, plateVec, getPDDebug(), index);
 
   if (resultPD == 0) {
     int num = plateVec.size();
-    int index = 0;
+    int i = 0;
 
     //依次识别每个车牌内的符号
     for (int j = 0; j < num; j++) {
@@ -33,7 +33,7 @@ int CPlateRecognize::plateRecognize(Mat src, std::vector<string> &licenseVec) {
 
       //获取车牌号
       string plateIdentify = "";
-      int resultCR = charsRecognise(plate, plateIdentify);
+      int resultCR = charsRecognise(plate, plateIdentify, index);
       if (resultCR == 0) {
         string license = plateType + ":" + plateIdentify;
         licenseVec.push_back(license);
@@ -52,11 +52,11 @@ int CPlateRecognize::plateRecognize(Mat src, std::vector<string> &licenseVec) {
 
         int height = 36;
         int width = 136;
-        if (height * index + height < result.rows) {
-          Mat imageRoi = result(Rect(0, 0 + height * index, width, height));
+        if (height * i + height < result.rows) {
+          Mat imageRoi = result(Rect(0, 0 + height * i, width, height));
           addWeighted(imageRoi, 0, plate, 1, 0, imageRoi);
         }
-        index++;
+        i++;
 
         RotatedRect minRect = item.getPlatePos();
         Point2f rect_points[4];

@@ -208,6 +208,7 @@ void saveModel(int _predictsize, int _neurons) {
   cout << "End the saveModelChar" << endl;
 
   string model_name = "resources/train/ann.xml";
+
   // if(1)
   //{
   //	stringstream ss(stringstream::in | stringstream::out);
