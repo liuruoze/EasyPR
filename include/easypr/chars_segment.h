@@ -24,7 +24,7 @@ class CCharsSegment {
   CCharsSegment();
 
   //! ×Ö·û·Ö¸î
-  int charsSegment(Mat, vector<Mat>&);
+  int charsSegment(Mat, vector<Mat>&, int index = 0);
 
   //! ×Ö·û³ß´çÑéÖ¤
   bool verifyCharSizes(Mat r);

@@ -27,7 +27,7 @@ class CCharsRecognise {
   ~CCharsRecognise();
 
   //! 字符分割与识别
-  int charsRecognise(Mat, String&);
+  int charsRecognise(Mat, String&, int index = 0);
 
   string charsRecognise(Mat plate);
 

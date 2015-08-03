@@ -73,7 +73,7 @@ Mat CCharsSegment::preprocessChar(Mat in) {
 
 
 //! 字符分割与排序
-int CCharsSegment::charsSegment(Mat input, vector<Mat>& resultVec) {
+int CCharsSegment::charsSegment(Mat input, vector<Mat>& resultVec, int index) {
 
   if (!input.data) return 0x01;
 
@@ -135,7 +135,7 @@ int CCharsSegment::charsSegment(Mat input, vector<Mat>& resultVec) {
 
   if (m_debug) {
     stringstream ss(stringstream::in | stringstream::out);
-    ss << "resources/image/tmp/debug_char_threshold"  << ".jpg";
+    ss << "resources/image/tmp/debug_char_threshold_" << index << ".jpg";
     utils::imwrite(ss.str(), img_threshold);
   }
 
@@ -147,7 +147,7 @@ int CCharsSegment::charsSegment(Mat input, vector<Mat>& resultVec) {
 
   if (m_debug) {
     stringstream ss(stringstream::in | stringstream::out);
-    ss << "resources/image/tmp/debug_char_clearLiuDing" << ".jpg";
+    ss << "resources/image/tmp/debug_char_clearLiuDing_" << index << ".jpg";
     utils::imwrite(ss.str(), img_threshold);
   }
 
@@ -184,22 +184,22 @@ int CCharsSegment::charsSegment(Mat input, vector<Mat>& resultVec) {
 
   size_t specIndex = 0;
 
-  //获得特殊字符对应的Rectt,如苏A的"A"
+  // 获得特殊字符对应的Rectt,如苏A的"A"
   specIndex = GetSpecificRect(sortedRect);
 
   if (m_debug) {
     if (specIndex < sortedRect.size()) {
       Mat specMat(img_threshold, sortedRect[specIndex]);
       stringstream ss(stringstream::in | stringstream::out);
-      ss << "resources/image/tmp/debug_specMat"
+      ss << "resources/image/tmp/debug_specMat_" << index
          << ".jpg";
       utils::imwrite(ss.str(), specMat);
     }
   }
 
-  //根据特定Rect向左反推出中文字符
-  //这样做的主要原因是根据findContours方法很难捕捉到中文字符的准确Rect，因此仅能
-  //退过特定算法来指定
+  // 根据特定Rect向左反推出中文字符
+  // 这样做的主要原因是根据findContours方法很难捕捉到中文字符的准确Rect，因此仅能
+  // 退过特定算法来指定
   Rect chineseRect;
   if (specIndex < sortedRect.size())
     chineseRect = GetChineseRect(sortedRect[specIndex]);
@@ -209,7 +209,7 @@ int CCharsSegment::charsSegment(Mat input, vector<Mat>& resultVec) {
   if (m_debug) {
     Mat chineseMat(img_threshold, chineseRect);
     stringstream ss(stringstream::in | stringstream::out);
-    ss << "resources/image/tmp/debug_chineseMat"
+    ss << "resources/image/tmp/debug_chineseMat_" << index
        << ".jpg";
     utils::imwrite(ss.str(), chineseMat);
   }
@@ -223,18 +223,50 @@ int CCharsSegment::charsSegment(Mat input, vector<Mat>& resultVec) {
 
   if (newSortedRect.size() == 0) return 0x05;
 
+  // 开始截取每个字符
   for (size_t i = 0; i < newSortedRect.size(); i++) {
     Rect mr = newSortedRect[i];
-    Mat auxRoi(img_threshold, mr);
 
-    auxRoi = preprocessChar(auxRoi);
-    if (m_debug) {
-      stringstream ss(stringstream::in | stringstream::out);
-      ss << "resources/image/tmp/debug_char_auxRoi_" << (i)
-        << ".jpg";
-      utils::imwrite(ss.str(), auxRoi);
+    //Mat auxRoi(img_threshold, mr);
+
+    // 使用灰度图来截取图块，然后依次对每个图块进行大津阈值来二值化
+    Mat auxRoi(input_grey, mr);
+    Mat newRoi;
+
+    if (BLUE == plateType) {
+
+     /* img_threshold = auxRoi.clone();
+      int w = input_grey.cols;
+      int h = input_grey.rows;
+      Mat tmp = input_grey(Rect_<double>(w * 0.1, h * 0.1, w * 0.8, h * 0.8));
+      int threadHoldV = ThresholdOtsu(tmp);*/
+
+      threshold(auxRoi, newRoi, 5, 255, CV_THRESH_BINARY + CV_THRESH_OTSU);
     }
-    resultVec.push_back(auxRoi);
+    else if (YELLOW == plateType) {
+      threshold(auxRoi, newRoi, 5, 255, CV_THRESH_BINARY_INV + CV_THRESH_OTSU);
+
+    }
+    else if (WHITE == plateType) {
+      threshold(auxRoi, newRoi, 5, 255, CV_THRESH_OTSU + CV_THRESH_BINARY_INV);
+    }
+    else {
+      threshold(auxRoi, newRoi, 5, 255, CV_THRESH_OTSU + CV_THRESH_BINARY);
+    }
+
+    // 归一化大小
+    newRoi = preprocessChar(newRoi);
+
+    // 假设我们要重新训练ANN模型，在这里需要把训练样板输出
+    if (i == 0) {
+      stringstream ss(stringstream::in | stringstream::out);
+      ss << "resources/image/tmp/debug_char_auxRoi_" << index << "_" << (i)
+        << ".jpg";
+      utils::imwrite(ss.str(), newRoi);
+    }
+
+    // 每个字符图块输入到下面的步骤进行处理
+    resultVec.push_back(newRoi);
   }
 
   return 0;
