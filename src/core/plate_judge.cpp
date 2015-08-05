@@ -1,4 +1,4 @@
-#include "easypr/plate_judge.h"
+#include "easypr/core/plate_judge.h"
 
 /*! \namespace easypr
     Namespace where all the C++ EasyPR functionality resides

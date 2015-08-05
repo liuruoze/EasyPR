@@ -1,5 +1,5 @@
-#include "easypr/chars_segment.h"
-#include "easypr/util.h"
+#include "easypr/core/chars_segment.h"
+#include "easypr/util/util.h"
 
 using namespace std;
 

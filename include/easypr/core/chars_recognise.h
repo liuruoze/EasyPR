@@ -12,8 +12,8 @@
 #ifndef __CHARS_RECOGNISE_H__
 #define __CHARS_RECOGNISE_H__
 
-#include "easypr/chars_segment.h"
-#include "easypr/chars_identify.h"
+#include "easypr/core/chars_segment.h"
+#include "easypr/core/chars_identify.h"
 
 /*! \namespace easypr
 Namespace where all the C++ EasyPR functionality resides

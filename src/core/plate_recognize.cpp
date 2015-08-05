@@ -1,4 +1,4 @@
-#include "easypr/plate_recognize.h"
+#include "easypr/core/plate_recognize.h"
 
 /*! \namespace easypr
     Namespace where all the C++ EasyPR functionality resides

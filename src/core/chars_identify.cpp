@@ -1,5 +1,5 @@
-#include "easypr/chars_identify.h"
-#include "easypr/core_func.h"
+#include "easypr/core/chars_identify.h"
+#include "easypr/core/core_func.h"
 
 /*! \namespace easypr
         Namespace where all the C++ EasyPR functionality resides

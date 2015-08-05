@@ -2,8 +2,7 @@
 // 所属命名空间为easypr
 // 这个部分中的函数轻易不要改动
 
-#include <opencv2/opencv.hpp>
-#include "easypr/core_func.h"
+#include "easypr/core/core_func.h"
 
 using namespace cv;
 

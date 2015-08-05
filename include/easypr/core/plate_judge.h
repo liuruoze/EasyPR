@@ -13,9 +13,9 @@
 #ifndef __PLATE_JUDGE_H__
 #define __PLATE_JUDGE_H__
 
-#include "easypr/plate.h"
-#include "easypr/feature.h"
-#include "easypr/core_func.h"
+#include "easypr/core/plate.h"
+#include "easypr/core/feature.h"
+#include "easypr/core/core_func.h"
 
 /*! \namespace easypr
     Namespace where all the C++ EasyPR functionality resides

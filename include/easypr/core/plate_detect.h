@@ -13,8 +13,8 @@
 #ifndef __PLATE_DETECT_H__
 #define __PLATE_DETECT_H__
 
-#include "easypr/plate_locate.h"
-#include "easypr/plate_judge.h"
+#include "easypr/core/plate_locate.h"
+#include "easypr/core/plate_judge.h"
 
 /*! \namespace easypr
     Namespace where all the C++ EasyPR functionality resides

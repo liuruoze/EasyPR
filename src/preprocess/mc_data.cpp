@@ -3,9 +3,9 @@
 // 2.随机/选择性地选取部分数据成为learndata，这个根据参数设置，一般设置为1000，10000，或者1百万
 #include "easypr/preprocess/mc_data.h"
 #include <ctime>
-#include "easypr/plate_judge.h"
-#include "easypr/plate_locate.h"
-#include "easypr/util.h"
+#include "easypr/core/plate_judge.h"
+#include "easypr/core/plate_locate.h"
+#include "easypr/util/util.h"
 
 #ifdef OS_WINDOWS
 #include <io.h>
