@@ -19,44 +19,23 @@ using namespace std;
 
 /*! \namespace easypr
     Namespace where all the C++ EasyPR functionality resides
-*/
+    */
 namespace easypr {
 
-class CCharsIdentify {
- public:
-  CCharsIdentify();
+  class CCharsIdentify {
+  public:
+    CCharsIdentify();
 
-  //! 字符分割
-  string charsIdentify(Mat, bool, bool);
-  string charsIdentify(Mat input);
+    //! 字符分割
+    string charsIdentify(Mat input, bool isChinese, bool isSpeci);
 
-  //! 字符分类
-  int classify(Mat, bool, bool);
-  int classify(Mat f);
+  private:
+    //! 字符分类
+    int classify(Mat f, bool isChinses, bool isSpeci);
 
-  //! 装载ANN模型
-  void LoadModel();
-
-  //! 装载ANN模型
-  void LoadModel(string s);
-
-  //! 设置与读取模型路径
-  inline void setModelPath(string path) { m_path = path; }
-  inline string getModelPath() const { return m_path; }
-
- private:
-  //！使用的ANN模型
-  cv::Ptr<ml::ANN_MLP> ann;
-
-  //! 模型存储路径
-  string m_path;
-
-  //! 特征尺寸
-  int m_predictSize;
-
-  //! 省份对应map
-  std::map<string, string> m_map;
-};
+    //！使用的ANN模型
+    cv::Ptr<ml::ANN_MLP> ann_;
+  };
 
 } /* \namespace easypr  */
 
