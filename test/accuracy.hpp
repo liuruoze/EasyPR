@@ -4,6 +4,7 @@
 #include <easypr.h>
 #include <ctime>
 #include <fstream>
+#include <list>
 
 namespace easypr {
 
@@ -13,9 +14,6 @@ int accuracyTest(const char* test_path) {
   auto files = Utils::getFiles(test_path);
 
   CPlateRecognize pr;
-
-  pr.LoadANN("resources/model/ann.xml");
-  pr.LoadSVM("resources/model/svm.xml");
 
   // …Ë÷√Debugƒ£ Ω
   pr.setDebug(false);

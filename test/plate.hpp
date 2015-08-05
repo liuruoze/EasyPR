@@ -65,9 +65,7 @@ int test_plate_judge() {
   }
   destroyWindow("plate_judge");
 
-  CPlateJudge ju;
-  ju.LoadModel("resources/model/svm.xml");
-  int resultJu = ju.plateJudge(matVec, resultVec);
+  int resultJu = PlateJudge::instance()->plateJudge(matVec, resultVec);
 
   if (0 != resultJu)
     return -1;
@@ -114,9 +112,6 @@ int test_plate_recognize() {
   Mat src = imread("resources/image/test.jpg");
 
   CPlateRecognize pr;
-  pr.LoadANN("resources/model/ann.xml");
-  pr.LoadSVM("resources/model/svm.xml");
-
   pr.setLifemode(true);
   pr.setDebug(true);
 

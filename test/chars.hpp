@@ -34,7 +34,6 @@ int test_chars_identify() {
 
   std::vector<cv::Mat> resultVec;
   CCharsSegment cs;
-  CCharsIdentify ci;
 
   std::string plateIdentify = "";
 
@@ -53,7 +52,7 @@ int test_chars_identify() {
       if (j == 1)
         isSpec = true;
 
-      std::string charcater = ci.charsIdentify(resultMat, isChinses, isSpec);
+      std::string charcater = CharsIdentify::instance()->identify(resultMat, isChinses, isSpec);
       plateIdentify = plateIdentify + charcater;
     }
   }
