@@ -31,9 +31,6 @@ class CCharsRecognise {
 
   string charsRecognise(Mat plate);
 
-  //! 装载ANN模型
-  void LoadANN(string s);
-
   //! 是否开启调试模式
   inline void setCRDebug(int param) { m_charsSegment->setDebug(param); }
 
@@ -72,9 +69,6 @@ class CCharsRecognise {
  private:
   //！字符分割
   CCharsSegment* m_charsSegment;
-
-  //! 字符识别
-  CCharsIdentify* m_charsIdentify;
 };
 
 } /* \namespace easypr  */

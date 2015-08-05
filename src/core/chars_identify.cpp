@@ -38,11 +38,38 @@ namespace easypr {
     { "zh_zhe", "浙" }
   };
 
-  CCharsIdentify::CCharsIdentify() {
+  CharsIdentify* CharsIdentify::instance_ = nullptr;
+
+  CharsIdentify* CharsIdentify::instance(){
+    if (!instance_){
+      instance_ = new CharsIdentify;
+    }
+    return instance_;
+  }
+
+  CharsIdentify::CharsIdentify() {
     ann_ = ml::ANN_MLP::load<ml::ANN_MLP>("resources/model/ann.xml");
   }
 
-  int CCharsIdentify::classify(Mat f, bool isChinses, bool isSpeci) {
+  string CharsIdentify::identify(Mat input, bool isChinese, bool isSpeci) {
+    Mat f = features(input, kPredictSize);
+
+    string result;
+    int index = classify(f, isChinese, isSpeci);
+
+    if (!isChinese) {
+      result = result + kCharacters[index];
+    }
+    else {
+      string s = kChinese[index - sizeof(kCharacters)];
+      string province = zh_map[s];
+      result = province + result;
+    }
+
+    return result;
+  }
+
+  int CharsIdentify::classify(Mat f, bool isChinses, bool isSpeci) {
     int result = -1;
     Mat output(1, sizeof(kCharacters) + sizeof(kChinese), CV_32FC1);
     ann_->predict(f, output);  //使用ann对字符做判断
@@ -140,23 +167,5 @@ namespace easypr {
   //    return szBuf;
   //  }
   //}
-
-  string CCharsIdentify::charsIdentify(Mat input, bool isChinese, bool isSpeci) {
-    Mat f = features(input, kPredictSize);
-
-    string result;
-    int index = classify(f, isChinese, isSpeci);
-
-    if (!isChinese) {
-      result = result + kCharacters[index];
-    }
-    else {
-      string s = kChinese[index - sizeof(kCharacters)];
-      string province = zh_map[s];
-      result = province + result;
-    }
-
-    return result;
-  }
 
 }
