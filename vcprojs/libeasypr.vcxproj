@@ -121,6 +121,12 @@
     <ClInclude Include="..\include\easypr\util\program_options.h" />
     <ClInclude Include="..\include\easypr\util\util.h" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="..\LICENSE" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="..\关于版权.txt" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

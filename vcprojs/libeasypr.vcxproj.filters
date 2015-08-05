@@ -156,4 +156,10 @@
       <Filter>头文件\easypr</Filter>
     </ClInclude>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="..\LICENSE" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="..\关于版权.txt" />
+  </ItemGroup>
 </Project>
