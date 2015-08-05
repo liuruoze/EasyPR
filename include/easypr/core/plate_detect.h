@@ -95,9 +95,6 @@ class CPlateDetect {
 
   //! 车牌定位
   CPlateLocate* m_plateLocate;
-
-  //! 车牌判断
-  CPlateJudge* m_plateJudge;
 };
 
 } /*! \namespace easypr*/

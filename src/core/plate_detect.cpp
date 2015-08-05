@@ -5,15 +5,12 @@ namespace easypr {
 
 CPlateDetect::CPlateDetect() {
   m_plateLocate = new CPlateLocate();
-  m_plateJudge = new CPlateJudge();
-
   // 默认EasyPR在一幅图中定位最多3个车
   m_maxPlates = 3;
 }
 
 CPlateDetect::~CPlateDetect() {
   SAFE_RELEASE(m_plateLocate);
-  SAFE_RELEASE(m_plateJudge);
 }
 
 int CPlateDetect::plateDetect(Mat src, std::vector<CPlate>& resultVec,
@@ -31,7 +28,7 @@ int CPlateDetect::plateDetect(Mat src, std::vector<CPlate>& resultVec,
   const int color_find_max = m_maxPlates;
 
   m_plateLocate->plateColorLocate(src, color_Plates, index);
-  m_plateJudge->plateJudge(color_Plates, color_result_Plates);
+  PlateJudge::instance()->plateJudge(color_Plates, color_result_Plates);
 
   for (size_t i = 0; i < color_result_Plates.size(); i++) {
     CPlate plate = color_result_Plates[i];
@@ -43,7 +40,7 @@ int CPlateDetect::plateDetect(Mat src, std::vector<CPlate>& resultVec,
   //颜色和边界闭操作同时采用
   {
     m_plateLocate->plateSobelLocate(src, sobel_Plates, index);
-    m_plateJudge->plateJudge(sobel_Plates, sobel_result_Plates);
+    PlateJudge::instance()->plateJudge(sobel_Plates, sobel_result_Plates);
 
     for (size_t i = 0; i < sobel_result_Plates.size(); i++) {
       CPlate plate = sobel_result_Plates[i];

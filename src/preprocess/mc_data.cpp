@@ -137,9 +137,6 @@ void tag_data(const char* source_folder, const char* has_plate_folder,
   }
 
   CPlateLocate locator;
-  CPlateJudge judger;
-
-  judger.LoadModel(svm_model);
 
   for (auto f : files) {
     auto filename = Utils::getFileName(f);
@@ -156,7 +153,7 @@ void tag_data(const char* source_folder, const char* has_plate_folder,
     for (auto plate : maybe_plates) {
       char save_to[255] = {0};
       int result = 0;
-      judger.plateJudge(plate, result);
+      PlateJudge::instance()->plateJudge(plate, result);
       if (result == 1) {
         // it's a plate
         sprintf(save_to, "%s/%s_%d.jpg",
