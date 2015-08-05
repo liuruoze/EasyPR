@@ -73,7 +73,7 @@ namespace easypr {
   int CharsIdentify::classify(Mat f, bool isChinses, bool isSpeci) {
     int result = -1;
     const int chars_number = sizeof(kCharacters);
-    const int zhchars_number = sizeof(kChinese);
+    const int zhchars_number = sizeof(kChinese) / sizeof(kChinese[0]);
     Mat output(1, chars_number + zhchars_number, CV_32FC1);
     ann_->predict(f, output);  //使用ann对字符做判断
 
