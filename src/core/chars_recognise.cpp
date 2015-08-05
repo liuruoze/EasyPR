@@ -23,6 +23,7 @@ void CCharsRecognise::LoadANN(string s) {
 string CCharsRecognise::charsRecognise(Mat plate) {
   return m_charsIdentify->charsIdentify(plate);
 }
+
 int CCharsRecognise::charsRecognise(Mat plate, string& plateLicense) {
   //车牌字符方块集合
   vector<Mat> matVec;

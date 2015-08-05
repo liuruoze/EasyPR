@@ -1,14 +1,9 @@
 #include "easypr/core/plate_recognize.h"
 
-/*! \namespace easypr
-    Namespace where all the C++ EasyPR functionality resides
-*/
 namespace easypr {
 
 CPlateRecognize::CPlateRecognize() {
-  // cout << "CPlateRecognize" << endl;
-  // m_plateDetect= new CPlateDetect();
-  // m_charsRecognise = new CCharsRecognise();
+
 }
 
 // !车牌识别模块
@@ -81,4 +76,4 @@ int CPlateRecognize::plateRecognize(Mat src, std::vector<string> &licenseVec) {
   return resultPD;
 }
 
-} /*! \namespace easypr*/
+}
