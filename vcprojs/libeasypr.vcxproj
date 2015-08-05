@@ -102,6 +102,7 @@
   <ItemGroup>
     <ClInclude Include="..\include\easypr.h" />
     <ClInclude Include="..\include\easypr\api.hpp" />
+    <ClInclude Include="..\include\easypr\config.h" />
     <ClInclude Include="..\include\easypr\core\chars_identify.h" />
     <ClInclude Include="..\include\easypr\core\chars_recognise.h" />
     <ClInclude Include="..\include\easypr\core\chars_segment.h" />

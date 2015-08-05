@@ -1,4 +1,5 @@
 #include "easypr/train/ann_train.h"
+#include "easypr/config.h"
 
 namespace easypr{
 

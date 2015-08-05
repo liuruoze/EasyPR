@@ -152,5 +152,8 @@
     <ClInclude Include="..\include\easypr\core\plate_recognize.h">
       <Filter>头文件\easypr\core</Filter>
     </ClInclude>
+    <ClInclude Include="..\include\easypr\config.h">
+      <Filter>头文件\easypr</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

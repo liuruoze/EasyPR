@@ -1,6 +1,7 @@
 #include "easypr/core/chars_identify.h"
 #include "easypr/core/core_func.h"
 #include "easypr/train/ann_train.h"
+#include "easypr/config.h"
 
 namespace easypr {
 
@@ -48,7 +49,7 @@ namespace easypr {
   }
 
   CharsIdentify::CharsIdentify() {
-    ann_ = ml::ANN_MLP::load<ml::ANN_MLP>("resources/model/ann.xml");
+    ann_ = ml::ANN_MLP::load<ml::ANN_MLP>(kDefaultAnnPath);
   }
 
   string CharsIdentify::identify(Mat input, bool isChinese, bool isSpeci) {
@@ -71,7 +72,9 @@ namespace easypr {
 
   int CharsIdentify::classify(Mat f, bool isChinses, bool isSpeci) {
     int result = -1;
-    Mat output(1, sizeof(kCharacters) + sizeof(kChinese), CV_32FC1);
+    const int chars_number = sizeof(kCharacters);
+    const int zhchars_number = sizeof(kChinese);
+    Mat output(1, chars_number + zhchars_number, CV_32FC1);
     ann_->predict(f, output);  //使用ann对字符做判断
 
     if (!isChinses)  // 对数字和英文字母的判断
@@ -80,7 +83,7 @@ namespace easypr {
         // A-Z
         result = 0;
         float maxVal = -2;
-        for (int j = 10; j < sizeof(kCharacters); j++) {
+        for (int j = 10; j < chars_number; j++) {
           float val = output.at<float>(j);
           // cout << "j:" << j << "val:"<< val << endl;
           if (val > maxVal) {
@@ -93,7 +96,7 @@ namespace easypr {
         // 0-9
         result = 0;
         float maxVal = -2;
-        for (int j = 0; j < sizeof(kCharacters); j++) {
+        for (int j = 0; j < chars_number; j++) {
           float val = output.at<float>(j);
           // cout << "j:" << j << "val:"<< val << endl;
           if (val >
@@ -107,9 +110,9 @@ namespace easypr {
     }
     else  // 对中文字符的判断
     {
-      result = sizeof(kCharacters);
+      result = chars_number;
       float maxVal = -2;
-      for (int j = sizeof(kCharacters); j < sizeof(kCharacters) + sizeof(sizeof(kChinese)); j++) {
+      for (int j = chars_number; j < chars_number + zhchars_number; j++) {
         float val = output.at<float>(j);
         // cout << "j:" << j << "val:"<< val << endl;
         if (val > maxVal) {

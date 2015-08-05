@@ -1,8 +1,6 @@
 #include "easypr/core/plate_judge.h"
+#include "easypr/config.h"
 
-/*! \namespace easypr
-    Namespace where all the C++ EasyPR functionality resides
-    */
 namespace easypr {
 
   PlateJudge* PlateJudge::instance_ = nullptr;
@@ -15,7 +13,7 @@ namespace easypr {
   }
 
   PlateJudge::PlateJudge() {
-    svm_ = ml::SVM::load<ml::SVM>("resources/model/svm.xml");
+    svm_ = ml::SVM::load<ml::SVM>(kDefaultSvmPath);
   }
 
   //! Ö±·½Í¼¾ùºâ
@@ -94,4 +92,4 @@ namespace easypr {
     return 0;
   }
 
-} /*! \namespace easypr*/
+}
