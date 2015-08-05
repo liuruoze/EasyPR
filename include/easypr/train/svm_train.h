@@ -6,17 +6,21 @@
 
 namespace easypr {
 
-class Svm {
+	const char *kDefaultSvmPath = "resources/model/svm.xml";
+
+class SvmTrain {
  public:
   typedef enum {
     kForward = 1, // correspond to "has plate"
     kInverse = 0  // correspond to "no plate"
   } Label;
 
-  Svm(const char* forward_data_folder, const char* inverse_data_folder);
+  SvmTrain(const char* forward_data_folder, const char* inverse_data_folder);
 
   void train(bool divide = true, float divide_percentage = 0.7,
-             bool train = true, const char* out_svm_folder = NULL);
+	  const char* out_svm_folder = kDefaultSvmPath);
+
+  void runTest(const char* svm_path = kDefaultSvmPath);
 
  private:
   /*
@@ -24,23 +28,21 @@ class Svm {
    */
   void divide(const char* images_folder, float percentage = 0.7);
 
-  void get_train();
+  void getTrain();
 
-  void get_test();
+  void getTest();
 
   const char* forward_;
   const char* inverse_;
 
   // these two variables are used for cv::CvSVM::train_auto()
   cv::Mat classes_;
-  cv::Mat trainingData_;
+  cv::Ptr<cv::ml::TrainData> trainingData_;
   // these two variables are used for cv::CvSVM::predict()
   std::vector<cv::Mat> test_imgaes_;
   std::vector<Label> test_labels_;
 };
 
-
 }
-
 
 #endif //EASYPR_SVM_TRAIN_H

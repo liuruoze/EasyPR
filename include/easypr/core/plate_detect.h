@@ -28,14 +28,14 @@ class CPlateDetect {
   ~CPlateDetect();
 
   //! 深度车牌检测，使用颜色与二次Sobel法综合
-  int plateDetect(Mat src, vector<CPlate>& resultVec,
+  int plateDetect(Mat src, std::vector<CPlate>& resultVec,
                   bool showDetectArea = true, int index = 0);
 
   //! 展示中间的结果
   int showResult(const Mat& result);
 
   //! 装载SVM模型
-  void LoadSVM(string s);
+  void LoadSVM(std::string s);
 
   //! 生活模式与工业模式切换
   inline void setPDLifemode(bool param) { m_plateLocate->setLifemode(param); }

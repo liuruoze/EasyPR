@@ -28,18 +28,18 @@ class CPlateLocate {
 
   //! Sobel第一次搜索
   //! 不限制大小和形状，获取的BoundRect进入下一步
-  int sobelFrtSearch(const Mat& src, vector<Rect_<float>>& outRects);
+  int sobelFrtSearch(const Mat& src, std::vector<Rect_<float>>& outRects);
 
   //! Sobel第二次搜索
   //! 对大小和形状做限制，生成参考坐标
   int sobelSecSearch(Mat& bound, Point2f refpoint,
-                     vector<RotatedRect>& outRects);
+                     std::vector<RotatedRect>& outRects);
   int sobelSecSearchPart(Mat& bound, Point2f refpoint,
-                         vector<RotatedRect>& outRects);
+                         std::vector<RotatedRect>& outRects);
 
   //! 抗扭斜处理
-  int deskew(const Mat& src, const Mat& src_b, vector<RotatedRect>& inRects,
-             vector<CPlate>& outPlates);
+  int deskew(const Mat& src, const Mat& src_b, std::vector<RotatedRect>& inRects,
+             std::vector<CPlate>& outPlates);
 
   //! 是否偏斜
   //! 输入二值化图像，输出判断结果
@@ -61,15 +61,15 @@ class CPlateLocate {
   void affine(const Mat& in, Mat& out, const double slope);
 
   //! 颜色定位法
-  int plateColorLocate(Mat src, vector<CPlate>& candPlates, int index = 0);
+  int plateColorLocate(Mat src, std::vector<CPlate>& candPlates, int index = 0);
 
   //! Sobel定位法
-  int plateSobelLocate(Mat src, vector<CPlate>& candPlates, int index = 0);
+  int plateSobelLocate(Mat src, std::vector<CPlate>& candPlates, int index = 0);
   int sobelOperT(const Mat& in, Mat& out, int blurSize, int morphW, int morphH);
 
   //! Color搜索
   int colorSearch(const Mat& src, const Color r, Mat& out,
-                  vector<RotatedRect>& outRects, int index = 0);
+                  std::vector<RotatedRect>& outRects, int index = 0);
 
   //! 未使用函数与代码
   //! 开始------------
@@ -77,7 +77,7 @@ class CPlateLocate {
   //! 未使用函数与代码
 
   //! 车牌定位
-  int plateLocate(Mat, vector<Mat>&, int = 0);
+  int plateLocate(Mat, std::vector<Mat>&, int = 0);
 
   //! 车牌的尺寸验证
   bool verifySizes(RotatedRect mr);

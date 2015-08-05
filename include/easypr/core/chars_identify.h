@@ -46,7 +46,7 @@ class CCharsIdentify {
 
  private:
   //！使用的ANN模型
-  CvANN_MLP ann;
+  cv::Ptr<ml::ANN_MLP> ann;
 
   //! 模型存储路径
   string m_path;

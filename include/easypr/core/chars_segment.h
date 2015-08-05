@@ -24,7 +24,7 @@ class CCharsSegment {
   CCharsSegment();
 
   //! 字符分割
-  int charsSegment(Mat, vector<Mat>&);
+  int charsSegment(Mat, std::vector<Mat>&);
 
   //! 字符尺寸验证
   bool verifyCharSizes(Mat r);
@@ -36,16 +36,16 @@ class CCharsSegment {
   Rect GetChineseRect(const Rect rectSpe);
 
   //! 找出指示城市的字符的Rect，例如苏A7003X，就是A的位置
-  int GetSpecificRect(const vector<Rect>& vecRect);
+  int GetSpecificRect(const std::vector<Rect>& vecRect);
 
   //! 这个函数做两个事情
   //  1.把特殊字符Rect左边的全部Rect去掉，后面再重建中文字符的位置。
   //  2.从特殊字符Rect开始，依次选择6个Rect，多余的舍去。
-  int RebuildRect(const vector<Rect>& vecRect, vector<Rect>& outRect,
+  int RebuildRect(const std::vector<Rect>& vecRect, std::vector<Rect>& outRect,
                   int specIndex);
 
   //! 将Rect按位置从左到右进行排序
-  int SortRect(const vector<Rect>& vecRect, vector<Rect>& out);
+  int SortRect(const std::vector<Rect>& vecRect, std::vector<Rect>& out);
 
   //! 设置变量
   inline void setLiuDingSize(int param) { m_LiuDingSize = param; }
