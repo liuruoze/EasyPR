@@ -41,7 +41,7 @@ Mat colorMatch(const Mat& src, Mat& match, const Color r,
   // 转到HSV空间进行处理，颜色搜索主要使用的是H分量进行蓝色与黄色的匹配工作
   cvtColor(src, src_hsv, CV_BGR2HSV);
 
-  vector<Mat> hsvSplit;
+  std::vector<Mat> hsvSplit;
   split(src_hsv, hsvSplit);
   equalizeHist(hsvSplit[2], hsvSplit[2]);
   merge(hsvSplit, src_hsv);
@@ -141,7 +141,7 @@ Mat colorMatch(const Mat& src, Mat& match, const Color r,
 
   // 获取颜色匹配后的二值灰度图
   Mat src_grey;
-  vector<Mat> hsvSplit_done;
+  std::vector<Mat> hsvSplit_done;
   split(src_hsv, hsvSplit_done);
   src_grey = hsvSplit_done[2];
 
@@ -366,7 +366,7 @@ void clearLiuDingOnly(Mat& img) {
 //计算每行元素的阶跃数，如果小于X认为是柳丁，将此行全部填0（涂黑）
 // X的推荐值为，可根据实际调整
 bool clearLiuDing(Mat& img) {
-  vector<float> fJump;
+  std::vector<float> fJump;
   int whiteCount = 0;
   const int x = 7;
   Mat jump = Mat::zeros(1, img.rows, CV_32F);
@@ -510,7 +510,7 @@ Mat histeq(Mat in) {
   Mat out(in.size(), in.type());
   if (in.channels() == 3) {
     Mat hsv;
-    vector<Mat> hsvSplit;
+    std::vector<Mat> hsvSplit;
     cvtColor(in, hsv, CV_BGR2HSV);
     split(hsv, hsvSplit);
     equalizeHist(hsvSplit[2], hsvSplit[2]);
