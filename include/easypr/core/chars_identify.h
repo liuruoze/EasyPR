@@ -24,7 +24,7 @@ namespace easypr {
     int classify(Mat f, bool isChinses, bool isSpeci);
 
     //！使用的ANN模型
-    cv::Ptr<ml::ANN_MLP> ann_;
+    cv::Ptr<cv::ml::ANN_MLP> ann_;
   };
 
 }

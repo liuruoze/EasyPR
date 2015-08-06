@@ -3,12 +3,12 @@
 
 namespace easypr{
 
-  static  char *kDefaultSvmPath = "resources/model/svm.xml";
-  static char *kDefaultAnnPath = "resources/model/ann.xml";
+  static const char *kDefaultSvmPath = "resources/model/svm.xml";
+  static const char *kDefaultAnnPath = "resources/model/ann.xml";
 
-  static int kPredictSize = 10;
+  static const int kPredictSize = 10;
 
-  static char * kChinese[] = {
+  static const char * kChinese[] = {
     "zh_cuan" /* ´¨ */, "zh_e" /* ¶õ */, "zh_gan" /* ¸Ó*/,
     "zh_gan1" /*¸Ê*/, "zh_gui" /* ¹ó */, "zh_gui1" /* ¹ð */,
     "zh_hei" /* ºÚ */, "zh_hu" /* »¦ */, "zh_ji" /* ¼½ */,
@@ -22,7 +22,7 @@ namespace easypr{
     "zh_zhe" /* Õã */
   };
 
-  static char kCharacters[] = {
+  static const char kCharacters[] = {
     '0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
     'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', /* Ã»ÓÐI */
     'J', 'K', 'L', 'M', 'N', /* Ã»ÓÐO */ 'P', 'Q',
