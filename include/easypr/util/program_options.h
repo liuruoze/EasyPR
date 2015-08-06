@@ -246,6 +246,11 @@ class ParseItem {
    */
   inline std::string val() const { return value_; }
 
+  /*
+   * get C string directly
+   */
+  inline const char* c_str() const { return value_.c_str(); }
+
  private:
   std::string value_;
 };

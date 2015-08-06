@@ -1,4 +1,5 @@
 #include "easypr.h"
+#include "easypr/util/switch.hpp"
 
 #include "accuracy.hpp"
 #include "chars.hpp"
@@ -44,65 +45,6 @@ namespace easypr {
       }
       return 0;
     }
-
-    // int svmMain() {
-    //  bool isExit = false;
-    //  while (!isExit) {
-    //    std::cout << "////////////////////////////////////" << std::endl;
-    //    const char* options[] = {
-    //            "SvmTrain Option:",
-    //            "1. 生成learndata(调整代码到你的环境后再用);",
-    //            "2. 标签learndata;",
-    //            "3. 车牌检测(not divide and train);",
-    //            "4. 车牌检测(not train);",
-    //            "5. 车牌检测(not divide);",
-    //            "6. 车牌检测;",
-    //            "7. 返回;",
-    //            NULL
-    //    };
-    //    Utils::print_str_lines(options);
-    //    std::cout << "////////////////////////////////////" << std::endl;
-    //    std::cout << "请选择一项操作:";
-    //
-    //    int select = -1;
-    //    bool isRepeat = true;
-    //    while (isRepeat) {
-    //      std::cin >> select;
-    //      isRepeat = false;
-    //
-    //      //Svm svm;
-    //
-    //      switch (select) {
-    //        case 1:
-    //          // easypr::preprocess::getLearnData();
-    //          break;
-    //        case 2:
-    //          // easypr::preprocess::label_data();
-    //          break;
-    //        case 3:
-    //          svm.train(false, false);
-    //          break;
-    //        case 4:
-    //          svm.train(true, false);
-    //          break;
-    //        case 5:
-    //          svm.train(false, true);
-    //          break;
-    //        case 6:
-    //          svm.train();
-    //          break;
-    //        case 7:
-    //          isExit = true;
-    //          break;
-    //        default:
-    //          std::cout << "输入错误，请重新输入:";
-    //          isRepeat = true;
-    //          break;
-    //      }
-    //    }
-    //  }
-    //  return 0;
-    //}
 
     int testMain() {
       bool isExit = false;
@@ -181,59 +123,120 @@ void command_line_handler(int argc, const char* argv[]) {
   program_options::Generator options;
 
   options.add_subroutine("svm", "svm operations").make_usage("Usage:");
-  options("h,help", "show help information");
-  options(",svm", "resources/model/svm.xml",
-    "the svm model file,"
-    " this option is used for '--tag'(required)"
-    " and '--train'(save svm model to) functions");
-  // create
-  options(
-    ",create",
-    "create learn data, this function "
-    "will intercept (--max) raw images (--in) and preprocess into (--out)");
-  options("i,in", "", "where is the raw images");
-  options("o,out", "", "where to put the preprocessed images");
-  options("m,max", "5000", "how many learn data would you want to create");
-  // tag
-  options(",tag",
-    "tag learn data, this function "
-    "will find plate blocks in your images(--source) "
-    "as well as classify them into (--has) and (--no)");
-  options("s,source", "", "where is your images to be classified");
-  options(",has", "", "put plates in this folder");
-  options(",no", "", "put images without plate in this folder");
-  // train
-  options(",train",
-    "train given data, "
-    "including the forward(has plate) and the inverse(no plate).");
-  options(",has-plate", "", "where is the forward data");
-  options(",no-plate", "", "where is the inverse data");
-  options(",divide",
-    "whether divide train data into two parts by --percentage or not");
-  options(",percentage", "0.7",
-    "70% train data will be used for training,"
-    " others will be used for testing");
-  options(",test", "don't train again, run testing directly");
+  {
+    /* ------------------------------------------
+     | SVM Training operations
+     | ------------------------------------------
+     |
+     | $ demo svm --[create|tag|train] options
+     |
+     | ------------------------------------------
+     */
+    options("h,help", "show help information");
+    options(",svm", "resources/model/svm.xml",
+      "the svm model file,"
+      " this option is used for '--tag'(required)"
+      " and '--train'(save svm model to) functions");
+    // create
+    options(
+      ",create",
+      "create learn data, this function "
+      "will intercept (--max) raw images (--in) and preprocess into (--out)");
+    options("i,in", "", "where is the raw images");
+    options("o,out", "", "where to put the preprocessed images");
+    options("m,max", "5000", "how many learn data would you want to create");
+    // tag
+    options(",tag",
+      "tag learn data, this function "
+      "will find plate blocks in your images(--source) "
+      "as well as classify them into (--has) and (--no)");
+    options("s,source", "", "where is your images to be classified");
+    options(",has", "", "put plates in this folder");
+    options(",no", "", "put images without plate in this folder");
+    // train
+    options(",train",
+      "train given data, "
+      "including the forward(has plate) and the inverse(no plate).");
+    options(",has-plate", "", "where is the forward data");
+    options(",no-plate", "", "where is the inverse data");
+    options(",divide",
+      "whether divide train data into two parts by --percentage or not");
+    options(",percentage", "0.7",
+      "70% train data will be used for training,"
+      " others will be used for testing");
+    options(",test", "don't train again, run testing directly");
+  }
+
+  options.add_subroutine("ann", "ann operation").make_usage("Usages:");
+  {
+    /* ------------------------------------------
+    | ANN_MLP Training operations
+    | ------------------------------------------
+    |
+    | $ demo ann --zh-chars=zhchars/ --en-chars=enchars/ --ann=save/to/ann.xml
+    |
+    | ------------------------------------------
+    */
+    options("h,help", "show help information");
+    options(",zh-chars", "",
+      "the folder contains chinese characters, with each chars"
+      "grouping by labels defined in include/easypr/config.h");
+    options(",en-chars", "",
+      "the folder contains english characters, with each chars"
+      "grouping by labels defined in include/easypr/config.h");
+    options(",ann", "resources/model/ann.xml", "the ann model file you want to save");
+  }
 
   options.add_subroutine("locate", "locate plates in an image")
     .make_usage("Usage:");
-  options("h,help", "show help information");
-  options("f,file", "", "the target picture which contains one or more plates");
+  {
+    /* ------------------------------------------
+    | Plate locating operations
+    | ------------------------------------------
+    |
+    | $ demo locate -f file
+    |
+    | ------------------------------------------
+    */
+    options("h,help", "show help information");
+    options("f,file", "", "the target picture which contains one or more plates");
+  }
 
   options.add_subroutine(
     "judge", "determine whether an image block is the license plate")
     .make_usage("Usage:");
-  options("h,help", "show help information");
-  options("f,file", "the target image block");
-  options(",svm", "resources/model/svm.xml", "the svm model file");
+  {
+    /* ------------------------------------------
+    | Plate judge operations
+    | ------------------------------------------
+    |
+    | $ demo judge -f file --svm resources/model/svm.xml
+    |
+    | ------------------------------------------
+    */
+    options("h,help", "show help information");
+    options("f,file", "the target image block");
+    options(",svm", "resources/model/svm.xml", "the svm model file");
+  }
 
   options.add_subroutine("recognize", "plate recognition").make_usage("Usage:");
-  options("h,help", "show help information");
-  options("p,path", "", "where is the target picture or target folder");
-  options("b,batch", "do batch recognition, if set, --path means a folder");
-  options("c,color", "returns the plate color, blue or yellow");
-  options(",svm", "resources/model/svm.xml", "the svm model file");
-  options(",ann", "resources/model/ann.xml", "the ann model file");
+  {
+    /* ------------------------------------------
+    | Plate recognize operations
+    | ------------------------------------------
+    |
+    | $ demo recognize -p file --svm resources/model/svm.xml --ann resources/model/ann.xml
+    | $ demo recognize -pb dir/ --svm resources/model/svm.xml --ann resources/model/ann.xml
+    |
+    | ------------------------------------------
+    */
+    options("h,help", "show help information");
+    options("p,path", "", "where is the target picture or target folder");
+    options("b,batch", "do batch recognition, if set, --path means a folder");
+    options("c,color", "returns the plate color, blue or yellow");
+    options(",svm", "resources/model/svm.xml", "the svm model file");
+    options(",ann", "resources/model/ann.xml", "the ann model file");
+  }
 
   auto parser = options.make_parser();
 
@@ -247,7 +250,8 @@ void command_line_handler(int argc, const char* argv[]) {
 
   auto subname = parser->get_subroutine_name();
 
-  if (subname == "svm") {
+  program_options::select(subname)
+    .found("svm", [&](){
     if (parser->has("help") || argc <= 2) {
       std::cout << options("svm");
       return;
@@ -302,10 +306,23 @@ void command_line_handler(int argc, const char* argv[]) {
         svm.train(divide, percentage, svm_model.c_str());
       }
     }
+  })
+    .found("ann", [&](){
+    if (parser->has("help") || argc <= 2) {
+      std::cout << options("ann");
+      return;
+    }
 
-    return;
-  }
-  else if (subname == "locate") {
+    assert(parser->has("zh-chars"));
+    assert(parser->has("en-chars"));
+    assert(parser->has("ann"));
+
+    easypr::AnnTrain ann(
+      parser->get("en-chars")->c_str(),
+      parser->get("zh-chars")->c_str(),
+      parser->get("ann")->c_str());
+  })
+    .found("locate", [&](){
     if (parser->has("help") || argc <= 2) {
       std::cout << options("locate");
       return;
@@ -315,10 +332,8 @@ void command_line_handler(int argc, const char* argv[]) {
       easypr::api::plate_locate(parser->get("file")->val().c_str());
       std::cout << "finished, results can be found in tmp/" << std::endl;
     }
-
-    return;
-  }
-  else if (subname == "judge") {
+  })
+    .found("judge", [&](){
     if (parser->has("help") || argc <= 2) {
       std::cout << options("judge");
       std::cout << "Note that the input image's size should "
@@ -340,10 +355,8 @@ void command_line_handler(int argc, const char* argv[]) {
         << true_or_false[easypr::api::plate_judge(image.c_str(), svm.c_str())]
         << std::endl;
     }
-
-    return;
-  }
-  else if (subname == "recognize") {
+  })
+    .found("recognize", [&](){
     if (parser->has("help") || argc <= 2) {
       std::cout << options("recognize");
       return;
@@ -381,20 +394,20 @@ void command_line_handler(int argc, const char* argv[]) {
     else {
       std::cout << "option 'file' cannot be empty." << std::endl;
     }
-    return;
-  }
-
-  // no case matched, print all commands.
-  std::cout << "There are several sub commands listed below, "
-    << "choose one by typing:\n\n"
-    << "    " << easypr::Utils::getFileName(argv[0])
-    << " command [options]\n\n"
-    << "The commands are:\n" << std::endl;
-  auto subs = options.get_subroutine_list();
-  for (auto sub : subs) {
-    fprintf(stdout, "%s    %s\n", sub.first.c_str(), sub.second.c_str());
-  }
-  std::cout << std::endl;
+  })
+    .others([&](){
+    // no case matched, print all commands.
+    std::cout << "There are several sub commands listed below, "
+      << "choose one by typing:\n\n"
+      << "    " << easypr::Utils::getFileName(argv[0])
+      << " command [options]\n\n"
+      << "The commands are:\n" << std::endl;
+    auto subs = options.get_subroutine_list();
+    for (auto sub : subs) {
+      fprintf(stdout, "%s    %s\n", sub.first.c_str(), sub.second.c_str());
+    }
+    std::cout << std::endl;
+  });
 }
 
 int main(int argc, const char* argv[]) {
