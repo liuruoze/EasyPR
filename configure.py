@@ -28,6 +28,8 @@ kProjects = ["libeasypr.vcxproj", "demo.vcxproj"]
 
 kProjectTemplates = ["libeasypr.vcxproj.template", "demo.vcxproj.template"]
 
+kOpenCVConfig = "OpenCVConfig-version.cmake"
+
 kConfig = {
     "build": "",
     "include": "",
@@ -104,6 +106,21 @@ def configure_demo(buffer):
     return pattern.sub(kReplacements["link"] % lib_string, nstring)
 
 
+def check_opencv_version():
+    file = os.path.join(kConfig["build"], kOpenCVConfig)
+    print(">> Checking ", file)
+    fp = open(file)
+    major_version = 0
+    try:
+        fline = fp.readline()
+        match = re.search(r"OpenCV_VERSION (\d)\.(\d)\.(\d{,2})", fline)
+        if match is not None:
+            major_version = match.group(1)
+    finally:
+        fp.close()
+    return major_version
+
+
 def cli():
     while True:
         root_ = input(r"Where is your opencv root path? (e.g, C:\path\to\opencv3): ")
@@ -113,6 +130,10 @@ def cli():
             break
         else:
             print("Invalid path")
+
+    if check_opencv_version() != "3":
+        print("requires opencv 3")
+        exit()
 
     while True:
         xbit = input("Which library version you want to use? (x86 for 32bit, x64 for 64bit): ")
