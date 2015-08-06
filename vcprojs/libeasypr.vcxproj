@@ -119,6 +119,7 @@
     <ClInclude Include="..\include\easypr\train\ann_train.h" />
     <ClInclude Include="..\include\easypr\train\svm_train.h" />
     <ClInclude Include="..\include\easypr\util\program_options.h" />
+    <ClInclude Include="..\include\easypr\util\switch.hpp" />
     <ClInclude Include="..\include\easypr\util\util.h" />
   </ItemGroup>
   <ItemGroup>

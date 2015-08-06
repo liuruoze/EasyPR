@@ -155,6 +155,9 @@
     <ClInclude Include="..\include\easypr\config.h">
       <Filter>头文件\easypr</Filter>
     </ClInclude>
+    <ClInclude Include="..\include\easypr\util\switch.hpp">
+      <Filter>头文件\easypr\util</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\LICENSE" />
