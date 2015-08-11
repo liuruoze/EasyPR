@@ -11,37 +11,19 @@ namespace easypr {
     SAFE_RELEASE(m_charsSegment);
   }
 
-  int CCharsRecognise::charsRecognise(Mat plate, string& plateLicense) {
+  std::string CCharsRecognise::charsRecognise(Mat plate) {
     //车牌字符方块集合
-    vector<Mat> matVec;
+    std::vector<Mat> matChars;
+    std::string license;
 
-    string plateIdentify;
-
-    int result = m_charsSegment->charsSegment(plate, matVec);
+    int result = m_charsSegment->charsSegment(plate, matChars);
     if (result == 0) {
-      int num = matVec.size();
-      for (int j = 0; j < num; j++) {
-        Mat charMat = matVec[j];
-        bool isChinses = false;
-        bool isSpeci = false;
-
-        //默认首个字符块是中文字符
-        if (j == 0) isChinses = true;
-        if (j == 1) isSpeci = true;
-
-        string charcater = CharsIdentify::instance()->identify(charMat, isChinses, isSpeci);
-
-        plateIdentify = plateIdentify + charcater;
+      for(auto block : matChars){
+        auto character = CharsIdentify::instance()->identify(block);
+        license.append(character.second);
       }
     }
-
-    plateLicense = plateIdentify;
-
-    if (plateLicense.size() < 7) {
-      return -1;
-    }
-
-    return result;
+    return license;
   }
 
 }

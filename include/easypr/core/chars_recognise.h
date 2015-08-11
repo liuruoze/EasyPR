@@ -15,9 +15,6 @@
 #include "easypr/core/chars_segment.h"
 #include "easypr/core/chars_identify.h"
 
-/*! \namespace easypr
-Namespace where all the C++ EasyPR functionality resides
-*/
 namespace easypr {
 
 class CCharsRecognise {
@@ -26,20 +23,11 @@ class CCharsRecognise {
 
   ~CCharsRecognise();
 
-  //! 字符分割与识别
-  int charsRecognise(Mat, string&);
-
-  string charsRecognise(Mat plate);
-
-  //! 是否开启调试模式
-  inline void setCRDebug(int param) { m_charsSegment->setDebug(param); }
-
-  //! 获取调试模式状态
-  inline int getCRDebug() { return m_charsSegment->getDebug(); }
+  std::string charsRecognise(cv::Mat plate);
 
   //! 获得车牌颜色
-  inline string getPlateColor(Mat input) const {
-    string color = "未知";
+  inline std::string getPlateColor(cv::Mat input) const {
+    std::string color = "未知";
     Color result = getPlateType(input, true);
     if (BLUE == result) color = "蓝牌";
     if (YELLOW == result) color = "黄牌";

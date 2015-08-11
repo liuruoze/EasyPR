@@ -30,39 +30,27 @@ int test_chars_segment() {
 int test_chars_identify() {
   std::cout << "test_chars_identify" << std::endl;
 
-  cv::Mat src = cv::imread("resources/image/chars_identify.jpg");
+  cv::Mat plate = cv::imread("resources/image/chars_identify.jpg");
 
-  std::vector<cv::Mat> resultVec;
+  std::vector<Mat> matChars;
+  std::string license;
+
   CCharsSegment cs;
 
-  std::string plateIdentify = "";
-
-  int result = cs.charsSegment(src, resultVec);
+  int result = cs.charsSegment(plate, matChars);
   if (result == 0) {
-    size_t num = resultVec.size();
-    for (size_t j = 0; j < num; j++) {
-      cv::Mat resultMat = resultVec[j];
-      bool isChinses = false;
-      bool isSpec = false;
-
-      //默认首个字符块是中文字符
-      if (j == 0)
-        isChinses = true;
-
-      if (j == 1)
-        isSpec = true;
-
-      std::string charcater = CharsIdentify::instance()->identify(resultMat, isChinses, isSpec);
-      plateIdentify = plateIdentify + charcater;
+    for(auto block : matChars){
+      auto character = CharsIdentify::instance()->identify(block);
+      license.append(character.second);
     }
   }
 
   const std::string plateLicense = "苏E771H6";
 
   std::cout << "plateLicense: " << plateLicense << std::endl;
-  std::cout << "plateIdentify: " << plateIdentify << std::endl;
+  std::cout << "plateIdentify: " << license << std::endl;
 
-  if (plateLicense != plateIdentify) {
+  if (plateLicense != license) {
     std::cout << "Identify Not Correct!" << std::endl;
     return -1;
   }
@@ -75,16 +63,10 @@ int test_chars_recognise() {
   std::cout << "test_chars_recognise" << std::endl;
 
   cv::Mat src = cv::imread("resources/image/chars_recognise.jpg");
-
   CCharsRecognise cr;
-  std::string charsRecognise = "";
 
-  int result = cr.charsRecognise(src, charsRecognise);
-  if (result == 0) {
-    std::cout << "charsRecognise: " << charsRecognise << std::endl;
-  }
-
-  return result;
+  std::cout << "charsRecognise: " << cr.charsRecognise(src) << std::endl;
+  return 0;
 }
 
 }
