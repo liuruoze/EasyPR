@@ -55,7 +55,7 @@ static const std::map<const char*, const char*> kCharsMap = {
 
 static const int kCharsTotalNumber = 65;
 
-static bool debug = false;
+static bool kDebug = false;
 
 }
 

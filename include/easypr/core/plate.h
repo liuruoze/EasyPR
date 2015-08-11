@@ -17,39 +17,39 @@ Namespace where all the C++ EasyPR functionality resides
 */
 namespace easypr {
 
-class CPlate {
- public:
-  bool bColored;
+  class CPlate {
+  public:
+    bool bColored;
 
-  //! æ„é€ å‡½æ•°
-  CPlate();
+    //! ¹¹Ôìº¯Êı
+    CPlate();
 
-  //! è®¾ç½®ä¸è¯»å–å˜é‡
-  inline void setPlateMat(Mat param) { m_plateMat = param; }
-  inline Mat getPlateMat() const { return m_plateMat; }
+    //! ÉèÖÃÓë¶ÁÈ¡±äÁ¿
+    inline void setPlateMat(Mat param) { m_plateMat = param; }
+    inline Mat getPlateMat() const { return m_plateMat; }
 
-  inline void setPlatePos(RotatedRect param) { m_platePos = param; }
-  inline RotatedRect getPlatePos() const { return m_platePos; }
+    inline void setPlatePos(RotatedRect param) { m_platePos = param; }
+    inline RotatedRect getPlatePos() const { return m_platePos; }
 
-  inline void setPlateStr(String param) { m_plateStr = param; }
-  inline String getPlateStr() const { return m_plateStr; }
+    inline void setPlateStr(String param) { m_plateStr = param; }
+    inline String getPlateStr() const { return m_plateStr; }
 
-  inline void setPlateLocateType(LocateType param) { m_locateType = param; }
-  inline LocateType getPlateLocateType() const { return m_locateType; }
+    inline void setPlateLocateType(LocateType param) { m_locateType = param; }
+    inline LocateType getPlateLocateType() const { return m_locateType; }
 
- private:
-  //! è½¦ç‰Œçš„å›¾å—
-  Mat m_plateMat;
+  private:
+    //! ³µÅÆµÄÍ¼¿é
+    Mat m_plateMat;
 
-  //! è½¦ç‰Œåœ¨åŸå›¾çš„ä½ç½®
-  RotatedRect m_platePos;
+    //! ³µÅÆÔÚÔ­Í¼µÄÎ»ÖÃ
+    RotatedRect m_platePos;
 
-  //! è½¦ç‰Œå­—ç¬¦ä¸²
-  String m_plateStr;
+    //! ³µÅÆ×Ö·û´®
+    String m_plateStr;
 
-  //! è½¦ç‰Œå®šä½çš„æ–¹æ³•
-  LocateType m_locateType;
-};
+    //! ³µÅÆ¶¨Î»µÄ·½·¨
+    LocateType m_locateType;
+  };
 
 } /*! \namespace easypr*/
 

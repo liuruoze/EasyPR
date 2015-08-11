@@ -1,4 +1,5 @@
 #include "easypr/core/plate_recognize.h"
+#include "easypr/config.h"
 
 namespace easypr {
 
@@ -12,7 +13,7 @@ int CPlateRecognize::plateRecognize(Mat src, std::vector<std::string> &licenseVe
   std::vector<CPlate> plateVec;
 
   // 进行深度定位，使用颜色信息与二次Sobel
-  int resultPD = plateDetect(src, plateVec, getPDDebug(), 0);
+  int resultPD = plateDetect(src, plateVec, kDebug, 0);
 
   if (resultPD == 0) {
     size_t num = plateVec.size();

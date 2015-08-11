@@ -12,7 +12,7 @@
 #ifndef __CHARS_SEGMENT_H__
 #define __CHARS_SEGMENT_H__
 
-#include "core_func.h"
+#include "easypr/core/core_func.h"
 
 /*! \namespace easypr
 Namespace where all the C++ EasyPR functionality resides
@@ -24,7 +24,7 @@ class CCharsSegment {
   CCharsSegment();
 
   //! ×Ö·û·Ö¸î
-  int charsSegment(Mat, std::vector<Mat>&);
+  int charsSegment(Mat input, std::vector<Mat>& resultVec);
 
   //! ×Ö·û³ß´çÑéÖ¤
   bool verifyCharSizes(Mat r);

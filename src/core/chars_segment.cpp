@@ -73,7 +73,7 @@ Mat CCharsSegment::preprocessChar(Mat in) {
 
 
 //! 字符分割与排序
-int CCharsSegment::charsSegment(Mat input, vector<Mat>& resultVec, int index) {
+int CCharsSegment::charsSegment(Mat input, vector<Mat>& resultVec) {
 
   if (!input.data) return 0x01;
 
@@ -133,24 +133,11 @@ int CCharsSegment::charsSegment(Mat input, vector<Mat>& resultVec, int index) {
     destroyWindow("threshold");
   }
 
-  if (m_debug) {
-    stringstream ss(stringstream::in | stringstream::out);
-    ss << "resources/image/tmp/debug_char_threshold_" << index << ".jpg";
-    utils::imwrite(ss.str(), img_threshold);
-  }
-
   // 去除车牌上方的柳钉以及下方的横线等干扰
   // 并且也判断了是否是车牌
   // 并且在此对字符的跳变次数以及字符颜色所占的比重做了是否是车牌的判别条件
   // 如果不是车牌，返回ErrorCode=0x02
   if (!clearLiuDing(img_threshold)) return 0x02;
-
-  if (m_debug) {
-    stringstream ss(stringstream::in | stringstream::out);
-    ss << "resources/image/tmp/debug_char_clearLiuDing_" << index << ".jpg";
-    utils::imwrite(ss.str(), img_threshold);
-  }
-
 
   // 在二值化图像中提取轮廓
   Mat img_contours;
@@ -187,16 +174,6 @@ int CCharsSegment::charsSegment(Mat input, vector<Mat>& resultVec, int index) {
   // 获得特殊字符对应的Rectt,如苏A的"A"
   specIndex = GetSpecificRect(sortedRect);
 
-  if (m_debug) {
-    if (specIndex < sortedRect.size()) {
-      Mat specMat(img_threshold, sortedRect[specIndex]);
-      stringstream ss(stringstream::in | stringstream::out);
-      ss << "resources/image/tmp/debug_specMat_" << index
-         << ".jpg";
-      utils::imwrite(ss.str(), specMat);
-    }
-  }
-
   // 根据特定Rect向左反推出中文字符
   // 这样做的主要原因是根据findContours方法很难捕捉到中文字符的准确Rect，因此仅能
   // 退过特定算法来指定
@@ -205,14 +182,6 @@ int CCharsSegment::charsSegment(Mat input, vector<Mat>& resultVec, int index) {
     chineseRect = GetChineseRect(sortedRect[specIndex]);
   else
     return 0x04;
-
-  if (m_debug) {
-    Mat chineseMat(img_threshold, chineseRect);
-    stringstream ss(stringstream::in | stringstream::out);
-    ss << "resources/image/tmp/debug_chineseMat_" << index
-       << ".jpg";
-    utils::imwrite(ss.str(), chineseMat);
-  }
 
   //新建一个全新的排序Rect
   //将中文字符Rect第一个加进来，因为它肯定是最左边的
@@ -256,14 +225,6 @@ int CCharsSegment::charsSegment(Mat input, vector<Mat>& resultVec, int index) {
 
     // 归一化大小
     newRoi = preprocessChar(newRoi);
-
-    // 假设我们要重新训练ANN模型，在这里需要把训练样板输出
-    if (i == 0) {
-      stringstream ss(stringstream::in | stringstream::out);
-      ss << "resources/image/tmp/debug_char_auxRoi_" << index << "_" << (i)
-        << ".jpg";
-      utils::imwrite(ss.str(), newRoi);
-    }
 
     // 每个字符图块输入到下面的步骤进行处理
     resultVec.push_back(newRoi);

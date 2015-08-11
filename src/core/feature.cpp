@@ -1,79 +1,79 @@
-// è¿™ä¸ªæ–‡ä»¶å®šä¹‰äº†EasyPRé‡Œæ‰€æœ‰ç‰¹å¾ç”Ÿæˆçš„å‡½æ•°
-// æ‰€å±å‘½åç©ºé—´ä¸ºeasypr
-// è¿™ä¸ªéƒ¨åˆ†ä¸­çš„ç‰¹å¾ç”±easyprçš„å¼€å‘è€…ä¿®æ”¹
+// Õâ¸öÎÄ¼ş¶¨ÒåÁËEasyPRÀïËùÓĞÌØÕ÷Éú³ÉµÄº¯Êı
+// ËùÊôÃüÃû¿Õ¼äÎªeasypr
+// Õâ¸ö²¿·ÖÖĞµÄÌØÕ÷ÓÉeasyprµÄ¿ª·¢ÕßĞŞ¸Ä
 
 #include "easypr/core/feature.h"
 #include "easypr/core/core_func.h"
 
 /*! \namespace easypr
-    Namespace where all the C++ EasyPR functionality resides
+Namespace where all the C++ EasyPR functionality resides
 */
 namespace easypr {
 
-//! è·å–å‚ç›´å’Œæ°´å¹³çš„ç›´æ–¹å›¾å›¾å€¼
-Mat getTheFeatures(Mat in) {
-  const int VERTICAL = 0;
-  const int HORIZONTAL = 1;
+  //! »ñÈ¡´¹Ö±ºÍË®Æ½µÄÖ±·½Í¼Í¼Öµ
+  Mat getTheFeatures(Mat in) {
+    const int VERTICAL = 0;
+    const int HORIZONTAL = 1;
 
-  // Histogram features
-  Mat vhist = ProjectedHistogram(in, VERTICAL);
-  Mat hhist = ProjectedHistogram(in, HORIZONTAL);
+    // Histogram features
+    Mat vhist = ProjectedHistogram(in, VERTICAL);
+    Mat hhist = ProjectedHistogram(in, HORIZONTAL);
 
-  // Last 10 is the number of moments components
-  int numCols = vhist.cols + hhist.cols;
+    // Last 10 is the number of moments components
+    int numCols = vhist.cols + hhist.cols;
 
-  Mat out = Mat::zeros(1, numCols, CV_32F);
+    Mat out = Mat::zeros(1, numCols, CV_32F);
 
-  // Asign values to feature,æ ·æœ¬ç‰¹å¾ä¸ºæ°´å¹³ã€å‚ç›´ç›´æ–¹å›¾
-  int j = 0;
-  for (int i = 0; i < vhist.cols; i++) {
-    out.at<float>(j) = vhist.at<float>(i);
-    j++;
+    // Asign values to feature,Ñù±¾ÌØÕ÷ÎªË®Æ½¡¢´¹Ö±Ö±·½Í¼
+    int j = 0;
+    for (int i = 0; i < vhist.cols; i++) {
+      out.at<float>(j) = vhist.at<float>(i);
+      j++;
+    }
+    for (int i = 0; i < hhist.cols; i++) {
+      out.at<float>(j) = hhist.at<float>(i);
+      j++;
+    }
+
+    return out;
   }
-  for (int i = 0; i < hhist.cols; i++) {
-    out.at<float>(j) = hhist.at<float>(i);
-    j++;
+
+  //! EasyPRµÄgetFeatures»Øµ÷º¯Êı
+  //! ±¾º¯ÊıÊÇÉú³ÉÖ±·½Í¼¾ùºâÌØÕ÷µÄ»Øµ÷º¯Êı
+  void getHisteqFeatures(const Mat& image, Mat& features) {
+    features = histeq(image);
   }
 
-  return out;
-}
+  //! EasyPRµÄgetFeatures»Øµ÷º¯Êı
+  //! ±¾º¯ÊıÊÇ»ñÈ¡´¹Ö±ºÍË®Æ½µÄÖ±·½Í¼Í¼Öµ
+  void getHistogramFeatures(const Mat& image, Mat& features) {
+    Mat grayImage;
+    cvtColor(image, grayImage, CV_RGB2GRAY);
 
-//! EasyPRçš„getFeatureså›è°ƒå‡½æ•°
-//! æœ¬å‡½æ•°æ˜¯ç”Ÿæˆç›´æ–¹å›¾å‡è¡¡ç‰¹å¾çš„å›è°ƒå‡½æ•°
-void getHisteqFeatures(const Mat& image, Mat& features) {
-  features = histeq(image);
-}
+    // grayImage = histeq(grayImage);
 
-//! EasyPRçš„getFeatureså›è°ƒå‡½æ•°
-//! æœ¬å‡½æ•°æ˜¯è·å–å‚ç›´å’Œæ°´å¹³çš„ç›´æ–¹å›¾å›¾å€¼
-void getHistogramFeatures(const Mat& image, Mat& features) {
-  Mat grayImage;
-  cvtColor(image, grayImage, CV_RGB2GRAY);
+    Mat img_threshold;
+    threshold(grayImage, img_threshold, 0, 255,
+      CV_THRESH_OTSU + CV_THRESH_BINARY);
+    features = getTheFeatures(img_threshold);
+  }
 
-  // grayImage = histeq(grayImage);
+  //! EasyPRµÄgetFeatures»Øµ÷º¯Êı
+  //! ±¾º¯ÊıÊÇ»ñÈ¡SITFÌØÕ÷×Ó
+  void getSIFTFeatures(const Mat& image, Mat& features) {
+    //´ıÍêÉÆ
+  }
 
-  Mat img_threshold;
-  threshold(grayImage, img_threshold, 0, 255,
-            CV_THRESH_OTSU + CV_THRESH_BINARY);
-  features = getTheFeatures(img_threshold);
-}
+  //! EasyPRµÄgetFeatures»Øµ÷º¯Êı
+  //! ±¾º¯ÊıÊÇ»ñÈ¡HOGÌØÕ÷×Ó
+  void getHOGFeatures(const Mat& image, Mat& features) {
+    //´ıÍêÉÆ
+  }
 
-//! EasyPRçš„getFeatureså›è°ƒå‡½æ•°
-//! æœ¬å‡½æ•°æ˜¯è·å–SITFç‰¹å¾å­
-void getSIFTFeatures(const Mat& image, Mat& features) {
-  //å¾…å®Œå–„
-}
-
-//! EasyPRçš„getFeatureså›è°ƒå‡½æ•°
-//! æœ¬å‡½æ•°æ˜¯è·å–HOGç‰¹å¾å­
-void getHOGFeatures(const Mat& image, Mat& features) {
-  //å¾…å®Œå–„
-}
-
-//! EasyPRçš„getFeatureså›è°ƒå‡½æ•°
-//! æœ¬å‡½æ•°æ˜¯è·å–HSVç©ºé—´é‡åŒ–çš„ç›´æ–¹å›¾ç‰¹å¾å­
-void getHSVHistFeatures(const Mat& image, Mat& features) {
-  // TODO
-}
+  //! EasyPRµÄgetFeatures»Øµ÷º¯Êı
+  //! ±¾º¯ÊıÊÇ»ñÈ¡HSV¿Õ¼äÁ¿»¯µÄÖ±·½Í¼ÌØÕ÷×Ó
+  void getHSVHistFeatures(const Mat& image, Mat& features) {
+    // TODO
+  }
 
 } /* \namespace easypr  */

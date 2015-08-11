@@ -9,7 +9,7 @@ namespace easypr {
 
 class PlateJudge {
  public:
-   static PlateJudge* instance();
+  static PlateJudge* instance();
    
    //! 对多幅车牌进行SVM判断
   int plateJudge(const std::vector<CPlate>&, std::vector<CPlate>&);
