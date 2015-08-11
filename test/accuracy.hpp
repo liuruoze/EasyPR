@@ -72,7 +72,7 @@ int accuracyTest(const char* test_path) {
     cout << "Ô­ÅÆ:" << plateLicense << endl;
 
     vector<string> plateVec;
-    int result = pr.plateRecognize(src, plateVec);
+    int result = pr.plateRecognize(src, plateVec, i);
     if (result == 0) {
       int num = plateVec.size();
 
