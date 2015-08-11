@@ -2,8 +2,8 @@
 // 所属命名空间为easypr
 // 这个部分中的特征由easypr的开发者修改
 
-#include "easypr/feature.h"
-#include "easypr/core_func.h"
+#include "easypr/core/feature.h"
+#include "easypr/core/core_func.h"
 
 /*! \namespace easypr
     Namespace where all the C++ EasyPR functionality resides

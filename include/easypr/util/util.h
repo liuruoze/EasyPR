@@ -14,6 +14,14 @@
 #define OS_LINUX
 #endif
 
+#ifndef SAFE_RELEASE
+#define SAFE_RELEASE(p) \
+  if ((p)) {            \
+    delete (p);         \
+    (p) = NULL;         \
+  }
+#endif
+
 namespace easypr {
 class Utils {
  public:

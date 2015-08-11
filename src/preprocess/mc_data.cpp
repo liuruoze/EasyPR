@@ -3,9 +3,9 @@
 // 2.随机/选择性地选取部分数据成为learndata，这个根据参数设置，一般设置为1000，10000，或者1百万
 #include "easypr/preprocess/mc_data.h"
 #include <ctime>
-#include "easypr/plate_judge.h"
-#include "easypr/plate_locate.h"
-#include "easypr/util.h"
+#include "easypr/core/plate_judge.h"
+#include "easypr/core/plate_locate.h"
+#include "easypr/util/util.h"
 
 #ifdef OS_WINDOWS
 #include <io.h>
@@ -137,9 +137,6 @@ void tag_data(const char* source_folder, const char* has_plate_folder,
   }
 
   CPlateLocate locator;
-  CPlateJudge judger;
-
-  judger.LoadModel(svm_model);
 
   for (auto f : files) {
     auto filename = Utils::getFileName(f);
@@ -156,7 +153,7 @@ void tag_data(const char* source_folder, const char* has_plate_folder,
     for (auto plate : maybe_plates) {
       char save_to[255] = {0};
       int result = 0;
-      judger.plateJudge(plate, result);
+      PlateJudge::instance()->plateJudge(plate, result);
       if (result == 1) {
         // it's a plate
         sprintf(save_to, "%s/%s_%d.jpg",

@@ -4,6 +4,9 @@
 #include <easypr.h>
 #include <ctime>
 #include <fstream>
+#include <list>
+
+using namespace std;
 
 namespace easypr {
 
@@ -14,15 +17,12 @@ int accuracyTest(const char* test_path) {
 
   CPlateRecognize pr;
 
-  pr.LoadANN("resources/model/ann.xml");
-  pr.LoadSVM("resources/model/svm.xml");
-
-  // è®¾ç½®Debugæ¨¡å¼
+  // ÉèÖÃDebugÄ£Ê½
   pr.setDebug(false);
 
   pr.setLifemode(true);
 
-  // è®¾ç½®è¦å¤„ç†çš„ä¸€å¼ å›¾ç‰‡ä¸­æœ€å¤šæœ‰å¤šå°‘è½¦ç‰Œ
+  // ÉèÖÃÒª´¦ÀíµÄÒ»ÕÅÍ¼Æ¬ÖĞ×î¶àÓĞ¶àÉÙ³µÅÆ
   pr.setMaxPlates(4);
 
   int size = files.size();
@@ -34,62 +34,62 @@ int accuracyTest(const char* test_path) {
 
   cout << "Begin to test the easypr accuracy!" << endl;
 
-  // æ€»çš„æµ‹è¯•å›¾ç‰‡æ•°é‡
+  // ×ÜµÄ²âÊÔÍ¼Æ¬ÊıÁ¿
   int count_all = 0;
-  // é”™è¯¯çš„å›¾ç‰‡æ•°é‡
+  // ´íÎóµÄÍ¼Æ¬ÊıÁ¿
   int count_err = 0;
-  // æœªè¯†åˆ«çš„å›¾ç‰‡æ•°é‡
+  // Î´Ê¶±ğµÄÍ¼Æ¬ÊıÁ¿
   int count_norecogin = 0;
   // not recognized pictures
   std::list<std::string> not_recognized_files;
 
-  // æ€»çš„å­—ç¬¦å·®è·
+  // ×ÜµÄ×Ö·û²î¾à
   float diff_all = 0;
-  // å¹³å‡å­—ç¬¦å·®è·
+  // Æ½¾ù×Ö·û²î¾à
   float diff_avg = 0;
-  // å®Œå…¨åŒ¹é…çš„è¯†åˆ«æ¬¡æ•°
+  // ÍêÈ«Æ¥ÅäµÄÊ¶±ğ´ÎÊı
   float match_count = 0;
-  // å®Œå…¨åŒ¹é…çš„è¯†åˆ«æ¬¡æ•°æ‰€å è¯†åˆ«å›¾ç‰‡ä¸­çš„æ¯”ä¾‹
+  // ÍêÈ«Æ¥ÅäµÄÊ¶±ğ´ÎÊıËùÕ¼Ê¶±ğÍ¼Æ¬ÖĞµÄ±ÈÀı
   float match_rate = 0;
 
-  // å¼€å§‹å’Œç»“æŸæ—¶é—´
+  // ¿ªÊ¼ºÍ½áÊøÊ±¼ä
   time_t begin, end;
   time(&begin);
 
   for (int i = 0; i < size; i++) {
     string filepath = files[i].c_str();
 
-    // EasyPRå¼€å§‹åˆ¤æ–­è½¦ç‰Œ
+    // EasyPR¿ªÊ¼ÅĞ¶Ï³µÅÆ
     Mat src = imread(filepath);
 
-    // å¦‚æœæ˜¯éå›¾åƒæ–‡ä»¶ï¼Œç›´æ¥è¿‡å»
+    // Èç¹ûÊÇ·ÇÍ¼ÏñÎÄ¼ş£¬Ö±½Ó¹ıÈ¥
     if (!src.data) continue;
 
     cout << "------------------" << endl;
 
-    // è·å–çœŸå®çš„è½¦ç‰Œ
+    // »ñÈ¡ÕæÊµµÄ³µÅÆ
     string plateLicense = Utils::getFileName(filepath);
-    cout << "åŸç‰Œ:" << plateLicense << endl;
+    cout << "Ô­ÅÆ:" << plateLicense << endl;
 
     vector<string> plateVec;
-    int result = pr.plateRecognize(src, plateVec, i);
+    int result = pr.plateRecognize(src, plateVec);
     if (result == 0) {
       int num = plateVec.size();
 
       if (num == 0) {
-        cout << "æ— è½¦ç‰Œ" << endl;
-        if (plateLicense != "æ— è½¦ç‰Œ") {
+        cout << "ÎŞ³µÅÆ" << endl;
+        if (plateLicense != "ÎŞ³µÅÆ") {
           not_recognized_files.push_back(plateLicense);
           count_norecogin++;
         }
       } else if (num > 1) {
-        // å¤šè½¦ç‰Œä½¿ç”¨diffæœ€å°çš„é‚£ä¸ªè®°å½•
+        // ¶à³µÅÆÊ¹ÓÃdiff×îĞ¡µÄÄÇ¸ö¼ÇÂ¼
         int mindiff = 10000;
         for (int j = 0; j < num; j++) {
           cout << plateVec[j] << " (" << j + 1 << ")" << endl;
           string colorplate = plateVec[j];
 
-          // è®¡ç®—"è“ç‰Œ:è‹E7KU22"ä¸­å†’å·åé¢çš„è½¦ç‰Œå¤§å°"
+          // ¼ÆËã"À¶ÅÆ:ËÕE7KU22"ÖĞÃ°ºÅºóÃæµÄ³µÅÆ´óĞ¡"
           vector<string> spilt_plate = Utils::splitString(colorplate, ':');
 
           int size = spilt_plate.size();
@@ -100,29 +100,29 @@ int accuracyTest(const char* test_path) {
           }
         }
 
-        cout << "å·®è·:" << mindiff << "ä¸ªå­—ç¬¦" << endl;
+        cout << "²î¾à:" << mindiff << "¸ö×Ö·û" << endl;
         if (mindiff == 0) {
-          // å®Œå…¨åŒ¹é…
+          // ÍêÈ«Æ¥Åä
           match_count++;
         }
         diff_all = diff_all + mindiff;
       } else {
-        // å•è½¦ç‰Œåªè®¡ç®—ä¸€æ¬¡diff
+        // µ¥³µÅÆÖ»¼ÆËãÒ»´Îdiff
         for (int j = 0; j < num; j++) {
           cout << plateVec[j] << endl;
           string colorplate = plateVec[j];
 
-          // è®¡ç®—"è“ç‰Œ:è‹E7KU22"ä¸­å†’å·åé¢çš„è½¦ç‰Œå¤§å°"
+          // ¼ÆËã"À¶ÅÆ:ËÕE7KU22"ÖĞÃ°ºÅºóÃæµÄ³µÅÆ´óĞ¡"
           vector<string> spilt_plate = Utils::splitString(colorplate, ':');
 
           int size = spilt_plate.size();
           if (size == 2 && spilt_plate[1] != "") {
             int diff = utils::levenshtein_distance(plateLicense,
                                                    spilt_plate[size - 1]);
-            cout << "å·®è·:" << diff << "ä¸ªå­—ç¬¦" << endl;
+            cout << "²î¾à:" << diff << "¸ö×Ö·û" << endl;
 
             if (diff == 0) {
-              // å®Œå…¨åŒ¹é…
+              // ÍêÈ«Æ¥Åä
               match_count++;
             }
             diff_all = diff_all + diff;
@@ -130,7 +130,7 @@ int accuracyTest(const char* test_path) {
         }
       }
     } else {
-      cout << "é”™è¯¯ç :" << result << endl;
+      cout << "´íÎóÂë:" << result << endl;
       count_err++;
     }
     count_all++;
@@ -141,13 +141,13 @@ int accuracyTest(const char* test_path) {
   cout << "Easypr accuracy test end!" << endl;
   cout << "------------------" << endl;
   cout << endl;
-  cout << "ç»Ÿè®¡å‚æ•°:" << endl;
-  cout << "æ€»å›¾ç‰‡æ•°:" << count_all << "å¼ ,  ";
-  cout << "æœªè¯†å‡ºå›¾ç‰‡:" << count_norecogin << "å¼ ,  ";
+  cout << "Í³¼Æ²ÎÊı:" << endl;
+  cout << "×ÜÍ¼Æ¬Êı:" << count_all << "ÕÅ,  ";
+  cout << "Î´Ê¶³öÍ¼Æ¬:" << count_norecogin << "ÕÅ,  ";
 
   float count_recogin = float(count_all - (count_err + count_norecogin));
   float count_rate = count_recogin / count_all;
-  cout << "å®šä½ç‡:" << count_rate * 100 << "%  " << endl;
+  cout << "¶¨Î»ÂÊ:" << count_rate * 100 << "%  " << endl;
 
   if (count_recogin > 0) {
     diff_avg = diff_all / count_recogin;
@@ -157,17 +157,17 @@ int accuracyTest(const char* test_path) {
     match_rate = match_count / count_recogin * 100;
   }
 
-  cout << "å¹³å‡å­—ç¬¦å·®è·:" << diff_avg << "ä¸ª,  ";
-  cout << "å®Œå…¨åŒ¹é…æ•°:" << match_count << "å¼ ,  ";
-  cout << "å®Œå…¨åŒ¹é…ç‡:" << match_rate << "%  " << endl;
+  cout << "Æ½¾ù×Ö·û²î¾à:" << diff_avg << "¸ö,  ";
+  cout << "ÍêÈ«Æ¥ÅäÊı:" << match_count << "ÕÅ,  ";
+  cout << "ÍêÈ«Æ¥ÅäÂÊ:" << match_rate << "%  " << endl;
 
   double seconds = difftime(end, begin);
   double avgsec = seconds / double(count_all);
 
-  cout << "æ€»æ—¶é—´:" << seconds << "ç§’,  ";
-  cout << "å¹³å‡æ‰§è¡Œæ—¶é—´:" << avgsec << "ç§’" << endl;
+  cout << "×ÜÊ±¼ä:" << seconds << "Ãë,  ";
+  cout << "Æ½¾ùÖ´ĞĞÊ±¼ä:" << avgsec << "Ãë" << endl;
 
-  cout << "æœªè¯†å‡ºå›¾ç‰‡:" << endl;
+  cout << "Î´Ê¶³öÍ¼Æ¬:" << endl;
 
   for (auto it = not_recognized_files.begin(); it != not_recognized_files.end();
        ++it) {
@@ -187,14 +187,14 @@ int accuracyTest(const char* test_path) {
     strftime(buf, sizeof(buf), "%Y-%m-%d %X", now);
     myfile << string(buf) << endl;
 
-    myfile << "æ€»å›¾ç‰‡æ•°:" << count_all << "å¼ ,  ";
-    myfile << "æœªè¯†å‡ºå›¾ç‰‡:" << count_norecogin << "å¼ ,  ";
-    myfile << "å®šä½ç‡:" << count_rate * 100 << "%  " << endl;
-    myfile << "å¹³å‡å­—ç¬¦å·®è·:" << diff_avg << "ä¸ª,  ";
-    myfile << "å®Œå…¨åŒ¹é…æ•°:" << match_count << "å¼ ,  ";
-    myfile << "å®Œå…¨åŒ¹é…ç‡:" << match_rate << "%  " << endl;
-    myfile << "æ€»æ—¶é—´:" << seconds << "ç§’,  ";
-    myfile << "å¹³å‡æ‰§è¡Œæ—¶é—´:" << avgsec << "ç§’" << endl;
+    myfile << "×ÜÍ¼Æ¬Êı:" << count_all << "ÕÅ,  ";
+    myfile << "Î´Ê¶³öÍ¼Æ¬:" << count_norecogin << "ÕÅ,  ";
+    myfile << "¶¨Î»ÂÊ:" << count_rate * 100 << "%  " << endl;
+    myfile << "Æ½¾ù×Ö·û²î¾à:" << diff_avg << "¸ö,  ";
+    myfile << "ÍêÈ«Æ¥ÅäÊı:" << match_count << "ÕÅ,  ";
+    myfile << "ÍêÈ«Æ¥ÅäÂÊ:" << match_rate << "%  " << endl;
+    myfile << "×ÜÊ±¼ä:" << seconds << "Ãë,  ";
+    myfile << "Æ½¾ùÖ´ĞĞÊ±¼ä:" << avgsec << "Ãë" << endl;
     myfile.close();
   } else {
     cout << "Unable to open file";

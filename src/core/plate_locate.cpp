@@ -1,5 +1,5 @@
-#include "easypr/plate_locate.h"
-#include "easypr/util.h"
+#include "easypr/core/plate_locate.h"
+#include "easypr/util/util.h"
 
 using namespace std;
 

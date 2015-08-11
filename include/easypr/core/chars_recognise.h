@@ -12,42 +12,29 @@
 #ifndef __CHARS_RECOGNISE_H__
 #define __CHARS_RECOGNISE_H__
 
-#include "easypr/chars_segment.h"
-#include "easypr/chars_identify.h"
+#include "easypr/core/chars_segment.h"
+#include "easypr/core/chars_identify.h"
 
-/*! \namespace easypr
-Namespace where all the C++ EasyPR functionality resides
-*/
 namespace easypr {
 
 class CCharsRecognise {
  public:
   CCharsRecognise();
 
-  //! 字符分割与识别
-  int charsRecognise(Mat, String&);
+  ~CCharsRecognise();
 
-  string charsRecognise(Mat plate);
+  std::string charsRecognise(cv::Mat plate);
 
-  //! 装载ANN模型
-  void LoadANN(string s);
-
-  //! 是否开启调试模式
-  inline void setCRDebug(int param) { m_charsSegment->setDebug(param); }
-
-  //! 获取调试模式状态
-  inline int getCRDebug() { return m_charsSegment->getDebug(); }
-
-  //! 获得车牌颜色
-  inline string getPlateColor(Mat input) const {
-    string color = "未知";
+  //! ��ó�����ɫ
+  inline std::string getPlateColor(cv::Mat input) const {
+    std::string color = "δ֪";
     Color result = getPlateType(input, true);
-    if (BLUE == result) color = "蓝牌";
-    if (YELLOW == result) color = "黄牌";
+    if (BLUE == result) color = "����";
+    if (YELLOW == result) color = "����";
     return color;
   }
 
-  //! 设置变量
+  //! ���ñ���
   inline void setLiuDingSize(int param) {
     m_charsSegment->setLiuDingSize(param);
   }
@@ -68,11 +55,8 @@ class CCharsRecognise {
   }
 
  private:
-  //！字符分割
+  //���ַ��ָ�
   CCharsSegment* m_charsSegment;
-
-  //! 字符识别
-  CCharsIdentify* m_charsIdentify;
 };
 
 } /* \namespace easypr  */

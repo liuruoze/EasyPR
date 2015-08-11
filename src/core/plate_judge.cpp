@@ -1,103 +1,95 @@
-#include "easypr/plate_judge.h"
+#include "easypr/core/plate_judge.h"
+#include "easypr/config.h"
 
-/*! \namespace easypr
-    Namespace where all the C++ EasyPR functionality resides
-*/
 namespace easypr {
 
-CPlateJudge::CPlateJudge() {
-  // cout << "CPlateJudge" << endl;
-  m_path = "resources/model/svm.xml";
-  m_getFeatures = getHistogramFeatures;
+  PlateJudge* PlateJudge::instance_ = nullptr;
 
-  LoadModel();
-}
-
-void CPlateJudge::LoadModel() {
-  svm.clear();
-  svm.load(m_path.c_str(), "svm");
-}
-
-void CPlateJudge::LoadModel(string s) {
-  svm.clear();
-  svm.load(s.c_str(), "svm");
-}
-
-//! ç›´æ–¹å›¾å‡è¡¡
-Mat CPlateJudge::histeq(Mat in) {
-  Mat out(in.size(), in.type());
-  if (in.channels() == 3) {
-    Mat hsv;
-    vector<Mat> hsvSplit;
-    cvtColor(in, hsv, CV_BGR2HSV);
-    split(hsv, hsvSplit);
-    equalizeHist(hsvSplit[2], hsvSplit[2]);
-    merge(hsvSplit, hsv);
-    cvtColor(hsv, out, CV_HSV2BGR);
-  } else if (in.channels() == 1) {
-    equalizeHist(in, out);
-  }
-  return out;
-}
-
-//! å¯¹å•å¹…å›¾åƒè¿›è¡ŒSVMåˆ¤æ–­
-int CPlateJudge::plateJudge(const Mat& inMat, int& result) {
-  if (m_getFeatures == NULL) return -1;
-
-  Mat features;
-  m_getFeatures(inMat, features);
-
-  //é€šè¿‡ç›´æ–¹å›¾å‡è¡¡åŒ–åçš„å½©è‰²å›¾è¿›è¡Œé¢„æµ‹
-  Mat p = features.reshape(1, 1);
-  p.convertTo(p, CV_32FC1);
-
-  float response = svm.predict(p);
-  result = (int)response;
-
-  return 0;
-}
-
-//! å¯¹å¤šå¹…å›¾åƒè¿›è¡ŒSVMåˆ¤æ–­
-int CPlateJudge::plateJudge(const vector<Mat>& inVec, vector<Mat>& resultVec) {
-  int num = inVec.size();
-  for (int j = 0; j < num; j++) {
-    Mat inMat = inVec[j];
-
-    int response = -1;
-    plateJudge(inMat, response);
-
-    if (response == 1) resultVec.push_back(inMat);
-  }
-  return 0;
-}
-
-//! å¯¹å¤šå¹…è½¦ç‰Œè¿›è¡ŒSVMåˆ¤æ–­
-int CPlateJudge::plateJudge(const vector<CPlate>& inVec,
-                            vector<CPlate>& resultVec) {
-  int num = inVec.size();
-  for (int j = 0; j < num; j++) {
-    CPlate inPlate = inVec[j];
-    Mat inMat = inPlate.getPlateMat();
-
-    int response = -1;
-    plateJudge(inMat, response);
-
-    if (response == 1)
-      resultVec.push_back(inPlate);
-    else {
-      int w = inMat.cols;
-      int h = inMat.rows;
-      //å†å–ä¸­é—´éƒ¨åˆ†åˆ¤æ–­ä¸€æ¬¡
-      Mat tmpmat = inMat(Rect_<double>(w * 0.05, h * 0.1, w * 0.9, h * 0.8));
-      Mat tmpDes = inMat.clone();
-      resize(tmpmat, tmpDes, Size(inMat.size()));
-
-      plateJudge(tmpDes, response);
-
-      if (response == 1) resultVec.push_back(inPlate);
+  PlateJudge* PlateJudge::instance(){
+    if (!instance_){
+      instance_ = new PlateJudge;
     }
+    return instance_;
   }
-  return 0;
-}
 
-} /*! \namespace easypr*/
+  PlateJudge::PlateJudge() {
+    svm_ = ml::SVM::load<ml::SVM>(kDefaultSvmPath);
+  }
+
+  //! Ö±·½Í¼¾ùºâ
+  Mat PlateJudge::histeq(Mat in) {
+    Mat out(in.size(), in.type());
+    if (in.channels() == 3) {
+      Mat hsv;
+      std::vector<Mat> hsvSplit;
+      cvtColor(in, hsv, CV_BGR2HSV);
+      split(hsv, hsvSplit);
+      equalizeHist(hsvSplit[2], hsvSplit[2]);
+      merge(hsvSplit, hsv);
+      cvtColor(hsv, out, CV_HSV2BGR);
+    }
+    else if (in.channels() == 1) {
+      equalizeHist(in, out);
+    }
+    return out;
+  }
+
+  //! ¶Ôµ¥·ùÍ¼Ïñ½øĞĞSVMÅĞ¶Ï
+  int PlateJudge::plateJudge(const Mat& inMat, int& result) {
+    Mat features;
+    getHistogramFeatures(inMat, features);
+
+    //Í¨¹ıÖ±·½Í¼¾ùºâ»¯ºóµÄ²ÊÉ«Í¼½øĞĞÔ¤²â
+    Mat p = features.reshape(1, 1);
+    p.convertTo(p, CV_32FC1);
+
+    float response = svm_->predict(p);
+    result = (int)response;
+
+    return 0;
+  }
+
+  //! ¶Ô¶à·ùÍ¼Ïñ½øĞĞSVMÅĞ¶Ï
+  int PlateJudge::plateJudge(const std::vector<Mat>& inVec, std::vector<Mat>& resultVec) {
+    int num = inVec.size();
+    for (int j = 0; j < num; j++) {
+      Mat inMat = inVec[j];
+
+      int response = -1;
+      plateJudge(inMat, response);
+
+      if (response == 1) resultVec.push_back(inMat);
+    }
+    return 0;
+  }
+
+  //! ¶Ô¶à·ù³µÅÆ½øĞĞSVMÅĞ¶Ï
+  int PlateJudge::plateJudge(const std::vector<CPlate>& inVec,
+    std::vector<CPlate>& resultVec) {
+    int num = inVec.size();
+    for (int j = 0; j < num; j++) {
+      CPlate inPlate = inVec[j];
+      Mat inMat = inPlate.getPlateMat();
+
+      int response = -1;
+      plateJudge(inMat, response);
+
+      if (response == 1)
+        resultVec.push_back(inPlate);
+      else {
+        int w = inMat.cols;
+        int h = inMat.rows;
+        //ÔÙÈ¡ÖĞ¼ä²¿·ÖÅĞ¶ÏÒ»´Î
+        Mat tmpmat = inMat(Rect_<double>(w * 0.05, h * 0.1, w * 0.9, h * 0.8));
+        Mat tmpDes = inMat.clone();
+        resize(tmpmat, tmpDes, Size(inMat.size()));
+
+        plateJudge(tmpDes, response);
+
+        if (response == 1) resultVec.push_back(inPlate);
+      }
+    }
+    return 0;
+  }
+
+}

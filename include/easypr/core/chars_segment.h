@@ -23,31 +23,31 @@ class CCharsSegment {
  public:
   CCharsSegment();
 
-  //! å­—ç¬¦åˆ†å‰²
-  int charsSegment(Mat, vector<Mat>&);
+  //! ×Ö·û·Ö¸î
+  int charsSegment(Mat, std::vector<Mat>&);
 
-  //! å­—ç¬¦å°ºå¯¸éªŒè¯
+  //! ×Ö·û³ß´çÑéÖ¤
   bool verifyCharSizes(Mat r);
 
-  //! å­—ç¬¦é¢„å¤„ç†
+  //! ×Ö·ûÔ¤´¦Àí
   Mat preprocessChar(Mat in);
 
-  //! æ ¹æ®ç‰¹æ®Šè½¦ç‰Œæ¥æ„é€ çŒœæµ‹ä¸­æ–‡å­—ç¬¦çš„ä½ç½®å’Œå¤§å°
+  //! ¸ù¾İÌØÊâ³µÅÆÀ´¹¹Ôì²Â²âÖĞÎÄ×Ö·ûµÄÎ»ÖÃºÍ´óĞ¡
   Rect GetChineseRect(const Rect rectSpe);
 
-  //! æ‰¾å‡ºæŒ‡ç¤ºåŸå¸‚çš„å­—ç¬¦çš„Rectï¼Œä¾‹å¦‚è‹A7003Xï¼Œå°±æ˜¯Açš„ä½ç½®
-  int GetSpecificRect(const vector<Rect>& vecRect);
+  //! ÕÒ³öÖ¸Ê¾³ÇÊĞµÄ×Ö·ûµÄRect£¬ÀıÈçËÕA7003X£¬¾ÍÊÇAµÄÎ»ÖÃ
+  int GetSpecificRect(const std::vector<Rect>& vecRect);
 
-  //! è¿™ä¸ªå‡½æ•°åšä¸¤ä¸ªäº‹æƒ…
-  //  1.æŠŠç‰¹æ®Šå­—ç¬¦Rectå·¦è¾¹çš„å…¨éƒ¨Rectå»æ‰ï¼Œåé¢å†é‡å»ºä¸­æ–‡å­—ç¬¦çš„ä½ç½®ã€‚
-  //  2.ä»ç‰¹æ®Šå­—ç¬¦Rectå¼€å§‹ï¼Œä¾æ¬¡é€‰æ‹©6ä¸ªRectï¼Œå¤šä½™çš„èˆå»ã€‚
-  int RebuildRect(const vector<Rect>& vecRect, vector<Rect>& outRect,
+  //! Õâ¸öº¯Êı×öÁ½¸öÊÂÇé
+  //  1.°ÑÌØÊâ×Ö·ûRect×ó±ßµÄÈ«²¿RectÈ¥µô£¬ºóÃæÔÙÖØ½¨ÖĞÎÄ×Ö·ûµÄÎ»ÖÃ¡£
+  //  2.´ÓÌØÊâ×Ö·ûRect¿ªÊ¼£¬ÒÀ´ÎÑ¡Ôñ6¸öRect£¬¶àÓàµÄÉáÈ¥¡£
+  int RebuildRect(const std::vector<Rect>& vecRect, std::vector<Rect>& outRect,
                   int specIndex);
 
-  //! å°†RectæŒ‰ä½ç½®ä»å·¦åˆ°å³è¿›è¡Œæ’åº
-  int SortRect(const vector<Rect>& vecRect, vector<Rect>& out);
+  //! ½«Rect°´Î»ÖÃ´Ó×óµ½ÓÒ½øĞĞÅÅĞò
+  int SortRect(const std::vector<Rect>& vecRect, std::vector<Rect>& out);
 
-  //! è®¾ç½®å˜é‡
+  //! ÉèÖÃ±äÁ¿
   inline void setLiuDingSize(int param) { m_LiuDingSize = param; }
   inline void setColorThreshold(int param) { m_ColorThreshold = param; }
 
@@ -56,38 +56,38 @@ class CCharsSegment {
   inline void setWhitePercent(float param) { m_WhitePercent = param; }
   inline float getWhitePercent() const { return m_WhitePercent; }
 
-  //! æ˜¯å¦å¼€å¯è°ƒè¯•æ¨¡å¼å¸¸é‡ï¼Œé»˜è®¤0ä»£è¡¨å…³é—­
+  //! ÊÇ·ñ¿ªÆôµ÷ÊÔÄ£Ê½³£Á¿£¬Ä¬ÈÏ0´ú±í¹Ø±Õ
   static const int DEFAULT_DEBUG = 1;
 
-  //! preprocessCharæ‰€ç”¨å¸¸é‡
+  //! preprocessCharËùÓÃ³£Á¿
   static const int CHAR_SIZE = 20;
   static const int HORIZONTAL = 1;
   static const int VERTICAL = 0;
 
-  //! preprocessCharæ‰€ç”¨å¸¸é‡
+  //! preprocessCharËùÓÃ³£Á¿
   static const int DEFAULT_LIUDING_SIZE = 7;
   static const int DEFAULT_MAT_WIDTH = 136;
   static const int DEFAULT_COLORTHRESHOLD = 150;
 
-  //! æ˜¯å¦å¼€å¯è°ƒè¯•æ¨¡å¼
+  //! ÊÇ·ñ¿ªÆôµ÷ÊÔÄ£Ê½
   inline void setDebug(int param) { m_debug = param; }
 
-  //! è·å–è°ƒè¯•æ¨¡å¼çŠ¶æ€
+  //! »ñÈ¡µ÷ÊÔÄ£Ê½×´Ì¬
   inline int getDebug() { return m_debug; }
 
  private:
-  //ï¼æŸ³é’‰åˆ¤æ–­å‚æ•°
+  //£¡Áø¶¤ÅĞ¶Ï²ÎÊı
   int m_LiuDingSize;
 
-  //ï¼è½¦ç‰Œå¤§å°å‚æ•°
+  //£¡³µÅÆ´óĞ¡²ÎÊı
   int m_theMatWidth;
 
-  //ï¼è½¦ç‰Œé¢œè‰²åˆ¤æ–­å‚æ•°
+  //£¡³µÅÆÑÕÉ«ÅĞ¶Ï²ÎÊı
   int m_ColorThreshold;
   float m_BluePercent;
   float m_WhitePercent;
 
-  //! æ˜¯å¦å¼€å¯è°ƒè¯•æ¨¡å¼ï¼Œ0å…³é—­ï¼Œé0å¼€å¯
+  //! ÊÇ·ñ¿ªÆôµ÷ÊÔÄ£Ê½£¬0¹Ø±Õ£¬·Ç0¿ªÆô
   int m_debug;
 };
 

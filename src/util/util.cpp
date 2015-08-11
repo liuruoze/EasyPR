@@ -1,4 +1,4 @@
-#include "easypr/util.h"
+#include "easypr/util/util.h"
 #include <string>
 
 #ifdef OS_WINDOWS

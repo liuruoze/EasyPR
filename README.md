@@ -10,23 +10,23 @@ EasyPR是一个中文的开源车牌识别系统，其目标是成为一个简�
 
 ### 更新
 
-本次更新是1.3 测试版，主要改进在于几个方面：
+本次更新是1.3 正式版，主要改进在于几个方面：
 
-1.增加了50张左右的新图片。见下图：
+1.相对原先的1.2版本，在完整识别率上有所提升：
 
-![新图片](resources/doc/res/new50.jpg)
+![效果比较](resources/doc/res/13ver.jpg)
 
-2.增加了extreme_test文件夹，这里的图片以极端难处理情况为主。见下图：
+2.增加了30张左右的新图片，目前的测试图片数达到了204张。
 
-![extreme_test](resources/doc/res/extreme_test.jpg)
+3.对“字符分割”类的代码做了改善。
 
-3.重构了整体架构，将EasyPR核心以静态库的方式编译，分离出通用接口等等。此部分改善由Micooz贡献。见下图：
+在1.4版本中计划做以下几点改善：
 
-![架构重构](resources/doc/res/arch.jpg)
+1.开放ANN训练功能。
 
-4.代码优化，提高易懂与可读性。
+2.新的评价框架，更加合理的评估数据。
 
-下个版本会正式发布1.3 正式版。
+3.新的车牌定位算法。
 
 ### 跨平台
 
@@ -123,7 +123,11 @@ EasyPR的resources/image/general_test文件夹下的图片数据遵循[GDSL协�
 
 ### 使用
 
-EasyPR的所有源代码可在Github上的[项目主页](https://github.com/liuruoze/EasyPR)直接打包下载得到，如果你熟悉git版本控制工具，可以使用下面的命令来克隆代码：
+EasyPR的所有源代码可在Github上的[项目主页](https://github.com/liuruoze/EasyPR)直接打包下载得到。
+
+由于Github在中国有时下载速度较慢，可以使用oschina的镜像[地址](http://git.oschina.net/easypr/EasyPR)来下载。
+
+如果你熟悉git版本控制工具，可以使用下面的命令来从Github里克隆代码：
 
 ```
 $ git clone https://github.com/liuruoze/EasyPR
@@ -133,9 +137,13 @@ EasyPR支持当前主流的操作系统，通常不需要对源代码进行更�
 
 **Note**: 无论在哪个平台使用EasyPR，都要安装对应平台版本的[opencv](http://opencv.org/)，建议使用正式稳定版本。
 
+windows平台下的opencv的配置可以参考这份[博客](http://my.phirobot.com/blog/2014-02-opencv_configuration_in_vs.html)。
+
 #### Windows
 
-Windows下的配置以Visual Studio 2013为例，其他版本大同小异。
+Windows下的配置建议使用最新的Visual Studio 2013版本。
+
+目前2010与2012下会存在编译问题，这是由于老版本对C++ 11特性支持的不足导致的。
 
 * 打开项目目录下的解决方案文件`EasyPR.sln`。
 
@@ -219,7 +227,7 @@ $ ./easypr_test svm --train --has-plate=has/ --no-plate=no/ --divide --svm=save/
 
 * liuruoze：1.0-1.2版作者，1.3版整合工作
 
-* 海豚嘎嘎：1.3版算法贡献者，提升了车牌定位与字符识别的准确率
+* 海豚嘎嘎(车主之家)：1.3版算法贡献者，提升了车牌定位与字符识别的准确率
 
 * Micooz：1.3版架构改善与重构，linux与mac的跨平台编译等
 
@@ -235,4 +243,4 @@ $ ./easypr_test svm --train --has-plate=has/ --no-plate=no/ --divide --svm=save/
 
 taotao1233，邱锦山，唐大侠，jsxyhelu，如果有一天(zhoushiwei)，学习奋斗，袁承志，
 
-圣城小石匠，goldriver，Micooz，梦里时光，Rain Wang，任薛纪，ahccom，星夜落尘，海豚嘎嘎
+圣城小石匠，goldriver，Micooz，梦里时光，Rain Wang，任薛纪，ahccom，星夜落尘，海豚嘎嘎(车主之家)，刘超，以及所有对EasyPR贡献数据的热心同学。
