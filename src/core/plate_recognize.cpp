@@ -7,15 +7,15 @@ CPlateRecognize::CPlateRecognize() {
 }
 
 // !车牌识别模块
-int CPlateRecognize::plateRecognize(Mat src, std::vector<string> &licenseVec) {
+int CPlateRecognize::plateRecognize(Mat src, std::vector<std::string> &licenseVec) {
   // 车牌方块集合
-  vector<CPlate> plateVec;
+  std::vector<CPlate> plateVec;
 
   // 进行深度定位，使用颜色信息与二次Sobel
   int resultPD = plateDetect(src, plateVec, getPDDebug(), 0);
 
   if (resultPD == 0) {
-    int num = plateVec.size();
+    size_t num = plateVec.size();
     int index = 0;
 
     //依次识别每个车牌内的符号
@@ -24,20 +24,17 @@ int CPlateRecognize::plateRecognize(Mat src, std::vector<string> &licenseVec) {
       Mat plate = item.getPlateMat();
 
       //获取车牌颜色
-      string plateType = getPlateColor(plate);
+      std::string plateType = getPlateColor(plate);
 
       //获取车牌号
-      string plateIdentify = "";
-      int resultCR = charsRecognise(plate, plateIdentify);
-      if (resultCR == 0) {
-        string license = plateType + ":" + plateIdentify;
-        licenseVec.push_back(license);
-      }
+      std::string license  = charsRecognise(plate);
+      std::string full_license = plateType + ":" + license;
+      licenseVec.push_back(full_license);
     }
     //完整识别过程到此结束
 
     //如果是Debug模式，则还需要将定位的图片显示在原图左上角
-    if (getPDDebug() == true) {
+    if (getPDDebug()) {
       Mat result;
       src.copyTo(result);
 

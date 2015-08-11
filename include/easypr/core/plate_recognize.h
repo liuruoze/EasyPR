@@ -33,7 +33,6 @@ class CPlateRecognize : public CPlateDetect, public CCharsRecognise {
   //! 是否开启调试模式
   inline void setDebug(bool param) {
     CPlateDetect::setPDDebug(param);
-    CCharsRecognise::setCRDebug(param);
   }
 };
 
