@@ -6,6 +6,8 @@
 #include <fstream>
 #include <list>
 
+using namespace std;
+
 namespace easypr {
 
 namespace demo {
