@@ -83,12 +83,12 @@ void AnnTrain::test() {
     char sub_folder[512] = {0};
 
     sprintf(sub_folder, "%s/%s", chars_folder_, char_key);
-    fprintf(stdout, "  >> Testing characters %s in %s \n",
+    fprintf(stdout, ">> Testing characters %s in %s \n",
             char_key, sub_folder);
 
     auto chars_files = utils::getFiles(sub_folder);
     int corrects = 0, sum = 0;
-    std::vector<std::string> error_files;
+    std::vector<std::pair<std::string, std::string>> error_files;
 
     for (auto file : chars_files) {
       auto img = cv::imread(file);
@@ -96,11 +96,11 @@ void AnnTrain::test() {
       if (ch.first == char_key) {
         ++corrects;
       } else {
-        error_files.push_back(utils::getFileName(file));
+        error_files.push_back(std::make_pair(utils::getFileName(file), ch.second));
       }
       ++sum;
     }
-    fprintf(stdout, "  >>   [sum: %d, correct: %d, rate: %.2f]\n",
+    fprintf(stdout, ">>   [sum: %d, correct: %d, rate: %.2f]\n",
             sum, corrects, (float)corrects / (sum == 0 ? 1 : sum));
     std::string error_string;
     auto end = error_files.end();
@@ -108,14 +108,15 @@ void AnnTrain::test() {
       end -= error_files.size() * (1 - 0.1);
     }
     for(auto i = error_files.begin(); i != end; ++i) {
-      error_string.append(*i);
+      auto kv = *i;
+      error_string.append("       ").append(kv.first).append(": ").append(kv.second);
       if (i != end - 1) {
-        error_string.append(", ");
+        error_string.append(",\n");
       } else {
-        error_string.append(" ...");
+        error_string.append("\n       ...");
       }
     }
-    fprintf(stdout, "  >>   [%s]\n", error_string.c_str());
+    fprintf(stdout, ">>   [\n%s\n     ]\n", error_string.c_str());
   }
 }
 
