@@ -53,7 +53,7 @@ cv::Ptr<cv::ml::TrainData> AnnTrain::train_data() {
 
     auto chars_files = utils::getFiles(sub_folder);
     for (auto file : chars_files) {
-      auto img = cv::imread(file);
+      auto img = cv::imread(file, 0); // a grayscale image
       auto fps = features(img, kPredictSize);
 
       samples.push_back(fps);
@@ -91,7 +91,7 @@ void AnnTrain::test() {
     std::vector<std::pair<std::string, std::string>> error_files;
 
     for (auto file : chars_files) {
-      auto img = cv::imread(file);
+      auto img = cv::imread(file, 0); // a grayscale image
       std::pair<std::string, std::string> ch = CharsIdentify::instance()->identify(img);
       if (ch.first == char_key) {
         ++corrects;
