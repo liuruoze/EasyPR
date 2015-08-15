@@ -1,48 +1,37 @@
-#ifndef EASYPR_SVM_TRAIN_H
-#define EASYPR_SVM_TRAIN_H
+#ifndef EASYPR_TRAIN_SVMTRAIN_H_
+#define EASYPR_TRAIN_SVMTRAIN_H_
 
+#include "easypr/train/train.h"
 #include <vector>
-#include <opencv2/opencv.hpp>
 #include "easypr/config.h"
 
 namespace easypr {
 
-  class SvmTrain {
-  public:
-    typedef enum {
-      kForward = 1, // correspond to "has plate"
-      kInverse = 0  // correspond to "no plate"
-    } Label;
+class SvmTrain : public ITrain {
+ public:
+   typedef struct {
+     std::string file;
+     SvmLabel    label;
+   } TrainItem;
 
-    SvmTrain(const char* forward_data_folder, const char* inverse_data_folder);
+    SvmTrain(const char* plates_folder, const char* xml);
 
-    void train(bool divide = true, float divide_percentage = 0.7,
-      const char* out_svm_folder = kDefaultSvmPath);
+    virtual void train();
 
-    void runTest(const char* svm_path = kDefaultSvmPath);
+    virtual void test();
 
-  private:
-    /*
-     * divide images into train part and test part by percentage
-     */
-    void divide(const char* images_folder, float percentage = 0.7);
+ private:
+    void prepare();
 
-    void getTrain();
+    virtual cv::Ptr<cv::ml::TrainData> tdata();
 
-    void getTest();
-
-    const char* forward_;
-    const char* inverse_;
-
-    // these two variables are used for cv::CvSVM::train_auto()
-    cv::Mat classes_;
-    cv::Ptr<cv::ml::TrainData> trainingData_;
-
-    // these two variables are used for cv::CvSVM::predict()
-    std::vector<cv::Mat> test_imgaes_;
-    std::vector<Label> test_labels_;
-  };
+    cv::Ptr<cv::ml::SVM> svm_;
+    const char* plates_folder_;
+    const char* svm_xml_;
+    std::vector<TrainItem> train_file_list_;
+    std::vector<TrainItem> test_file_list_;
+};
 
 }
 
-#endif //EASYPR_SVM_TRAIN_H
+#endif // EASYPR_TRAIN_SVMTRAIN_H_
