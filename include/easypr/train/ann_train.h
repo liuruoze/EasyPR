@@ -1,25 +1,25 @@
 #ifndef EASYPR_TRAIN_ANNTRAIN_H_
 #define EASYPR_TRAIN_ANNTRAIN_H_
 
-#include <opencv2/opencv.hpp>
+#include "easypr/train/train.h"
 
-namespace easypr{
+namespace easypr {
 
-  class AnnTrain{
-  public:
+class AnnTrain: public ITrain {
+ public:
     explicit AnnTrain(const char* chars_folder, const char* xml);
 
-    void train(const int & neurons = 40);
+    virtual void train();
 
-    void test();
+    virtual void test();
 
-  private:
-    cv::Ptr<cv::ml::TrainData> train_data();
+ private:
+    virtual cv::Ptr<cv::ml::TrainData> tdata();
+
     cv::Ptr<cv::ml::ANN_MLP> ann_;
-
     const char* ann_xml_;
     const char* chars_folder_;
-  };
+};
 
 }
 

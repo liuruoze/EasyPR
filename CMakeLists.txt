@@ -34,6 +34,7 @@ set(SOURCE_FILES
     src/core/plate_recognize.cpp
     src/train/ann_train.cpp
     src/train/svm_train.cpp
+    src/train/train.cpp
     src/preprocess/deface.cpp
     src/preprocess/gdts.cpp
     src/preprocess/mc_data.cpp

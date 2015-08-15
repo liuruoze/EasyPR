@@ -1,12 +1,19 @@
-#ifndef EASYPR_TRAIN_TRAIN_H_
-#define EASYPR_TRAIN_TRAIN_H_
+#ifndef EASYPR_CONFIG_H_
+#define EASYPR_CONFIG_H_
 
 namespace easypr {
 
 static const char* kDefaultSvmPath = "resources/model/svm.xml";
 static const char* kDefaultAnnPath = "resources/model/ann.xml";
 
-static const int kPredictSize = 10;
+typedef enum {
+  kForward = 1, // correspond to "has plate"
+  kInverse = 0  // correspond to "no plate"
+} SvmLabel;
+
+static const float kSvmPercentage   = 0.7f;
+static const int   kPredictSize     = 10;
+static const int   kNeurons         = 40;
 
 static const char *kChars[] = {
   "0", "1", "2",
@@ -59,4 +66,4 @@ static bool kDebug = false;
 
 }
 
-#endif // EASYPR_TRAIN_TRAIN_H_
+#endif // EASYPR_CONFIG_H_

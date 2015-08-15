@@ -13,10 +13,10 @@ AnnTrain::AnnTrain(const char* chars_folder,
   ann_ = cv::ml::ANN_MLP::create();
 }
 
-void AnnTrain::train(const int& neurons /* = 40 */) {
+void AnnTrain::train() {
   cv::Mat layers(1, 3, CV_32SC1);
   layers.at<int>(0) = 120; // the input layer
-  layers.at<int>(1) = neurons; // the neurons
+  layers.at<int>(1) = kNeurons; // the neurons
   layers.at<int>(2) = kCharsTotalNumber; // the output layer
 
   ann_->setLayerSizes(layers);
@@ -25,7 +25,7 @@ void AnnTrain::train(const int& neurons /* = 40 */) {
   ann_->setBackpropWeightScale(0.1);
   ann_->setBackpropMomentumScale(0.1);
 
-  auto traindata = train_data();
+  auto traindata = tdata();
   std::cout << "Training ANN model, please wait..." << std::endl;
   long start = utils::getTimestamp();
   ann_->train(traindata);
@@ -34,45 +34,6 @@ void AnnTrain::train(const int& neurons /* = 40 */) {
 
   ann_->save(ann_xml_);
   std::cout << "Your ANN Model was saved to " << ann_xml_ << std::endl;
-}
-
-cv::Ptr<cv::ml::TrainData> AnnTrain::train_data() {
-  assert(chars_folder_);
-
-  cv::Mat samples;
-  std::vector<int> labels;
-
-  std::cout << "Collecting chars in " << chars_folder_ << std::endl;
-
-  for (int i = 0; i < kCharsTotalNumber; ++i) {
-    auto char_key = kChars[i];
-    char sub_folder[512] = {0};
-
-    sprintf(sub_folder, "%s/%s", chars_folder_, char_key);
-    std::cout << "  >> Featuring characters " << char_key << " in " << sub_folder << std::endl;
-
-    auto chars_files = utils::getFiles(sub_folder);
-    for (auto file : chars_files) {
-      auto img = cv::imread(file, 0); // a grayscale image
-      auto fps = features(img, kPredictSize);
-
-      samples.push_back(fps);
-      labels.push_back(i);
-    }
-  }
-
-  cv::Mat samples_;
-  samples.convertTo(samples_, CV_32F);
-  cv::Mat train_classes = cv::Mat::zeros((int) labels.size(), kCharsTotalNumber,
-                                   CV_32F);
-
-  for (int i = 0; i < train_classes.rows; ++i) {
-    train_classes.at<float>(i, labels[i]) = 1.f;
-  }
-
-  return cv::ml::TrainData::create(samples_,
-                               cv::ml::SampleTypes::ROW_SAMPLE,
-                               train_classes);
 }
 
 void AnnTrain::test() {
@@ -118,6 +79,45 @@ void AnnTrain::test() {
     }
     fprintf(stdout, ">>   [\n%s\n     ]\n", error_string.c_str());
   }
+}
+
+cv::Ptr<cv::ml::TrainData> AnnTrain::tdata() {
+  assert(chars_folder_);
+
+  cv::Mat samples;
+  std::vector<int> labels;
+
+  std::cout << "Collecting chars in " << chars_folder_ << std::endl;
+
+  for (int i = 0; i < kCharsTotalNumber; ++i) {
+    auto char_key = kChars[i];
+    char sub_folder[512] = {0};
+
+    sprintf(sub_folder, "%s/%s", chars_folder_, char_key);
+    std::cout << "  >> Featuring characters " << char_key << " in " << sub_folder << std::endl;
+
+    auto chars_files = utils::getFiles(sub_folder);
+    for (auto file : chars_files) {
+      auto img = cv::imread(file, 0); // a grayscale image
+      auto fps = features(img, kPredictSize);
+
+      samples.push_back(fps);
+      labels.push_back(i);
+    }
+  }
+
+  cv::Mat samples_;
+  samples.convertTo(samples_, CV_32F);
+  cv::Mat train_classes = cv::Mat::zeros((int) labels.size(), kCharsTotalNumber,
+                                   CV_32F);
+
+  for (int i = 0; i < train_classes.rows; ++i) {
+    train_classes.at<float>(i, labels[i]) = 1.f;
+  }
+
+  return cv::ml::TrainData::create(samples_,
+                               cv::ml::SampleTypes::ROW_SAMPLE,
+                               train_classes);
 }
 
 }
