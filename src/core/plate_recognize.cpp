@@ -20,7 +20,7 @@ int CPlateRecognize::plateRecognize(Mat src, std::vector<std::string> &licenseVe
     int index = 0;
 
     //依次识别每个车牌内的符号
-    for (int j = 0; j < num; j++) {
+    for (size_t j = 0; j < num; j++) {
       CPlate item = plateVec[j];
       Mat plate = item.getPlateMat();
 
@@ -39,7 +39,7 @@ int CPlateRecognize::plateRecognize(Mat src, std::vector<std::string> &licenseVe
       Mat result;
       src.copyTo(result);
 
-      for (int j = 0; j < num; j++) {
+      for (size_t j = 0; j < num; j++) {
         CPlate item = plateVec[j];
         Mat plate = item.getPlateMat();
 

@@ -66,7 +66,7 @@ void AnnTrain::test() {
     std::string error_string;
     auto end = error_files.end();
     if (error_files.size() >= 10) {
-      end -= error_files.size() * (1 - 0.1);
+      end -= static_cast<size_t>(error_files.size() * (1 - 0.1));
     }
     for(auto i = error_files.begin(); i != end; ++i) {
       auto kv = *i;
