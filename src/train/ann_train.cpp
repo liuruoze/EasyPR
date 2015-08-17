@@ -1,8 +1,8 @@
 #include "easypr/train/ann_train.h"
-#include "easypr/core/core_func.h"
-#include "easypr/core/chars_identify.h"
-#include "easypr/util/util.h"
 #include "easypr/config.h"
+#include "easypr/core/chars_identify.h"
+#include "easypr/core/core_func.h"
+#include "easypr/util/util.h"
 
 namespace easypr {
 
@@ -68,11 +68,11 @@ void AnnTrain::test() {
     if (error_files.size() >= 10) {
       end -= static_cast<size_t>(error_files.size() * (1 - 0.1));
     }
-    for (auto i = error_files.begin(); i != end; ++i) {
-      auto kv = *i;
+    for (auto k = error_files.begin(); k != end; ++k) {
+      auto kv = *k;
       error_string.append("       ").append(kv.first).append(": ").append(
           kv.second);
-      if (i != end - 1) {
+      if (k != end - 1) {
         error_string.append(",\n");
       } else {
         error_string.append("\n       ...");

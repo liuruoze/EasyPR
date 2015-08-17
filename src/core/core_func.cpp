@@ -3,7 +3,6 @@
 // 这个部分中的函数轻易不要改动
 
 #include "easypr/core/core_func.h"
-#include <opencv2/opencv.hpp>
 
 using namespace cv;
 

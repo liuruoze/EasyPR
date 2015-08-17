@@ -1,5 +1,4 @@
 #include "easypr/train/svm_train.h"
-#include "easypr/config.h"
 #include "easypr/core/feature.h"
 #include "easypr/util/util.h"
 

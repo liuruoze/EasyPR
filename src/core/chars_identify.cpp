@@ -1,7 +1,6 @@
 #include "easypr/core/chars_identify.h"
-#include "easypr/core/core_func.h"
-#include "easypr/train/ann_train.h"
 #include "easypr/config.h"
+#include "easypr/core/core_func.h"
 
 namespace easypr {
 
