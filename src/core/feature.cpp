@@ -39,12 +39,6 @@ namespace easypr {
   }
 
   //! EasyPR的getFeatures回调函数
-  //! 本函数是生成直方图均衡特征的回调函数
-  void getHisteqFeatures(const Mat& image, Mat& features) {
-    features = histeq(image);
-  }
-
-  //! EasyPR的getFeatures回调函数
   //! 本函数是获取垂直和水平的直方图图值
   void getHistogramFeatures(const Mat& image, Mat& features) {
     Mat grayImage;

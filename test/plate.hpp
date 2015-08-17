@@ -41,10 +41,8 @@ int test_plate_judge() {
 
   cv::Mat src = imread("resources/image/plate_judge.jpg");
 
-  //可能是车牌的图块集合
   vector<cv::Mat> matVec;
 
-  //经过SVM判断后得到的图块集合
   vector<cv::Mat> resultVec;
 
   CPlateLocate lo;

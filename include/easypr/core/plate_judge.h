@@ -20,9 +20,6 @@ class PlateJudge {
   //! 车牌判断（一副图像）
   int plateJudge(const Mat& inMat, int& result);
 
-  //! 直方图均衡
-  Mat histeq(Mat);
-
  private:
   PlateJudge();
 
