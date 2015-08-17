@@ -10,8 +10,8 @@
 // Desciption:
 // Defines CPlateDetect
 //////////////////////////////////////////////////////////////////////////
-#ifndef __PLATE_DETECT_H__
-#define __PLATE_DETECT_H__
+#ifndef EASYPR_CORE_PLATEDETECT_H_
+#define EASYPR_CORE_PLATEDETECT_H_
 
 #include "easypr/core/plate_locate.h"
 #include "easypr/core/plate_judge.h"
@@ -99,4 +99,4 @@ class CPlateDetect {
 
 } /*! \namespace easypr*/
 
-#endif /* endif __PLATE_DETECT_H__ */
+#endif  // EASYPR_CORE_PLATEDETECT_H_

@@ -3,12 +3,11 @@
 
 namespace easypr {
 
-CPlateRecognize::CPlateRecognize() {
-
-}
+CPlateRecognize::CPlateRecognize() {}
 
 // !车牌识别模块
-int CPlateRecognize::plateRecognize(Mat src, std::vector<std::string> &licenseVec) {
+int CPlateRecognize::plateRecognize(Mat src,
+                                    std::vector<std::string> &licenseVec) {
   // 车牌方块集合
   std::vector<CPlate> plateVec;
 
@@ -28,7 +27,7 @@ int CPlateRecognize::plateRecognize(Mat src, std::vector<std::string> &licenseVe
       std::string plateType = getPlateColor(plate);
 
       //获取车牌号
-      std::string license  = charsRecognise(plate);
+      std::string license = charsRecognise(plate);
       std::string full_license = plateType + ":" + license;
       licenseVec.push_back(full_license);
     }
@@ -73,5 +72,4 @@ int CPlateRecognize::plateRecognize(Mat src, std::vector<std::string> &licenseVe
 
   return resultPD;
 }
-
 }

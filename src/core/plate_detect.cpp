@@ -9,9 +9,7 @@ CPlateDetect::CPlateDetect() {
   m_maxPlates = 3;
 }
 
-CPlateDetect::~CPlateDetect() {
-  SAFE_RELEASE(m_plateLocate);
-}
+CPlateDetect::~CPlateDetect() { SAFE_RELEASE(m_plateLocate); }
 
 int CPlateDetect::plateDetect(Mat src, std::vector<CPlate>& resultVec,
                               bool showDetectArea, int index) {
@@ -118,5 +116,4 @@ int CPlateDetect::showResult(const Mat& result) {
 
   return 0;
 }
-
 }

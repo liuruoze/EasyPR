@@ -71,10 +71,8 @@ Mat CCharsSegment::preprocessChar(Mat in) {
   return out;
 }
 
-
 //! 字符分割与排序
 int CCharsSegment::charsSegment(Mat input, vector<Mat>& resultVec) {
-
   if (!input.data) return 0x01;
 
   int w = input.cols;
@@ -167,7 +165,8 @@ int CCharsSegment::charsSegment(Mat input, vector<Mat>& resultVec) {
   // 对符合尺寸的图块按照从左到右进行排序;
   // 直接使用stl的sort方法，更有效率
   vector<Rect> sortedRect(vecRect);
-  std::sort(sortedRect.begin(), sortedRect.end(),[](const Rect& r1, const Rect& r2) { return r1.x < r2.x; });
+  std::sort(sortedRect.begin(), sortedRect.end(),
+            [](const Rect& r1, const Rect& r2) { return r1.x < r2.x; });
 
   size_t specIndex = 0;
 
@@ -196,30 +195,26 @@ int CCharsSegment::charsSegment(Mat input, vector<Mat>& resultVec) {
   for (size_t i = 0; i < newSortedRect.size(); i++) {
     Rect mr = newSortedRect[i];
 
-    //Mat auxRoi(img_threshold, mr);
+    // Mat auxRoi(img_threshold, mr);
 
     // 使用灰度图来截取图块，然后依次对每个图块进行大津阈值来二值化
     Mat auxRoi(input_grey, mr);
     Mat newRoi;
 
     if (BLUE == plateType) {
-
-     /* img_threshold = auxRoi.clone();
-      int w = input_grey.cols;
-      int h = input_grey.rows;
-      Mat tmp = input_grey(Rect_<double>(w * 0.1, h * 0.1, w * 0.8, h * 0.8));
-      int threadHoldV = ThresholdOtsu(tmp);*/
+      /* img_threshold = auxRoi.clone();
+       int w = input_grey.cols;
+       int h = input_grey.rows;
+       Mat tmp = input_grey(Rect_<double>(w * 0.1, h * 0.1, w * 0.8, h * 0.8));
+       int threadHoldV = ThresholdOtsu(tmp);*/
 
       threshold(auxRoi, newRoi, 5, 255, CV_THRESH_BINARY + CV_THRESH_OTSU);
-    }
-    else if (YELLOW == plateType) {
+    } else if (YELLOW == plateType) {
       threshold(auxRoi, newRoi, 5, 255, CV_THRESH_BINARY_INV + CV_THRESH_OTSU);
 
-    }
-    else if (WHITE == plateType) {
+    } else if (WHITE == plateType) {
       threshold(auxRoi, newRoi, 5, 255, CV_THRESH_OTSU + CV_THRESH_BINARY_INV);
-    }
-    else {
+    } else {
       threshold(auxRoi, newRoi, 5, 255, CV_THRESH_OTSU + CV_THRESH_BINARY);
     }
 

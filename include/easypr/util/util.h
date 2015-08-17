@@ -1,5 +1,5 @@
-#ifndef EASYPR_UTIL_H_
-#define EASYPR_UTIL_H_
+#ifndef EASYPR_UTIL_UTIL_H_
+#define EASYPR_UTIL_UTIL_H_
 
 #include <iostream>
 #include <string>
@@ -116,4 +116,4 @@ typedef Utils utils;
 
 }  // namespace easypr
 
-#endif  // EASYPR_UTIL_H_
+#endif  // EASYPR_UTIL_UTIL_H_

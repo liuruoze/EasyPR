@@ -9,8 +9,8 @@
 // Desciption:
 // Defines CCharsRecognise
 //////////////////////////////////////////////////////////////////////////
-#ifndef __CHARS_RECOGNISE_H__
-#define __CHARS_RECOGNISE_H__
+#ifndef EASYPR_CORE_CHARSRECOGNISE_H_
+#define EASYPR_CORE_CHARSRECOGNISE_H_
 
 #include "easypr/core/chars_segment.h"
 #include "easypr/core/chars_identify.h"
@@ -61,4 +61,4 @@ class CCharsRecognise {
 
 } /* \namespace easypr  */
 
-#endif /* endif __CHARS_RECOGNISE_H__ */
+#endif  // EASYPR_CORE_CHARSRECOGNISE_H_

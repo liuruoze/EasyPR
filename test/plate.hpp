@@ -14,8 +14,8 @@ int test_plate_locate() {
   const string file = "resources/image/test.jpg";
 
   cv::Mat src = imread(file);
-  
-  //TODO：原plateLocate需要被替换
+
+  // TODO：原plateLocate需要被替换
 
   vector<cv::Mat> resultVec;
   CPlateLocate plate;
@@ -51,8 +51,7 @@ int test_plate_judge() {
 
   int resultLo = lo.plateLocate(src, matVec);
 
-  if (0 != resultLo)
-    return -1;
+  if (0 != resultLo) return -1;
 
   cout << "plate_locate_img" << endl;
   size_t num = matVec.size();
@@ -65,8 +64,7 @@ int test_plate_judge() {
 
   int resultJu = PlateJudge::instance()->plateJudge(matVec, resultVec);
 
-  if (0 != resultJu)
-    return -1;
+  if (0 != resultJu) return -1;
 
   cout << "plate_judge_img" << endl;
   num = resultVec.size();
@@ -123,14 +121,11 @@ int test_plate_recognize() {
     }
   }
 
-  if (result != 0)
-    cout << "result:" << result << endl;
+  if (result != 0) cout << "result:" << result << endl;
 
   return result;
 }
-
+}
 }
 
-}
-
-#endif //EASYPR_PLATE_HPP
+#endif  // EASYPR_PLATE_HPP

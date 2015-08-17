@@ -9,8 +9,8 @@
 // Desciption:
 // Defines CCharsSegment
 //////////////////////////////////////////////////////////////////////////
-#ifndef __CHARS_SEGMENT_H__
-#define __CHARS_SEGMENT_H__
+#ifndef EASYPR_CORE_CHARSSEGMENT_H_
+#define EASYPR_CORE_CHARSSEGMENT_H_
 
 #include "easypr/core/core_func.h"
 
@@ -93,4 +93,4 @@ class CCharsSegment {
 
 } /* \namespace easypr  */
 
-#endif /* endif __CHARS_SEGMENT_H__ */
+#endif  // EASYPR_CORE_CHARSSEGMENT_H_

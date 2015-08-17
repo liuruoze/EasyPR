@@ -1,9 +1,8 @@
 #include "easypr/train/train.h"
 
-namespace easypr{
+namespace easypr {
 
-  ITrain::ITrain() {}
+ITrain::ITrain() {}
 
-  ITrain::~ITrain() {}
-
+ITrain::~ITrain() {}
 }

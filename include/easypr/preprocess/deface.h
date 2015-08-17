@@ -7,8 +7,8 @@
 //	在发布数据到general_test数据集里，请先用这里的方法对图像进行处理
 //	EasyPR开源项目非常注重保护图片中驾驶人的隐私
 
-#ifndef EASYPR_DEFACE_H
-#define EASYPR_DEFACE_H
+#ifndef EASYPR_CORE_DEFACE_H_
+#define EASYPR_CORE_DEFACE_H_
 
 #include <opencv2/opencv.hpp>
 
@@ -20,10 +20,7 @@ int deface();
 
 cv::Mat detectAndMaskFace(cv::Mat& img, cv::CascadeClassifier& cascade,
                           double scale);
-
+}
 }
 
-}
-
-
-#endif //EASYPR_DEFACE_H
+#endif  // EASYPR_CORE_DEFACE_H_

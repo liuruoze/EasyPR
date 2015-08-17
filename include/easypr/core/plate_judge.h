@@ -1,5 +1,5 @@
-#ifndef __PLATE_JUDGE_H__
-#define __PLATE_JUDGE_H__
+#ifndef EASYPR_CORE_PLATEJUDGE_H_
+#define EASYPR_CORE_PLATEJUDGE_H_
 
 #include "easypr/core/plate.h"
 #include "easypr/core/feature.h"
@@ -10,8 +10,8 @@ namespace easypr {
 class PlateJudge {
  public:
   static PlateJudge* instance();
-   
-   //! 对多幅车牌进行SVM判断
+
+  //! 对多幅车牌进行SVM判断
   int plateJudge(const std::vector<CPlate>&, std::vector<CPlate>&);
 
   //! 车牌判断
@@ -26,9 +26,7 @@ class PlateJudge {
   static PlateJudge* instance_;
 
   cv::Ptr<ml::SVM> svm_;
-
 };
-
 }
 
-#endif
+#endif  // EASYPR_CORE_PLATEJUDGE_H_

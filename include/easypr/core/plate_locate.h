@@ -11,8 +11,8 @@
 // Desciption:
 // Defines CPlateLocate
 //////////////////////////////////////////////////////////////////////////
-#ifndef __PLATE_LOCATE_H__
-#define __PLATE_LOCATE_H__
+#ifndef EASYPR_CORE_PLATELOCATE_H_
+#define EASYPR_CORE_PLATELOCATE_H_
 
 #include "easypr/core/plate.h"
 #include "easypr/core/core_func.h"
@@ -38,8 +38,8 @@ class CPlateLocate {
                          std::vector<RotatedRect>& outRects);
 
   //! 抗扭斜处理
-  int deskew(const Mat& src, const Mat& src_b, std::vector<RotatedRect>& inRects,
-             std::vector<CPlate>& outPlates);
+  int deskew(const Mat& src, const Mat& src_b,
+             std::vector<RotatedRect>& inRects, std::vector<CPlate>& outPlates);
 
   //! 是否偏斜
   //! 输入二值化图像，输出判断结果
@@ -127,7 +127,7 @@ class CPlateLocate {
   static const int TYPE = CV_8UC3;
 
   //! verifySize所用常量
-  static const int DEFAULT_VERIFY_MIN = 1;  // 3
+  static const int DEFAULT_VERIFY_MIN = 1;   // 3
   static const int DEFAULT_VERIFY_MAX = 24;  // 20
 
   //! 角度判断所用常量
@@ -159,4 +159,4 @@ class CPlateLocate {
 
 } /*! \namespace easypr*/
 
-#endif /* endif __PLATE_LOCATE_H__ */
+#endif  // EASYPR_CORE_PLATELOCATE_H_

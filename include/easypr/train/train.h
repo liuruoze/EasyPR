@@ -7,17 +7,17 @@ namespace easypr {
 
 class ITrain {
  public:
-    ITrain();
+  ITrain();
 
-    virtual ~ITrain();
+  virtual ~ITrain();
 
-    virtual void train() = 0;
+  virtual void train() = 0;
 
-    virtual void test() = 0;
+  virtual void test() = 0;
 
  private:
-    virtual cv::Ptr<cv::ml::TrainData> tdata() = 0;
+  virtual cv::Ptr<cv::ml::TrainData> tdata() = 0;
 };
-
 }
-#endif // EASYPR_TRAIN_TRAIN_H_
+
+#endif  // EASYPR_TRAIN_TRAIN_H_

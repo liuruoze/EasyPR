@@ -1,5 +1,5 @@
-#ifndef __CHARS_IDENTIFY_H__
-#define __CHARS_IDENTIFY_H__
+#ifndef EASYPR_CORE_CHARSIDENTIFY_H_
+#define EASYPR_CORE_CHARSIDENTIFY_H_
 
 #include <opencv2/opencv.hpp>
 
@@ -7,18 +7,16 @@ namespace easypr {
 
 class CharsIdentify {
  public:
-    static CharsIdentify* instance();
+  static CharsIdentify* instance();
 
-    std::pair<std::string, std::string> identify(cv::Mat input);
+  std::pair<std::string, std::string> identify(cv::Mat input);
 
  private:
-    CharsIdentify();
+  CharsIdentify();
 
-    static CharsIdentify* instance_;
-    //！使用的ANN模型
-    cv::Ptr<cv::ml::ANN_MLP> ann_;
+  static CharsIdentify* instance_;
+  cv::Ptr<cv::ml::ANN_MLP> ann_;
 };
-
 }
 
-#endif
+#endif  //  EASYPR_CORE_CHARSIDENTIFY_H_

@@ -9,29 +9,28 @@ namespace easypr {
 
 class SvmTrain : public ITrain {
  public:
-   typedef struct {
-     std::string file;
-     SvmLabel    label;
-   } TrainItem;
+  typedef struct {
+    std::string file;
+    SvmLabel label;
+  } TrainItem;
 
-    SvmTrain(const char* plates_folder, const char* xml);
+  SvmTrain(const char* plates_folder, const char* xml);
 
-    virtual void train();
+  virtual void train();
 
-    virtual void test();
+  virtual void test();
 
  private:
-    void prepare();
+  void prepare();
 
-    virtual cv::Ptr<cv::ml::TrainData> tdata();
+  virtual cv::Ptr<cv::ml::TrainData> tdata();
 
-    cv::Ptr<cv::ml::SVM> svm_;
-    const char* plates_folder_;
-    const char* svm_xml_;
-    std::vector<TrainItem> train_file_list_;
-    std::vector<TrainItem> test_file_list_;
+  cv::Ptr<cv::ml::SVM> svm_;
+  const char* plates_folder_;
+  const char* svm_xml_;
+  std::vector<TrainItem> train_file_list_;
+  std::vector<TrainItem> test_file_list_;
 };
-
 }
 
-#endif // EASYPR_TRAIN_SVMTRAIN_H_
+#endif  // EASYPR_TRAIN_SVMTRAIN_H_

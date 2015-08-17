@@ -12,7 +12,7 @@ using namespace cv::ml;
 namespace easypr {
 
 SvmTrain::SvmTrain(const char* plates_folder, const char* xml)
-        : plates_folder_(plates_folder), svm_xml_(xml) {
+    : plates_folder_(plates_folder), svm_xml_(xml) {
   assert(plates_folder);
   assert(xml);
 }
@@ -33,15 +33,10 @@ void SvmTrain::train() {
 
   fprintf(stdout, ">> Training SVM model, please wait...\n");
   long start = utils::getTimestamp();
-  svm_->trainAuto(train_data, 10,
-                  SVM::getDefaultGrid(SVM::C),
-                  SVM::getDefaultGrid(SVM::GAMMA),
-                  SVM::getDefaultGrid(SVM::P),
-                  SVM::getDefaultGrid(SVM::NU),
-                  SVM::getDefaultGrid(SVM::COEF),
-                  SVM::getDefaultGrid(SVM::DEGREE),
-                  true
-  );
+  svm_->trainAuto(train_data, 10, SVM::getDefaultGrid(SVM::C),
+                  SVM::getDefaultGrid(SVM::GAMMA), SVM::getDefaultGrid(SVM::P),
+                  SVM::getDefaultGrid(SVM::NU), SVM::getDefaultGrid(SVM::COEF),
+                  SVM::getDefaultGrid(SVM::DEGREE), true);
   long end = utils::getTimestamp();
   fprintf(stdout, ">> Training done. Time elapse: %ldms\n", end - start);
   fprintf(stdout, ">> Saving model file...\n");
@@ -66,7 +61,7 @@ void SvmTrain::test() {
 
   for (auto item : test_file_list_) {
     auto image = cv::imread(item.file);
-    if (!image.data){
+    if (!image.data) {
       continue;
     }
     cv::Mat feature;
@@ -91,34 +86,34 @@ void SvmTrain::test() {
   if (ptrue_rtrue + ptrue_rfalse != 0) {
     precise = ptrue_rtrue / (ptrue_rtrue + ptrue_rfalse);
     std::cout << "precise: " << precise << std::endl;
-  }
-  else {
-    std::cout << "precise: " << "NA" << std::endl;
+  } else {
+    std::cout << "precise: "
+              << "NA" << std::endl;
   }
 
   double recall = 0;
   if (ptrue_rtrue + pfalse_rtrue != 0) {
     recall = ptrue_rtrue / (ptrue_rtrue + pfalse_rtrue);
     std::cout << "recall: " << recall << std::endl;
-  }
-  else {
-    std::cout << "recall: " << "NA" << std::endl;
+  } else {
+    std::cout << "recall: "
+              << "NA" << std::endl;
   }
 
   double Fsocre = 0;
   if (precise + recall != 0) {
     Fsocre = 2 * (precise * recall) / (precise + recall);
     std::cout << "Fsocre: " << Fsocre << std::endl;
-  }
-  else {
-    std::cout << "Fsocre: " << "NA" << std::endl;
+  } else {
+    std::cout << "Fsocre: "
+              << "NA" << std::endl;
   }
 }
 
 void SvmTrain::prepare() {
   srand(unsigned(time(NULL)));
 
-  char buffer[260] = { 0 };
+  char buffer[260] = {0};
 
   sprintf(buffer, "%s/has", plates_folder_);
   auto has_file_list = utils::getFiles(buffer);
@@ -139,17 +134,11 @@ void SvmTrain::prepare() {
   // copy kSvmPercentage of has_file_list to train_file_list_
   train_file_list_.reserve(has_for_train + no_for_train);
   for (auto i = 0; i < has_for_train; i++) {
-    train_file_list_.push_back({
-      has_file_list[i], 
-      kForward
-    });
+    train_file_list_.push_back({has_file_list[i], kForward});
   }
   // copy kSvmPercentage of no_file_list to the end of train_file_list_
   for (auto i = 0; i < no_for_train; i++) {
-    train_file_list_.push_back({
-      no_file_list[i],
-      kInverse
-    });
+    train_file_list_.push_back({no_file_list[i], kInverse});
   }
 
   fprintf(stdout, ">> Collecting test data...\n");
@@ -160,18 +149,12 @@ void SvmTrain::prepare() {
   // copy the rest of has_file_list to the test_file_list_
   test_file_list_.reserve(has_for_test + no_for_test);
   for (auto i = has_for_test; i < has_num; i++) {
-    test_file_list_.push_back({
-      has_file_list[i],
-      kForward
-    });
+    test_file_list_.push_back({has_file_list[i], kForward});
   }
 
   // copy the rest of no_file_list to the end of the test_file_list_
   for (auto i = no_for_test; i < no_num; i++) {
-    test_file_list_.push_back({
-      no_file_list[i],
-      kInverse
-    });
+    test_file_list_.push_back({no_file_list[i], kInverse});
   }
 }
 
@@ -199,7 +182,8 @@ cv::Ptr<cv::ml::TrainData> SvmTrain::tdata() {
   samples.convertTo(samples_, CV_32F);
   cv::Mat(responses).reshape(0, 1).copyTo(responses_);
 
-  return cv::ml::TrainData::create(samples_, cv::ml::SampleTypes::ROW_SAMPLE, responses_);
+  return cv::ml::TrainData::create(samples_, cv::ml::SampleTypes::ROW_SAMPLE,
+                                   responses_);
 }
 
 }  // namespace easypr

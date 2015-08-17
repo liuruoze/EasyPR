@@ -3,16 +3,12 @@
 
 using namespace std;
 
-/*! \namespace easypr
-        Namespace where all the C++ EasyPR functionality resides
-        */
 namespace easypr {
 
 const float DEFAULT_ERROR = 0.9f;    // 0.6
 const float DEFAULT_ASPECT = 3.75f;  // 3.75
 
 CPlateLocate::CPlateLocate() {
-  // cout << "CPlateLocate" << endl;
   m_GaussianBlurSize = DEFAULT_GAUSSIANBLUR_SIZE;
   m_MorphSizeWidth = DEFAULT_MORPH_SIZE_WIDTH;
   m_MorphSizeHeight = DEFAULT_MORPH_SIZE_HEIGHT;
@@ -514,7 +510,6 @@ int CPlateLocate::deskew(const Mat& src, const Mat& src_b,
         // imshow("1roated_mat",rotated_mat);
         // imshow("rotated_mat_b",rotated_mat_b);
         if (isdeflection(rotated_mat_b, roi_angle, roi_slope)) {
-
           affine(rotated_mat, deskew_mat, roi_slope);
         } else
           deskew_mat = rotated_mat;
@@ -931,9 +926,6 @@ int CPlateLocate::plateLocate(Mat src, vector<Mat>& resultVec, int index) {
   }
 
   return 0;
-
 }
-
-
 
 } /*! \namespace easypr*/

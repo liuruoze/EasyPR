@@ -30,9 +30,7 @@ class Row {
  public:
   Row();
 
-  enum Field {
-    kShort, kLong, kDefault, kDescription
-  };
+  enum Field { kShort, kLong, kDefault, kDescription };
 
   typedef std::initializer_list<Field> Order;
 
@@ -232,7 +230,7 @@ class ParseItem {
   /*
    * dynamic type cast, support base data types including std::string
    */
-  template<typename T>
+  template <typename T>
   T as() {
     T r;
     std::stringstream buf;
@@ -334,7 +332,7 @@ class Parser {
   ParseItem* get(const std::string& key);
 
   inline void set_usage_subroutines(
-          const Generator::SubroutineCollection* subroutines) {
+      const Generator::SubroutineCollection* subroutines) {
     subroutines_ = subroutines;
   }
 
@@ -353,8 +351,6 @@ class Parser {
   ParameterList args_;
   ParseResult* pr_;
 };
-
-
 }
 
-#endif // UTIL_PROGRAM_OPTIONS_H
+#endif  // UTIL_PROGRAM_OPTIONS_H

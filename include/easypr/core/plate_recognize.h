@@ -9,8 +9,8 @@
 // Desciption:
 // Defines CPlateRecognize
 //////////////////////////////////////////////////////////////////////////
-#ifndef __PLATE_RECOGNIZE_H__
-#define __PLATE_RECOGNIZE_H__
+#ifndef EASYPR_CORE_PLATERECOGNIZE_H_
+#define EASYPR_CORE_PLATERECOGNIZE_H_
 
 #include "easypr/core/plate_detect.h"
 #include "easypr/core/chars_recognise.h"
@@ -31,11 +31,9 @@ class CPlateRecognize : public CPlateDetect, public CCharsRecognise {
   inline void setLifemode(bool param) { CPlateDetect::setPDLifemode(param); }
 
   //! 是否开启调试模式
-  inline void setDebug(bool param) {
-    CPlateDetect::setPDDebug(param);
-  }
+  inline void setDebug(bool param) { CPlateDetect::setPDDebug(param); }
 };
 
 } /* \namespace easypr  */
 
-#endif /* endif __PLATE_RECOGNITION_H__ */
+#endif  // EASYPR_CORE_PLATERECOGNIZE_H_

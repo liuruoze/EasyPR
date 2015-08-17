@@ -39,7 +39,7 @@ int test_chars_identify() {
 
   int result = cs.charsSegment(plate, matChars);
   if (result == 0) {
-    for(auto block : matChars){
+    for (auto block : matChars) {
       auto character = CharsIdentify::instance()->identify(block);
       license.append(character.second);
     }
@@ -68,9 +68,7 @@ int test_chars_recognise() {
   std::cout << "charsRecognise: " << cr.charsRecognise(src) << std::endl;
   return 0;
 }
-
+}
 }
 
-}
-
-#endif //EASYPR_CHARS_HPP
+#endif  // EASYPR_CHARS_HPP
