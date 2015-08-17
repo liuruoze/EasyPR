@@ -40,6 +40,9 @@
     <Filter Include="头文件\easypr\util">
       <UniqueIdentifier>{f575d8b4-5782-4c93-9be3-3e96d3a33d7f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="资源文件\model">
+      <UniqueIdentifier>{06c2b48a-ffbe-495c-babf-c16877785c4c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\core\chars_identify.cpp">
@@ -92,6 +95,9 @@
     </ClCompile>
     <ClCompile Include="..\src\util\util.cpp">
       <Filter>源文件\util</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\train\train.cpp">
+      <Filter>源文件\train</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -158,11 +164,28 @@
     <ClInclude Include="..\include\easypr\util\switch.hpp">
       <Filter>头文件\easypr\util</Filter>
     </ClInclude>
+    <ClInclude Include="..\include\easypr\train\train.h">
+      <Filter>头文件\easypr\train</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\LICENSE" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="..\关于版权.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Xml Include="..\resources\model\ann.xml">
+      <Filter>资源文件\model</Filter>
+    </Xml>
+    <Xml Include="..\resources\model\haarcascade_frontalface_alt_tree.xml">
+      <Filter>资源文件\model</Filter>
+    </Xml>
+    <Xml Include="..\resources\model\haarcascade_frontalface_default.xml">
+      <Filter>资源文件\model</Filter>
+    </Xml>
+    <Xml Include="..\resources\model\svm.xml">
+      <Filter>资源文件\model</Filter>
+    </Xml>
   </ItemGroup>
 </Project>

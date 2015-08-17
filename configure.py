@@ -98,12 +98,14 @@ def configure_demo(buffer):
                           (kConfig["library"][:2] + re.escape(kConfig["library"][2:])),
                           nstring)
     # additional dependencies
-    lib_string = ""
-    for lib in kConfig["link"]:
-        lib_string += (lib + "d.lib")
+    #lib_string = ""
+    #for lib in kConfig["link"]:
+    #    lib_string += (lib + "d.lib")
 
-    pattern = re.compile(kPatterns["link"])
-    return pattern.sub(kReplacements["link"] % lib_string, nstring)
+    #pattern = re.compile(kPatterns["link"])
+    #return pattern.sub(kReplacements["link"] % lib_string, nstring)
+
+    return nstring
 
 
 def check_opencv_version():

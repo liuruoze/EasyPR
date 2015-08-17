@@ -54,8 +54,7 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>C:\Users\Micooz\Documents\opencv3\build\include;$(SolutionDir)include</AdditionalIncludeDirectories>
-      <DisableSpecificWarnings>
-      </DisableSpecificWarnings>
+      <DisableSpecificWarnings>4819</DisableSpecificWarnings>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
@@ -96,6 +95,7 @@
     <ClCompile Include="..\src\preprocess\mc_data.cpp" />
     <ClCompile Include="..\src\train\ann_train.cpp" />
     <ClCompile Include="..\src\train\svm_train.cpp" />
+    <ClCompile Include="..\src\train\train.cpp" />
     <ClCompile Include="..\src\util\program_options.cpp" />
     <ClCompile Include="..\src\util\util.cpp" />
   </ItemGroup>
@@ -118,6 +118,7 @@
     <ClInclude Include="..\include\easypr\preprocess\mc_data.h" />
     <ClInclude Include="..\include\easypr\train\ann_train.h" />
     <ClInclude Include="..\include\easypr\train\svm_train.h" />
+    <ClInclude Include="..\include\easypr\train\train.h" />
     <ClInclude Include="..\include\easypr\util\program_options.h" />
     <ClInclude Include="..\include\easypr\util\switch.hpp" />
     <ClInclude Include="..\include\easypr\util\util.h" />
@@ -127,6 +128,14 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="..\关于版权.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Xml Include="..\resources\model\ann.xml" />
+    <Xml Include="..\resources\model\haarcascade_frontalface_alt_tree.xml" />
+    <Xml Include="..\resources\model\haarcascade_frontalface_default.xml" />
+    <Xml Include="..\resources\model\svm.xml">
+      <SubType>Designer</SubType>
+    </Xml>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
