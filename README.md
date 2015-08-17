@@ -161,14 +161,16 @@ OpenCV for Windows通常会将使用VS编译好二进制文件放到`opencv\buil
 
 **demo**
 `C/C++`-`附加包含目录`：**[opencv3的include目录]**;$(SolutionDir)include
+
 `链接器`-`附加库目录`：**[opencv3的lib目录]**
+
 `链接器`-`输入`-`附加依赖项`：**opencv_world300d.lib**;%(AdditionalDependencies)
 
 *Note*：Debug版本为**opencv_world300d.lib**，Release版本为**opencv_world300.lib**
 
 **libeasypr**
-`C/C++`-`附加包含目录`：**[opencv3的include目录]**;$(SolutionDir)include
 
+`C/C++`-`附加包含目录`：**[opencv3的include目录]**;$(SolutionDir)include
 
 * 生成解决方案
 
