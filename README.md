@@ -10,15 +10,15 @@ EasyPR是一个中文的开源车牌识别系统，其目标是成为一个简�
 
 ### 更新
 
-本次更新是1.3-opencv3.0版，主要改进在于几个方面：
+本次更新是1.4版，主要改进在于几个方面：
 
-1.支持opencv3.0，注意，这与2.x不兼容，要想支持的话请下载上一个版本。
+1.支持opencv3.0，注意，这与2.x不兼容，要想支持的话请下载1.3版本。
 
 2.ANN训练开放。
 
 3.代码优化。
 
-在1.4版本中计划做以下几点改善：
+在后面的版本中计划做以下几点改善：
 
 1.新的评价框架，更加合理的评估数据。
 
@@ -31,9 +31,9 @@ EasyPR是一个中文的开源车牌识别系统，其目标是成为一个简�
 |版本 | 开发者 | 版本 | 地址 
 |------|-------|-------|-------
 | android |  goldriver  |  1.3  |  [linuxxx/EasyPR_Android](https://github.com/linuxxx/EasyPR_Android)
-| linux | Micooz  |  1.3  |  已跟EasyPR整合
+| linux | Micooz  |  1.4  |  已跟EasyPR整合
 | ios | zhoushiwei |  1.3  |  [zhoushiwei/EasyPR-iOS](https://github.com/zhoushiwei/EasyPR-iOS)
-| mac | zhoushiwei,Micooz |  1.3  | 已跟EasyPR整合
+| mac | zhoushiwei,Micooz |  1.4  | 已跟EasyPR整合
 | java | fan-wenjie |  1.2  | [fan-wenjie/EasyPR-Java](https://github.com/fan-wenjie/EasyPR-Java)
 
 ### 兼容性
@@ -272,11 +272,11 @@ EasyPR讨论QQ群号是：366392603，加前请注明EasyPR学习讨论。
 
 ### Contributors
 
-* liuruoze：1.0-1.2版作者，1.3版整合工作
+* liuruoze：1.0-1.2版作者
 
 * 海豚嘎嘎(车主之家)：1.3版算法贡献者，提升了车牌定位与字符识别的准确率
 
-* Micooz：1.3版架构重构，linux与mac支持，opencv3.0支持
+* Micooz：1.3-1.4版架构重构，linux与mac支持，opencv3.0支持
 
 * jsxyhelu：deface版本一
 
