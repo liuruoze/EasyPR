@@ -14,8 +14,8 @@ int test_plate_locate() {
   const string file = "resources/image/test.jpg";
 
   cv::Mat src = imread(file);
-  
-  //TODO：原plateLocate需要被替换
+
+  // TODO：原plateLocate需要被替换
 
   vector<cv::Mat> resultVec;
   CPlateLocate plate;
@@ -41,10 +41,8 @@ int test_plate_judge() {
 
   cv::Mat src = imread("resources/image/plate_judge.jpg");
 
-  //可能是车牌的图块集合
   vector<cv::Mat> matVec;
 
-  //经过SVM判断后得到的图块集合
   vector<cv::Mat> resultVec;
 
   CPlateLocate lo;
@@ -53,8 +51,7 @@ int test_plate_judge() {
 
   int resultLo = lo.plateLocate(src, matVec);
 
-  if (0 != resultLo)
-    return -1;
+  if (0 != resultLo) return -1;
 
   cout << "plate_locate_img" << endl;
   size_t num = matVec.size();
@@ -65,12 +62,9 @@ int test_plate_judge() {
   }
   destroyWindow("plate_judge");
 
-  CPlateJudge ju;
-  ju.LoadModel("resources/model/svm.xml");
-  int resultJu = ju.plateJudge(matVec, resultVec);
+  int resultJu = PlateJudge::instance()->plateJudge(matVec, resultVec);
 
-  if (0 != resultJu)
-    return -1;
+  if (0 != resultJu) return -1;
 
   cout << "plate_judge_img" << endl;
   num = resultVec.size();
@@ -114,9 +108,6 @@ int test_plate_recognize() {
   Mat src = imread("resources/image/test.jpg");
 
   CPlateRecognize pr;
-  pr.LoadANN("resources/model/ann.xml");
-  pr.LoadSVM("resources/model/svm.xml");
-
   pr.setLifemode(true);
   pr.setDebug(true);
 
@@ -130,14 +121,11 @@ int test_plate_recognize() {
     }
   }
 
-  if (result != 0)
-    cout << "result:" << result << endl;
+  if (result != 0) cout << "result:" << result << endl;
 
   return result;
 }
-
+}
 }
 
-}
-
-#endif //EASYPR_PLATE_HPP
+#endif  // EASYPR_PLATE_HPP

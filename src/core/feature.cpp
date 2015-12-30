@@ -2,11 +2,11 @@
 // 所属命名空间为easypr
 // 这个部分中的特征由easypr的开发者修改
 
-#include "easypr/feature.h"
-#include "easypr/core_func.h"
+#include "easypr/core/feature.h"
+#include "easypr/core/core_func.h"
 
 /*! \namespace easypr
-    Namespace where all the C++ EasyPR functionality resides
+Namespace where all the C++ EasyPR functionality resides
 */
 namespace easypr {
 
@@ -36,12 +36,6 @@ Mat getTheFeatures(Mat in) {
   }
 
   return out;
-}
-
-//! EasyPR的getFeatures回调函数
-//! 本函数是生成直方图均衡特征的回调函数
-void getHisteqFeatures(const Mat& image, Mat& features) {
-  features = histeq(image);
 }
 
 //! EasyPR的getFeatures回调函数

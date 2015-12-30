@@ -4,6 +4,9 @@
 #include <easypr.h>
 #include <ctime>
 #include <fstream>
+#include <list>
+
+using namespace std;
 
 namespace easypr {
 
@@ -13,9 +16,6 @@ int accuracyTest(const char* test_path) {
   auto files = Utils::getFiles(test_path);
 
   CPlateRecognize pr;
-
-  pr.LoadANN("resources/model/ann.xml");
-  pr.LoadSVM("resources/model/svm.xml");
 
   // 设置Debug模式
   pr.setDebug(false);
@@ -72,7 +72,7 @@ int accuracyTest(const char* test_path) {
     cout << "原牌:" << plateLicense << endl;
 
     vector<string> plateVec;
-    int result = pr.plateRecognize(src, plateVec, i);
+    int result = pr.plateRecognize(src, plateVec);
     if (result == 0) {
       int num = plateVec.size();
 

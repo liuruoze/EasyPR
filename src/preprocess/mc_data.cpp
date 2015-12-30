@@ -3,9 +3,9 @@
 // 2.随机/选择性地选取部分数据成为learndata，这个根据参数设置，一般设置为1000，10000，或者1百万
 #include "easypr/preprocess/mc_data.h"
 #include <ctime>
-#include "easypr/plate_judge.h"
-#include "easypr/plate_locate.h"
-#include "easypr/util.h"
+#include "easypr/core/plate_judge.h"
+#include "easypr/core/plate_locate.h"
+#include "easypr/util/util.h"
 
 #ifdef OS_WINDOWS
 #include <io.h>
@@ -15,7 +15,7 @@ namespace easypr {
 
 namespace preprocess {
 
-//std::map<std::string, std::string> mc_map = {
+// std::map<std::string, std::string> mc_map = {
 //        {"E00", "未识别"},
 //        {"A01", "京"},
 //        {"A02", "津"},
@@ -69,13 +69,13 @@ cv::Mat cut_top_bottom(const cv::Mat& img) {
   return img(rect);
 }
 
-//std::string code_to_province(const std::string& code) {
+// std::string code_to_province(const std::string& code) {
 //  return (mc_map.find(code) != mc_map.end()) ? mc_map[code] : "无";
 //}
 
 //// 通过filepath获取车牌号码
 //// 文件名格式：A01_00000
-//std::string plate_from_path(const std::string& path) {
+// std::string plate_from_path(const std::string& path) {
 //  auto filename = Utils::getFileName(path);
 //  auto code = filename.substr(0, 3);
 //  return code_to_province(code) + filename.substr(3);
@@ -137,9 +137,6 @@ void tag_data(const char* source_folder, const char* has_plate_folder,
   }
 
   CPlateLocate locator;
-  CPlateJudge judger;
-
-  judger.LoadModel(svm_model);
 
   for (auto f : files) {
     auto filename = Utils::getFileName(f);
@@ -156,16 +153,16 @@ void tag_data(const char* source_folder, const char* has_plate_folder,
     for (auto plate : maybe_plates) {
       char save_to[255] = {0};
       int result = 0;
-      judger.plateJudge(plate, result);
+      PlateJudge::instance()->plateJudge(plate, result);
       if (result == 1) {
         // it's a plate
-        sprintf(save_to, "%s/%s_%d.jpg",
-                has_plate_folder, filename.c_str(), plate_index);
+        sprintf(save_to, "%s/%s_%d.jpg", has_plate_folder, filename.c_str(),
+                plate_index);
         std::cout << "[Y] -> " << save_to << std::endl;
       } else {
         // no plate found
-        sprintf(save_to, "%s/%s_%d.jpg",
-                no_plate_folder, filename.c_str(), plate_index);
+        sprintf(save_to, "%s/%s_%d.jpg", no_plate_folder, filename.c_str(),
+                plate_index);
         std::cout << "[N] -> " << save_to << std::endl;
       }
       utils::imwrite(save_to, plate);
@@ -174,6 +171,6 @@ void tag_data(const char* source_folder, const char* has_plate_folder,
   }
 }
 
-} // namespace preprocess
+}  // namespace preprocess
 
-} // namespace easypr
+}  // namespace easypr

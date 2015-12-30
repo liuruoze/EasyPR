@@ -1,6 +1,6 @@
 #include "easypr/preprocess/gdts.h"
 #include "easypr/preprocess/deface.h"
-#include "easypr/util.h"
+#include "easypr/util/util.h"
 
 namespace easypr {
 
@@ -17,7 +17,8 @@ const char* dst_path = "F:/data/easypr-data/tmp-2";
 int generate_gdts() {
   // 获取人脸识别文件
   cv::CascadeClassifier cascade;
-  std::string cascadeName = "resources/model/haarcascade_frontalface_alt_tree.xml";
+  std::string cascadeName =
+      "resources/model/haarcascade_frontalface_alt_tree.xml";
 
   ////获取该路径下的所有文件
   auto files = Utils::getFiles(src_path);
@@ -50,8 +51,7 @@ int generate_gdts() {
     size_t spiltsize = spilt_path.size();
     std::string filename = "";
 
-    if (spiltsize != 0)
-      filename = spilt_path[spiltsize - 1];
+    if (spiltsize != 0) filename = spilt_path[spiltsize - 1];
 
     std::stringstream ss(std::stringstream::in | std::stringstream::out);
     ss << dst_path << "/" << filename;
@@ -65,14 +65,12 @@ int generate_gdts() {
 cv::Mat imageProcess(cv::Mat img) {
   int width = img.size().width;
   int height = img.size().height;
-  cv::Rect_<double> rect(width * 0.01, height * 0.01, width * 0.99, height * 0.99);
+  cv::Rect_<double> rect(width * 0.01, height * 0.01, width * 0.99,
+                         height * 0.99);
 
   cv::Mat dst = img(rect);
-  //GaussianBlur( dst, dst, Size(1, 1), 0, 0, BORDER_DEFAULT );
+  // GaussianBlur( dst, dst, Size(1, 1), 0, 0, BORDER_DEFAULT );
   return dst;
 }
-
 }
-
 }
-

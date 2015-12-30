@@ -1,11 +1,10 @@
-#include "easypr/program_options.h"
+#include "easypr/util/program_options.h"
 
 namespace program_options {
 
 // class ParseError
 
-ParseError::ParseError(const std::string& msg)
-        : _msg(msg) { }
+ParseError::ParseError(const std::string& msg) : _msg(msg) {}
 
 const char* ParseError::what() const throw() {
   std::string msg;
@@ -13,12 +12,11 @@ const char* ParseError::what() const throw() {
   return msg.c_str();
 }
 
-ParseError::~ParseError() throw() { }
+ParseError::~ParseError() throw() {}
 
 // class Generator
 
-Generator::Generator()
-        : parser_(nullptr) {
+Generator::Generator() : parser_(nullptr) {
   current_subroutine_ = Subroutine::get_default_name();
   add_subroutine(current_subroutine_.c_str());
 }
@@ -115,8 +113,7 @@ std::ostream& operator<<(std::ostream& out, Generator& generator) {
 
 // class ParseItem
 
-ParseItem::ParseItem(const std::string& value)
-        : value_(value) { }
+ParseItem::ParseItem(const std::string& value) : value_(value) {}
 
 // class Parser
 
@@ -127,8 +124,7 @@ ParseItem* Parser::get(const std::string& key) {
   return nullptr;
 }
 
-Parser::Parser()
-        : subroutines_(nullptr), pr_(nullptr) { }
+Parser::Parser() : subroutines_(nullptr), pr_(nullptr) {}
 
 Parser::~Parser() { this->cleanup(); }
 
@@ -230,7 +226,7 @@ Parser::ParseResult* Parser::parse(const int argc, const char** argv) {
     }  // switch
 
     if (block[0] != '-' && previous != block  // not the first option
-            ) {
+        ) {
       if (previous[0] != '-') {
         // previous is not an option, error occur
         // e.g., ./exec abc def
@@ -284,14 +280,13 @@ Parser::ParseResult* Parser::parse(const char* command_line) {
     blocks.push_back(block);
   }
   size_t size = blocks.size();  // argc
-  char** argv = new char* [size];
+  char** argv = new char*[size];
   i = 0;
   std::for_each(blocks.begin(), blocks.end(), [argv, &i](const std::string& b) {
     argv[i++] = const_cast<char*>(b.c_str());
   });
   auto pr =
-          this->parse(static_cast<const int>(size),
-                      const_cast<const char**>(argv));
+      this->parse(static_cast<const int>(size), const_cast<const char**>(argv));
 
   delete[] argv;
   argv = nullptr;
@@ -427,21 +422,19 @@ void Parser::set_addition() {
         if (!ops.empty()) pr[ops] = new ParseItem(std::move(def));
       }
     }  // for
-  }  // if
+  }    // if
 }
 
 // class Row
 
-Row::Row()
-        : require_value(true) { }
+Row::Row() : require_value(true) {}
 
 // class Subroutine
 
-Subroutine::Subroutine()
-        : first_line_("") { }
+Subroutine::Subroutine() : first_line_("") {}
 
 Subroutine::Subroutine(const char* name, const char* description)
-        : first_line_(""), description_(description), name_(name) {
+    : first_line_(""), description_(description), name_(name) {
   usages_.reserve(5);
 }
 
@@ -544,5 +537,4 @@ std::ostream& operator<<(std::ostream& out, Subroutine& subroutine) {
   }
   return out;
 }
-
 }
