@@ -10,23 +10,19 @@ EasyPR是一个中文的开源车牌识别系统，其目标是成为一个简�
 
 ### 更新
 
-本次更新是1.3 正式版，主要改进在于几个方面：
+本次更新是1.3-opencv3.0版，主要改进在于几个方面：
 
-1.相对原先的1.2版本，在完整识别率上有所提升：
+1.支持opencv3.0，注意，这与2.x不兼容，要想支持的话请下载上一个版本。
 
-![效果比较](resources/doc/res/13ver.jpg)
+2.ANN训练开放。
 
-2.增加了30张左右的新图片，目前的测试图片数达到了204张。
-
-3.对“字符分割”类的代码做了改善。
+3.代码优化。
 
 在1.4版本中计划做以下几点改善：
 
-1.开放ANN训练功能。
+1.新的评价框架，更加合理的评估数据。
 
-2.新的评价框架，更加合理的评估数据。
-
-3.新的车牌定位算法。
+2.新的车牌定位算法。
 
 ### 跨平台
 
@@ -243,6 +239,12 @@ $ ./demo ? // 查看CLI帮助
     # 该命令将70%的车牌作为训练数据，另外30%的车牌作为测试数据，
     # 这个只可在 include/easypr/config.h 修改。
     # 将训练好的模型存放在 save/to/svm.xml。
+	
+假设你在easypr的主目录下面新建了一个tmp文件夹，并且把svm.7z解压得到的svm文件夹移动到tmp文件夹下面，
+
+则可以执行 $ demo svm --plates=tmp/svm --svm=tmp/svm.xml，生成得到的tmp文件夹下面的svm.xml就是训练好的模型，
+
+替换resources/model/svm.xml就可以达到替换新模型的目的，替换前请先备份原始模型。
 
 **ANN训练**
 
@@ -253,12 +255,20 @@ $ ./demo ? // 查看CLI帮助
 一切准备就绪后，运行下面这条命令即可：
 
     $ ./demo ann --chars=path/to/chars --ann=save/to/ann.xml
+	
+假设你在easypr的主目录下面新建了一个tmp文件夹，并且把ann.7z解压得到的ann文件夹移动到tmp文件夹下面，
+
+则可以执行 $ demo ann --chars=tmp/ann --ann=tmp/ann.xml，生成得到的tmp文件夹下面的svm.xml就是训练好的模型，
+
+替换resources/model/ann.xml就可以达到替换新模型的目的，替换前请先备份原始模型。
 
 ### 获取帮助
 
 详细的开发与教程请见[介绍与开发教程](http://www.cnblogs.com/subconscious/p/3979988.html)。
 
 如果你在使用过程中遇到任何问题，请在[这里](https://github.com/liuruoze/EasyPR/issues)告诉我们。
+
+EasyPR讨论QQ群号是：366392603，加前请注明EasyPR学习讨论。
 
 ### Contributors
 

@@ -356,6 +356,7 @@ int main(int argc, const char* argv[]) {
     command_line_handler(argc, argv);
     return 0;
   }
+  
 
   bool isExit = false;
   while (!isExit) {
@@ -383,9 +384,17 @@ int main(int argc, const char* argv[]) {
           break;
         case 3:
           std::cout << "Run \"demo svm\" for more usage." << std::endl;
+          {
+            easypr::SvmTrain svm("tmp/svm", "tmp/svm.xml");
+            svm.train();
+          }          
           break;
         case 4:
           std::cout << "Run \"demo ann\" for more usage." << std::endl;
+          {
+            easypr::AnnTrain ann("tmp/ann", "tmp/ann.xml");
+            ann.train();
+          }
           break;
         case 5:
           easypr::preprocess::generate_gdts();

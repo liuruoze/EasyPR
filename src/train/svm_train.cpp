@@ -26,7 +26,7 @@ void SvmTrain::train() {
   svm_->setC(1);
   svm_->setNu(0.1);
   svm_->setP(0.1);
-  svm_->setTermCriteria(cvTermCriteria(CV_TERMCRIT_ITER, 100000, 0.0001));
+  svm_->setTermCriteria(cvTermCriteria(CV_TERMCRIT_ITER, 100000, 0.00001));
 
   auto train_data = tdata();
 
@@ -36,13 +36,16 @@ void SvmTrain::train() {
                   SVM::getDefaultGrid(SVM::GAMMA), SVM::getDefaultGrid(SVM::P),
                   SVM::getDefaultGrid(SVM::NU), SVM::getDefaultGrid(SVM::COEF),
                   SVM::getDefaultGrid(SVM::DEGREE), true);
+  //svm_->train(train_data);
+
   long end = utils::getTimestamp();
   fprintf(stdout, ">> Training done. Time elapse: %ldms\n", end - start);
   fprintf(stdout, ">> Saving model file...\n");
   svm_->save(svm_xml_);
-  fprintf(stdout, ">> Your ANN Model was saved to %s\n", svm_xml_);
+  fprintf(stdout, ">> Your SVM Model was saved to %s\n", svm_xml_);
   fprintf(stdout, ">> Testing...\n");
   this->test();
+
 }
 
 void SvmTrain::test() {
@@ -61,11 +64,13 @@ void SvmTrain::test() {
   for (auto item : test_file_list_) {
     auto image = cv::imread(item.file);
     if (!image.data) {
+      
+      std::cout << "no" << std::endl;
       continue;
     }
     cv::Mat feature;
     getHistogramFeatures(image, feature);
-    feature.reshape(1, 1).convertTo(feature, CV_32F);
+    feature.reshape(1, 1).convertTo(feature, CV_32FC1);
 
     auto predict = static_cast<int>(svm_->predict(feature));
     auto real = item.label;
@@ -147,12 +152,12 @@ void SvmTrain::prepare() {
 
   // copy the rest of has_file_list to the test_file_list_
   test_file_list_.reserve(has_for_test + no_for_test);
-  for (auto i = has_for_test; i < has_num; i++) {
+  for (auto i = has_for_train; i < has_num; i++) {
     test_file_list_.push_back({has_file_list[i], kForward});
   }
 
   // copy the rest of no_file_list to the end of the test_file_list_
-  for (auto i = no_for_test; i < no_num; i++) {
+  for (auto i = no_for_train; i < no_num; i++) {
     test_file_list_.push_back({no_file_list[i], kInverse});
   }
 }
@@ -174,12 +179,12 @@ cv::Ptr<cv::ml::TrainData> SvmTrain::tdata() {
     feature = feature.reshape(1, 1);
 
     samples.push_back(feature);
-    responses.push_back(f.label);
+    responses.push_back(int(f.label));
   }
 
   cv::Mat samples_, responses_;
-  samples.convertTo(samples_, CV_32F);
-  cv::Mat(responses).reshape(0, 1).copyTo(responses_);
+  samples.convertTo(samples_, CV_32FC1);
+  cv::Mat(responses).copyTo(responses_);
 
   return cv::ml::TrainData::create(samples_, cv::ml::SampleTypes::ROW_SAMPLE,
                                    responses_);
