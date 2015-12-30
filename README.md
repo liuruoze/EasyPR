@@ -276,7 +276,7 @@ EasyPR讨论QQ群号是：366392603，加前请注明EasyPR学习讨论。
 
 * 海豚嘎嘎(车主之家)：1.3版算法贡献者，提升了车牌定位与字符识别的准确率
 
-* Micooz：1.3版架构改善与重构，linux与mac的跨平台编译等
+* Micooz：1.3版架构重构，linux与mac支持，opencv3.0支持
 
 * jsxyhelu：deface版本一
 
@@ -288,6 +288,4 @@ EasyPR讨论QQ群号是：366392603，加前请注明EasyPR学习讨论。
 
 ### 鸣谢
 
-taotao1233，邱锦山，唐大侠，jsxyhelu，如果有一天(zhoushiwei)，学习奋斗，袁承志，
-
-圣城小石匠，goldriver，Micooz，梦里时光，Rain Wang，任薛纪，ahccom，星夜落尘，海豚嘎嘎(车主之家)，刘超，以及所有对EasyPR贡献数据的热心同学。
+taotao1233，邱锦山，唐大侠，jsxyhelu，如果有一天(zhoushiwei)，学习奋斗，袁承志，圣城小石匠，goldriver，Micooz，梦里时光，Rain Wang，任薛纪，ahccom，星夜落尘，海豚嘎嘎(车主之家)，刘超，以及所有对EasyPR贡献数据的热心同学。
