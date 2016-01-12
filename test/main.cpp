@@ -5,6 +5,8 @@
 #include "chars.hpp"
 #include "plate.hpp"
 
+int annMain();
+
 namespace easypr {
 
 namespace demo {
@@ -397,7 +399,7 @@ int main(int argc, const char* argv[]) {
   while (!isExit) {
     std::cout << "////////////////////////////////////" << std::endl;
     const char* options[] = {"EasyPR Option:", "1. 测试;", "2. 批量测试;",
-                             "3. SVM训练;", "4. ANN训练(未开放);",
+                             "3. SVM训练;", "4. ANN训练;",
                              "5. GDTS生成;", "6. 开发团队;", "7. 感谢名单;",
                              "8. 退出;", NULL};
     easypr::Utils::print_str_lines(options);
@@ -419,9 +421,18 @@ int main(int argc, const char* argv[]) {
         case 3:
           // easypr::demo::svmMain();
           std::cout << "Run \"easypr_test svm\" for more usage." << std::endl;
+          {
+            easypr::Svm svm("resources/train/data/plate_detect_svm/learn/HasPlate",
+              "resources/train/data/plate_detect_svm/learn/NoPlate");
+            svm.train();
+          }
+
           break;
         case 4:
           // TODO
+          {
+            annMain();
+          }
           break;
         case 5:
           easypr::preprocess::generate_gdts();

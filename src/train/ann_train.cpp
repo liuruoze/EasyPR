@@ -240,7 +240,7 @@ int annMain() {
   saveModel(10, 40);
 
   cout << "To be end." << endl;
-  int end;
-  cin >> end;
+  //int end;
+  //cin >> end;
   return 0;
 }
