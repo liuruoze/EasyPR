@@ -387,6 +387,7 @@ int main(int argc, const char* argv[]) {
           {
             easypr::SvmTrain svm("tmp/svm", "tmp/svm.xml");
             svm.train();
+            //easypr::svmTrain(true, false);
           }          
           break;
         case 4:
@@ -401,16 +402,18 @@ int main(int argc, const char* argv[]) {
           break;
         case 6: {
           // 开发团队;
+          // 暂时不接受应聘信息，谢谢！
           std::cout << std::endl;
-          const char* recruitment[] = {
+          const char* recruitment[] = {              
               "我们EasyPR团队目前有一个5人左右的小组在进行EasyPR后续版本的开发"
               "工作。",
-              "如果你对本项目感兴趣，并且愿意为开源贡献一份力量，我们很欢迎你的"
-              "加入。",
-              "目前招聘的主要人才是：车牌定位，图像识别，深度学习，网站建设相关"
-              "方面的牛人。",
-              "如果你觉得自己符合条件，请发邮件到地址(easypr_dev@163.com)"
-              "，期待你的加入！",
+              "人数已满，暂时不接受应聘信息，谢谢！",
+              //"如果你对本项目感兴趣，并且愿意为开源贡献一份力量，我们很欢迎你的"
+              //"加入。",
+              //"目前招聘的主要人才是：车牌定位，图像识别，深度学习，网站建设相关"
+              //"方面的牛人。",
+              //"如果你觉得自己符合条件，请发邮件到地址(easypr_dev@163.com)"
+              //"，期待你的加入！",
               NULL};
           easypr::Utils::print_str_lines(recruitment);
           std::cout << std::endl;

@@ -43,6 +43,9 @@
     <Filter Include="资源文件\model">
       <UniqueIdentifier>{06c2b48a-ffbe-495c-babf-c16877785c4c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="源文件\experi">
+      <UniqueIdentifier>{94e5b7c3-7dad-4f9f-a036-25ff09d69868}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\core\chars_identify.cpp">

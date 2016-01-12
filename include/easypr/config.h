@@ -45,7 +45,7 @@ static const char *kChars[] = {
   /*  31  */
 };
 
-static const std::map<const char*, const char*> kCharsMap = {
+static const std::map<std::string, std::string> kCharsMap = {
   {"zh_cuan" , "´¨"}, {"zh_e"    , "¶õ"}, {"zh_gan"  , "¸Ó"},
   {"zh_gan1" , "¸Ê"}, {"zh_gui"  , "¹ó"}, {"zh_gui1" , "¹ð"},
   {"zh_hei"  , "ºÚ"}, {"zh_hu"   , "»¦"}, {"zh_ji"   , "¼½"},

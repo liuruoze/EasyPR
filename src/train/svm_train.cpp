@@ -21,7 +21,8 @@ void SvmTrain::train() {
   svm_->setType(cv::ml::SVM::C_SVC);
   svm_->setKernel(cv::ml::SVM::RBF);
   svm_->setDegree(0.1);
-  svm_->setGamma(1);
+  // 1.4 bug fix: old 1.4 ver gamma is 1
+  svm_->setGamma(0.1); 
   svm_->setCoef0(0.1);
   svm_->setC(1);
   svm_->setNu(0.1);
@@ -32,11 +33,11 @@ void SvmTrain::train() {
 
   fprintf(stdout, ">> Training SVM model, please wait...\n");
   long start = utils::getTimestamp();
-  svm_->trainAuto(train_data, 10, SVM::getDefaultGrid(SVM::C),
-                  SVM::getDefaultGrid(SVM::GAMMA), SVM::getDefaultGrid(SVM::P),
-                  SVM::getDefaultGrid(SVM::NU), SVM::getDefaultGrid(SVM::COEF),
-                  SVM::getDefaultGrid(SVM::DEGREE), true);
-  //svm_->train(train_data);
+  //svm_->trainAuto(train_data, 10, SVM::getDefaultGrid(SVM::C),
+  //                SVM::getDefaultGrid(SVM::GAMMA), SVM::getDefaultGrid(SVM::P),
+  //                SVM::getDefaultGrid(SVM::NU), SVM::getDefaultGrid(SVM::COEF),
+  //                SVM::getDefaultGrid(SVM::DEGREE), true);
+  svm_->train(train_data);
 
   long end = utils::getTimestamp();
   fprintf(stdout, ">> Training done. Time elapse: %ldms\n", end - start);
@@ -49,7 +50,9 @@ void SvmTrain::train() {
 }
 
 void SvmTrain::test() {
-  svm_ = cv::ml::SVM::load<cv::ml::SVM>(svm_xml_);
+  // 1.4 bug fix: old 1.4 ver there is no null judge
+  if (NULL == svm_)
+    svm_ = cv::ml::SVM::load<cv::ml::SVM>(svm_xml_);
 
   if (test_file_list_.empty()) {
     this->prepare();
@@ -70,9 +73,10 @@ void SvmTrain::test() {
     }
     cv::Mat feature;
     getHistogramFeatures(image, feature);
-    feature.reshape(1, 1).convertTo(feature, CV_32FC1);
 
-    auto predict = static_cast<int>(svm_->predict(feature));
+    //std::cout << "predict: " << result << std::endl;
+
+    auto predict = int(svm_->predict(feature));
     auto real = item.label;
     if (predict == kForward && real == kForward) ptrue_rtrue++;
     if (predict == kForward && real == kInverse) ptrue_rfalse++;

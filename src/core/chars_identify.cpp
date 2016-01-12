@@ -24,7 +24,11 @@ std::pair<std::string, std::string> CharsIdentify::identify(cv::Mat input) {
     return std::make_pair(kChars[index], kChars[index]);
   } else {
     const char* key = kChars[index];
-    return std::make_pair(key, kCharsMap.at(key));
+    std::string s = key;
+    //std::cout << s << std::endl;
+    std::string province =  kCharsMap.at(s);
+    //std::cout << province << std::endl;
+    return std::make_pair(s, province);
   }
 }
 }

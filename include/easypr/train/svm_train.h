@@ -7,6 +7,8 @@
 
 namespace easypr {
 
+//int svmTrain(bool dividePrepared, bool trainPrepared);
+
 class SvmTrain : public ITrain {
  public:
   typedef struct {

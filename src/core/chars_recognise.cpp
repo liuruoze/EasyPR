@@ -7,17 +7,22 @@ CCharsRecognise::CCharsRecognise() { m_charsSegment = new CCharsSegment(); }
 
 CCharsRecognise::~CCharsRecognise() { SAFE_RELEASE(m_charsSegment); }
 
-std::string CCharsRecognise::charsRecognise(Mat plate) {
+int CCharsRecognise::charsRecognise(Mat plate, std::string& plateLicense) {
   std::vector<Mat> matChars;
-  std::string license;
 
   int result = m_charsSegment->charsSegment(plate, matChars);
   if (result == 0) {
     for (auto block : matChars) {
       auto character = CharsIdentify::instance()->identify(block);
-      license.append(character.second);
+      plateLicense.append(character.second);
     }
   }
-  return license;
+
+  if (plateLicense.size() < 7) {
+    return -1;
+  }
+
+  return result;
+
 }
 }

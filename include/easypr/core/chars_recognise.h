@@ -23,7 +23,7 @@ class CCharsRecognise {
 
   ~CCharsRecognise();
 
-  std::string charsRecognise(cv::Mat plate);
+  int charsRecognise(cv::Mat plate, std::string& plateLicense);
 
   //! 获得车牌颜色
   inline std::string getPlateColor(cv::Mat input) const {

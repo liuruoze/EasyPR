@@ -27,9 +27,13 @@ int CPlateRecognize::plateRecognize(Mat src,
       std::string plateType = getPlateColor(plate);
 
       //获取车牌号
-      std::string license = charsRecognise(plate);
-      std::string full_license = plateType + ":" + license;
-      licenseVec.push_back(full_license);
+      std::string plateIdentify = "";
+      int resultCR = charsRecognise(plate, plateIdentify);
+      if (resultCR == 0)
+      {
+        std::string license = plateType + ":" + plateIdentify;
+        licenseVec.push_back(license);
+      }
     }
     //完整识别过程到此结束
 
