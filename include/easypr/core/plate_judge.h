@@ -11,14 +11,17 @@ class PlateJudge {
  public:
   static PlateJudge* instance();
 
-  //! 对多幅车牌进行SVM判断
-  int plateJudge(const std::vector<CPlate>&, std::vector<CPlate>&);
+  //! 瀵瑰骞呰溅鐗岃繘琛孲VM鍒ゆ柇
 
-  //! 车牌判断
-  int plateJudge(const std::vector<Mat>&, std::vector<Mat>&);
+  int plateJudge(const std::vector<CPlate> &, std::vector<CPlate> &);
 
-  //! 车牌判断（一副图像）
-  int plateJudge(const Mat& inMat, int& result);
+  //! 杞︾墝鍒ゆ柇
+
+  int plateJudge(const std::vector<Mat> &, std::vector<Mat> &);
+
+  //! 杞︾墝鍒ゆ柇锛堜竴鍓浘鍍忥級
+
+  int plateJudge(const Mat &inMat, int &result);
 
  private:
   PlateJudge();

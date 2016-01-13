@@ -45,7 +45,7 @@ int test_chars_identify() {
     }
   }
 
-  const std::string plateLicense = "ËÕE771H6";
+  const std::string plateLicense = "è‹E771H6";
 
   std::cout << "plateLicense: " << plateLicense << std::endl;
   std::cout << "plateIdentify: " << license << std::endl;

@@ -1,8 +1,7 @@
-EasyPRʹ�õ���Apache V2��ԴЭ�飬��һ���������Ѻõ�Э�顣
-�����ʹ��EasyPR���к���������������ҵĿ�ġ�
-�����Ĳ�Ʒ��������EasyPR�Ĵ��룬����ȷ˵�������޸���EasyPR��лл��
+EasyPR使用的是Apache V2开源协议，是一个对商用友好的协议。
+你可以使用EasyPR进行后续开发并用做商业目的。
+如果你的产品中引用了EasyPR的代码，请明确说明代码修改自EasyPR，谢谢！
 
-EasyPR��imageĿ¼�µ�general_test��extreme_test�ļ����µ�������������GDTS(General Data Test Set��ͨ�����ݲ��Լ�)�е�һ���֣�
-�Ǹ����ݼ�����������ݶ�����ѭApache V2Э�飬Apache V2����ԵĽ�����EasyPR�еĴ��������ģ�͡�
-GDTS���κε����ݶ���ѭGDSL(General Data Share License)�����Ķ�image/GPSL.txt��ȡ������Ϣ��
-
+EasyPR中image目录下的general_test和extreme_test文件夹下的所有数据属于GDTS(General Data Test Set，通用数据测试集)中的一部分，
+那个数据集里的所有数据都不遵循Apache V2协议，Apache V2所针对的仅仅是EasyPR中的代码与相关模型。
+GDTS里任何的数据都遵循GDSL(General Data Share License)，请阅读image/GPSL.txt获取更多信息。

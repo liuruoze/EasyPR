@@ -1,24 +1,9 @@
-//////////////////////////////////////////////////////////////////////////
-// Name:	    plate_detect Header
-// Version:		1.2
-// Date:	    2014-09-28
-// MDate:	    2015-03-13
-// Author:	    liuruoze
-// Copyright:   liuruoze
-// Reference:	Mastering OpenCV with Practical Computer Vision Projects
-// Reference:	CSDN Bloger taotao1233
-// Desciption:
-// Defines CPlateDetect
-//////////////////////////////////////////////////////////////////////////
 #ifndef EASYPR_CORE_PLATEDETECT_H_
 #define EASYPR_CORE_PLATEDETECT_H_
 
 #include "easypr/core/plate_locate.h"
 #include "easypr/core/plate_judge.h"
 
-/*! \namespace easypr
-    Namespace where all the C++ EasyPR functionality resides
-*/
 namespace easypr {
 
 class CPlateDetect {
@@ -27,29 +12,37 @@ class CPlateDetect {
 
   ~CPlateDetect();
 
-  //! Éî¶È³µÅÆ¼ì²â£¬Ê¹ÓÃÑÕÉ«Óë¶ş´ÎSobel·¨×ÛºÏ
-  int plateDetect(Mat src, std::vector<CPlate>& resultVec,
+  //! æ·±åº¦è½¦ç‰Œæ£€æµ‹ï¼Œä½¿ç”¨é¢œè‰²ä¸äºŒæ¬¡Sobelæ³•ç»¼åˆ
+
+  int plateDetect(Mat src, std::vector<CPlate> &resultVec,
                   bool showDetectArea = true, int index = 0);
 
-  //! Õ¹Ê¾ÖĞ¼äµÄ½á¹û
-  int showResult(const Mat& result);
+  //! å±•ç¤ºä¸­é—´çš„ç»“æœ
 
-  //! ×°ÔØSVMÄ£ĞÍ
+  int showResult(const Mat &result);
+
+  //! è£…è½½SVMæ¨¡å‹
+
   void LoadSVM(std::string s);
 
-  //! Éú»îÄ£Ê½Óë¹¤ÒµÄ£Ê½ÇĞ»»
+  //! ç”Ÿæ´»æ¨¡å¼ä¸å·¥ä¸šæ¨¡å¼åˆ‡æ¢
+
   inline void setPDLifemode(bool param) { m_plateLocate->setLifemode(param); }
 
-  //! ÊÇ·ñ¿ªÆôµ÷ÊÔÄ£Ê½
+  //! æ˜¯å¦å¼€å¯è°ƒè¯•æ¨¡å¼
+
   inline void setPDDebug(bool param) { m_plateLocate->setDebug(param); }
 
-  //! »ñÈ¡µ÷ÊÔÄ£Ê½×´Ì¬
+  //! è·å–è°ƒè¯•æ¨¡å¼çŠ¶æ€
+
   inline bool getPDDebug() { return m_plateLocate->getDebug(); }
 
-  //! ÉèÖÃÓë¶ÁÈ¡±äÁ¿
+  //! è®¾ç½®ä¸è¯»å–å˜é‡
+
   inline void setGaussianBlurSize(int param) {
     m_plateLocate->setGaussianBlurSize(param);
   }
+
   inline int getGaussianBlurSize() const {
     return m_plateLocate->getGaussianBlurSize();
   }
@@ -57,6 +50,7 @@ class CPlateDetect {
   inline void setMorphSizeWidth(int param) {
     m_plateLocate->setMorphSizeWidth(param);
   }
+
   inline int getMorphSizeWidth() const {
     return m_plateLocate->getMorphSizeWidth();
   }
@@ -64,6 +58,7 @@ class CPlateDetect {
   inline void setMorphSizeHeight(int param) {
     m_plateLocate->setMorphSizeHeight(param);
   }
+
   inline int getMorphSizeHeight() const {
     return m_plateLocate->getMorphSizeHeight();
   }
@@ -71,32 +66,40 @@ class CPlateDetect {
   inline void setVerifyError(float param) {
     m_plateLocate->setVerifyError(param);
   }
+
   inline float getVerifyError() const {
     return m_plateLocate->getVerifyError();
   }
+
   inline void setVerifyAspect(float param) {
     m_plateLocate->setVerifyAspect(param);
   }
+
   inline float getVerifyAspect() const {
     return m_plateLocate->getVerifyAspect();
   }
 
   inline void setVerifyMin(int param) { m_plateLocate->setVerifyMin(param); }
+
   inline void setVerifyMax(int param) { m_plateLocate->setVerifyMax(param); }
 
   inline void setJudgeAngle(int param) { m_plateLocate->setJudgeAngle(param); }
 
   inline void setMaxPlates(int param) { m_maxPlates = param; }
+
   inline int getMaxPlates() const { return m_maxPlates; }
 
  private:
-  //! ÉèÖÃÒ»·ùÍ¼ÖĞ×î¶àÓĞ¶àÉÙ³µÅÆ
+
+  //! è®¾ç½®ä¸€å¹…å›¾ä¸­æœ€å¤šæœ‰å¤šå°‘è½¦ç‰Œ
+
   int m_maxPlates;
 
-  //! ³µÅÆ¶¨Î»
+  //! è½¦ç‰Œå®šä½
+
   CPlateLocate* m_plateLocate;
 };
 
-} /*! \namespace easypr*/
+}
 
 #endif  // EASYPR_CORE_PLATEDETECT_H_

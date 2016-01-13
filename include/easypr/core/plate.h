@@ -9,7 +9,6 @@
 //////////////////////////////////////////////////////////////////////////
 #ifndef EASYPR_CORE_PLATE_H_
 #define EASYPR_CORE_PLATE_H_
-
 #include "core_func.h"
 
 /*! \namespace easypr
@@ -21,10 +20,12 @@ class CPlate {
  public:
   bool bColored;
 
-  //! ¹¹Ôìº¯Êı
+  //! æ„é€ å‡½æ•°
+
   CPlate();
 
-  //! ÉèÖÃÓë¶ÁÈ¡±äÁ¿
+  //! è®¾ç½®ä¸è¯»å–å˜é‡
+
   inline void setPlateMat(Mat param) { m_plateMat = param; }
   inline Mat getPlateMat() const { return m_plateMat; }
 
@@ -38,16 +39,20 @@ class CPlate {
   inline LocateType getPlateLocateType() const { return m_locateType; }
 
  private:
-  //! ³µÅÆµÄÍ¼¿é
+  //! è½¦ç‰Œçš„å›¾å—
+
   Mat m_plateMat;
 
-  //! ³µÅÆÔÚÔ­Í¼µÄÎ»ÖÃ
+  //! è½¦ç‰Œåœ¨åŸå›¾çš„ä½ç½®
+
   RotatedRect m_platePos;
 
-  //! ³µÅÆ×Ö·û´®
+  //! è½¦ç‰Œå­—ç¬¦ä¸²
+
   String m_plateStr;
 
-  //! ³µÅÆ¶¨Î»µÄ·½·¨
+  //! è½¦ç‰Œå®šä½çš„æ–¹æ³•
+
   LocateType m_locateType;
 };
 
