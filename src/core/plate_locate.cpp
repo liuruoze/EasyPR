@@ -69,17 +69,26 @@ bool CPlateLocate::verifySizes(RotatedRect mr) {
   float rmin = aspect - aspect * error;
   float rmax = aspect + aspect * error;
 
-  float area = mr.size.height * mr.size.width;
+  int area = mr.size.height * mr.size.width;
   float r = (float)mr.size.width / (float)mr.size.height;
   if (r < 1) r = (float)mr.size.height / (float)mr.size.width;
 
   // cout << "area:" << area << endl;
   // cout << "r:" << r << endl;
 
-  if ((area < min || area > max) || (r < rmin || r > rmax))
+  if (area < min)
     return false;
-  else
-    return true;
+
+  if (area > max)
+    return false;
+
+  if (r < rmin)
+    return false;
+
+  if (r > rmax)
+    return false;
+
+  return true;
 }
 
 // !基于HSV空间的颜色搜索方法
@@ -123,18 +132,27 @@ int CPlateLocate::colorSearch(const Mat& src, const Color r, Mat& out,
                CV_RETR_EXTERNAL,       // 提取外部轮廓
                CV_CHAIN_APPROX_NONE);  // all pixels of each contours
 
-  vector<vector<Point>>::iterator itc = contours.begin();
-  while (itc != contours.end()) {
-    RotatedRect mr = minAreaRect(Mat(*itc));
+  //vector<vector<Point>>::iterator itc = contours.begin();
+  //while (itc != contours.end()) {
+  //  RotatedRect mr = minAreaRect(Mat(*itc));
 
-    // 需要进行大小尺寸判断
-    if (!verifySizes(mr))
-      itc = contours.erase(itc);
-    else {
-      ++itc;
+  //  // 需要进行大小尺寸判断
+  //  if (!verifySizes(mr))
+  //    itc = contours.erase(itc);
+  //  else {
+  //    ++itc;
+  //    outRects.push_back(mr);
+  //  }
+  //}
+
+  size_t size = contours.size();
+  for (int i = 0; i < size; i++) 
+  {
+    RotatedRect mr = minAreaRect(Mat(contours[i]));
+    if (verifySizes(mr))
       outRects.push_back(mr);
-    }
   }
+
 
   return 0;
 }
