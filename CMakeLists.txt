@@ -40,6 +40,7 @@ set(SOURCE_FILES
     src/preprocess/mc_data.cpp
     src/util/util.cpp
     src/util/program_options.cpp
+    src/util/kv.cpp
 )
 add_library(easypr STATIC ${SOURCE_FILES})
 

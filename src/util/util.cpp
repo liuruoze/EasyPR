@@ -36,7 +36,7 @@ namespace easypr {
 
 long Utils::getTimestamp() {
 #ifdef OS_WINDOWS
-  return GetTickCount();
+  return static_cast<long>(cv::getTickCount());
 #endif
 
 #ifdef OS_LINUX
@@ -57,7 +57,7 @@ long Utils::getTimestamp() {
 #endif
 }
 
-std::string Utils::getFileName(const std::string& path,
+std::string Utils::getFileName(const std::string &path,
                                const bool postfix /* = false */) {
   if (!path.empty()) {
     size_t last_slash = utils::get_last_slash(path);
@@ -80,7 +80,7 @@ std::string Utils::getFileName(const std::string& path,
   return "";
 }
 
-std::vector<std::string> Utils::splitString(const std::string& str,
+std::vector<std::string> Utils::splitString(const std::string &str,
                                             const char delimiter) {
   std::vector<std::string> splited;
   std::string s(str);
@@ -101,7 +101,7 @@ std::vector<std::string> Utils::splitString(const std::string& str,
   return splited;
 }
 
-std::vector<std::string> Utils::getFiles(const std::string& folder,
+std::vector<std::string> Utils::getFiles(const std::string &folder,
                                          const bool all /* = true */) {
   std::vector<std::string> files;
   std::list<std::string> subfolders;
@@ -228,7 +228,7 @@ bool Utils::mkdir(const std::string folder) {
 #else
       if (0 != ::access(folder_builder.c_str(), 0)) {
 #endif
-// this folder not exist
+        // this folder not exist
 #ifdef OS_WINDOWS
         if (0 != ::_mkdir(folder_builder.c_str())) {
 #else
@@ -244,13 +244,13 @@ bool Utils::mkdir(const std::string folder) {
   return true;
 }
 
-bool Utils::imwrite(const std::string& file, const cv::Mat& image) {
+bool Utils::imwrite(const std::string &file, const cv::Mat &image) {
   auto folder = file.substr(0, utils::get_last_slash(file));
   Utils::mkdir(folder);
   return cv::imwrite(file, image);
 }
 
-std::size_t Utils::get_last_slash(const std::string& path) {
+std::size_t Utils::get_last_slash(const std::string &path) {
 #ifdef OS_WINDOWS
   size_t last_slash_1 = path.find_last_of("\\");
   size_t last_slash_2 = path.find_last_of("/");

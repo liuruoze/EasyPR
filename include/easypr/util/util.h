@@ -1,6 +1,7 @@
 #ifndef EASYPR_UTIL_UTIL_H_
 #define EASYPR_UTIL_UTIL_H_
 
+#include <fstream>
 #include <iostream>
 #include <string>
 #include <vector>
@@ -31,20 +32,20 @@ class Utils {
    * Get file name from a given path
    * bool postfix: including the postfix
    */
-  static std::string getFileName(const std::string& path,
+  static std::string getFileName(const std::string &path,
                                  const bool postfix = false);
 
   /*
    * Split the given string into segements by a delimiter
    */
-  static std::vector<std::string> splitString(const std::string& str,
+  static std::vector<std::string> splitString(const std::string &str,
                                               const char delimiter);
 
   /*
    * returns the smaller of the two numbers
    */
-  template <typename T>
-  static T min(const T& v1, const T& v2) {
+  template<typename T>
+  static T min(const T &v1, const T &v2) {
     return (v1 < v2) ? v1 : v2;
   }
 
@@ -52,7 +53,7 @@ class Utils {
    * Get files from a given folder
    * all: including all sub-folders
    */
-  static std::vector<std::string> getFiles(const std::string& folder,
+  static std::vector<std::string> getFiles(const std::string &folder,
                                            const bool all = true);
 
   /*
@@ -71,14 +72,31 @@ class Utils {
    * Print string lines using {"string1", "string2"},
    * this is a easier way benefit from C++11.
    */
-  static void print_str_lines(const std::initializer_list<const char*>& lines) {
+  static void print_str_lines(const std::initializer_list<const char*> &lines) {
     for (auto line : lines) {
       std::cout << line << std::endl;
     }
   }
 
-  template <class T>
-  static unsigned int levenshtein_distance(const T& s1, const T& s2) {
+  /*
+   * Read and print by line.
+   */
+  static void print_file_lines(const std::string &file) {
+    std::ifstream fs(file);
+    if (fs.good()) {
+      while (!fs.eof()) {
+        std::string line;
+        std::getline(fs, line);
+        std::cout << line << std::endl;
+      }
+      fs.close();
+    } else {
+      std::cerr << "cannot open file: " << file << std::endl;
+    }
+  }
+
+  template<class T>
+  static unsigned int levenshtein_distance(const T &s1, const T &s2) {
     const size_t len1 = s1.size(), len2 = s2.size();
     std::vector<unsigned int> col(len2 + 1), prevCol(len2 + 1);
 
@@ -103,13 +121,13 @@ class Utils {
    * Make sure the destination folder exists,
    * if not, create it, then call cv::imwrite.
    */
-  static bool imwrite(const std::string& file, const cv::Mat& image);
+  static bool imwrite(const std::string &file, const cv::Mat &image);
 
  private:
   /*
    * Get the last slash from a path, compatible with Windows and *unix.
    */
-  static std::size_t get_last_slash(const std::string& path);
+  static std::size_t get_last_slash(const std::string &path);
 };
 
 typedef Utils utils;
