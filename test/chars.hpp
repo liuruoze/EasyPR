@@ -45,8 +45,10 @@ int test_chars_identify() {
     }
   }
 
-  const std::string plateLicense = utils::utf8_to_gbk("苏E771H6");
-
+  std::string plateLicense = "苏E771H6";
+#ifdef OS_WINDOWS
+  plateLicense = utils::utf8_to_gbk(plateLicense.c_str());
+#endif
   std::cout << "plateLicense: " << plateLicense << std::endl;
   std::cout << "plateIdentify: " << license << std::endl;
 
