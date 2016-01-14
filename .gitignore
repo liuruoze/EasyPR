@@ -5,7 +5,10 @@ resources/image/tmp/
 *.sdf
 *.opensdf
 *.exe
+*.dll
 *.ilk
+*.lib
+*.pdb
 demo
 experi
 
@@ -23,7 +26,6 @@ Thumbs.db
 *.tlb
 *.tlh
 *.bak
-*.cache
 [Bb]in
 [Dd]ebug*/
 *.sbr
