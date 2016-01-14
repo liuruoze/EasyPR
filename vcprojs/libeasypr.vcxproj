@@ -160,6 +160,7 @@
     <ClCompile Include="..\src\train\ann_train.cpp" />
     <ClCompile Include="..\src\train\svm_train.cpp" />
     <ClCompile Include="..\src\train\train.cpp" />
+    <ClCompile Include="..\src\util\kv.cpp" />
     <ClCompile Include="..\src\util\program_options.cpp" />
     <ClCompile Include="..\src\util\util.cpp" />
   </ItemGroup>

@@ -11,6 +11,7 @@ resources/image/tmp/
 *.pdb
 demo
 experi
+/tmp
 
 
 #ignore thumbnails created by windows
