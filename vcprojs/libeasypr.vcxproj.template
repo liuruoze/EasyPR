@@ -72,6 +72,8 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <TargetExt>.lib</TargetExt>
+    <OutDir>$(SolutionDir)</OutDir>
+    <IntDir>$(SolutionDir)_build\libeasypr\debug\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <OutDir>$(SolutionDir)_build\</OutDir>
@@ -80,6 +82,8 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <TargetExt>.lib</TargetExt>
+    <OutDir>$(SolutionDir)</OutDir>
+    <IntDir>$(SolutionDir)_build\libeasypr\release\</IntDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -133,8 +137,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>$(SolutionDir)include</AdditionalIncludeDirectories>
-      <DisableSpecificWarnings>
-      </DisableSpecificWarnings>
+      <DisableSpecificWarnings>4819</DisableSpecificWarnings>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
