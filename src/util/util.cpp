@@ -250,6 +250,25 @@ bool Utils::imwrite(const std::string &file, const cv::Mat &image) {
   return cv::imwrite(file, image);
 }
 
+#ifdef OS_WINDOWS
+std::string Utils::utf8_to_gbk(const char* utf8) {
+  int len = MultiByteToWideChar(CP_UTF8, 0, utf8, -1, NULL, 0);
+  wchar_t* wszGBK = new wchar_t[len + 1];
+  memset(wszGBK, 0, len * 2 + 2);
+  MultiByteToWideChar(CP_UTF8, 0, utf8, -1, wszGBK, len);
+  len = WideCharToMultiByte(CP_ACP, 0, wszGBK, -1, NULL, 0, NULL, NULL);
+  char* szGBK = new char[len + 1];
+  memset(szGBK, 0, len + 1);
+  WideCharToMultiByte(CP_ACP, 0, wszGBK, -1, szGBK, len, NULL, NULL);
+  std::string strTemp(szGBK);
+  if (wszGBK)
+    delete[] wszGBK;
+  if (szGBK)
+    delete[] szGBK;
+  return strTemp;
+}
+#endif
+
 std::size_t Utils::get_last_slash(const std::string &path) {
 #ifdef OS_WINDOWS
   size_t last_slash_1 = path.find_last_of("\\");

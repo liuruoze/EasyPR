@@ -1,6 +1,5 @@
 #include "easypr/util/kv.h"
-#include <fstream>
-#include <iostream>
+#include "easypr/util/util.h"
 
 namespace easypr {
 
@@ -35,14 +34,7 @@ void Kv::load(const std::string &file) {
     };
 
     auto kv = parse(line);
-    if (data_.find(kv.first) != data_.end()) {
-      fprintf(stderr,
-              "[Kv] find duplicate: %s = %s , ignore\n",
-              kv.first.c_str(),
-              kv.second.c_str());
-    } else {
-      data_.insert(parse(line));
-    }
+    this->add(kv.first, kv.second);
   }
   reader.close();
 }
@@ -53,6 +45,21 @@ std::string Kv::get(const std::string &key) {
     return "";
   }
   return data_.at(key);
+}
+
+void Kv::add(const std::string &key, const std::string &value) {
+  if (data_.find(key) != data_.end()) {
+    fprintf(stderr,
+            "[Kv] find duplicate: %s = %s , ignore\n",
+            key.c_str(),
+            value.c_str());
+  } else {
+    std::string v(value);
+#ifdef OS_WINDOWS
+    v = utils::utf8_to_gbk(value.c_str());
+#endif
+    data_[key] = v;
+  }
 }
 
 void Kv::remove(const std::string &key) {

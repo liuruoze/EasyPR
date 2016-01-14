@@ -87,6 +87,9 @@ class Utils {
       while (!fs.eof()) {
         std::string line;
         std::getline(fs, line);
+#ifdef OS_WINDOWS
+        line = utf8_to_gbk(line.c_str());
+#endif
         std::cout << line << std::endl;
       }
       fs.close();
@@ -122,6 +125,10 @@ class Utils {
    * if not, create it, then call cv::imwrite.
    */
   static bool imwrite(const std::string &file, const cv::Mat &image);
+
+#ifdef OS_WINDOWS
+  static std::string utf8_to_gbk(const char* utf8);
+#endif
 
  private:
   /*

@@ -14,6 +14,7 @@
 
 #include "easypr/core/chars_segment.h"
 #include "easypr/core/chars_identify.h"
+#include "easypr/util/util.h"
 
 namespace easypr {
 
@@ -32,6 +33,9 @@ class CCharsRecognise {
     Color result = getPlateType(input, true);
     if (BLUE == result) color = "蓝牌";
     if (YELLOW == result) color = "黄牌";
+#ifdef OS_WINDOWS
+    color = utils::utf8_to_gbk(color.c_str());
+#endif
     return color;
   }
 
