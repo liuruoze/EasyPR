@@ -3,41 +3,49 @@
 
 namespace easypr {
 
-CPlateRecognize::CPlateRecognize() {}
+CPlateRecognize::CPlateRecognize() { }
 
-// !³µÅÆÊ¶±ğÄ£¿é
+// !è½¦ç‰Œè¯†åˆ«æ¨¡å—
+
 int CPlateRecognize::plateRecognize(Mat src,
                                     std::vector<std::string> &licenseVec) {
-  // ³µÅÆ·½¿é¼¯ºÏ
+
+  // è½¦ç‰Œæ–¹å—é›†åˆ
+
   std::vector<CPlate> plateVec;
 
-  // ½øĞĞÉî¶È¶¨Î»£¬Ê¹ÓÃÑÕÉ«ĞÅÏ¢Óë¶ş´ÎSobel
+  // è¿›è¡Œæ·±åº¦å®šä½ï¼Œä½¿ç”¨é¢œè‰²ä¿¡æ¯ä¸äºŒæ¬¡Sobel
+
   int resultPD = plateDetect(src, plateVec, kDebug, 0);
 
   if (resultPD == 0) {
     size_t num = plateVec.size();
     int index = 0;
 
-    //ÒÀ´ÎÊ¶±ğÃ¿¸ö³µÅÆÄÚµÄ·ûºÅ
+    //ä¾æ¬¡è¯†åˆ«æ¯ä¸ªè½¦ç‰Œå†…çš„ç¬¦å·
+
     for (size_t j = 0; j < num; j++) {
       CPlate item = plateVec[j];
       Mat plate = item.getPlateMat();
 
-      //»ñÈ¡³µÅÆÑÕÉ«
+      //è·å–è½¦ç‰Œé¢œè‰²
+
       std::string plateType = getPlateColor(plate);
 
-      //»ñÈ¡³µÅÆºÅ
+      //è·å–è½¦ç‰Œå·
+
       std::string plateIdentify = "";
       int resultCR = charsRecognise(plate, plateIdentify);
-      if (resultCR == 0)
-      {
+      if (resultCR == 0) {
         std::string license = plateType + ":" + plateIdentify;
         licenseVec.push_back(license);
       }
     }
-    //ÍêÕûÊ¶±ğ¹ı³Ìµ½´Ë½áÊø
 
-    //Èç¹ûÊÇDebugÄ£Ê½£¬Ôò»¹ĞèÒª½«¶¨Î»µÄÍ¼Æ¬ÏÔÊ¾ÔÚÔ­Í¼×óÉÏ½Ç
+    //å®Œæ•´è¯†åˆ«è¿‡ç¨‹åˆ°æ­¤ç»“æŸ
+
+    //å¦‚æœæ˜¯Debugæ¨¡å¼ï¼Œåˆ™è¿˜éœ€è¦å°†å®šä½çš„å›¾ç‰‡æ˜¾ç¤ºåœ¨åŸå›¾å·¦ä¸Šè§’
+
     if (getPDDebug()) {
       Mat result;
       src.copyTo(result);
@@ -69,7 +77,8 @@ int CPlateRecognize::plateRecognize(Mat src,
                8);
       }
 
-      //ÏÔÊ¾¶¨Î»¿òµÄÍ¼Æ¬
+      //æ˜¾ç¤ºå®šä½æ¡†çš„å›¾ç‰‡
+
       showResult(result);
     }
   }

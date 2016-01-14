@@ -45,21 +45,6 @@ static const char *kChars[] = {
   /*  31  */
 };
 
-static const std::map<std::string, std::string> kCharsMap = {
-  {"zh_cuan" , "´¨"}, {"zh_e"    , "¶õ"}, {"zh_gan"  , "¸Ó"},
-  {"zh_gan1" , "¸Ê"}, {"zh_gui"  , "¹ó"}, {"zh_gui1" , "¹ð"},
-  {"zh_hei"  , "ºÚ"}, {"zh_hu"   , "»¦"}, {"zh_ji"   , "¼½"},
-  {"zh_jin"  , "½ò"}, {"zh_jing" , "¾©"}, {"zh_jl"   , "¼ª"},
-  {"zh_liao" , "ÁÉ"}, {"zh_lu"   , "Â³"}, {"zh_meng" , "ÃÉ"},
-  {"zh_min"  , "Ãö"}, {"zh_ning" , "Äþ"}, {"zh_qing" , "Çà"},
-  {"zh_qiong", "Çí"}, {"zh_shan" , "ÉÂ"}, {"zh_su"   , "ËÕ"},
-  {"zh_sx"   , "½ú"}, {"zh_wan"  , "Íî"}, {"zh_xiang", "Ïæ"},
-  {"zh_xin"  , "ÐÂ"}, {"zh_yu"   , "Ô¥"}, {"zh_yu1"  , "Óå"},
-  {"zh_yue"  , "ÔÁ"}, {"zh_yun"  , "ÔÆ"}, {"zh_zang" , "²Ø"},
-  {"zh_zhe"  , "Õã"}
-  /*  31  */
-};
-
 static const int kCharsTotalNumber = 65;
 
 static bool kDebug = false;

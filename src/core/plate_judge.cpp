@@ -14,20 +14,22 @@ PlateJudge* PlateJudge::instance() {
 
 PlateJudge::PlateJudge() { svm_ = ml::SVM::load<ml::SVM>(kDefaultSvmPath); }
 
-//! ¶Ôµ¥·ùÍ¼Ïñ½øĞĞSVMÅĞ¶Ï
-int PlateJudge::plateJudge(const Mat& inMat, int& result) {
+//! å¯¹å•å¹…å›¾åƒè¿›è¡ŒSVMåˆ¤æ–­
+
+int PlateJudge::plateJudge(const Mat &inMat, int &result) {
   Mat features;
   getHistogramFeatures(inMat, features);
 
   float response = svm_->predict(features);
-  result = (int)response;
+  result = (int) response;
 
   return 0;
 }
 
-//! ¶Ô¶à·ùÍ¼Ïñ½øĞĞSVMÅĞ¶Ï
-int PlateJudge::plateJudge(const std::vector<Mat>& inVec,
-                           std::vector<Mat>& resultVec) {
+//! å¯¹å¤šå¹…å›¾åƒè¿›è¡ŒSVMåˆ¤æ–­
+
+int PlateJudge::plateJudge(const std::vector<Mat> &inVec,
+                           std::vector<Mat> &resultVec) {
   int num = inVec.size();
   for (int j = 0; j < num; j++) {
     Mat inMat = inVec[j];
@@ -40,9 +42,10 @@ int PlateJudge::plateJudge(const std::vector<Mat>& inVec,
   return 0;
 }
 
-//! ¶Ô¶à·ù³µÅÆ½øĞĞSVMÅĞ¶Ï
-int PlateJudge::plateJudge(const std::vector<CPlate>& inVec,
-                           std::vector<CPlate>& resultVec) {
+//! å¯¹å¤šå¹…è½¦ç‰Œè¿›è¡ŒSVMåˆ¤æ–­
+
+int PlateJudge::plateJudge(const std::vector<CPlate> &inVec,
+                           std::vector<CPlate> &resultVec) {
   int num = inVec.size();
   for (int j = 0; j < num; j++) {
     CPlate inPlate = inVec[j];
@@ -56,7 +59,9 @@ int PlateJudge::plateJudge(const std::vector<CPlate>& inVec,
     else {
       int w = inMat.cols;
       int h = inMat.rows;
-      //ÔÙÈ¡ÖĞ¼ä²¿·ÖÅĞ¶ÏÒ»´Î
+
+      //å†å–ä¸­é—´éƒ¨åˆ†åˆ¤æ–­ä¸€æ¬¡
+
       Mat tmpmat = inMat(Rect_<double>(w * 0.05, h * 0.1, w * 0.9, h * 0.8));
       Mat tmpDes = inMat.clone();
       resize(tmpmat, tmpDes, Size(inMat.size()));
