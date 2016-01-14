@@ -196,8 +196,8 @@ int accuracyTest(const char* test_path) {
   double seconds = difftime(end, begin);
   double avgsec = seconds / double(count_all);
 
-  cout << kv->get("seconds") << ":" << seconds << "min,  ";
-  cout << kv->get("seconds_average") << ":" << avgsec << "sec" << endl;
+  cout << kv->get("seconds") << ":" << seconds << kv->get("sec") << ",  ";
+  cout << kv->get("seconds_average") << ":" << avgsec << kv->get("sec") << endl;
 
   cout << kv->get("unrecognized") << ":" << endl;
 
@@ -226,8 +226,9 @@ int accuracyTest(const char* test_path) {
     myfile << kv->get("diff_average") << ":" << diff_avg << ",  ";
     myfile << kv->get("full_match") << ":" << match_count << ",  ";
     myfile << kv->get("full_rate") << ":" << match_rate << "%  " << endl;
-    myfile << kv->get("seconds") << ":" << seconds << "sec,  ";
-    myfile << kv->get("seconds_average") << ":" << avgsec << "sec" << endl;
+    myfile << kv->get("seconds") << ":" << seconds << kv->get("sec") << ",  ";
+    myfile << kv->get("seconds_average") << ":" << avgsec << kv->get("sec")
+        << endl;
     myfile.close();
   } else {
     cout << "Unable to open file";

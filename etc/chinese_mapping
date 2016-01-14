@@ -15,3 +15,4 @@ full_match       完全匹配数
 full_rate        完全匹配率
 seconds          总时间
 seconds_average  平均执行时间
+sec              秒
