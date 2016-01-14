@@ -4,7 +4,7 @@
 #                   EasyPR auto configure script
 # --------------------------------------------------------------------
 #
-# This script configures OpenCV3.0 for Visual Studio
+# This script configures OpenCV3.1 for Visual Studio
 # on Windows.
 #
 # You are required to have Python3.* installed, and python.exe must
@@ -34,7 +34,7 @@ kConfig = {
     "build": "",
     "include": "",
     "library": "",
-    "link": ["opencv_world300"],
+    "link": ["opencv_world310"],
     "bit": "",
     "vs": ""
 }
@@ -112,15 +112,15 @@ def check_opencv_version():
     file = os.path.join(kConfig["build"], kOpenCVConfig)
     print(">> Checking ", file)
     fp = open(file)
-    major_version = 0
+    opencv_version = 0
     try:
         fline = fp.readline()
         match = re.search(r"OpenCV_VERSION (\d)\.(\d)\.(\d{,2})", fline)
         if match is not None:
-            major_version = match.group(1)
+            opencv_version = match.group(1) + "." + match.group(2)
     finally:
         fp.close()
-    return major_version
+    return opencv_version
 
 
 def cli():
@@ -133,28 +133,22 @@ def cli():
         else:
             print("Invalid path")
 
-    if check_opencv_version() != "3":
-        print("requires opencv 3")
+    if check_opencv_version() != "3.1":
+        print("requires opencv 3.1")
         exit()
 
-    while True:
-        xbit = input("Which library version you want to use? (x86 for 32bit, x64 for 64bit): ")
-        if xbit == "x86" or xbit == "x64":
-            kConfig["bit"] = xbit
-            break
-        else:
-            print("Please type x86 or x64")
+    kConfig["bit"] = "x64"
 
     while True:
-        vc = input("Which Visual Studio you are using? (vs2012 or vs2013): ")
-        if vc == "vs2012":
-            kConfig["vs"] = "vc11"
-            break
-        elif vc == "vs2013":
+        vc = input("Which Visual Studio you are using? (vs2013 or vs2015): ")
+        if vc == "vs2013":
             kConfig["vs"] = "vc12"
             break
+        elif vc == "vs2015":
+            kConfig["vs"] = "vc14"
+            break
         else:
-            print("Please type vs2012 or vs2013")
+            print("Please type vs2013 or vs2015")
 
     kConfig["library"] = os.path.normpath("%s/%s/%s/lib/" % (kConfig["build"], kConfig["bit"], kConfig["vs"]))
 

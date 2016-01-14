@@ -14,15 +14,17 @@ enum Color { BLUE, YELLOW, WHITE, UNKNOWN };
 
 enum LocateType { SOBEL, COLOR, OTHER };
 
-//! ¸ù¾İÒ»·ùÍ¼ÏñÓëÑÕÉ«Ä£°å»ñÈ¡¶ÔÓ¦µÄ¶şÖµÍ¼
-//! ÊäÈëRGBÍ¼Ïñ, ÑÕÉ«Ä£°å£¨À¶É«¡¢»ÆÉ«£©
-//! Êä³ö»Ò¶ÈÍ¼£¨Ö»ÓĞ0ºÍ255Á½¸öÖµ£¬255´ú±íÆ¥Åä£¬0´ú±í²»Æ¥Åä£©
+//! æ ¹æ®ä¸€å¹…å›¾åƒä¸é¢œè‰²æ¨¡æ¿è·å–å¯¹åº”çš„äºŒå€¼å›¾
+//! è¾“å…¥RGBå›¾åƒ, é¢œè‰²æ¨¡æ¿ï¼ˆè“è‰²ã€é»„è‰²ï¼‰
+//! è¾“å‡ºç°åº¦å›¾ï¼ˆåªæœ‰0å’Œ255ä¸¤ä¸ªå€¼ï¼Œ255ä»£è¡¨åŒ¹é…ï¼Œ0ä»£è¡¨ä¸åŒ¹é…ï¼‰
+
 Mat colorMatch(const Mat& src, Mat& match, const Color r,
                const bool adaptive_minsv);
 
-//! ÅĞ¶ÏÒ»¸ö³µÅÆµÄÑÕÉ«
-//! ÊäÈë³µÅÆmatÓëÑÕÉ«Ä£°å
-//! ·µ»Øtrue»òfasle
+//! åˆ¤æ–­ä¸€ä¸ªè½¦ç‰Œçš„é¢œè‰²
+//! è¾“å…¥è½¦ç‰Œmatä¸é¢œè‰²æ¨¡æ¿
+//! è¿”å›trueæˆ–fasle
+
 bool plateColorJudge(const Mat& src, const Color r, const bool adaptive_minsv,
                      float& percent);
 
@@ -30,24 +32,28 @@ bool bFindLeftRightBound(Mat& bound_threshold, int& posLeft, int& posRight);
 bool bFindLeftRightBound1(Mat& bound_threshold, int& posLeft, int& posRight);
 bool bFindLeftRightBound2(Mat& bound_threshold, int& posLeft, int& posRight);
 
-//È¥³ı³µÅÆÉÏ·½µÄÅ¥¶¤
-//¼ÆËãÃ¿ĞĞÔªËØµÄ½×Ô¾Êı£¬Èç¹ûĞ¡ÓÚXÈÏÎªÊÇÁø¶¡£¬½«´ËĞĞÈ«²¿Ìî0£¨Í¿ºÚ£©
-// XµÄÍÆ¼öÖµÎª£¬¿É¸ù¾İÊµ¼Êµ÷Õû
+//å»é™¤è½¦ç‰Œä¸Šæ–¹çš„é’®é’‰
+//è®¡ç®—æ¯è¡Œå…ƒç´ çš„é˜¶è·ƒæ•°ï¼Œå¦‚æœå°äºXè®¤ä¸ºæ˜¯æŸ³ä¸ï¼Œå°†æ­¤è¡Œå…¨éƒ¨å¡«0ï¼ˆæ¶‚é»‘ï¼‰
+// Xçš„æ¨èå€¼ä¸ºï¼Œå¯æ ¹æ®å®é™…è°ƒæ•´
+
 bool clearLiuDing(Mat& img);
 void clearLiuDingOnly(Mat& img);
 void clearLiuDing(Mat mask, int& top, int& bottom);
 
-//! »ñµÃ³µÅÆÑÕÉ«
+//! è·å¾—è½¦ç‰Œé¢œè‰²
+
 Color getPlateType(const Mat& src, const bool adaptive_minsv);
 
-//! Ö±·½Í¼¾ùºâ
+//! ç›´æ–¹å›¾å‡è¡¡
+
 Mat histeq(Mat in);
 Mat features(Mat in, int sizeData);
 Rect GetCenterRect(Mat& in);
 Mat CutTheRect(Mat& in, Rect& rect);
 int ThresholdOtsu(Mat mat);
 
-//! »ñÈ¡´¹Ö±ºÍË®Æ½·½ÏòÖ±·½Í¼
+//! è·å–å‚ç›´å’Œæ°´å¹³æ–¹å‘ç›´æ–¹å›¾
+
 Mat ProjectedHistogram(Mat img, int t);
 
 } /*! \namespace easypr*/

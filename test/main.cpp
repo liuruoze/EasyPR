@@ -12,14 +12,13 @@ namespace demo {
 // interactions
 
 int accuracyTestMain() {
+  std::shared_ptr<easypr::Kv> kv(new easypr::Kv);
+  kv->load("etc/chinese_mapping");
+
   bool isExit = false;
   while (!isExit) {
-    std::cout << "////////////////////////////////////" << std::endl;
-    const char* options[] = {"BatchTest Option:", "1. general_test;",
-                             "2. native_test;", "3. 返回;", NULL};
-    Utils::print_str_lines(options);
-    std::cout << "////////////////////////////////////" << std::endl;
-    std::cout << "请选择一项操作:";
+    easypr::Utils::print_file_lines("etc/batch_test_menu");
+    std::cout << kv->get("make_a_choice") << ":";
 
     int select = -1;
     bool isRepeat = true;
@@ -37,7 +36,7 @@ int accuracyTestMain() {
           isExit = true;
           break;
         default:
-          std::cout << "输入错误，请重新输入:";
+          std::cout << kv->get("input_error") << ":";
           isRepeat = true;
           break;
       }
@@ -47,21 +46,13 @@ int accuracyTestMain() {
 }
 
 int testMain() {
+  std::shared_ptr<easypr::Kv> kv(new easypr::Kv);
+  kv->load("etc/chinese_mapping");
+
   bool isExit = false;
   while (!isExit) {
-    std::cout << "////////////////////////////////////" << std::endl;
-    const char* options[] = {
-        "EasyPR Test:", "1. test plate_locate(车牌定位);" /* 车牌定位 */,
-        "2. test plate_judge(车牌判断);" /* 车牌判断 */,
-        "3. test plate_detect(车牌检测);" /* 车牌检测（包含车牌定位与车牌判断） */,
-        "4. test chars_segment(字符分隔);" /* 字符分隔 */,
-        "5. test chars_identify(字符鉴别);" /* 字符鉴别 */,
-        "6. test chars_recognise(字符识别);" /* 字符识别（包含字符分隔与字符鉴别） */,
-        "7. test plate_recognize(车牌识别);" /* 车牌识别 */,
-        "8. test all(测试全部);" /* 以上全部 */, "9. 返回;" /* 退出 */, NULL};
-    Utils::print_str_lines(options);
-    std::cout << "////////////////////////////////////" << std::endl;
-    std::cout << "请选择一项操作:";
+    Utils::print_file_lines("etc/test_menu");
+    std::cout << kv->get("make_a_choice") << ":";
 
     int select = -1;
     bool isRepeat = true;
@@ -105,7 +96,7 @@ int testMain() {
           isExit = true;
           break;
         default:
-          std::cout << "输入错误，请重新输入:";
+          std::cout << kv->get("input_error") << ":";
           isRepeat = true;
           break;
       }
@@ -135,7 +126,7 @@ void command_line_handler(int argc, const char* argv[]) {
     options("h,help", "show help information");
     options(",plates", "",
             "a folder contains both forward data and inverse data in the "
-            "separated subfolders");
+                "separated subfolders");
     options(",svm", easypr::kDefaultSvmPath, "the svm model file");
     options("t,test", "run tests in --plates");
   }
@@ -153,7 +144,7 @@ void command_line_handler(int argc, const char* argv[]) {
     options("h,help", "show help information");
     options(",chars", "",
             "the folder contains character sub-folders, with each folder"
-            "named by label defined in include/easypr/config.h");
+                "named by label defined in include/easypr/config.h");
     options(",ann", easypr::kDefaultAnnPath,
             "the ann model file you want to save");
     options("t,test", "run test in --chars");
@@ -176,7 +167,7 @@ void command_line_handler(int argc, const char* argv[]) {
   }
 
   options.add_subroutine(
-             "judge", "determine whether an image block is the license plate")
+          "judge", "determine whether an image block is the license plate")
       .make_usage("Usage:");
   {
     /* ------------------------------------------
@@ -217,7 +208,7 @@ void command_line_handler(int argc, const char* argv[]) {
 
   try {
     parser->parse(argc, argv);
-  } catch (const std::exception& err) {
+  } catch (const std::exception &err) {
     std::cout << err.what() << std::endl;
     return;
   }
@@ -270,7 +261,7 @@ void command_line_handler(int argc, const char* argv[]) {
                if (parser->has("file")) {
                  easypr::api::plate_locate(parser->get("file")->val().c_str());
                  std::cout << "finished, results can be found in tmp/"
-                           << std::endl;
+                     << std::endl;
                }
              })
       .found("judge",
@@ -278,8 +269,8 @@ void command_line_handler(int argc, const char* argv[]) {
                if (parser->has("help") || argc <= 2) {
                  std::cout << options("judge");
                  std::cout << "Note that the input image's size should "
-                           << "be the same as the one you gived to svm train."
-                           << std::endl;
+                     << "be the same as the one you gived to svm train."
+                     << std::endl;
                  return;
                }
 
@@ -293,8 +284,8 @@ void command_line_handler(int argc, const char* argv[]) {
                  const char* true_or_false[2] = {"false", "true"};
 
                  std::cout << true_or_false[easypr::api::plate_judge(
-                                  image.c_str(), svm.c_str())]
-                           << std::endl;
+                     image.c_str(), svm.c_str())]
+                     << std::endl;
                }
              })
       .found("recognize",
@@ -338,10 +329,10 @@ void command_line_handler(int argc, const char* argv[]) {
       .others([&]() {
         // no case matched, print all commands.
         std::cout << "There are several sub commands listed below, "
-                  << "choose one by typing:\n\n"
-                  << "    " << easypr::utils::getFileName(argv[0])
-                  << " command [options]\n\n"
-                  << "The commands are:\n" << std::endl;
+            << "choose one by typing:\n\n"
+            << "    " << easypr::utils::getFileName(argv[0])
+            << " command [options]\n\n"
+            << "The commands are:\n" << std::endl;
         auto subs = options.get_subroutine_list();
         for (auto sub : subs) {
           fprintf(stdout, "%s    %s\n", sub.first.c_str(), sub.second.c_str());
@@ -351,24 +342,19 @@ void command_line_handler(int argc, const char* argv[]) {
 }
 
 int main(int argc, const char* argv[]) {
+  std::shared_ptr<easypr::Kv> kv(new easypr::Kv);
+  kv->load("etc/chinese_mapping");
+
   if (argc > 1) {
     // handle command line execution.
     command_line_handler(argc, argv);
     return 0;
   }
-  
 
   bool isExit = false;
   while (!isExit) {
-    std::cout << "////////////////////////////////////" << std::endl;
-    const char* options[] = {"EasyPR Option:", "1. 测试;",
-                             "2. 批量测试;",   "3. SVM训练;",
-                             "4. ANN训练;",    "5. GDTS生成;",
-                             "6. 开发团队;",   "7. 感谢名单;",
-                             "8. 退出;",       NULL};
-    easypr::Utils::print_str_lines(options);
-    std::cout << "////////////////////////////////////" << std::endl;
-    std::cout << "请选择一项操作:";
+    easypr::Utils::print_file_lines("etc/main_menu");
+    std::cout << kv->get("make_a_choice") << ":";
 
     int select = -1;
     bool isRepeat = true;
@@ -387,8 +373,7 @@ int main(int argc, const char* argv[]) {
           {
             easypr::SvmTrain svm("tmp/svm", "tmp/svm.xml");
             svm.train();
-            //easypr::svmTrain(true, false);
-          }          
+          }
           break;
         case 4:
           std::cout << "Run \"demo ann\" for more usage." << std::endl;
@@ -401,46 +386,18 @@ int main(int argc, const char* argv[]) {
           easypr::preprocess::generate_gdts();
           break;
         case 6: {
-          // 开发团队;
-          // 暂时不接受应聘信息，谢谢！
-          std::cout << std::endl;
-          const char* recruitment[] = {              
-              "我们EasyPR团队目前有一个5人左右的小组在进行EasyPR后续版本的开发"
-              "工作。",
-              "人数已满，暂时不接受应聘信息，谢谢！",
-              //"如果你对本项目感兴趣，并且愿意为开源贡献一份力量，我们很欢迎你的"
-              //"加入。",
-              //"目前招聘的主要人才是：车牌定位，图像识别，深度学习，网站建设相关"
-              //"方面的牛人。",
-              //"如果你觉得自己符合条件，请发邮件到地址(easypr_dev@163.com)"
-              //"，期待你的加入！",
-              NULL};
-          easypr::Utils::print_str_lines(recruitment);
-          std::cout << std::endl;
+          easypr::Utils::print_file_lines("etc/dev_team");
           break;
         }
         case 7: {
-          // 感谢名单
-          std::cout << std::endl;
-          const char* thanks[] = {
-              "本项目在建设过程中，受到了很多人的帮助，其中以下是对本项目做出突"
-              "出贡献的",
-              "(贡献包括有益建议，代码调优，数据提供等等,排名按时间顺序)：",
-              "taotao1233，邱锦山，唐大侠，jsxyhelu，如果有一天(zhoushiwei)，",
-              "学习奋斗，袁承志，圣城小石匠，goldriver，Micooz，梦里时光，",
-              "Rain Wang，ahccoms，星夜落尘，海豚嘎嘎",
-              "还有很多的同学对本项目也给予了鼓励与支持，在此也一并表示真诚的谢"
-              "意！",
-              NULL};
-          easypr::Utils::print_str_lines(thanks);
-          std::cout << std::endl;
+          easypr::Utils::print_file_lines("etc/thanks");
           break;
         }
         case 8:
           isExit = true;
           break;
         default:
-          std::cout << "输入错误，请重新输入:";
+          std::cout << kv->get("input_error") << ":";
           isRepeat = true;
           break;
       }

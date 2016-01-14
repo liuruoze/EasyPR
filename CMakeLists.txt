@@ -16,7 +16,7 @@ endif()
 
 set(CMAKE_PREFIX_PATH ${CMAKE_PREFIX_PATH} "/usr/local/opt/opencv3")
 # opencv3 package required
-find_package(OpenCV 3.0.0 REQUIRED)
+find_package(OpenCV 3.1.0 REQUIRED)
 include_directories(${OpenCV_INCLUDE_DIRS})
 
 # easypr library
@@ -40,6 +40,7 @@ set(SOURCE_FILES
     src/preprocess/mc_data.cpp
     src/util/util.cpp
     src/util/program_options.cpp
+    src/util/kv.cpp
 )
 add_library(easypr STATIC ${SOURCE_FILES})
 

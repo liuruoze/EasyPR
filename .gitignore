@@ -5,18 +5,17 @@ resources/image/tmp/
 *.sdf
 *.opensdf
 *.exe
+*.dll
+*.ilk
 *.lib
 *.pdb
-*.ilk
 demo
-tmp
 experi
 
 
 #ignore thumbnails created by windows
 Thumbs.db
 #Ignore files build by Visual Studio
-*.obj
 *.user
 *.aps
 *.pch
@@ -27,8 +26,6 @@ Thumbs.db
 *.tlb
 *.tlh
 *.bak
-*.cache
-*.log
 [Bb]in
 [Dd]ebug*/
 *.sbr

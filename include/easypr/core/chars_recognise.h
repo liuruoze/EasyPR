@@ -14,6 +14,7 @@
 
 #include "easypr/core/chars_segment.h"
 #include "easypr/core/chars_identify.h"
+#include "easypr/util/util.h"
 
 namespace easypr {
 
@@ -25,16 +26,21 @@ class CCharsRecognise {
 
   int charsRecognise(cv::Mat plate, std::string& plateLicense);
 
-  //! »ñµÃ³µÅÆÑÕÉ«
+  //! è·å¾—è½¦ç‰Œé¢œè‰²
+
   inline std::string getPlateColor(cv::Mat input) const {
-    std::string color = "Î´Öª";
+    std::string color = "æœªçŸ¥";
     Color result = getPlateType(input, true);
-    if (BLUE == result) color = "À¶ÅÆ";
-    if (YELLOW == result) color = "»ÆÅÆ";
+    if (BLUE == result) color = "è“ç‰Œ";
+    if (YELLOW == result) color = "é»„ç‰Œ";
+#ifdef OS_WINDOWS
+    color = utils::utf8_to_gbk(color.c_str());
+#endif
     return color;
   }
 
-  //! ÉèÖÃ±äÁ¿
+  //! è®¾ç½®å˜é‡
+
   inline void setLiuDingSize(int param) {
     m_charsSegment->setLiuDingSize(param);
   }
@@ -55,7 +61,8 @@ class CCharsRecognise {
   }
 
  private:
-  //£¡×Ö·û·Ö¸î
+  //ï¼å­—ç¬¦åˆ†å‰²
+
   CCharsSegment* m_charsSegment;
 };
 

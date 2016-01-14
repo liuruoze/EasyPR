@@ -102,6 +102,9 @@
     <ClCompile Include="..\src\train\train.cpp">
       <Filter>源文件\train</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\util\kv.cpp">
+      <Filter>源文件\util</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\easypr\preprocess\deface.h">
@@ -169,6 +172,9 @@
     </ClInclude>
     <ClInclude Include="..\include\easypr\train\train.h">
       <Filter>头文件\easypr\train</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\easypr\util\kv.h">
+      <Filter>头文件\easypr\util</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
