@@ -119,7 +119,7 @@ std::vector<std::string> Utils::getFiles(const std::string &folder,
     subfolders.pop_back();
 
     struct _finddata_t file_info;
-    long file_handler = _findfirst(current_folder.c_str(), &file_info);
+    auto file_handler = _findfirst(current_folder.c_str(), &file_info);
 
     while (file_handler != -1) {
       if (all &&
