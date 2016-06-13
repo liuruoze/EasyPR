@@ -5,11 +5,42 @@
 #include <ctime>
 #include <fstream>
 
+#include "xml\xmlParser.h"
+
 namespace easypr {
 
 namespace demo {
 
 int accuracyTest(const char* test_path) {
+
+  //XMLNode xMainNode = XMLNode::openFileHelper("TestLocation.xml", "tagset");
+
+  //int n = xMainNode.nChildNode("image");
+
+  //cout << n << endl;
+  //
+  ////for (int i = 0; i < n; i++) {
+  ////  XMLNode xNode = xMainNode.getChildNode("image", i);
+  ////  cout << xNode.getChildNode("imageName").getText() << endl;
+  ////}
+
+  ////XMLNode xNode = xMainNode.getChildNode("image", 0);
+  ////cout << xNode.getChildNode("imageName").getText() << endl;
+  ////xNode.getChildNode("imageName").updateText("test1");
+  //
+  //XMLNode xNode = xMainNode.addChild("image");
+
+  //cout << xNode.getChildNode("imageName").getText() << endl;
+  //xNode.getChildNode("imageName").updateText("test1");
+
+
+  //char *t = xNode.createXMLString(true);
+  //printf("%s\n", t);
+  //free(t);
+
+  XMLNode xMainNode = XMLNode::createXMLTopNode("tagset");
+  XMLNode::setGlobalOptions(XMLNode::char_encoding_GBK);
+
   auto files = Utils::getFiles(test_path);
 
   CPlateRecognize pr;
@@ -56,7 +87,7 @@ int accuracyTest(const char* test_path) {
   time_t begin, end;
   time(&begin);
 
-  for (int i = 0; i < size; i++) {
+  for (int i = 0; i < 10; i++) {
     string filepath = files[i].c_str();
 
     // EasyPR开始判断车牌
@@ -71,7 +102,12 @@ int accuracyTest(const char* test_path) {
     string plateLicense = Utils::getFileName(filepath);
     cout << "原牌:" << plateLicense << endl;
 
-    vector<string> plateVec;
+    XMLNode xNode = xMainNode.addChild("image");
+    xNode.addChild("imageName").addText(plateLicense.c_str());
+
+    XMLNode rectangleNodes = xNode.addChild("taggedRectangles");
+
+    vector<CPlate> plateVec;
     int result = pr.plateRecognize(src, plateVec, i);
     if (result == 0) {
       int num = plateVec.size();
@@ -86,8 +122,23 @@ int accuracyTest(const char* test_path) {
         // 多车牌使用diff最小的那个记录
         int mindiff = 10000;
         for (int j = 0; j < num; j++) {
-          cout << plateVec[j] << " (" << j + 1 << ")" << endl;
-          string colorplate = plateVec[j];
+          cout << plateVec[j].getPlateStr() << " (" << j + 1 << ")" << endl;
+
+          XMLNode rectangleNode = rectangleNodes.addChild("taggedRectangle");
+          RotatedRect rr = plateVec[j].getPlatePos();
+          LocateType locateType = plateVec[j].getPlateLocateType();
+          
+          rectangleNode.addAttribute("x", to_string((int)rr.center.x).c_str());
+          rectangleNode.addAttribute("y", to_string((int)rr.center.y).c_str());
+          rectangleNode.addAttribute("width", to_string((int)rr.size.width).c_str());
+          rectangleNode.addAttribute("height", to_string((int)rr.size.height).c_str());
+
+          rectangleNode.addAttribute("rotation", to_string((int)rr.angle).c_str());
+          rectangleNode.addAttribute("locateType", to_string(locateType).c_str());
+          //rectangleNode.addText(plateVec[j].getPlateStr().c_str());
+          rectangleNode.addAttribute("text", plateVec[j].getPlateStr().c_str());
+
+          string colorplate = plateVec[j].getPlateStr();
 
           // 计算"蓝牌:苏E7KU22"中冒号后面的车牌大小"
           vector<string> spilt_plate = Utils::splitString(colorplate, ':');
@@ -109,8 +160,23 @@ int accuracyTest(const char* test_path) {
       } else {
         // 单车牌只计算一次diff
         for (int j = 0; j < num; j++) {
-          cout << plateVec[j] << endl;
-          string colorplate = plateVec[j];
+          cout << plateVec[j].getPlateStr() << endl;
+
+          XMLNode rectangleNode = rectangleNodes.addChild("taggedRectangle");
+          RotatedRect rr = plateVec[j].getPlatePos();
+          LocateType locateType = plateVec[j].getPlateLocateType();
+
+          rectangleNode.addAttribute("x", to_string((int)rr.center.x).c_str());
+          rectangleNode.addAttribute("y", to_string((int)rr.center.y).c_str());
+          rectangleNode.addAttribute("width", to_string((int)rr.size.width).c_str());
+          rectangleNode.addAttribute("height", to_string((int)rr.size.height).c_str());
+
+          rectangleNode.addAttribute("rotation", to_string((int)rr.angle).c_str());
+          rectangleNode.addAttribute("locateType", to_string(locateType).c_str());
+          //rectangleNode.addText(plateVec[j].getPlateStr().c_str());
+          rectangleNode.addAttribute("text", plateVec[j].getPlateStr().c_str());
+
+          string colorplate = plateVec[j].getPlateStr();
 
           // 计算"蓝牌:苏E7KU22"中冒号后面的车牌大小"
           vector<string> spilt_plate = Utils::splitString(colorplate, ':');
@@ -141,6 +207,9 @@ int accuracyTest(const char* test_path) {
   cout << "Easypr accuracy test end!" << endl;
   cout << "------------------" << endl;
   cout << endl;
+
+  xMainNode.writeToFile("Result.xml");
+
   cout << "统计参数:" << endl;
   cout << "总图片数:" << count_all << "张,  ";
   cout << "未识出图片:" << count_norecogin << "张,  ";

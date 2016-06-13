@@ -24,9 +24,15 @@
     <ClInclude Include="..\EasyPR\test\plate.hpp">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="test\xml\xmlParser.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\EasyPR\test\main.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="test\xml\xmlParser.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

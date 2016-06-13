@@ -87,11 +87,13 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\EasyPR\test\main.cpp" />
+    <ClCompile Include="test\xml\xmlParser.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\EasyPR\test\accuracy.hpp" />
     <ClInclude Include="..\EasyPR\test\chars.hpp" />
     <ClInclude Include="..\EasyPR\test\plate.hpp" />
+    <ClInclude Include="test\xml\xmlParser.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="EasyPR.vcxproj">

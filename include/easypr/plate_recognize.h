@@ -27,6 +27,9 @@ class CPlateRecognize : public CPlateDetect, public CCharsRecognise {
   //! 车牌检测与字符识别
   int plateRecognize(cv::Mat src, std::vector<std::string>& licenseVec, int index = 0);
 
+  // !车牌识别模块
+  int plateRecognize(Mat src, std::vector<CPlate> &licenseVec, int index);
+
   //! 生活模式与工业模式切换
   inline void setLifemode(bool param) { CPlateDetect::setPDLifemode(param); }
 
