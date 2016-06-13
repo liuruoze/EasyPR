@@ -52,13 +52,15 @@ int CPlateDetect::plateDetect(Mat src, std::vector<CPlate> &resultVec,
     }
   }
 
-  for (size_t i = 0; i < all_result_Plates.size(); i++) {
+  //for (size_t i = 0; i < all_result_Plates.size(); i++) {
+  //  // 把截取的车牌图像依次放到左上角
+  //  CPlate plate = all_result_Plates[i];
+  //  resultVec.push_back(plate);
+  //}
 
-    // 把截取的车牌图像依次放到左上角
+  // 使用非极大值抑制来判断车牌
+  PlateJudge::instance()->plateJudgeUsingNMS(all_result_Plates, resultVec);
 
-    CPlate plate = all_result_Plates[i];
-    resultVec.push_back(plate);
-  }
   return 0;
 }
 

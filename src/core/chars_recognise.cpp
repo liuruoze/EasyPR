@@ -12,10 +12,24 @@ int CCharsRecognise::charsRecognise(Mat plate, std::string& plateLicense) {
 
   int result = m_charsSegment->charsSegment(plate, matChars);
   if (result == 0) {
-    for (auto block : matChars) {
-      auto character = CharsIdentify::instance()->identify(block);
+    //for (auto block : matChars) {
+    //  auto character = CharsIdentify::instance()->identify(block);
+    //  plateLicense.append(character.second);
+    //}
+
+    int num = matChars.size();
+    for (int j = 0; j < num; j++)
+    {
+      Mat charMat = matChars[j];
+      bool isChinses = false;
+
+      if (j == 0)
+        isChinses = true;
+
+      auto character = CharsIdentify::instance()->identify(charMat, isChinses);
       plateLicense.append(character.second);
     }
+
   }
 
   if (plateLicense.size() < 7) {

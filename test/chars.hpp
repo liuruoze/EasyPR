@@ -39,10 +39,21 @@ int test_chars_identify() {
 
   int result = cs.charsSegment(plate, matChars);
   if (result == 0) {
-    for (auto block : matChars) {
-      auto character = CharsIdentify::instance()->identify(block);
-      license.append(character.second);
+    for (int block_i = 0; block_i < matChars.size(); block_i++) {
+      auto block = matChars[block_i];
+      if (block_i == 0) {       
+        auto character = CharsIdentify::instance()->identify(block, true);
+        license.append(character.second);
+      }
+      else {
+        auto character = CharsIdentify::instance()->identify(block, false);
+        license.append(character.second);
+      }
     }
+    //for (auto block : matChars) {
+    //  auto character = CharsIdentify::instance()->identify(block);
+    //  license.append(character.second);
+    //}
   }
 
   std::string plateLicense = "苏E771H6";

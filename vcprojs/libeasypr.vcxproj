@@ -69,6 +69,7 @@
     <OutDir>$(SolutionDir)_build\</OutDir>
     <IntDir>$(SolutionDir)_build\libeasypr\debug\</IntDir>
     <TargetExt>.lib</TargetExt>
+    <IncludePath>%OPENCV%\include;$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <TargetExt>.lib</TargetExt>
@@ -86,7 +87,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>%OPENCV%\include;$(SolutionDir)include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(OPENCV)\include;$(SolutionDir)include</AdditionalIncludeDirectories>
       <DisableSpecificWarnings>4819</DisableSpecificWarnings>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
@@ -144,6 +145,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\src\core\better_mser.cpp" />
     <ClCompile Include="..\src\core\chars_identify.cpp" />
     <ClCompile Include="..\src\core\chars_recognise.cpp" />
     <ClCompile Include="..\src\core\chars_segment.cpp" />
@@ -157,6 +159,7 @@
     <ClCompile Include="..\src\preprocess\deface.cpp" />
     <ClCompile Include="..\src\preprocess\gdts.cpp" />
     <ClCompile Include="..\src\preprocess\mc_data.cpp" />
+    <ClCompile Include="..\src\text\erfilter.cpp" />
     <ClCompile Include="..\src\train\ann_train.cpp" />
     <ClCompile Include="..\src\train\svm_train.cpp" />
     <ClCompile Include="..\src\train\train.cpp" />
@@ -187,6 +190,7 @@
     <ClInclude Include="..\include\easypr\util\program_options.h" />
     <ClInclude Include="..\include\easypr\util\switch.hpp" />
     <ClInclude Include="..\include\easypr\util\util.h" />
+    <ClInclude Include="..\include\text\erfilter.hpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\LICENSE" />

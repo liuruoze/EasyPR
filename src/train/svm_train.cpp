@@ -33,11 +33,11 @@ void SvmTrain::train() {
 
   fprintf(stdout, ">> Training SVM model, please wait...\n");
   long start = utils::getTimestamp();
-  //svm_->trainAuto(train_data, 10, SVM::getDefaultGrid(SVM::C),
-  //                SVM::getDefaultGrid(SVM::GAMMA), SVM::getDefaultGrid(SVM::P),
-  //                SVM::getDefaultGrid(SVM::NU), SVM::getDefaultGrid(SVM::COEF),
-  //                SVM::getDefaultGrid(SVM::DEGREE), true);
-  svm_->train(train_data);
+  svm_->trainAuto(train_data, 10, SVM::getDefaultGrid(SVM::C),
+                  SVM::getDefaultGrid(SVM::GAMMA), SVM::getDefaultGrid(SVM::P),
+                  SVM::getDefaultGrid(SVM::NU), SVM::getDefaultGrid(SVM::COEF),
+                  SVM::getDefaultGrid(SVM::DEGREE), true);
+  //svm_->train(train_data);
 
   long end = utils::getTimestamp();
   fprintf(stdout, ">> Training done. Time elapse: %ldms\n", end - start);

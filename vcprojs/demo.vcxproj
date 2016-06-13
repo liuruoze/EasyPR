@@ -89,7 +89,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>%OPENCV%\include;$(SolutionDir)include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(OPENCV)\include;$(SolutionDir)include</AdditionalIncludeDirectories>
       <DisableSpecificWarnings>4819</DisableSpecificWarnings>
     </ClCompile>
     <Link>
@@ -160,11 +160,13 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\test\main.cpp" />
+    <ClCompile Include="..\test\xml\xmlParser.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\test\accuracy.hpp" />
     <ClInclude Include="..\test\chars.hpp" />
     <ClInclude Include="..\test\plate.hpp" />
+    <ClInclude Include="..\test\xml\xmlParser.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="libeasypr.vcxproj">

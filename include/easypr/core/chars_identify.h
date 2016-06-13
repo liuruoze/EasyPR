@@ -3,7 +3,7 @@
 
 #include "easypr/util/kv.h"
 #include <memory>
-#include <opencv2/opencv.hpp>
+#include "opencv2/opencv.hpp"
 
 namespace easypr {
 
@@ -11,7 +11,9 @@ class CharsIdentify {
  public:
   static CharsIdentify* instance();
 
-  std::pair<std::string, std::string> identify(cv::Mat input);
+  int classify(cv::Mat f, bool isChinses = false);
+
+  std::pair<std::string, std::string> identify(cv::Mat input, bool isChinese = false);
 
  private:
   CharsIdentify();

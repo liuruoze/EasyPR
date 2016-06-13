@@ -5,7 +5,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
-#include <opencv2/core/core.hpp>
+#include "opencv2/core/core.hpp"
 
 #if defined(WIN32) || defined(_WIN32)
 #define OS_WINDOWS
