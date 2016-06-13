@@ -1,48 +1,33 @@
-#include "easypr/plate_detect.h"
-#include "easypr/util.h"
+#include "easypr/core/plate_detect.h"
+#include "easypr/util/util.h"
 
-/*! \namespace easypr
-    Namespace where all the C++ EasyPR functionality resides
-*/
 namespace easypr {
 
 CPlateDetect::CPlateDetect() {
-  // cout << "CPlateDetect" << endl;
   m_plateLocate = new CPlateLocate();
-  m_plateJudge = new CPlateJudge();
 
-  // Ä¬ÈÏEasyPRÔÚÒ»·ùÍ¼ÖÐ¶¨Î»×î¶à3¸ö³µ
+  // é»˜è®¤EasyPRåœ¨ä¸€å¹…å›¾ä¸­å®šä½æœ€å¤š3ä¸ªè½¦
+
   m_maxPlates = 3;
 }
 
-CPlateDetect::~CPlateDetect() {
-  SAFE_RELEASE(m_plateLocate);
-  SAFE_RELEASE(m_plateJudge);
-}
+CPlateDetect::~CPlateDetect() { SAFE_RELEASE(m_plateLocate); }
 
-void CPlateDetect::LoadSVM(string s) { m_plateJudge->LoadModel(s.c_str()); }
-
-int CPlateDetect::plateDetect(Mat src, vector<CPlate>& resultVec,
+int CPlateDetect::plateDetect(Mat src, std::vector<CPlate> &resultVec,
                               bool showDetectArea, int index) {
-  vector<Mat> resultPlates;
+  std::vector<CPlate> color_Plates;
+  std::vector<CPlate> sobel_Plates;
+  std::vector<CPlate> color_result_Plates;
+  std::vector<CPlate> sobel_result_Plates;
 
-  vector<CPlate> color_Plates;
-  vector<CPlate> sobel_Plates;
-  vector<CPlate> color_result_Plates;
-  vector<CPlate> sobel_result_Plates;
+  std::vector<CPlate> all_result_Plates;
 
-  vector<CPlate> all_result_Plates;
+  //å¦‚æžœé¢œè‰²æŸ¥æ‰¾æ‰¾åˆ°nä¸ªä»¥ä¸Šï¼ˆåŒ…å«nä¸ªï¼‰çš„è½¦ç‰Œï¼Œå°±ä¸å†è¿›è¡ŒSobelæŸ¥æ‰¾äº†ã€‚
 
-  //Èç¹ûÑÕÉ«²éÕÒÕÒµ½n¸öÒÔÉÏ£¨°üº¬n¸ö£©µÄ³µÅÆ£¬¾Í²»ÔÙ½øÐÐSobel²éÕÒÁË¡£
   const int color_find_max = m_maxPlates;
 
   m_plateLocate->plateColorLocate(src, color_Plates, index);
-  m_plateJudge->plateJudge(color_Plates, color_result_Plates);
-
-  // for (int i=0;i<color_Plates.size();++i)
-  //{
-  //	color_result_Plates.push_back(color_Plates[i]);
-  //}
+  PlateJudge::instance()->plateJudge(color_Plates, color_result_Plates);
 
   for (size_t i = 0; i < color_result_Plates.size(); i++) {
     CPlate plate = color_result_Plates[i];
@@ -51,24 +36,14 @@ int CPlateDetect::plateDetect(Mat src, vector<CPlate>& resultVec,
     all_result_Plates.push_back(plate);
   }
 
-  //ÑÕÉ«ºÍ±ß½ç±Õ²Ù×÷Í¬Ê±²ÉÓÃ
+  //é¢œè‰²å’Œè¾¹ç•Œé—­æ“ä½œåŒæ—¶é‡‡ç”¨
+
   {
     m_plateLocate->plateSobelLocate(src, sobel_Plates, index);
-    m_plateJudge->plateJudge(sobel_Plates, sobel_result_Plates);
-
-    /*for (int i=0;i<sobel_Plates.size();++i)
-    {
-            sobel_result_Plates.push_back(sobel_Plates[i]);
-    }*/
+    PlateJudge::instance()->plateJudge(sobel_Plates, sobel_result_Plates);
 
     for (size_t i = 0; i < sobel_result_Plates.size(); i++) {
       CPlate plate = sobel_result_Plates[i];
-
-      if (0) {
-        imshow("plate_mat", plate.getPlateMat());
-        waitKey(0);
-        destroyWindow("plate_mat");
-      }
 
       plate.bColored = false;
       plate.setPlateLocateType(SOBEL);
@@ -78,14 +53,16 @@ int CPlateDetect::plateDetect(Mat src, vector<CPlate>& resultVec,
   }
 
   for (size_t i = 0; i < all_result_Plates.size(); i++) {
-    // °Ñ½ØÈ¡µÄ³µÅÆÍ¼ÏñÒÀ´Î·Åµ½×óÉÏ½Ç
+
+    // æŠŠæˆªå–çš„è½¦ç‰Œå›¾åƒä¾æ¬¡æ”¾åˆ°å·¦ä¸Šè§’
+
     CPlate plate = all_result_Plates[i];
     resultVec.push_back(plate);
   }
   return 0;
 }
 
-int CPlateDetect::showResult(const Mat& result) {
+int CPlateDetect::showResult(const Mat &result) {
   namedWindow("EasyPR", CV_WINDOW_AUTOSIZE);
 
   const int RESULTWIDTH = 640;   // 640 930
@@ -137,5 +114,4 @@ int CPlateDetect::showResult(const Mat& result) {
 
   return 0;
 }
-
-} /*! \namespace easypr*/
+}

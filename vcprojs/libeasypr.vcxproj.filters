@@ -1,0 +1,197 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="源文件">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="头文件">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="资源文件">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="源文件\core">
+      <UniqueIdentifier>{4b8b233e-34fa-4e79-81eb-b22bffb823de}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\preprocess">
+      <UniqueIdentifier>{74160fde-836c-4028-9212-8a84c01da6a1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\train">
+      <UniqueIdentifier>{63a97a7f-1945-48a6-a297-a6e001d44df6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\util">
+      <UniqueIdentifier>{fe8765b7-df3c-4646-9868-91b6fb0007f2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\easypr">
+      <UniqueIdentifier>{3660aff1-3b62-41a4-a063-a587e1ce5403}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\easypr\preprocess">
+      <UniqueIdentifier>{15bfd286-ae7b-464b-8af2-07fa832b7ab4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\easypr\core">
+      <UniqueIdentifier>{8a24ff44-6230-454d-ba4d-7b2e8843c541}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\easypr\train">
+      <UniqueIdentifier>{d1cf325c-a170-4675-b1c5-60643b1cd7d3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\easypr\util">
+      <UniqueIdentifier>{f575d8b4-5782-4c93-9be3-3e96d3a33d7f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="资源文件\model">
+      <UniqueIdentifier>{06c2b48a-ffbe-495c-babf-c16877785c4c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\experi">
+      <UniqueIdentifier>{94e5b7c3-7dad-4f9f-a036-25ff09d69868}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\src\core\chars_identify.cpp">
+      <Filter>源文件\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\chars_recognise.cpp">
+      <Filter>源文件\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\chars_segment.cpp">
+      <Filter>源文件\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\core_func.cpp">
+      <Filter>源文件\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\feature.cpp">
+      <Filter>源文件\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\plate.cpp">
+      <Filter>源文件\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\plate_detect.cpp">
+      <Filter>源文件\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\plate_judge.cpp">
+      <Filter>源文件\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\plate_locate.cpp">
+      <Filter>源文件\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\plate_recognize.cpp">
+      <Filter>源文件\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\preprocess\deface.cpp">
+      <Filter>源文件\preprocess</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\preprocess\gdts.cpp">
+      <Filter>源文件\preprocess</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\preprocess\mc_data.cpp">
+      <Filter>源文件\preprocess</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\train\ann_train.cpp">
+      <Filter>源文件\train</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\train\svm_train.cpp">
+      <Filter>源文件\train</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\util\program_options.cpp">
+      <Filter>源文件\util</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\util\util.cpp">
+      <Filter>源文件\util</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\train\train.cpp">
+      <Filter>源文件\train</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\util\kv.cpp">
+      <Filter>源文件\util</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\include\easypr\preprocess\deface.h">
+      <Filter>头文件\easypr\preprocess</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\easypr\preprocess\gdts.h">
+      <Filter>头文件\easypr\preprocess</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\easypr\preprocess\mc_data.h">
+      <Filter>头文件\easypr\preprocess</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\easypr\api.hpp">
+      <Filter>头文件\easypr</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\easypr.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\easypr\train\ann_train.h">
+      <Filter>头文件\easypr\train</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\easypr\util\program_options.h">
+      <Filter>头文件\easypr\util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\easypr\util\util.h">
+      <Filter>头文件\easypr\util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\easypr\train\svm_train.h">
+      <Filter>头文件\easypr\train</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\easypr\core\chars_identify.h">
+      <Filter>头文件\easypr\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\easypr\core\core_func.h">
+      <Filter>头文件\easypr\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\easypr\core\chars_segment.h">
+      <Filter>头文件\easypr\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\easypr\core\chars_recognise.h">
+      <Filter>头文件\easypr\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\easypr\core\feature.h">
+      <Filter>头文件\easypr\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\easypr\core\plate.h">
+      <Filter>头文件\easypr\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\easypr\core\plate_detect.h">
+      <Filter>头文件\easypr\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\easypr\core\plate_judge.h">
+      <Filter>头文件\easypr\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\easypr\core\plate_locate.h">
+      <Filter>头文件\easypr\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\easypr\core\plate_recognize.h">
+      <Filter>头文件\easypr\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\easypr\config.h">
+      <Filter>头文件\easypr</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\easypr\util\switch.hpp">
+      <Filter>头文件\easypr\util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\easypr\train\train.h">
+      <Filter>头文件\easypr\train</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\LICENSE" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="..\关于版权.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Xml Include="..\resources\model\ann.xml">
+      <Filter>资源文件\model</Filter>
+    </Xml>
+    <Xml Include="..\resources\model\haarcascade_frontalface_alt_tree.xml">
+      <Filter>资源文件\model</Filter>
+    </Xml>
+    <Xml Include="..\resources\model\haarcascade_frontalface_default.xml">
+      <Filter>资源文件\model</Filter>
+    </Xml>
+    <Xml Include="..\resources\model\svm.xml">
+      <Filter>资源文件\model</Filter>
+    </Xml>
+  </ItemGroup>
+</Project>

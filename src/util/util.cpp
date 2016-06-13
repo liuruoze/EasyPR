@@ -1,4 +1,4 @@
-#include "easypr/util.h"
+#include "easypr/util/util.h"
 #include <string>
 
 #ifdef OS_WINDOWS
@@ -36,7 +36,7 @@ namespace easypr {
 
 long Utils::getTimestamp() {
 #ifdef OS_WINDOWS
-  return GetTickCount();
+  return static_cast<long>(cv::getTickCount());
 #endif
 
 #ifdef OS_LINUX
@@ -57,7 +57,7 @@ long Utils::getTimestamp() {
 #endif
 }
 
-std::string Utils::getFileName(const std::string& path,
+std::string Utils::getFileName(const std::string &path,
                                const bool postfix /* = false */) {
   if (!path.empty()) {
     size_t last_slash = utils::get_last_slash(path);
@@ -80,7 +80,7 @@ std::string Utils::getFileName(const std::string& path,
   return "";
 }
 
-std::vector<std::string> Utils::splitString(const std::string& str,
+std::vector<std::string> Utils::splitString(const std::string &str,
                                             const char delimiter) {
   std::vector<std::string> splited;
   std::string s(str);
@@ -101,7 +101,7 @@ std::vector<std::string> Utils::splitString(const std::string& str,
   return splited;
 }
 
-std::vector<std::string> Utils::getFiles(const std::string& folder,
+std::vector<std::string> Utils::getFiles(const std::string &folder,
                                          const bool all /* = true */) {
   std::vector<std::string> files;
   std::list<std::string> subfolders;
@@ -119,7 +119,7 @@ std::vector<std::string> Utils::getFiles(const std::string& folder,
     subfolders.pop_back();
 
     struct _finddata_t file_info;
-    long file_handler = _findfirst(current_folder.c_str(), &file_info);
+    auto file_handler = _findfirst(current_folder.c_str(), &file_info);
 
     while (file_handler != -1) {
       if (all &&
@@ -228,7 +228,7 @@ bool Utils::mkdir(const std::string folder) {
 #else
       if (0 != ::access(folder_builder.c_str(), 0)) {
 #endif
-// this folder not exist
+        // this folder not exist
 #ifdef OS_WINDOWS
         if (0 != ::_mkdir(folder_builder.c_str())) {
 #else
@@ -244,13 +244,32 @@ bool Utils::mkdir(const std::string folder) {
   return true;
 }
 
-bool Utils::imwrite(const std::string& file, const cv::Mat& image) {
+bool Utils::imwrite(const std::string &file, const cv::Mat &image) {
   auto folder = file.substr(0, utils::get_last_slash(file));
   Utils::mkdir(folder);
   return cv::imwrite(file, image);
 }
 
-std::size_t Utils::get_last_slash(const std::string& path) {
+#ifdef OS_WINDOWS
+std::string Utils::utf8_to_gbk(const char* utf8) {
+  int len = MultiByteToWideChar(CP_UTF8, 0, utf8, -1, NULL, 0);
+  wchar_t* wszGBK = new wchar_t[len + 1];
+  memset(wszGBK, 0, len * 2 + 2);
+  MultiByteToWideChar(CP_UTF8, 0, utf8, -1, wszGBK, len);
+  len = WideCharToMultiByte(CP_ACP, 0, wszGBK, -1, NULL, 0, NULL, NULL);
+  char* szGBK = new char[len + 1];
+  memset(szGBK, 0, len + 1);
+  WideCharToMultiByte(CP_ACP, 0, wszGBK, -1, szGBK, len, NULL, NULL);
+  std::string strTemp(szGBK);
+  if (wszGBK)
+    delete[] wszGBK;
+  if (szGBK)
+    delete[] szGBK;
+  return strTemp;
+}
+#endif
+
+std::size_t Utils::get_last_slash(const std::string &path) {
 #ifdef OS_WINDOWS
   size_t last_slash_1 = path.find_last_of("\\");
   size_t last_slash_2 = path.find_last_of("/");

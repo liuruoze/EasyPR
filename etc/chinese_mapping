@@ -1,0 +1,18 @@
+make_a_choice    请选择一项操作
+input_error      输入错误，请重新输入
+
+original_plate   原牌
+empty_plate      无车牌
+diff             差距
+char             字符
+error_code       错误码
+summaries        统计参数
+sum_pictures     总图片数
+unrecognized     未识出图片
+locate_rate      定位率
+diff_average     平均字符差距
+full_match       完全匹配数
+full_rate        完全匹配率
+seconds          总时间
+seconds_average  平均执行时间
+sec              秒

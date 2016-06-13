@@ -12,16 +12,13 @@ namespace easypr {
 
 namespace api {
 
-static bool plate_judge(const char* image,const char *model) {
+static bool plate_judge(const char* image, const char* model) {
   cv::Mat src = cv::imread(image);
 
   assert(!src.empty());
 
-  CPlateJudge judger;
-  judger.LoadModel(model);
-
   int result;
-  judger.plateJudge(src, result);
+  PlateJudge::instance()->plateJudge(src, result);
 
   return result == 1;
 }
@@ -49,8 +46,6 @@ static std::vector<std::string> plate_recognize(const char* image,
   assert(!img.empty());
 
   CPlateRecognize pr;
-  pr.LoadSVM(model_svm);
-  pr.LoadANN(model_ann);
   pr.setLifemode(life_mode);
   pr.setDebug(false);
 
@@ -67,10 +62,7 @@ static Color get_plate_color(const char* image) {
 
   return getPlateType(img, true);
 }
-
+}
 }
 
-}
-
-
-#endif //EASYPR_API_HPP
+#endif  // EASYPR_API_HPP

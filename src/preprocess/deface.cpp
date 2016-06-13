@@ -7,23 +7,23 @@ namespace preprocess {
 cv::Mat detectAndMaskFace(cv::Mat& img, cv::CascadeClassifier& cascade,
                           double scale) {
   std::vector<cv::Rect> faces;
-  cv::Mat gray, smallImg(cvRound(img.rows / scale), cvRound(img.cols / scale),
-                         CV_8UC1);
+  cv::Mat gray,
+      smallImg(cvRound(img.rows / scale), cvRound(img.cols / scale), CV_8UC1);
   cvtColor(img, gray, cv::COLOR_BGR2GRAY);
   resize(gray, smallImg, smallImg.size(), 0, 0, cv::INTER_LINEAR);
   equalizeHist(smallImg, smallImg);
 
-  cascade.detectMultiScale(smallImg, faces,
-                           1.1, 2, 0
-                                   //|CASCADE_FIND_BIGGEST_OBJECT
-                                   //|CASCADE_DO_ROUGH_SEARCH
-                                   | cv::CASCADE_SCALE_IMAGE,
+  cascade.detectMultiScale(smallImg, faces, 1.1, 2,
+                           0
+                               //|CASCADE_FIND_BIGGEST_OBJECT
+                               //|CASCADE_DO_ROUGH_SEARCH
+                               | cv::CASCADE_SCALE_IMAGE,
                            cv::Size(30, 30));
   for (auto r = faces.begin(); r != faces.end(); r++) {
     cv::Rect facerect = *r;
-    cv::Mat roi = img(cv::Rect_<double>(facerect.x * scale, facerect.y * scale,
-                               facerect.width * scale,
-                               facerect.height * scale));
+    cv::Mat roi =
+        img(cv::Rect_<double>(facerect.x * scale, facerect.y * scale,
+                              facerect.width * scale, facerect.height * scale));
     int W = 18;
     int H = 18;
     for (int i = W; i < roi.cols; i += W) {
@@ -47,7 +47,8 @@ cv::Mat detectAndMaskFace(cv::Mat& img, cv::CascadeClassifier& cascade,
 
 int deface() {
   cv::CascadeClassifier cascade;
-  std::string cascadeName = "resources/model/haarcascade_frontalface_default.xml";
+  std::string cascadeName =
+      "resources/model/haarcascade_frontalface_default.xml";
 
   if (!cascade.load(cascadeName)) {
     std::cerr << "ERROR: Could not load classifier cascade" << std::endl;
@@ -57,6 +58,6 @@ int deface() {
   return 0;
 }
 
-} // namespace preprocess
+}  // namespace preprocess
 
-} // namespace easypr
+}  // namespace easypr

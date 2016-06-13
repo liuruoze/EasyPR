@@ -1,25 +1,31 @@
 #include "easypr/preprocess/gdts.h"
 #include "easypr/preprocess/deface.h"
-#include "easypr/util.h"
+#include "easypr/util/util.h"
 
 namespace easypr {
 
 namespace preprocess {
 
-// TODO ½«ÏÂÃæµÄÂ·¾¶¸Ä³ÉÄãµÄÔ­Ê¼Í¼Æ¬Â·¾¶
-// Í¼Æ¬²»Òª¶à£¬10-30ÕÅ¾Í×ã¹»ÁË£¬EasyPR¶ÔGDTSÊı¾İ¼¯µÄÊ¹ÓÃ²»ÒÔÁ¿ÎªÖ÷ÒªÖ¸±ê
-// Ö»ÒªÕâĞ©Í¼Æ¬×ã¹»·´Ó³ÄãÊı¾İ¼¯µÄÖ÷ÒªÌØÕ÷¼´¿É
+// TODO å°†ä¸‹é¢çš„è·¯å¾„æ”¹æˆä½ çš„åŸå§‹å›¾ç‰‡è·¯å¾„
+// å›¾ç‰‡ä¸è¦å¤šï¼Œ10-30å¼ å°±è¶³å¤Ÿäº†ï¼ŒEasyPRå¯¹GDTSæ•°æ®é›†çš„ä½¿ç”¨ä¸ä»¥é‡ä¸ºä¸»è¦æŒ‡æ ‡
+// åªè¦è¿™äº›å›¾ç‰‡è¶³å¤Ÿåæ˜ ä½ æ•°æ®é›†çš„ä¸»è¦ç‰¹å¾å³å¯
+
 const char* src_path = "F:/data/easypr-data/tmp-1";
 
-// TODO ½«ÏÂÃæµÄÂ·¾¶¸Ä³ÉÄãÏ£ÍûÉú³É¾èÔù¸øGDTSÊı¾İ´æ·ÅµÄĞÂÂ·¾¶
+// TODO å°†ä¸‹é¢çš„è·¯å¾„æ”¹æˆä½ å¸Œæœ›ç”Ÿæˆæèµ ç»™GDTSæ•°æ®å­˜æ”¾çš„æ–°è·¯å¾„
+
 const char* dst_path = "F:/data/easypr-data/tmp-2";
 
 int generate_gdts() {
-  // »ñÈ¡ÈËÁ³Ê¶±ğÎÄ¼ş
-  cv::CascadeClassifier cascade;
-  std::string cascadeName = "resources/model/haarcascade_frontalface_alt_tree.xml";
 
-  ////»ñÈ¡¸ÃÂ·¾¶ÏÂµÄËùÓĞÎÄ¼ş
+  // è·å–äººè„¸è¯†åˆ«æ–‡ä»¶
+
+  cv::CascadeClassifier cascade;
+  std::string cascadeName =
+      "resources/model/haarcascade_frontalface_alt_tree.xml";
+
+  ////è·å–è¯¥è·¯å¾„ä¸‹çš„æ‰€æœ‰æ–‡ä»¶
+
   auto files = Utils::getFiles(src_path);
   size_t size = files.size();
 
@@ -35,23 +41,26 @@ int generate_gdts() {
     std::cout << "------------------" << std::endl;
     std::cout << filepath << std::endl;
 
-    // EasyPR¶ÁÈ¡Ô­Í¼Æ¬
+    // EasyPRè¯»å–åŸå›¾ç‰‡
+
     cv::Mat src = cv::imread(filepath);
 
-    // EasyPR¿ªÊ¼¶ÔÍ¼Æ¬½øĞĞÄ£ºı»¯Óë²Ã¼ô»¯´¦Àí
+    // EasyPRå¼€å§‹å¯¹å›¾ç‰‡è¿›è¡Œæ¨¡ç³ŠåŒ–ä¸è£å‰ªåŒ–å¤„ç†
+
     cv::Mat img = imageProcess(src);
 
-    // EasyPR¿ªÊ¼¶ÔÍ¼Æ¬½øĞĞÈËÁ³Ê¶±ğ´¦Àí
+    // EasyPRå¼€å§‹å¯¹å›¾ç‰‡è¿›è¡Œäººè„¸è¯†åˆ«å¤„ç†
+
     cv::Mat dst = detectAndMaskFace(img, cascade, 1.5);
 
-    // ½«Í¼Æ¬µ¼³öµ½ĞÂÂ·¾¶
+    // å°†å›¾ç‰‡å¯¼å‡ºåˆ°æ–°è·¯å¾„
+
     std::vector<std::string> spilt_path = Utils::splitString(filepath, '\\');
 
     size_t spiltsize = spilt_path.size();
     std::string filename = "";
 
-    if (spiltsize != 0)
-      filename = spilt_path[spiltsize - 1];
+    if (spiltsize != 0) filename = spilt_path[spiltsize - 1];
 
     std::stringstream ss(std::stringstream::in | std::stringstream::out);
     ss << dst_path << "/" << filename;
@@ -61,18 +70,17 @@ int generate_gdts() {
   return 0;
 }
 
-// EasyPRµÄÍ¼ÏñÔ¤´¦Àíº¯Êı£¬½øĞĞÄ£ºı»¯Óë²Ã¼ô»¯´¦Àí
+// EasyPRçš„å›¾åƒé¢„å¤„ç†å‡½æ•°ï¼Œè¿›è¡Œæ¨¡ç³ŠåŒ–ä¸è£å‰ªåŒ–å¤„ç†
+
 cv::Mat imageProcess(cv::Mat img) {
   int width = img.size().width;
   int height = img.size().height;
-  cv::Rect_<double> rect(width * 0.01, height * 0.01, width * 0.99, height * 0.99);
+  cv::Rect_<double> rect(width * 0.01, height * 0.01, width * 0.99,
+                         height * 0.99);
 
   cv::Mat dst = img(rect);
-  //GaussianBlur( dst, dst, Size(1, 1), 0, 0, BORDER_DEFAULT );
+  // GaussianBlur( dst, dst, Size(1, 1), 0, 0, BORDER_DEFAULT );
   return dst;
 }
-
 }
-
 }
-

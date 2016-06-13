@@ -1,4 +1,0 @@
-要训练时，注意看src/train下的两个cpp文件
-
-数据在data文件夹下，svm对应Plate_detect，ann对应chars_recognise。要先解压，然后放置到正确的路径下，或者
-你可以修改cpp文件中的文件夹路径。

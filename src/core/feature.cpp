@@ -1,16 +1,14 @@
-// Õâ¸öÎÄ¼ş¶¨ÒåÁËEasyPRÀïËùÓĞÌØÕ÷Éú³ÉµÄº¯Êı
-// ËùÊôÃüÃû¿Õ¼äÎªeasypr
-// Õâ¸ö²¿·ÖÖĞµÄÌØÕ÷ÓÉeasyprµÄ¿ª·¢ÕßĞŞ¸Ä
+// è¿™ä¸ªæ–‡ä»¶å®šä¹‰äº†EasyPRé‡Œæ‰€æœ‰ç‰¹å¾ç”Ÿæˆçš„å‡½æ•°
+// æ‰€å±å‘½åç©ºé—´ä¸ºeasypr
+// è¿™ä¸ªéƒ¨åˆ†ä¸­çš„ç‰¹å¾ç”±easyprçš„å¼€å‘è€…ä¿®æ”¹
 
-#include "easypr/feature.h"
-#include "easypr/core_func.h"
+#include "easypr/core/feature.h"
+#include "easypr/core/core_func.h"
 
-/*! \namespace easypr
-    Namespace where all the C++ EasyPR functionality resides
-*/
 namespace easypr {
 
-//! »ñÈ¡´¹Ö±ºÍË®Æ½µÄÖ±·½Í¼Í¼Öµ
+//! è·å–å‚ç›´å’Œæ°´å¹³çš„ç›´æ–¹å›¾å›¾å€¼
+
 Mat getTheFeatures(Mat in) {
   const int VERTICAL = 0;
   const int HORIZONTAL = 1;
@@ -24,7 +22,8 @@ Mat getTheFeatures(Mat in) {
 
   Mat out = Mat::zeros(1, numCols, CV_32F);
 
-  // Asign values to feature,Ñù±¾ÌØÕ÷ÎªË®Æ½¡¢´¹Ö±Ö±·½Í¼
+  // Asign values to feature,æ ·æœ¬ç‰¹å¾ä¸ºæ°´å¹³ã€å‚ç›´ç›´æ–¹å›¾
+
   int j = 0;
   for (int i = 0; i < vhist.cols; i++) {
     out.at<float>(j) = vhist.at<float>(i);
@@ -38,19 +37,14 @@ Mat getTheFeatures(Mat in) {
   return out;
 }
 
-//! EasyPRµÄgetFeatures»Øµ÷º¯Êı
-//! ±¾º¯ÊıÊÇÉú³ÉÖ±·½Í¼¾ùºâÌØÕ÷µÄ»Øµ÷º¯Êı
-void getHisteqFeatures(const Mat& image, Mat& features) {
-  features = histeq(image);
-}
+//! EasyPRçš„getFeatureså›è°ƒå‡½æ•°
+//! æœ¬å‡½æ•°æ˜¯è·å–å‚ç›´å’Œæ°´å¹³çš„ç›´æ–¹å›¾å›¾å€¼
 
-//! EasyPRµÄgetFeatures»Øµ÷º¯Êı
-//! ±¾º¯ÊıÊÇ»ñÈ¡´¹Ö±ºÍË®Æ½µÄÖ±·½Í¼Í¼Öµ
 void getHistogramFeatures(const Mat& image, Mat& features) {
   Mat grayImage;
   cvtColor(image, grayImage, CV_RGB2GRAY);
 
-  // grayImage = histeq(grayImage);
+  //grayImage = histeq(grayImage);
 
   Mat img_threshold;
   threshold(grayImage, img_threshold, 0, 255,
@@ -58,22 +52,29 @@ void getHistogramFeatures(const Mat& image, Mat& features) {
   features = getTheFeatures(img_threshold);
 }
 
-//! EasyPRµÄgetFeatures»Øµ÷º¯Êı
-//! ±¾º¯ÊıÊÇ»ñÈ¡SITFÌØÕ÷×Ó
+//! EasyPRçš„getFeatureså›è°ƒå‡½æ•°
+//! æœ¬å‡½æ•°æ˜¯è·å–SITFç‰¹å¾å­
+
 void getSIFTFeatures(const Mat& image, Mat& features) {
-  //´ıÍêÉÆ
+
+  //å¾…å®Œå–„
+
 }
 
-//! EasyPRµÄgetFeatures»Øµ÷º¯Êı
-//! ±¾º¯ÊıÊÇ»ñÈ¡HOGÌØÕ÷×Ó
+//! EasyPRçš„getFeatureså›è°ƒå‡½æ•°
+//! æœ¬å‡½æ•°æ˜¯è·å–HOGç‰¹å¾å­
+
 void getHOGFeatures(const Mat& image, Mat& features) {
-  //´ıÍêÉÆ
+
+  //å¾…å®Œå–„
+
 }
 
-//! EasyPRµÄgetFeatures»Øµ÷º¯Êı
-//! ±¾º¯ÊıÊÇ»ñÈ¡HSV¿Õ¼äÁ¿»¯µÄÖ±·½Í¼ÌØÕ÷×Ó
+//! EasyPRçš„getFeatureså›è°ƒå‡½æ•°
+//! æœ¬å‡½æ•°æ˜¯è·å–HSVç©ºé—´é‡åŒ–çš„ç›´æ–¹å›¾ç‰¹å¾å­
+
 void getHSVHistFeatures(const Mat& image, Mat& features) {
   // TODO
 }
 
-} /* \namespace easypr  */
+}
