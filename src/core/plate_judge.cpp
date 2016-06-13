@@ -21,7 +21,15 @@ int PlateJudge::plateJudge(const Mat &inMat, int &result) {
   getHistogramFeatures(inMat, features);
 
   float response = svm_->predict(features);
-  result = (int) response;
+
+  Mat responseArray;
+  float score = svm_->predict(features, noArray(), cv::ml::StatModel::Flags::RAW_OUTPUT);
+
+  std::cout << "score:" << score << ", " << "response:" << response << std::endl;
+
+  //result = (int) response;
+
+  result = score < 0;
 
   return 0;
 }
