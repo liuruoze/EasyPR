@@ -160,11 +160,13 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\test\main.cpp" />
+    <ClCompile Include="..\test\xml\xmlParser.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\test\accuracy.hpp" />
     <ClInclude Include="..\test\chars.hpp" />
     <ClInclude Include="..\test\plate.hpp" />
+    <ClInclude Include="..\test\xml\xmlParser.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="libeasypr.vcxproj">

@@ -46,6 +46,12 @@
     <Filter Include="源文件\experi">
       <UniqueIdentifier>{94e5b7c3-7dad-4f9f-a036-25ff09d69868}</UniqueIdentifier>
     </Filter>
+    <Filter Include="源文件\text">
+      <UniqueIdentifier>{d3e9abaf-0380-43d6-bbb2-ceba356062b7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\text">
+      <UniqueIdentifier>{93590952-3745-4c27-b112-2e0f6226b00c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\core\chars_identify.cpp">
@@ -104,6 +110,12 @@
     </ClCompile>
     <ClCompile Include="..\src\util\kv.cpp">
       <Filter>源文件\util</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\text\erfilter.cpp">
+      <Filter>源文件\text</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\better_mser.cpp">
+      <Filter>源文件\core</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -172,6 +184,12 @@
     </ClInclude>
     <ClInclude Include="..\include\easypr\train\train.h">
       <Filter>头文件\easypr\train</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\text\erfilter.hpp">
+      <Filter>头文件\text</Filter>
+    </ClInclude>
+    <ClInclude Include="version.h">
+      <Filter>头文件\easypr</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

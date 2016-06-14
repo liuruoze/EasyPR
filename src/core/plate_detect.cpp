@@ -6,7 +6,7 @@ namespace easypr {
 CPlateDetect::CPlateDetect() {
   m_plateLocate = new CPlateLocate();
 
-  // 默认EasyPR在一幅图中定位最多3个车
+  // 默认EasyPR在一幅图中定位最�个车
 
   m_maxPlates = 3;
 }
@@ -22,7 +22,7 @@ int CPlateDetect::plateDetect(Mat src, std::vector<CPlate> &resultVec,
 
   std::vector<CPlate> all_result_Plates;
 
-  //如果颜色查找找到n个以上（包含n个）的车牌，就不再进行Sobel查找了。
+  //如果颜色查找找到n个以上（包含n个）的车牌，就不再进行Sobel查找了�
 
   const int color_find_max = m_maxPlates;
 
@@ -52,13 +52,15 @@ int CPlateDetect::plateDetect(Mat src, std::vector<CPlate> &resultVec,
     }
   }
 
-  for (size_t i = 0; i < all_result_Plates.size(); i++) {
+  //for (size_t i = 0; i < all_result_Plates.size(); i++) {
+  //  // 把截取的车牌图像依次放到左上�
+  //  CPlate plate = all_result_Plates[i];
+  //  resultVec.push_back(plate);
+  //}
 
-    // 把截取的车牌图像依次放到左上角
+  // 使用非极大值抑制来判断车牌
+  PlateJudge::instance()->plateJudgeUsingNMS(all_result_Plates, resultVec);
 
-    CPlate plate = all_result_Plates[i];
-    resultVec.push_back(plate);
-  }
   return 0;
 }
 

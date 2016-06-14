@@ -14,6 +14,7 @@ class PlateJudge {
   //! 对多幅车牌进行SVM判断
 
   int plateJudge(const std::vector<CPlate> &, std::vector<CPlate> &);
+  int plateJudgeUsingNMS(const std::vector<CPlate> &, std::vector<CPlate> &);
 
   //! 车牌判断
 
@@ -22,6 +23,7 @@ class PlateJudge {
   //! 车牌判断（一副图像）
 
   int plateJudge(const Mat &inMat, int &result);
+  int plateSetScore(CPlate& plate);
 
  private:
   PlateJudge();

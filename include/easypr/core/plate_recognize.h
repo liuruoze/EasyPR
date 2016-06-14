@@ -25,8 +25,11 @@ class CPlateRecognize : public CPlateDetect, public CCharsRecognise {
   CPlateRecognize();
 
   //! 车牌检测与字符识别
-
+  int plateRecognize(Mat src, std::vector<CPlate> &licenseVec);
   int plateRecognize(Mat src, std::vector<std::string> &licenseVec);
+
+  int plateRecognizeAsText(Mat src, std::vector<CPlate> &licenseVec);
+  int plateRecognizeAsTextNM(Mat src, std::vector<CPlate> &licenseVec);
 
   //! 生活模式与工业模式切�
 

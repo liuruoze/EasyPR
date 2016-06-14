@@ -11,7 +11,7 @@ using namespace std;
 int test_plate_locate() {
   cout << "test_plate_locate" << endl;
 
-  const string file = "resources/image/test.jpg";
+  const string file = "resources/image/plate_locate.jpg";
 
   cv::Mat src = imread(file);
 
