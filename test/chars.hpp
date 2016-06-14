@@ -39,7 +39,7 @@ int test_chars_identify() {
 
   int result = cs.charsSegment(plate, matChars);
   if (result == 0) {
-    for (int block_i = 0; block_i < matChars.size(); block_i++) {
+    for (size_t block_i = 0; block_i < matChars.size(); block_i++) {
       auto block = matChars[block_i];
       if (block_i == 0) {       
         auto character = CharsIdentify::instance()->identify(block, true);

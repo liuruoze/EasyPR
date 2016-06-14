@@ -44,7 +44,7 @@ int PlateJudge::plateJudge(const std::vector<Mat> &inVec,
 
 //! 设置车牌图像的置信度
 //! 返回值，0代表是车牌，其他值代表不是
-int PlateJudge::plateScore(CPlate& plate) {
+int PlateJudge::plateSetScore(CPlate& plate) {
   Mat features;
   getHistogramFeatures(plate.getPlateMat(), features);
 
@@ -68,11 +68,13 @@ int PlateJudge::plateScore(CPlate& plate) {
 
 //! 非极大值抑制
 void NMS(std::vector<CPlate> &inVec, std::vector<CPlate> &resultVec, double overlap) {
+
   std::sort(inVec.begin(), inVec.end());
 
   std::vector<CPlate>::iterator it = inVec.begin();
   for (; it != inVec.end(); ++it) {
     CPlate plateSrc = *it;
+    //std::cout << "plateScore:" << plateSrc.getPlateScore() << std::endl;
     Rect rectSrc = plateSrc.getPlatePos().boundingRect();
 
     std::vector<CPlate>::iterator itc = it + 1;
@@ -102,12 +104,30 @@ int PlateJudge::plateJudgeUsingNMS(const std::vector<CPlate> &inVec, std::vector
 
   for (int j = 0; j < num; j++) {
     CPlate plate = inVec[j];
+    Mat inMat = plate.getPlateMat();
 
-    int result = plateScore(plate);
-    plateVec.push_back(plate);
-    //if (result == 0) {
-    //  plateVec.push_back(plate);
-    //}
+    int response = plateSetScore(plate);
+    if (response == 0) {
+      plateVec.push_back(plate);
+    }
+    else {
+      int w = inMat.cols;
+      int h = inMat.rows;
+
+      //再取中间部分判断一次
+
+      Mat tmpmat = inMat(Rect_<double>(w * 0.05, h * 0.1, w * 0.9, h * 0.8));
+      Mat tmpDes = inMat.clone();
+      resize(tmpmat, tmpDes, Size(inMat.size()));
+
+      plate.setPlateMat(tmpDes);
+
+      int responseCascade = plateSetScore(plate);
+
+      if (responseCascade == 0) {
+        plateVec.push_back(plate);
+      }
+    }
   }
 
   // 使用非极大值抑制来去除那些重叠的车牌

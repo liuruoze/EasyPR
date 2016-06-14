@@ -191,6 +191,7 @@
     <ClInclude Include="..\include\easypr\util\switch.hpp" />
     <ClInclude Include="..\include\easypr\util\util.h" />
     <ClInclude Include="..\include\text\erfilter.hpp" />
+    <ClInclude Include="version.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\LICENSE" />

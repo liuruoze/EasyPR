@@ -188,6 +188,9 @@
     <ClInclude Include="..\include\text\erfilter.hpp">
       <Filter>头文件\text</Filter>
     </ClInclude>
+    <ClInclude Include="version.h">
+      <Filter>头文件\easypr</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\LICENSE" />

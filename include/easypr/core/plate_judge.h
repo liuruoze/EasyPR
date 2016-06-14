@@ -23,7 +23,7 @@ class PlateJudge {
   //! 车牌判断（一副图像）
 
   int plateJudge(const Mat &inMat, int &result);
-  int plateScore(CPlate& plate);
+  int plateSetScore(CPlate& plate);
 
  private:
   PlateJudge();
