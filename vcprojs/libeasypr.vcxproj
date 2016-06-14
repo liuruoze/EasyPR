@@ -69,7 +69,7 @@
     <OutDir>$(SolutionDir)_build\</OutDir>
     <IntDir>$(SolutionDir)_build\libeasypr\debug\</IntDir>
     <TargetExt>.lib</TargetExt>
-    <IncludePath>%OPENCV%\include;$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <TargetExt>.lib</TargetExt>
@@ -171,6 +171,7 @@
     <ClInclude Include="..\include\easypr.h" />
     <ClInclude Include="..\include\easypr\api.hpp" />
     <ClInclude Include="..\include\easypr\config.h" />
+    <ClInclude Include="..\include\easypr\core\character.hpp" />
     <ClInclude Include="..\include\easypr\core\chars_identify.h" />
     <ClInclude Include="..\include\easypr\core\chars_recognise.h" />
     <ClInclude Include="..\include\easypr\core\chars_segment.h" />
@@ -191,7 +192,6 @@
     <ClInclude Include="..\include\easypr\util\switch.hpp" />
     <ClInclude Include="..\include\easypr\util\util.h" />
     <ClInclude Include="..\include\text\erfilter.hpp" />
-    <ClInclude Include="version.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\LICENSE" />

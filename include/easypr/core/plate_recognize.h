@@ -16,29 +16,29 @@
 #include "easypr/core/chars_recognise.h"
 
 /*! \namespace easypr
-    Namespace where all the C++ EasyPR functionality resides
+Namespace where all the C++ EasyPR functionality resides
 */
 namespace easypr {
 
-class CPlateRecognize : public CPlateDetect, public CCharsRecognise {
- public:
-  CPlateRecognize();
+  class CPlateRecognize : public CPlateDetect, public CCharsRecognise {
+  public:
+    CPlateRecognize();
 
-  //! 杞︾墝妫�娴嬩笌瀛楃璇嗗埆
-  int plateRecognize(Mat src, std::vector<CPlate> &licenseVec);
-  int plateRecognize(Mat src, std::vector<std::string> &licenseVec);
+    //! 车牌检测与字符识别
+    int plateRecognize(Mat src, std::vector<CPlate> &licenseVec);
+    int plateRecognize(Mat src, std::vector<std::string> &licenseVec);
 
-  int plateRecognizeAsText(Mat src, std::vector<CPlate> &licenseVec);
-  int plateRecognizeAsTextNM(Mat src, std::vector<CPlate> &licenseVec);
+    int plateRecognizeAsText(Mat src, std::vector<CPlate> &licenseVec);
+    int plateRecognizeAsTextNM(Mat src, std::vector<CPlate> &licenseVec);
 
-  //! 鐢熸椿妯″紡涓庡伐涓氭ā寮忓垏鎹
+    //! 生活模式与工业模式切换
 
-  inline void setLifemode(bool param) { CPlateDetect::setPDLifemode(param); }
+    inline void setLifemode(bool param) { CPlateDetect::setPDLifemode(param); }
 
-  //! 鏄惁寮�鍚皟璇曟ā寮
+    //! 是否开启调试模式
 
-  inline void setDebug(bool param) { CPlateDetect::setPDDebug(param); }
-};
+    inline void setDebug(bool param) { CPlateDetect::setPDDebug(param); }
+  };
 
 } /* \namespace easypr  */
 

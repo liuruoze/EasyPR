@@ -156,12 +156,12 @@ void SvmTrain::prepare() {
 
   // copy the rest of has_file_list to the test_file_list_
   test_file_list_.reserve(has_for_test + no_for_test);
-  for (auto i = has_for_train; i < has_num; i++) {
+  for (size_t i = has_for_train; i < has_num; i++) {
     test_file_list_.push_back({has_file_list[i], kForward});
   }
 
   // copy the rest of no_file_list to the end of the test_file_list_
-  for (auto i = no_for_train; i < no_num; i++) {
+  for (size_t i = no_for_train; i < no_num; i++) {
     test_file_list_.push_back({no_file_list[i], kInverse});
   }
 }

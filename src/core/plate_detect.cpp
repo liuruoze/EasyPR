@@ -3,117 +3,120 @@
 
 namespace easypr {
 
-CPlateDetect::CPlateDetect() {
-  m_plateLocate = new CPlateLocate();
+  CPlateDetect::CPlateDetect() {
+    m_plateLocate = new CPlateLocate();
 
-  // 榛樿EasyPR鍦ㄤ竴骞呭浘涓畾浣嶆渶澶涓溅
+    // 默认EasyPR在一幅图中定位最多3个车
 
-  m_maxPlates = 3;
-}
-
-CPlateDetect::~CPlateDetect() { SAFE_RELEASE(m_plateLocate); }
-
-int CPlateDetect::plateDetect(Mat src, std::vector<CPlate> &resultVec,
-                              bool showDetectArea, int index) {
-  std::vector<CPlate> color_Plates;
-  std::vector<CPlate> sobel_Plates;
-  std::vector<CPlate> color_result_Plates;
-  std::vector<CPlate> sobel_result_Plates;
-
-  std::vector<CPlate> all_result_Plates;
-
-  //濡傛灉棰滆壊鏌ユ壘鎵惧埌n涓互涓婏紙鍖呭惈n涓級鐨勮溅鐗岋紝灏变笉鍐嶈繘琛孲obel鏌ユ壘浜嗐�
-
-  const int color_find_max = m_maxPlates;
-
-  m_plateLocate->plateColorLocate(src, color_Plates, index);
-  PlateJudge::instance()->plateJudge(color_Plates, color_result_Plates);
-
-  for (size_t i = 0; i < color_result_Plates.size(); i++) {
-    CPlate plate = color_result_Plates[i];
-
-    plate.setPlateLocateType(COLOR);
-    all_result_Plates.push_back(plate);
+    m_maxPlates = 3;
   }
 
-  //棰滆壊鍜岃竟鐣岄棴鎿嶄綔鍚屾椂閲囩敤
+  CPlateDetect::~CPlateDetect() { SAFE_RELEASE(m_plateLocate); }
 
-  {
-    m_plateLocate->plateSobelLocate(src, sobel_Plates, index);
-    PlateJudge::instance()->plateJudge(sobel_Plates, sobel_result_Plates);
+  int CPlateDetect::plateDetect(Mat src, std::vector<CPlate> &resultVec, int type,
+    bool showDetectArea, int index) {
 
-    for (size_t i = 0; i < sobel_result_Plates.size(); i++) {
-      CPlate plate = sobel_result_Plates[i];
+    std::vector<CPlate> color_Plates;
+    std::vector<CPlate> sobel_Plates;
+    
+    std::vector<CPlate> all_result_Plates;
 
-      plate.bColored = false;
-      plate.setPlateLocateType(SOBEL);
+    //如果颜色查找找到n个以上（包含n个）的车牌，就不再进行Sobel查找了。
+    const int color_find_max = m_maxPlates;
+  
+    if ( !type || type & PR_DETECT_SOBEL)
+    {
+      m_plateLocate->plateSobelLocate(src, sobel_Plates, index);
+      std::vector<CPlate>& sobel_result_Plates = sobel_Plates;
 
-      all_result_Plates.push_back(plate);
+      for (size_t i = 0; i < sobel_result_Plates.size(); i++) 
+      {
+        CPlate plate = sobel_result_Plates[i];
+
+        plate.bColored = false;
+        plate.setPlateLocateType(SOBEL);
+
+        all_result_Plates.push_back(plate);
+      }
     }
-  }
 
-  //for (size_t i = 0; i < all_result_Plates.size(); i++) {
-  //  // 鎶婃埅鍙栫殑杞︾墝鍥惧儚渚濇鏀惧埌宸︿笂瑙
-  //  CPlate plate = all_result_Plates[i];
-  //  resultVec.push_back(plate);
-  //}
+    if ( !type || type & PR_DETECT_COLOR)
+    {
 
-  // 浣跨敤闈炴瀬澶у�兼姂鍒舵潵鍒ゆ柇杞︾墝
-  PlateJudge::instance()->plateJudgeUsingNMS(all_result_Plates, resultVec);
+      m_plateLocate->plateColorLocate(src, color_Plates, index);
+      std::vector<CPlate>& color_result_Plates = color_Plates;
 
-  return 0;
-}
+      for (size_t i = 0; i < color_result_Plates.size(); i++)
+      {
+        CPlate plate = color_result_Plates[i];
 
-int CPlateDetect::showResult(const Mat &result) {
-  namedWindow("EasyPR", CV_WINDOW_AUTOSIZE);
-
-  const int RESULTWIDTH = 640;   // 640 930
-  const int RESULTHEIGHT = 540;  // 540 710
-
-  Mat img_window;
-  img_window.create(RESULTHEIGHT, RESULTWIDTH, CV_8UC3);
-
-  int nRows = result.rows;
-  int nCols = result.cols;
-
-  Mat result_resize;
-  if (nCols <= img_window.cols && nRows <= img_window.rows) {
-    result_resize = result;
-
-  } else if (nCols > img_window.cols && nRows <= img_window.rows) {
-    float scale = float(img_window.cols) / float(nCols);
-    resize(result, result_resize, Size(), scale, scale, CV_INTER_AREA);
-
-  } else if (nCols <= img_window.cols && nRows > img_window.rows) {
-    float scale = float(img_window.rows) / float(nRows);
-    resize(result, result_resize, Size(), scale, scale, CV_INTER_AREA);
-
-  } else if (nCols > img_window.cols && nRows > img_window.rows) {
-    Mat result_middle;
-    float scale = float(img_window.cols) / float(nCols);
-    resize(result, result_middle, Size(), scale, scale, CV_INTER_AREA);
-
-    if (result_middle.rows > img_window.rows) {
-      float scale = float(img_window.rows) / float(result_middle.rows);
-      resize(result_middle, result_resize, Size(), scale, scale, CV_INTER_AREA);
-
-    } else {
-      result_resize = result_middle;
+        plate.setPlateLocateType(COLOR);
+        all_result_Plates.push_back(plate);
+      }
     }
-  } else {
-    result_resize = result;
+
+
+    // 使用非极大值抑制来判断车牌
+    PlateJudge::instance()->plateJudgeUsingNMS(all_result_Plates, resultVec);
+
+    return 0;
   }
 
-  Mat imageRoi = img_window(Rect((RESULTWIDTH - result_resize.cols) / 2,
-                                 (RESULTHEIGHT - result_resize.rows) / 2,
-                                 result_resize.cols, result_resize.rows));
-  addWeighted(imageRoi, 0, result_resize, 1, 0, imageRoi);
+  int CPlateDetect::showResult(const Mat &result) {
+    namedWindow("EasyPR", CV_WINDOW_AUTOSIZE);
 
-  imshow("EasyPR", img_window);
-  waitKey();
+    const int RESULTWIDTH = 640;   // 640 930
+    const int RESULTHEIGHT = 540;  // 540 710
 
-  destroyWindow("EasyPR");
+    Mat img_window;
+    img_window.create(RESULTHEIGHT, RESULTWIDTH, CV_8UC3);
 
-  return 0;
-}
+    int nRows = result.rows;
+    int nCols = result.cols;
+
+    Mat result_resize;
+    if (nCols <= img_window.cols && nRows <= img_window.rows) {
+      result_resize = result;
+
+    }
+    else if (nCols > img_window.cols && nRows <= img_window.rows) {
+      float scale = float(img_window.cols) / float(nCols);
+      resize(result, result_resize, Size(), scale, scale, CV_INTER_AREA);
+
+    }
+    else if (nCols <= img_window.cols && nRows > img_window.rows) {
+      float scale = float(img_window.rows) / float(nRows);
+      resize(result, result_resize, Size(), scale, scale, CV_INTER_AREA);
+
+    }
+    else if (nCols > img_window.cols && nRows > img_window.rows) {
+      Mat result_middle;
+      float scale = float(img_window.cols) / float(nCols);
+      resize(result, result_middle, Size(), scale, scale, CV_INTER_AREA);
+
+      if (result_middle.rows > img_window.rows) {
+        float scale = float(img_window.rows) / float(result_middle.rows);
+        resize(result_middle, result_resize, Size(), scale, scale, CV_INTER_AREA);
+
+      }
+      else {
+        result_resize = result_middle;
+      }
+    }
+    else {
+      result_resize = result;
+    }
+
+    Mat imageRoi = img_window(Rect((RESULTWIDTH - result_resize.cols) / 2,
+      (RESULTHEIGHT - result_resize.rows) / 2,
+      result_resize.cols, result_resize.rows));
+    addWeighted(imageRoi, 0, result_resize, 1, 0, imageRoi);
+
+    imshow("EasyPR", img_window);
+    waitKey();
+
+    destroyWindow("EasyPR");
+
+    return 0;
+  }
 }

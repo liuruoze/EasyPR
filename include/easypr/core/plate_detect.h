@@ -12,9 +12,24 @@ class CPlateDetect {
 
   ~CPlateDetect();
 
-  //! 深度车牌检测，使用颜色与二次Sobel法综合
+  enum 
+  {
+    PR_DETECT_SOBEL = 0x01,  /**Sobel detect type，using twice Sobel  */
+    PR_DETECT_COLOR = 0x02,  /**Color detect type   */
+    PR_DETECT_CHAR = 0x04,  /**Character detect type，using mser  */
+  };
 
-  int plateDetect(Mat src, std::vector<CPlate> &resultVec,
+  /** @brief Plate detect in an image.
+
+  The function detects plate in an image. It can use sobel, color, and character method or the combinations of them.
+
+  @param src Source image. 
+  @param resultVec Destination vector of CPlate.
+  @param type Detect type. (eg. PR_DETECT_SOBEL + PR_DETECT_COLOR)
+  @param showDetectArea 
+  @param index
+  */
+  int plateDetect(Mat src, std::vector<CPlate> &resultVec, int type = 0,
                   bool showDetectArea = true, int index = 0);
 
   //! 展示中间的结果

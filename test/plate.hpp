@@ -111,13 +111,15 @@ int test_plate_recognize() {
   pr.setLifemode(true);
   pr.setDebug(true);
 
-  vector<string> plateVec;
+  //vector<string> plateVec;
+  vector<CPlate> plateVec;
 
-  int result = pr.plateRecognize(src, plateVec);
+  //int result = pr.plateRecognize(src, plateVec);
+  int result = pr.plateRecognizeAsText(src, plateVec);
   if (result == 0) {
     size_t num = plateVec.size();
     for (size_t j = 0; j < num; j++) {
-      cout << "plateRecognize: " << plateVec[j] << endl;
+      cout << "plateRecognize: " << plateVec[j].getPlateStr() << endl;
     }
   }
 

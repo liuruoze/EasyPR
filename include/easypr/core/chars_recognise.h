@@ -14,6 +14,7 @@
 
 #include "easypr/core/chars_segment.h"
 #include "easypr/core/chars_identify.h"
+#include "easypr/core/character.hpp"
 #include "easypr/util/util.h"
 
 namespace easypr {

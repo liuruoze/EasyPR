@@ -388,7 +388,7 @@ namespace cv
 
         }
 
-        if (wp.p.usePrune && sub_path_length < 7)
+        if (wp.p.usePrune && sub_path_length < 5)
           return;
 
          //more efficent to get the rect, dismiss the regions;
@@ -622,7 +622,7 @@ namespace cv
       wp.bboxvec = &bboxvec;
       wp.pix0 = ptr0;
       wp.step = step;
-      wp.similyThresh = 0.7;
+      wp.similyThresh = 0.7f;
 
       heap[0] = &heapbuf[0];
       heap[0][0] = 0;

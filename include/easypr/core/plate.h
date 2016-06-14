@@ -16,73 +16,68 @@ Namespace where all the C++ EasyPR functionality resides
 */
 namespace easypr {
 
-class CPlate {
- public:
-  bool bColored;
+  class CPlate {
+  public:
+    bool bColored;   
 
-  //! 构造函�
+    CPlate();
 
-  CPlate();
+    CPlate(const CPlate& plate)
+    {
+      m_plateMat = plate.m_plateMat;
+      m_score = plate.m_score;
+      m_platePos = plate.m_platePos;
+      m_plateStr = plate.m_plateStr;
+      m_locateType = plate.m_locateType;
+    }
 
-  CPlate(const CPlate& plate)
-  {
-    m_plateMat = plate.m_plateMat;
-    m_score = plate.m_score;
-    m_platePos = plate.m_platePos;
-    m_plateStr = plate.m_plateStr;
-    m_locateType = plate.m_locateType;
-  }
+    inline void setPlateMat(Mat param) { m_plateMat = param; }
+    inline Mat getPlateMat() const { return m_plateMat; }
 
+    inline void setPlatePos(RotatedRect param) { m_platePos = param; }
+    inline RotatedRect getPlatePos() const { return m_platePos; }
 
-  //! 设置与读取变�
+    inline void setPlateStr(String param) { m_plateStr = param; }
+    inline String getPlateStr() const { return m_plateStr; }
 
-  inline void setPlateMat(Mat param) { m_plateMat = param; }
-  inline Mat getPlateMat() const { return m_plateMat; }
+    inline void setPlateLocateType(LocateType param) { m_locateType = param; }
+    inline LocateType getPlateLocateType() const { return m_locateType; }
 
-  inline void setPlatePos(RotatedRect param) { m_platePos = param; }
-  inline RotatedRect getPlatePos() const { return m_platePos; }
+    inline void setPlateScore(double param) { m_score = param; }
+    inline double getPlateScore() const { return m_score; }
 
-  inline void setPlateStr(String param) { m_plateStr = param; }
-  inline String getPlateStr() const { return m_plateStr; }
+    bool operator < (const CPlate& plate) const
+    {
+      return (m_score < plate.m_score);
+    }
 
-  inline void setPlateLocateType(LocateType param) { m_locateType = param; }
-  inline LocateType getPlateLocateType() const { return m_locateType; }
+    bool operator < (const CPlate& plate)
+    {
+      return (m_score < plate.m_score);
+    }
 
-  inline void setPlateScore(double param) { m_score = param; }
-  inline double getPlateScore() const { return m_score; }
+  private:
+    //! plate mat
 
-  bool operator < (const CPlate& plate) const
-  {
-    return (m_score < plate.m_score);
-  }
+    Mat m_plateMat;
 
-  bool operator < (const CPlate& plate) 
-  {
-    return (m_score < plate.m_score);
-  }
+    //! plate rect
 
- private:
-  //! 车牌的图�
+    RotatedRect m_platePos;
 
-  Mat m_plateMat;
+    //! plate license
 
-  //! 车牌在原图的位置
+    String m_plateStr;
 
-  RotatedRect m_platePos;
+    //! plate locate type
 
-  //! 车牌字符�
+    LocateType m_locateType;
 
-  String m_plateStr;
+    //! plate likely
 
-  //! 车牌定位的方�
+    double m_score;
 
-  LocateType m_locateType;
-
-  //! 车牌的置信度
-
-  double m_score;
-
-};
+  };
 
 } /*! \namespace easypr*/
 
