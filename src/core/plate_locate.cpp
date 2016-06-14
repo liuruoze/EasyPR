@@ -764,6 +764,30 @@ int CPlateLocate::plateColorLocate(Mat src, vector<CPlate> &candPlates,
   return 0;
 }
 
+
+//! MSER plate locate
+
+int CPlateLocate::plateMserLocate(Mat src, vector<CPlate> &candPlates, int index) {
+
+  vector<CPlate> plates;
+  Mat src_b;
+
+  //// 查找蓝色车牌
+  //// 查找颜色匹配车牌
+
+  //colorSearch(src, BLUE, src_b, rects_color_blue, index);
+
+  //// 进行抗扭斜处理
+
+  //deskew(src, src_b, rects_color_blue, plates);
+
+
+  for (size_t i = 0; i < plates.size(); i++) {
+    candPlates.push_back(plates[i]);
+  }
+  return 0;
+}
+
 //! Sobel运算
 //! 输入彩色图像，输出二值化图像
 

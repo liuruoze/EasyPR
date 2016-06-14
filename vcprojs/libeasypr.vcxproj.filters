@@ -69,9 +69,6 @@
     <ClCompile Include="..\src\core\feature.cpp">
       <Filter>源文件\core</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\core\plate.cpp">
-      <Filter>源文件\core</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\core\plate_detect.cpp">
       <Filter>源文件\core</Filter>
     </ClCompile>
@@ -161,9 +158,6 @@
     <ClInclude Include="..\include\easypr\core\feature.h">
       <Filter>头文件\easypr\core</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\easypr\core\plate.h">
-      <Filter>头文件\easypr\core</Filter>
-    </ClInclude>
     <ClInclude Include="..\include\easypr\core\plate_detect.h">
       <Filter>头文件\easypr\core</Filter>
     </ClInclude>
@@ -189,6 +183,9 @@
       <Filter>头文件\text</Filter>
     </ClInclude>
     <ClInclude Include="..\include\easypr\core\character.hpp">
+      <Filter>头文件\easypr\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\easypr\core\plate.hpp">
       <Filter>头文件\easypr\core</Filter>
     </ClInclude>
   </ItemGroup>

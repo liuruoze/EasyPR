@@ -14,7 +14,7 @@
 #ifndef EASYPR_CORE_PLATELOCATE_H_
 #define EASYPR_CORE_PLATELOCATE_H_
 
-#include "easypr/core/plate.h"
+#include "easypr/core/plate.hpp"
 #include "easypr/core/core_func.h"
 
 /*! \namespace easypr
@@ -76,6 +76,9 @@ class CPlateLocate {
 
   int plateSobelLocate(Mat src, std::vector<CPlate>& candPlates, int index = 0);
   int sobelOperT(const Mat& in, Mat& out, int blurSize, int morphW, int morphH);
+
+  int plateMserLocate(Mat src, std::vector<CPlate>& candPlates, int index = 0);
+
 
   //! Color搜索
 

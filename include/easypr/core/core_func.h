@@ -12,7 +12,7 @@ namespace easypr {
 
 enum Color { BLUE, YELLOW, WHITE, UNKNOWN };
 
-enum LocateType { SOBEL, COLOR, OTHER };
+enum LocateType { SOBEL, COLOR, CMSER, OTHER };
 
 //! 根据一幅图像与颜色模板获取对应的二值图
 //! 输入RGB图像, 颜色模板（蓝色、黄色）
@@ -55,6 +55,10 @@ int ThresholdOtsu(Mat mat);
 //! 获取垂直和水平方向直方图
 
 Mat ProjectedHistogram(Mat img, int t);
+
+Mat preprocessChar(Mat in, int char_size);
+
+Rect GetChineseRect(const Rect rectSpe);
 
 } /*! \namespace easypr*/
 

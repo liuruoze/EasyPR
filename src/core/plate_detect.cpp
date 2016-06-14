@@ -32,8 +32,6 @@ namespace easypr {
       for (size_t i = 0; i < sobel_result_Plates.size(); i++) 
       {
         CPlate plate = sobel_result_Plates[i];
-
-        plate.bColored = false;
         plate.setPlateLocateType(SOBEL);
 
         all_result_Plates.push_back(plate);

@@ -41,7 +41,7 @@ namespace easypr {
 
           string plateStr = plateNode.getText();
 
-          RotatedRect rr(Point2f(x, y), Size2f(width, height), angle);
+          RotatedRect rr(Point2f(float(x), float(y)), Size2f(float(width), float(height)), angle);
 
           CPlate plate;
           plate.setPlateStr(plateStr);

@@ -1,7 +1,7 @@
 #ifndef EASYPR_CORE_PLATEJUDGE_H_
 #define EASYPR_CORE_PLATEJUDGE_H_
 
-#include "easypr/core/plate.h"
+#include "easypr/core/plate.hpp"
 #include "easypr/core/feature.h"
 #include "easypr/core/core_func.h"
 

@@ -773,4 +773,44 @@ Mat ProjectedHistogram(Mat img, int t) {
   return mhist;
 }
 
+Mat preprocessChar(Mat in, int char_size) {
+  // Remap image
+  int h = in.rows;
+  int w = in.cols;
+
+  //统一每个字符的大小
+
+  int charSize = char_size;
+
+  Mat transformMat = Mat::eye(2, 3, CV_32F);
+  int m = max(w, h);
+  transformMat.at<float>(0, 2) = float(m / 2 - w / 2);
+  transformMat.at<float>(1, 2) = float(m / 2 - h / 2);
+
+  Mat warpImage(m, m, in.type());
+  warpAffine(in, warpImage, transformMat, warpImage.size(), INTER_LINEAR,
+    BORDER_CONSTANT, Scalar(0));
+
+  //！ 将所有的字符调整成统一的尺寸
+
+  Mat out;
+  resize(warpImage, out, Size(charSize, charSize));
+
+  return out;
+}
+
+Rect GetChineseRect(const Rect rectSpe) {
+  int height = rectSpe.height;
+  float newwidth = rectSpe.width * 1.2f;
+  int x = rectSpe.x;
+  int y = rectSpe.y;
+
+  int newx = x - int(newwidth * 1.2);
+  newx = newx > 0 ? newx : 0;
+
+  Rect a(newx, y, int(newwidth), height);
+
+  return a;
+}
+
 }

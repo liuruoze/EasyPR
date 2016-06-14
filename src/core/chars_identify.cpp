@@ -19,20 +19,20 @@ namespace easypr {
     kv_->load("etc/province_mapping");
   }
 
-  int CharsIdentify::classify(cv::Mat f, bool isChinses){
+  int CharsIdentify::classify(cv::Mat f, float& maxVal, bool isChinses){
     int result = -1;
 
     cv::Mat output(1, kCharsTotalNumber, CV_32FC1);
     ann_->predict(f, output);
 
+    maxVal = -2.f;
     if (!isChinses)
     {
       result = 0;
-      float maxVal = -2;
       for (int j = 0; j < kCharactersNumber; j++)
       {
         float val = output.at<float>(j);
-        //cout << "j:" << j << "val:"<< val << endl;
+        // std::cout << "j:" << j << "val:" << val << std::endl;
         if (val > maxVal)
         {
           maxVal = val;
@@ -43,11 +43,10 @@ namespace easypr {
     else
     {
       result = kCharactersNumber;
-      float maxVal = -2;
       for (int j = kCharactersNumber; j < kCharsTotalNumber; j++)
       {
         float val = output.at<float>(j);
-        //cout << "j:" << j << "val:"<< val << endl;
+        //std::cout << "j:" << j << "val:" << val << std::endl;
         if (val > maxVal)
         {
           maxVal = val;
@@ -55,13 +54,38 @@ namespace easypr {
         }
       }
     }
+    //std::cout << "maxVal:" << maxVal << std::endl;
     return result;
+  }
+
+  bool CharsIdentify::isCharacter(cv::Mat input, std::string& label, float& maxVal, bool isChinese) {
+    cv::Mat feature = features(input, kPredictSize);
+    auto index = static_cast<int>(classify(feature, maxVal, isChinese));
+
+    if (isChinese)
+      std::cout << "maxVal:" << maxVal << std::endl;
+
+    if (maxVal >= 0.9) {
+      if (index < kCharactersNumber) {
+        label = std::make_pair(kChars[index], kChars[index]).second;
+      }
+      else {
+        const char* key = kChars[index];
+        std::string s = key;
+        std::string province = kv_->get(s);
+        label = std::make_pair(s, province).second;
+      }
+      return true;
+    }
+    else
+      return false;
   }
 
 
   std::pair<std::string, std::string> CharsIdentify::identify(cv::Mat input, bool isChinese) {
     cv::Mat feature = features(input, kPredictSize);
-    auto index = static_cast<int>(classify(feature, isChinese));
+    float maxVal = -2;
+    auto index = static_cast<int>(classify(feature, maxVal, isChinese));
     if (index < kCharactersNumber) {
       return std::make_pair(kChars[index], kChars[index]);
     }

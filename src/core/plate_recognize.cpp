@@ -228,50 +228,61 @@ namespace easypr {
     return true;
   }
 
-  void MergeCharToPlate(const std::vector<CCharacter>& vecRect, std::vector<Rect>& vecRectPlate, 
-    int mat_width, int mat_height){
-     // recognize char
+  //! 非极大值抑制
+  void NMStoCharacter(std::vector<CCharacter> &inVec, std::vector<CCharacter> &resultVec, double overlap) {
 
+    std::sort(inVec.begin(), inVec.end());
+
+    std::vector<CCharacter>::iterator it = inVec.begin();
+    for (; it != inVec.end(); ++it) {
+      CCharacter charSrc = *it;
+      //std::cout << "plateScore:" << plateSrc.getPlateScore() << std::endl;
+      Rect rectSrc = charSrc.getCharacterPos();
+
+      std::vector<CCharacter>::iterator itc = it + 1;
+
+      for (; itc != inVec.end();) {
+        CCharacter charComp = *itc;
+        Rect rectComp = charComp.getCharacterPos();
+        Rect rectInter = rectSrc & rectComp;
+        Rect rectUnion = rectSrc | rectComp;
+        double r = double(rectInter.area()) / double(rectUnion.area());
+        if (r > overlap) {
+          itc = inVec.erase(itc);
+        }
+        else {
+          ++itc;
+        }
+      }
+    }
+
+    resultVec = inVec;
+  }
+
+
+  void MergeCharToPlate(std::vector<CCharacter>& vecRect, std::vector<std::vector<CCharacter>>& vecRectPlate){
      std::vector<int> labels;
 
-     int numbers = partition(vecRect, labels, &compareCharRect);
-     for (size_t j = 0; j < size_t(numbers); j++) {
-        std::vector<Rect> charRects;
+     std::vector<CCharacter> charVec;
 
-        for (size_t t = 0; t < vecRect.size(); t++) {
+     double overlap = 0.5;
+     NMStoCharacter(vecRect, charVec, overlap);
+
+     int numbers = partition(charVec, labels, &compareCharRect);
+     for (size_t j = 0; j < size_t(numbers); j++) {
+       std::vector<CCharacter> charRects;
+
+       for (size_t t = 0; t < charVec.size(); t++) {
           int label = labels[t];
 
           if (label == j)
-            charRects.push_back(vecRect[t].getCharacterPos());
+            charRects.push_back(charVec[t]);
         }
 
         if (charRects.size() == 0 || charRects.size() < 5)
           continue;
 
-       int leftmax = mat_width;
-       int rightmax = 0;
-       int topmax = mat_height;
-       int bottommax = 0;
-
-       for (size_t p = 0; p < charRects.size(); p++) {
-         Rect rect = charRects[p];
-         int left = rect.tl().x;
-         int right = rect.br().x;
-
-         int top = rect.tl().y;
-         int bottom = rect.br().y;
-
-         if (left < leftmax) leftmax = left;
-         if (right > rightmax) rightmax = right;
-         if (top < topmax) topmax = top;
-         if (bottom > bottommax) bottommax = bottom;
-       }
-
-       Rect grouprect(leftmax, topmax, rightmax - leftmax + 1, bottommax - topmax + 1);
-
-       if (verifyPlateSize(grouprect)) {
-         vecRectPlate.push_back(grouprect);
-       }
+        vecRectPlate.push_back(charRects);       
      }
   }
 
@@ -284,6 +295,8 @@ namespace easypr {
     std::vector<Mat> channelImages;
     std::vector<int> flags;
 
+
+    // only conside blue plate
     if (1) {
       Mat grayImage;
       cvtColor(src, grayImage, COLOR_BGR2GRAY);
@@ -314,6 +327,7 @@ namespace easypr {
       double scale_ratio = 1;
       Mat image = scaleImage(channelImage, Size(scale_size, scale_size), scale_ratio);
       Mat result = image;
+      cvtColor(result, result, COLOR_GRAY2BGR);
 
       int imageArea = image.rows * image.cols;
 
@@ -329,29 +343,107 @@ namespace easypr {
 
       for (size_t index = 0; index < size; index++) {
         Rect rect = all_boxes[i][index];
-
-        Mat region = image(rect);
-        Mat binary_region;
-        threshold(region, binary_region, 0, 255, CV_THRESH_BINARY | CV_THRESH_OTSU);
-
+    
         if (verifyCharSizes(rect)) {
           float aspect = float(rect.width) / float(rect.height);
           //if (aspect < 0.2) {
           //  cv::rectangle(result, rect, Scalar(0, 0, 255));
           //}
 
-          CCharacter character;
-          character.setCharacterPos(rect);
-          character.setCharacterMat(binary_region);
-          charVec.push_back(character);
+          Mat region = image(rect);
+          Mat binary_region;
+          threshold(region, binary_region, 0, 255, CV_THRESH_BINARY | CV_THRESH_OTSU);
+
+          Mat charInput = preprocessChar(binary_region, 20);
+          std::string label = "";
+          float maxVal = -2.f;
+          bool isCharacter = CharsIdentify::instance()->isCharacter(charInput, label, maxVal);
+
+          if (isCharacter) {
+            cv::rectangle(result, rect, Scalar(255, 0, 0));
+
+            CCharacter character;
+            character.setCharacterPos(rect);
+            character.setCharacterMat(binary_region);
+            character.setCharacterStr(label);
+            character.setCharacterScore(maxVal);
+            charVec.push_back(character);
+          }    
         }
       }
 
-      std::vector<Rect> vecRectPlate;
-      MergeCharToPlate(charVec, vecRectPlate, image.rows, image.cols);
+      std::vector<std::vector<CCharacter>> vecRectPlate;
+      MergeCharToPlate(charVec, vecRectPlate);
 
       for (size_t plate_i = 0; plate_i < vecRectPlate.size(); plate_i++) {
-        cv::rectangle(result, vecRectPlate[plate_i], Scalar(0, 0, 255));
+        std::vector<CCharacter> chars = vecRectPlate[plate_i];
+
+        std::sort(chars.begin(), chars.end(),
+          [](const CCharacter& r1, const CCharacter& r2) { return r1.getCharacterPos().x < r2.getCharacterPos().x; });
+
+        Rect specificRect = chars[0].getCharacterPos();
+        Rect chineseRect = GetChineseRect(specificRect);
+
+        cv::rectangle(result, chineseRect, Scalar(0, 255, 0));
+
+        Mat region = image(chineseRect);
+        Mat binary_region;
+        threshold(region, binary_region, 0, 255, CV_THRESH_BINARY | CV_THRESH_OTSU);
+
+        Mat charInput = preprocessChar(binary_region, 20);
+        std::string label = "";
+        float maxVal = -2.f;
+        bool isCharacter = CharsIdentify::instance()->isCharacter(charInput, label, maxVal, true);
+
+        if (isCharacter) {
+          CCharacter character;
+          character.setCharacterPos(chineseRect);
+          character.setCharacterMat(binary_region);
+          character.setCharacterStr(label);
+          character.setCharacterScore(maxVal);
+          chars.push_back(character);
+        }
+
+        int leftmax = image.rows;
+        int rightmax = 0;
+        int topmax = image.cols;
+        int bottommax = 0;
+
+        std::string plateLicense = "";
+
+        for (size_t p = 0; p < chars.size(); p++) {
+          Rect rect = chars[p].getCharacterPos();
+          int left = rect.tl().x;
+          int right = rect.br().x;
+
+          int top = rect.tl().y;
+          int bottom = rect.br().y;
+
+          if (left < leftmax) leftmax = left;
+          if (right > rightmax) rightmax = right;
+          if (top < topmax) topmax = top;
+          if (bottom > bottommax) bottommax = bottom;
+
+          if (p != chars.size() - 1)
+            plateLicense.append(chars[p].getCharacterStr());
+        }
+
+        Rect grouprect(leftmax, topmax, rightmax - leftmax + 1, bottommax - topmax + 1); 
+        Point2f center(float(leftmax + grouprect.width / 2), float(topmax + grouprect.height / 2));
+
+        plateLicense = label + plateLicense;
+
+          if (verifyPlateSize(grouprect)) {
+            
+            cv::rectangle(result, grouprect, Scalar(0, 0, 255));
+
+            CPlate plate;
+            plate.setPlateLocateType(LocateType::CMSER);
+            plate.setPlatePos(RotatedRect(center, Size2f(float(grouprect.width), float(grouprect.height)), 0));
+            plate.setPlateMat(image(grouprect));
+            plate.setPlateStr(plateLicense);
+            licenseVec.push_back(plate);
+          }
       }
 
       if (1) {

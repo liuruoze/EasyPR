@@ -18,9 +18,7 @@ namespace easypr {
 
   class CPlate {
   public:
-    bool bColored;   
-
-    CPlate();
+    CPlate() { }
 
     CPlate(const CPlate& plate)
     {

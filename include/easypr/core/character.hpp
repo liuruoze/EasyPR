@@ -42,6 +42,16 @@ namespace easypr {
     inline void setCharacterScore(double param) { m_score = param; }
     inline double getCharacterScore() const { return m_score; }
 
+    bool operator < (const CCharacter& other) const
+    {
+      return (m_score > other.m_score);
+    }
+
+    bool operator < (const CCharacter& other)
+    {
+      return (m_score > other.m_score);
+    }
+
   private:
     //! character mat
 

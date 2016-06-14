@@ -151,7 +151,6 @@
     <ClCompile Include="..\src\core\chars_segment.cpp" />
     <ClCompile Include="..\src\core\core_func.cpp" />
     <ClCompile Include="..\src\core\feature.cpp" />
-    <ClCompile Include="..\src\core\plate.cpp" />
     <ClCompile Include="..\src\core\plate_detect.cpp" />
     <ClCompile Include="..\src\core\plate_judge.cpp" />
     <ClCompile Include="..\src\core\plate_locate.cpp" />
@@ -177,7 +176,7 @@
     <ClInclude Include="..\include\easypr\core\chars_segment.h" />
     <ClInclude Include="..\include\easypr\core\core_func.h" />
     <ClInclude Include="..\include\easypr\core\feature.h" />
-    <ClInclude Include="..\include\easypr\core\plate.h" />
+    <ClInclude Include="..\include\easypr\core\plate.hpp" />
     <ClInclude Include="..\include\easypr\core\plate_detect.h" />
     <ClInclude Include="..\include\easypr\core\plate_judge.h" />
     <ClInclude Include="..\include\easypr\core\plate_locate.h" />

@@ -11,10 +11,11 @@ class CharsIdentify {
  public:
   static CharsIdentify* instance();
 
-  int classify(cv::Mat f, bool isChinses = false);
+  int classify(cv::Mat f, float& maxVal, bool isChinses = false);
 
   std::pair<std::string, std::string> identify(cv::Mat input, bool isChinese = false);
 
+  bool isCharacter(cv::Mat input, std::string& label, float& maxVal, bool isChinese = false);
  private:
   CharsIdentify();
 
