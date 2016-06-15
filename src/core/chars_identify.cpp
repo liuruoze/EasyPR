@@ -19,6 +19,11 @@ namespace easypr {
     kv_->load("etc/province_mapping");
   }
 
+  void CharsIdentify::LoadModel(std::string path) {
+    ann_->clear();
+    ann_->ml::ANN_MLP::load<ml::ANN_MLP>(path);
+  }
+
   int CharsIdentify::classify(cv::Mat f, float& maxVal, bool isChinses){
     int result = -1;
 

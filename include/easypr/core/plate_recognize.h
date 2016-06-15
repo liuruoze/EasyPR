@@ -38,6 +38,9 @@ namespace easypr {
     //! 是否开启调试模式
 
     inline void setDebug(bool param) { CPlateDetect::setPDDebug(param); }
+
+
+    inline void setDetectType(int param) { CPlateDetect::setDetectType(param); }
   };
 
 } /* \namespace easypr  */

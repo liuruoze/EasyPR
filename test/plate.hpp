@@ -110,12 +110,13 @@ int test_plate_recognize() {
   CPlateRecognize pr;
   pr.setLifemode(true);
   pr.setDebug(true);
+  pr.setDetectType(easypr::PR_DETECT_CMSER);
 
   //vector<string> plateVec;
   vector<CPlate> plateVec;
 
-  int result = pr.plateRecognize(src, plateVec);
-  //int result = pr.plateRecognizeAsText(src, plateVec);
+  //int result = pr.plateRecognize(src, plateVec);
+  int result = pr.plateRecognizeAsText(src, plateVec);
   if (result == 0) {
     size_t num = plateVec.size();
     for (size_t j = 0; j < num; j++) {

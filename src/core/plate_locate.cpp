@@ -87,7 +87,7 @@ int CPlateLocate::mserSearch(const Mat &src, const Color r, Mat &out,
   // width值对最终结果影响很大，可以考虑进行多次colorSerch，每次不同的值
   // 另一种解决方案就是在结果输出到SVM之前，进行线与角的再纠正
 
-  const int color_morph_width = 20;
+  const int color_morph_width = 30;
   const int color_morph_height = 5;
 
   std::vector<RotatedRect> plateRects;
@@ -550,6 +550,10 @@ int CPlateLocate::deskew(const Mat &src, const Mat &src_b,
              Scalar(0, 255, 255), 1, 8);
     }
 
+    // changed
+    // rotation = 90 - abs(roi_angle);
+    // rotation < m_angel;
+
     // m_angle=60
     if (roi_angle - m_angle < 0 && roi_angle + m_angle > 0) {
       Rect_<float> safeBoundRect;
@@ -595,7 +599,6 @@ int CPlateLocate::deskew(const Mat &src, const Mat &src_b,
       plate_mat.create(HEIGHT, WIDTH, TYPE);
 
       // haitungaga添加，删除非区域，这个函数影响了25%的完整定位率
-
       DeleteNotArea(deskew_mat);
 
       // 这里对deskew_mat进行了一个筛选
@@ -615,6 +618,12 @@ int CPlateLocate::deskew(const Mat &src, const Mat &src_b,
         CPlate plate;
         plate.setPlatePos(roi_rect);
         plate.setPlateMat(plate_mat);
+
+        if (0) {
+          imshow("plate_mat", plate_mat);
+          waitKey(0);
+        }
+
         outPlates.push_back(plate);
       }
     }

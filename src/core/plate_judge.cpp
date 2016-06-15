@@ -14,6 +14,11 @@ namespace easypr {
 
   PlateJudge::PlateJudge() { svm_ = ml::SVM::load<ml::SVM>(kDefaultSvmPath); }
 
+  void PlateJudge::LoadModel(std::string path) {
+    svm_->clear();
+    svm_->ml::SVM::load<ml::SVM>(path);
+  }
+
   //! 对单幅图像进行SVM判断
 
   int PlateJudge::plateJudge(const Mat &inMat, int &result) {
@@ -98,7 +103,7 @@ namespace easypr {
   }
 
   //! 使用非极大值抑制的车牌判断
-  int PlateJudge::plateJudgeUsingNMS(const std::vector<CPlate> &inVec, std::vector<CPlate> &resultVec) {
+  int PlateJudge::plateJudgeUsingNMS(const std::vector<CPlate> &inVec, std::vector<CPlate> &resultVec, int maxPlates) {
     std::vector<CPlate> plateVec;
     int num = inVec.size();
 
@@ -139,10 +144,22 @@ namespace easypr {
       }
     }
 
+    std::vector<CPlate> reDupPlateVec;
+
     // 使用非极大值抑制来去除那些重叠的车牌
     // overlap阈值设置为0.5
     double overlap = 0.5;
-    NMS(plateVec, resultVec, overlap);
+    NMS(plateVec, reDupPlateVec, overlap);
+  
+    std::vector<CPlate>::iterator it = reDupPlateVec.begin();
+    int count = 0;
+    for (; it != reDupPlateVec.end(); ++it) {
+      resultVec.push_back(*it);
+      count++;
+      if (count >= maxPlates)
+        break;
+    }
+
 
     return 0;
   }

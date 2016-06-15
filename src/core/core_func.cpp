@@ -803,11 +803,11 @@ Mat preprocessChar(Mat in, int char_size) {
 
 Rect GetChineseRect(const Rect rectSpe) {
   int height = rectSpe.height;
-  float newwidth = rectSpe.width * 1.2f;
+  float newwidth = rectSpe.width * 1.10f;
   int x = rectSpe.x;
   int y = rectSpe.y;
 
-  int newx = x - int(newwidth * 1.2);
+  int newx = x - int(newwidth * 1.10f);
   newx = newx > 0 ? newx : 0;
 
   Rect a(newx, y, int(newwidth), height);
@@ -1007,14 +1007,14 @@ Mat mserMatch(const Mat &src, Mat &match, const Color r,
       if (verifyCharSizes(rect)) {
         float aspect = float(rect.width) / float(rect.height);
 
-        Mat region = image(rect);
-        Mat binary_region;
-        threshold(region, binary_region, 0, 255, CV_THRESH_BINARY | CV_THRESH_OTSU);
+        //Mat region = image(rect);
+        //Mat binary_region;
+        //threshold(region, binary_region, 0, 255, CV_THRESH_BINARY | CV_THRESH_OTSU);
 
-        Mat charInput = preprocessChar(binary_region, 20);
-        std::string label = "";
-        float maxVal = -2.f;
-        bool isCharacter = CharsIdentify::instance()->isCharacter(charInput, label, maxVal);
+        //Mat charInput = preprocessChar(binary_region, 20);
+        //std::string label = "";
+        //float maxVal = -2.f;
+        //bool isCharacter = CharsIdentify::instance()->isCharacter(charInput, label, maxVal);
 
         if (1) {
           //match(rect) = min(max(0, int(maxVal * 255)),255);

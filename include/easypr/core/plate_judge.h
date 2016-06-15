@@ -13,8 +13,10 @@ class PlateJudge {
 
   //! 对多幅车牌进行SVM判断
 
+  void LoadModel(std::string path);
+
   int plateJudge(const std::vector<CPlate> &, std::vector<CPlate> &);
-  int plateJudgeUsingNMS(const std::vector<CPlate> &, std::vector<CPlate> &);
+  int plateJudgeUsingNMS(const std::vector<CPlate> &, std::vector<CPlate> &, int maxPlates = 5);
 
   //! 车牌判断
 

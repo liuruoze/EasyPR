@@ -248,19 +248,20 @@ namespace easypr {
 
       // 对图像进行统一缩放，确保图像不要过大
       // 对速度提升帮助不大
-      int scale_size = 1600;
+      int scale_size = 1200;
       double scale_ratio = 1;
       Mat image = scaleImage(channelImage, Size(scale_size, scale_size), scale_ratio);
+
       Mat result = image;
       cvtColor(result, result, COLOR_GRAY2BGR);
 
       int imageArea = image.rows * image.cols;
 
       if (3 == flags[i]) {
-        mser = MSER::create(3, 30, int(0.25 * imageArea));
+        mser = MSER::create(3, 30, int(0.05 * imageArea));
       }
       else {
-        mser = MSER::create(1, 30, int(0.25 * imageArea));
+        mser = MSER::create(1, 30, int(0.05 * imageArea));
       }
       mser->detectRegions(image, all_contours[i], all_boxes[i]);
 
@@ -399,7 +400,7 @@ namespace easypr {
     //src = ret;
 
     // 进行深度定位，使用颜色信息与二次Sobel
-    int resultPD = plateDetect(src, plateVec, CPlateDetect::PR_DETECT_SOBEL | CPlateDetect::PR_DETECT_COLOR);
+    int resultPD = plateDetect(src, plateVec);
 
     if (resultPD == 0) {
       size_t num = plateVec.size();

@@ -6,9 +6,8 @@ namespace easypr {
   CPlateDetect::CPlateDetect() {
     m_plateLocate = new CPlateLocate();
 
-    // 默认EasyPR在一幅图中定位最多3个车
-
     m_maxPlates = 3;
+    m_type = 0;
   }
 
   CPlateDetect::~CPlateDetect() { SAFE_RELEASE(m_plateLocate); }
@@ -54,7 +53,7 @@ namespace easypr {
       }
     }
 
-    if (!type || type & PR_DETECT_CMSER)
+    if ( !type || type & PR_DETECT_CMSER)
     {
 
       m_plateLocate->plateMserLocate(src, mser_Plates, index);
@@ -69,11 +68,16 @@ namespace easypr {
       }
     }
 
-
     // 使用非极大值抑制来判断车牌
-    PlateJudge::instance()->plateJudgeUsingNMS(all_result_Plates, resultVec);
+    PlateJudge::instance()->plateJudgeUsingNMS(all_result_Plates, resultVec, m_maxPlates);
 
     return 0;
+  }
+
+  int CPlateDetect::plateDetect(Mat src, std::vector<CPlate> &resultVec,
+    bool showDetectArea, int index) {
+    int result =  plateDetect(src, resultVec, m_type, showDetectArea, index);
+    return result;
   }
 
   int CPlateDetect::showResult(const Mat &result) {

@@ -14,6 +14,13 @@ enum Color { BLUE, YELLOW, WHITE, UNKNOWN };
 
 enum LocateType { SOBEL, COLOR, CMSER, OTHER };
 
+enum
+{
+  PR_DETECT_SOBEL = 0x01,  /**Sobel detect type，using twice Sobel  */
+  PR_DETECT_COLOR = 0x02,  /**Color detect type   */
+  PR_DETECT_CMSER = 0x04,  /**Character detect type，using mser  */
+};
+
 //! 根据一幅图像与颜色模板获取对应的二值图
 //! 输入RGB图像, 颜色模板（蓝色、黄色）
 //! 输出灰度图（只有0和255两个值，255代表匹配，0代表不匹配）

@@ -12,13 +12,6 @@ class CPlateDetect {
 
   ~CPlateDetect();
 
-  enum 
-  {
-    PR_DETECT_SOBEL = 0x01,  /**Sobel detect type，using twice Sobel  */
-    PR_DETECT_COLOR = 0x02,  /**Color detect type   */
-    PR_DETECT_CMSER = 0x04,  /**Character detect type，using mser  */
-  };
-
   /** @brief Plate detect in an image.
 
   The function detects plate in an image. It can use sobel, color, and character method or the combinations of them.
@@ -29,8 +22,23 @@ class CPlateDetect {
   @param showDetectArea 
   @param index
   */
-  int plateDetect(Mat src, std::vector<CPlate> &resultVec, int type = 0,
+  int plateDetect(Mat src, std::vector<CPlate> &resultVec, int type,
                   bool showDetectArea = true, int index = 0);
+
+
+  /** @brief Plate detect in an image.
+
+  The function detects plate in an image. It can use sobel, color, and character method or the combinations of them. 
+  Use default m_type, it can use setDetectType() to set it;
+
+  @param src Source image.
+  @param resultVec Destination vector of CPlate.
+  @param showDetectArea
+  @param index
+  */
+  int plateDetect(Mat src, std::vector<CPlate> &resultVec,
+    bool showDetectArea = true, int index = 0);
+
 
   //! 展示中间的结果
 
@@ -51,6 +59,9 @@ class CPlateDetect {
   //! 获取调试模式状态
 
   inline bool getPDDebug() { return m_plateLocate->getDebug(); }
+
+
+  inline void setDetectType(int param) { m_type = param; }
 
   //! 设置与读取变量
 
@@ -113,6 +124,11 @@ class CPlateDetect {
   //! 车牌定位
 
   CPlateLocate* m_plateLocate;
+
+  int m_type;
+
+  static std::string m_pathSvm;
+
 };
 
 }
