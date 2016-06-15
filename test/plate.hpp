@@ -114,8 +114,8 @@ int test_plate_recognize() {
   //vector<string> plateVec;
   vector<CPlate> plateVec;
 
-  //int result = pr.plateRecognize(src, plateVec);
-  int result = pr.plateRecognizeAsText(src, plateVec);
+  int result = pr.plateRecognize(src, plateVec);
+  //int result = pr.plateRecognizeAsText(src, plateVec);
   if (result == 0) {
     size_t num = plateVec.size();
     for (size_t j = 0; j < num; j++) {

@@ -21,6 +21,9 @@ enum LocateType { SOBEL, COLOR, CMSER, OTHER };
 Mat colorMatch(const Mat& src, Mat& match, const Color r,
                const bool adaptive_minsv);
 
+Mat mserMatch(const Mat& src, Mat& match, const Color r,
+  std::vector<RotatedRect>& plateRect);
+
 //! 判断一个车牌的颜色
 //! 输入车牌mat与颜色模板
 //! 返回true或fasle
@@ -59,6 +62,12 @@ Mat ProjectedHistogram(Mat img, int t);
 Mat preprocessChar(Mat in, int char_size);
 
 Rect GetChineseRect(const Rect rectSpe);
+
+bool verifyCharSizes(Rect r);
+bool verifyPlateSize(Rect mr);
+bool verifyRotatedPlateSizes(RotatedRect mr);
+
+Mat scaleImage(const Mat& image, const Size& maxSize, double& scale_ratio);
 
 } /*! \namespace easypr*/
 

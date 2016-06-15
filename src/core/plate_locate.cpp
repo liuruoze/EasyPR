@@ -48,7 +48,6 @@ void CPlateLocate::setLifemode(bool param) {
 }
 
 //! 对minAreaRect获得的最小外接矩形，用纵横比进行判断
-
 bool CPlateLocate::verifySizes(RotatedRect mr) {
   float error = m_error;
   // Spain car plate size: 52x11 aspect 4,7272
@@ -81,7 +80,107 @@ bool CPlateLocate::verifySizes(RotatedRect mr) {
 }
 
 // !基于HSV空间的颜色搜索方法
+int CPlateLocate::mserSearch(const Mat &src, const Color r, Mat &out,
+  vector<RotatedRect> &outRects, int index) {
+  Mat match_grey;
 
+  // width值对最终结果影响很大，可以考虑进行多次colorSerch，每次不同的值
+  // 另一种解决方案就是在结果输出到SVM之前，进行线与角的再纠正
+
+  const int color_morph_width = 20;
+  const int color_morph_height = 5;
+
+  std::vector<RotatedRect> plateRects;
+  std::vector<RotatedRect> contourRects;
+  // 进行颜色查找
+
+  mserMatch(src, match_grey, r, plateRects);
+
+  if (m_debug) {
+    utils::imwrite("resources/image/tmp/match_grey.jpg", match_grey);
+  }
+
+  Mat src_threshold;
+  threshold(match_grey, src_threshold, 0, 255,
+    CV_THRESH_OTSU + CV_THRESH_BINARY);
+
+  Mat element = getStructuringElement(
+    MORPH_RECT, Size(color_morph_width, color_morph_height));
+  morphologyEx(src_threshold, src_threshold, MORPH_CLOSE, element);
+
+  if (m_debug) {
+    utils::imwrite("resources/image/tmp/mser.jpg", src_threshold);
+  }
+
+  src_threshold.copyTo(out);
+
+  // 查找轮廓
+
+  vector<vector<Point>> contours;
+
+  // 注意，findContours会改变src_threshold
+  // 因此要输出src_threshold必须在这之前使用copyTo方法
+
+  findContours(src_threshold,
+    contours,               // a vector of contours
+    CV_RETR_EXTERNAL,
+    CV_CHAIN_APPROX_NONE);  // all pixels of each contours
+
+  vector<vector<Point>>::iterator itc = contours.begin();
+  while (itc != contours.end()) {
+    RotatedRect mr = minAreaRect(Mat(*itc));
+
+    // 需要进行大小尺寸判断
+    if (!verifySizes(mr))
+      itc = contours.erase(itc);
+    else {
+      ++itc;
+      contourRects.push_back(mr);
+
+      float width = mr.size.width;
+      float height = mr.size.height;
+      RotatedRect candRect(mr.center,
+        Size2f(float(width * 1.1), float(height * 1.1)), mr.angle);
+
+      outRects.push_back(candRect);
+
+      Rect_<float> outputRect;
+      calcSafeRect(candRect, src, outputRect);
+      if (0) {
+        imshow("inMat", src(outputRect));
+        waitKey(0);
+      }
+    }
+  }
+
+  for (auto prect : plateRects) {
+    for (auto rrect : contourRects) {
+      Rect rect = prect.boundingRect();
+      Rect interRect = rect & rrect.boundingRect();
+      Rect unionRect = rect | rrect.boundingRect();
+      double ratio = (double)interRect.area() / (double)unionRect.area();
+      
+      if (unionRect == rect && ratio > 0.618) {
+        std::cout << "ratio:" << ratio << std::endl;
+        float x = (float)rect.tl().x;
+        float y = (float)rect.tl().y;
+        float width = (float)rect.width;
+        float height = (float)rect.height;
+        RotatedRect candRect(Point2f(float(x + width / 2), float(y + height / 2)),
+          Size2f(float(width), float(height)), 0);
+
+        outRects.push_back(candRect);
+      }
+        
+    }
+  }
+
+
+  return 0;
+}
+
+
+// !基于HSV空间的颜色搜索方法
 int CPlateLocate::colorSearch(const Mat &src, const Color r, Mat &out,
                               vector<RotatedRect> &outRects, int index) {
   Mat match_grey;
@@ -769,18 +868,16 @@ int CPlateLocate::plateColorLocate(Mat src, vector<CPlate> &candPlates,
 
 int CPlateLocate::plateMserLocate(Mat src, vector<CPlate> &candPlates, int index) {
 
+  vector<RotatedRect> rects_mser_blue;
   vector<CPlate> plates;
   Mat src_b;
 
   //// 查找蓝色车牌
   //// 查找颜色匹配车牌
-
-  //colorSearch(src, BLUE, src_b, rects_color_blue, index);
+  mserSearch(src, BLUE, src_b, rects_mser_blue, index);
 
   //// 进行抗扭斜处理
-
-  //deskew(src, src_b, rects_color_blue, plates);
-
+  deskew(src, src_b, rects_mser_blue, plates);
 
   for (size_t i = 0; i < plates.size(); i++) {
     candPlates.push_back(plates[i]);

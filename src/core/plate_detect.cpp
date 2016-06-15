@@ -18,7 +18,8 @@ namespace easypr {
 
     std::vector<CPlate> color_Plates;
     std::vector<CPlate> sobel_Plates;
-    
+    std::vector<CPlate> mser_Plates;
+
     std::vector<CPlate> all_result_Plates;
 
     //如果颜色查找找到n个以上（包含n个）的车牌，就不再进行Sobel查找了。
@@ -49,6 +50,21 @@ namespace easypr {
         CPlate plate = color_result_Plates[i];
 
         plate.setPlateLocateType(COLOR);
+        all_result_Plates.push_back(plate);
+      }
+    }
+
+    if (!type || type & PR_DETECT_CMSER)
+    {
+
+      m_plateLocate->plateMserLocate(src, mser_Plates, index);
+      std::vector<CPlate>& mser_result_Plates = mser_Plates;
+
+      for (size_t i = 0; i < mser_result_Plates.size(); i++)
+      {
+        CPlate plate = mser_result_Plates[i];
+
+        plate.setPlateLocateType(CMSER);
         all_result_Plates.push_back(plate);
       }
     }

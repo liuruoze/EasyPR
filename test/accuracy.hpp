@@ -83,7 +83,7 @@ namespace easypr {
 
       // …Ë÷√Debugƒ£ Ω
 
-      pr.setDebug(true);
+      pr.setDebug(false);
 
       pr.setLifemode(true);
 
@@ -168,13 +168,10 @@ namespace easypr {
         }
 
         XMLNode rectangleNodes = xNode.addChild("taggedRectangles");
-
         vector<CPlate> plateVec;
 
-        //int result = pr.plateRecognize(src, plateVec);
-
-        int result = pr.plateRecognizeAsText(src, plateVec);
-
+        int result = pr.plateRecognize(src, plateVec);
+        //int result = pr.plateRecognizeAsText(src, plateVec);
         if (result == 0) {
           int num = plateVec.size();
 

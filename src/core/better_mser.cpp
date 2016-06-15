@@ -388,7 +388,7 @@ namespace cv
 
         }
 
-        if (wp.p.usePrune && sub_path_length < 5)
+        if (wp.p.usePrune && sub_path_length < 3)
           return;
 
          //more efficent to get the rect, dismiss the regions;

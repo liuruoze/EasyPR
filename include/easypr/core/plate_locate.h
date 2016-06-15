@@ -85,6 +85,10 @@ class CPlateLocate {
   int colorSearch(const Mat& src, const Color r, Mat& out,
                   std::vector<RotatedRect>& outRects, int index = 0);
 
+  //! mser search
+  int mserSearch(const Mat& src, const Color r, Mat& out, 
+    std::vector<RotatedRect>& outRects, int index = 0);
+
   //! 未使用函数与代码
   //! 开始------------
   //! 结束------------

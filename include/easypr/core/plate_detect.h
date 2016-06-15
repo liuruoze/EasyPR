@@ -16,7 +16,7 @@ class CPlateDetect {
   {
     PR_DETECT_SOBEL = 0x01,  /**Sobel detect type，using twice Sobel  */
     PR_DETECT_COLOR = 0x02,  /**Color detect type   */
-    PR_DETECT_CHAR = 0x04,  /**Character detect type，using mser  */
+    PR_DETECT_CMSER = 0x04,  /**Character detect type，using mser  */
   };
 
   /** @brief Plate detect in an image.

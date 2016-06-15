@@ -106,9 +106,18 @@ namespace easypr {
       CPlate plate = inVec[j];
       Mat inMat = plate.getPlateMat();
 
+      if (0) {
+        imshow("inMat", inMat);
+        waitKey(0);
+      }
+
       int response = plateSetScore(plate);
       if (response == 0) {
         plateVec.push_back(plate);
+        if (0) {
+          imshow("plateMat", inMat);
+          waitKey(0);
+        }
       }
       else {
         int w = inMat.cols;

@@ -110,82 +110,7 @@ namespace easypr {
     return 0;
   }
 
-  bool verifyPlateSize(Rect mr) {
-    float error = 0.6f;
-    // Spain car plate size: 52x11 aspect 4,7272
-    // China car plate size: 440mm*140mm，aspect 3.142857
-
-    // Real car plate size: 136 * 32, aspect 4
-    float aspect = 3.75;
-
-    // Set a min and max area. All other patchs are discarded
-    // int min= 1*aspect*1; // minimum area
-    // int max= 2000*aspect*2000; // maximum area
-    int min = 34 * 8 * 1;  // minimum area
-    int max = 34 * 8 * 200;  // maximum area
-
-    // Get only patchs that match to a respect ratio.
-    float rmin = aspect - aspect * error;
-    float rmax = aspect + aspect * error;
-
-    float area = float(mr.height * mr.width);
-    float r = (float)mr.width / (float)mr.height;
-    if (r < 1) r = (float)mr.height / (float)mr.width;
-
-    // cout << "area:" << area << endl;
-    // cout << "r:" << r << endl;
-
-    if ((area < min || area > max) || (r < rmin || r > rmax))
-      return false;
-    else
-      return true;
-  }
-
-
-  bool verifyCharSizes(Rect r) {
-    // Char sizes 45x90
-    float aspect = 45.0f / 90.0f;
-    float charAspect = (float)r.width / (float)r.height;
-    float error = 0.35f;
-    float minHeight = 25.f;
-    float maxHeight = 50.f;
-    // We have a different aspect ratio for number 1, and it can be ~0.2
-    float minAspect = 0.05f;
-    float maxAspect = aspect + aspect * error;
-
-    // bb area
-    int bbArea = r.width * r.height;
-
-    if (charAspect > minAspect && charAspect < maxAspect /*&&
-      r.rows >= minHeight && r.rows < maxHeight*/)
-      return true;
-    else
-      return false;
-  }
-
-  // 图像缩放
-  Mat scaleImage(const Mat& image, const Size& maxSize, double& scale_ratio) {
-    Mat ret;
-
-    if (image.cols > maxSize.width || image.rows > maxSize.height) {
-      double widthRatio = image.cols / (double)maxSize.width;
-      double heightRatio = image.rows / (double)maxSize.height;
-      double m_real_to_scaled_ratio = max(widthRatio, heightRatio);
-
-      int newWidth = int(image.cols / m_real_to_scaled_ratio);
-      int newHeight = int(image.rows / m_real_to_scaled_ratio);
-
-      resize(image, ret, Size(newWidth, newHeight), 0, 0);
-      scale_ratio = m_real_to_scaled_ratio;
-    }
-    else {
-      ret = image;
-      scale_ratio = 1.0;
-    }
-
-    return ret;
-  }
-
+ 
   // compareRectIs
   bool compareCharRect(const CCharacter& character1, const CCharacter& character2)
   {
@@ -459,12 +384,6 @@ namespace easypr {
   }
  
 
-
-
-
-
-
-
   // !车牌识别模块
   int CPlateRecognize::plateRecognize(Mat src,
     std::vector<CPlate> &licenseVec) {
@@ -480,7 +399,7 @@ namespace easypr {
     //src = ret;
 
     // 进行深度定位，使用颜色信息与二次Sobel
-    int resultPD = plateDetect(src, plateVec, CPlateDetect::PR_DETECT_COLOR);
+    int resultPD = plateDetect(src, plateVec, CPlateDetect::PR_DETECT_SOBEL | CPlateDetect::PR_DETECT_COLOR);
 
     if (resultPD == 0) {
       size_t num = plateVec.size();
@@ -536,6 +455,8 @@ namespace easypr {
           if (item.getPlateLocateType() == SOBEL) lineColor = Scalar(255, 0, 0);
 
           if (item.getPlateLocateType() == COLOR) lineColor = Scalar(0, 255, 0);
+
+          if (item.getPlateLocateType() == CMSER) lineColor = Scalar(0, 0, 255);
 
           for (int j = 0; j < 4; j++)
             line(result, rect_points[j], rect_points[(j + 1) % 4], lineColor, 2,

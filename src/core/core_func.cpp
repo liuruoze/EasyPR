@@ -3,6 +3,8 @@
 // 这个部分中的函数轻易不要改动
 
 #include "easypr/core/core_func.h"
+#include "easypr/core/character.hpp"
+#include "easypr/core/chars_identify.h"
 
 using namespace cv;
 
@@ -811,6 +813,233 @@ Rect GetChineseRect(const Rect rectSpe) {
   Rect a(newx, y, int(newwidth), height);
 
   return a;
+}
+
+bool verifyCharSizes(Rect r) {
+  // Char sizes 45x90
+  float aspect = 45.0f / 90.0f;
+  float charAspect = (float)r.width / (float)r.height;
+  float error = 0.35f;
+  float minHeight = 25.f;
+  float maxHeight = 50.f;
+  // We have a different aspect ratio for number 1, and it can be ~0.2
+  float minAspect = 0.05f;
+  float maxAspect = aspect + aspect * error;
+
+  // bb area
+  int bbArea = r.width * r.height;
+
+  if (charAspect > minAspect && charAspect < maxAspect /*&&
+                                                       r.rows >= minHeight && r.rows < maxHeight*/)
+                                                       return true;
+  else
+    return false;
+}
+
+// 图像缩放
+Mat scaleImage(const Mat& image, const Size& maxSize, double& scale_ratio) {
+  Mat ret;
+
+  if (image.cols > maxSize.width || image.rows > maxSize.height) {
+    double widthRatio = image.cols / (double)maxSize.width;
+    double heightRatio = image.rows / (double)maxSize.height;
+    double m_real_to_scaled_ratio = max(widthRatio, heightRatio);
+
+    int newWidth = int(image.cols / m_real_to_scaled_ratio);
+    int newHeight = int(image.rows / m_real_to_scaled_ratio);
+
+    resize(image, ret, Size(newWidth, newHeight), 0, 0);
+    scale_ratio = m_real_to_scaled_ratio;
+  }
+  else {
+    ret = image;
+    scale_ratio = 1.0;
+  }
+
+  return ret;
+}
+
+bool verifyPlateSize(Rect mr) {
+  float error = 0.6f;
+  // Spain car plate size: 52x11 aspect 4,7272
+  // China car plate size: 440mm*140mm，aspect 3.142857
+
+  // Real car plate size: 136 * 32, aspect 4
+  float aspect = 3.75;
+
+  // Set a min and max area. All other patchs are discarded
+  // int min= 1*aspect*1; // minimum area
+  // int max= 2000*aspect*2000; // maximum area
+  int min = 34 * 8 * 1;  // minimum area
+  int max = 34 * 8 * 200;  // maximum area
+
+  // Get only patchs that match to a respect ratio.
+  float rmin = aspect - aspect * error;
+  float rmax = aspect + aspect * error;
+
+  float area = float(mr.height * mr.width);
+  float r = (float)mr.width / (float)mr.height;
+  if (r < 1) r = (float)mr.height / (float)mr.width;
+
+  // cout << "area:" << area << endl;
+  // cout << "r:" << r << endl;
+
+  if ((area < min || area > max) || (r < rmin || r > rmax))
+    return false;
+  else
+    return true;
+}
+
+bool verifyRotatedPlateSizes(RotatedRect mr) {
+  float error = 0.3f;
+  // Spain car plate size: 52x11 aspect 4,7272
+  // China car plate size: 440mm*140mm，aspect 3.142857
+
+  // Real car plate size: 136 * 32, aspect 4
+  float aspect = 3.75f;
+
+  // Set a min and max area. All other patchs are discarded
+  // int min= 1*aspect*1; // minimum area
+  // int max= 2000*aspect*2000; // maximum area
+  //int min = 34 * 8 * 1;  // minimum area
+  //int max = 34 * 8 * 200;  // maximum area
+
+  // Get only patchs that match to a respect ratio.
+  float aspect_min = aspect - aspect * error;
+  float aspect_max = aspect + aspect * error;
+
+  int min = int(40.f * 40.f * aspect_min * 1.f);  // minimum area
+  int max = int(40.f * 40.f * aspect_max * 100.f);  // maximum area
+
+  float width = mr.size.width;
+  float height = mr.size.height;
+  float area = width * height;
+
+  float ratio = width / height;
+  float angle = mr.angle;
+  if (ratio < 1) {
+    swap(width, height);
+    ratio = width / height;
+
+    angle = 90.f + angle;
+    //std::cout << "angle:" << angle << std::endl;
+  }
+
+  float angle_f = -90.f + 50;
+  float angle_l = 90.f - 50;
+
+  float width_max = 400;
+  float width_min = 40;
+
+  // cout << "area:" << area << endl;
+  // cout << "r:" << r << endl;
+
+  if ((area < min || area > max) || (ratio < aspect_min || ratio > aspect_max)
+    || (angle < angle_f || angle > angle_l) || (width < width_min || width > width_max))
+    return false;
+  else
+    return true;
+}
+
+
+Mat mserMatch(const Mat &src, Mat &match, const Color r,
+  std::vector<RotatedRect>& plateRect) {
+
+  std::vector<Mat> channelImages;
+  std::vector<int> flags;
+
+  // only conside blue plate
+  if (1) {
+    Mat grayImage;
+    cvtColor(src, grayImage, COLOR_BGR2GRAY);
+    channelImages.push_back(grayImage);
+    flags.push_back(0);
+
+    //Mat singleChannelImage;
+    //extractChannel(src, singleChannelImage, 2);
+    //channelImages.push_back(singleChannelImage);
+    //flags.push_back(0);
+  }
+
+  std::vector<std::vector<std::vector<Point>>> all_contours;
+  std::vector<std::vector<Rect>> all_boxes;
+
+  all_contours.resize(channelImages.size());
+  all_boxes.resize(channelImages.size());
+
+  for (int i = 0; i < (int)channelImages.size(); ++i)
+  {
+    Ptr<MSER> mser;
+    std::vector<CCharacter> charVec;
+    Mat channelImage = channelImages[i];
+
+    //int scale_size = 1600;
+    //double scale_ratio = 1;
+    //Mat image = scaleImage(channelImage, Size(scale_size, scale_size), scale_ratio);
+    Mat image = channelImage;
+    match = Mat::zeros(image.rows, image.cols, image.type());
+
+    Mat result = image.clone();
+    cvtColor(result, result, COLOR_GRAY2BGR);
+
+    int imageArea = image.rows * image.cols;
+
+    if (3 == flags[i]) {
+      mser = MSER::create(3, 30, int(0.05 * imageArea));
+    }
+    else {
+      mser = MSER::create(1, 30, int(0.05 * imageArea));
+    }
+    mser->detectRegions(image, all_contours[i], all_boxes[i]);
+
+    size_t size = all_contours[i].size();
+
+    for (size_t index = 0; index < size; index++) {
+      Rect rect = all_boxes[i][index];
+      std::vector<Point> contour = all_contours[i][index];
+      RotatedRect rrect = minAreaRect(Mat(contour));
+
+      if (verifyRotatedPlateSizes(rrect)) {
+        cv::rectangle(result, rrect.boundingRect(), Scalar(0, 255, 0));
+        plateRect.push_back(rrect);
+      }
+
+      if (verifyCharSizes(rect)) {
+        float aspect = float(rect.width) / float(rect.height);
+
+        Mat region = image(rect);
+        Mat binary_region;
+        threshold(region, binary_region, 0, 255, CV_THRESH_BINARY | CV_THRESH_OTSU);
+
+        Mat charInput = preprocessChar(binary_region, 20);
+        std::string label = "";
+        float maxVal = -2.f;
+        bool isCharacter = CharsIdentify::instance()->isCharacter(charInput, label, maxVal);
+
+        if (1) {
+          //match(rect) = min(max(0, int(maxVal * 255)),255);
+          match(rect) = 255;
+
+          cv::rectangle(result, rect, Scalar(255, 0, 0));
+
+          //CCharacter character;
+          //character.setCharacterPos(rect);
+          //character.setCharacterMat(binary_region);
+          //character.setCharacterStr(label);
+          //character.setCharacterScore(maxVal);
+          //charVec.push_back(character);
+        }
+      }
+    }
+
+    if (1) {
+      imshow("result", result);
+      waitKey(0);
+    }
+  }
+
+ 
+  return match;
 }
 
 }
