@@ -93,10 +93,14 @@ int CPlateLocate::mserSearch(const Mat &src, const Color r, Mat &out,
   const int color_morph_height = 5;
 
   std::vector<RotatedRect> plateRects;
+  std::vector<Rect> charRects;
   std::vector<RotatedRect> contourRects;
+
+  std::vector<Rect> mergedRects;
+
   // 进行颜色查找
 
-  mserMatch(src, match_grey, r, plateRects);
+  mserMatch(src, match_grey, r, plateRects, charRects);
 
   if (m_debug) {
     utils::imwrite("resources/image/tmp/match_grey.jpg", match_grey);
@@ -151,13 +155,63 @@ int CPlateLocate::mserSearch(const Mat &src, const Color r, Mat &out,
       calcSafeRect(candRect, src, outputRect);
 
       cv::rectangle(result, outputRect, Scalar(0, 0, 255));
-
+      mergedRects.push_back(outputRect);
       if (0) {
         imshow("outputRect", src(outputRect));
         waitKey(0);
       }
     }
   }
+
+
+  for (auto mergeRect : mergedRects) {
+    std::vector<Point> points;
+    Vec4f line;
+
+    int maxarea = 0;
+    Rect maxrect;
+
+    for (auto charRect : charRects) {
+      Rect interRect = mergeRect & charRect;
+
+      if (interRect == charRect) {
+
+        Point center(charRect.tl().x + charRect.width / 2, charRect.tl().y + charRect.height / 2);
+        points.push_back(center);
+
+        if (charRect.area() - maxarea > 0.1f) {
+          maxrect = charRect;
+          maxarea = charRect.area();
+        }
+      }       
+    }
+
+    if (points.size() < 5)
+      continue;
+
+    int left = mergeRect.tl().x - maxrect.width / 8 * 9;
+    left = left > 0 ? left : 0;
+    int right = mergeRect.br().x + maxrect.width / 8;
+    right = right + maxrect.width < src_threshold.cols - 1 ? right : src_threshold.cols - (maxrect.width + 1);
+
+    fitLine(Mat(points), line, CV_DIST_L2, 0, 0.01, 0.01);
+    float k = line[1] / line[0];
+    float step = 100;
+    cv::line(result, Point2f(line[2] - step, line[3] - k*step), Point2f(line[2] + step, k*step + line[3]), Scalar(255, 255, 255));
+
+    Point2f leftPoint((float)left, k * (left - line[2]) + line[3]);
+    Point2f rightPoint((float)right, k * (right - line[2]) + line[3]);
+
+    Rect leftRect(Point2f(leftPoint.x, leftPoint.y - maxrect.height / 2), maxrect.size());
+    Rect rightRect(Point2f(rightPoint.x, rightPoint.y - maxrect.height / 2), maxrect.size());
+
+    cv::rectangle(result, leftRect, Scalar(255, 255, 0));
+
+
+    cv::rectangle(result, rightRect, Scalar(255, 255, 0));
+
+  }
+
 
   for (auto prect : plateRects) {
     outRects.push_back(prect);

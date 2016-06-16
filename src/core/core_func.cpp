@@ -954,7 +954,7 @@ bool verifyRotatedPlateSizes(RotatedRect mr) {
 
 
 Mat mserMatch(const Mat &src, Mat &match, const Color r,
-  std::vector<RotatedRect>& out_plateRect) {
+  std::vector<RotatedRect>& out_plateRect, std::vector<Rect>& out_charRect) {
 
   std::vector<Mat> channelImages;
   std::vector<int> flags;
@@ -1051,7 +1051,12 @@ Mat mserMatch(const Mat &src, Mat &match, const Color r,
           match(rect) = 255;
 
           cv::rectangle(result, rect, Scalar(255, 0, 0));
+          Point center(rect.tl().x + rect.width / 2, rect.tl().y + rect.height / 2);
+
+          cv::circle(result, center, 3, Scalar(0, 255, 0), 2);
+
           charRects.push_back(rect);
+          out_charRect.push_back(rect);
           //CCharacter character;
           //character.setCharacterPos(rect);
           //character.setCharacterMat(binary_region);
