@@ -990,6 +990,8 @@ Mat mserMatch(const Mat &src, Mat &match, const Color r,
     //int scale_size = 1600;
     //double scale_ratio = 1;
     //Mat image = scaleImage(channelImage, Size(scale_size, scale_size), scale_ratio);
+
+
     Mat image = channelImage;
     match = Mat::zeros(image.rows, image.cols, image.type());
 
@@ -1008,6 +1010,8 @@ Mat mserMatch(const Mat &src, Mat &match, const Color r,
 
     size_t size = all_contours[i].size();
 
+    int char_index = 0;
+
     for (size_t index = 0; index < size; index++) {
       Rect rect = all_boxes[i][index];
       std::vector<Point> contour = all_contours[i][index];
@@ -1021,14 +1025,26 @@ Mat mserMatch(const Mat &src, Mat &match, const Color r,
       if (verifyCharSizes(rect)) {
         float aspect = float(rect.width) / float(rect.height);
 
-        //Mat region = image(rect);
-        //Mat binary_region;
-        //threshold(region, binary_region, 0, 255, CV_THRESH_BINARY | CV_THRESH_OTSU);
+        Mat region = image(rect);
+        Mat binary_region;
+        threshold(region, binary_region, 0, 255, CV_THRESH_BINARY | CV_THRESH_OTSU);
 
-        //Mat charInput = preprocessChar(binary_region, 20);
-        //std::string label = "";
-        //float maxVal = -2.f;
-        //bool isCharacter = CharsIdentify::instance()->isCharacter(charInput, label, maxVal);
+        Mat charInput = preprocessChar(binary_region, 20);
+        std::string label = "";
+        float maxVal = -2.f;
+        
+        // use mserMat
+        Mat mserMat = adaptive_image_from_points(contour, rect, Size(20, 20));
+
+        // use charMat
+        bool isCharacter = CharsIdentify::instance()->isCharacter(charInput, label, maxVal);
+
+        if (1)
+        {
+          std::stringstream ss(std::stringstream::in | std::stringstream::out);
+          ss << "resources/image/tmp/character" << char_index++ << ".jpg";
+          imwrite(ss.str(), mserMat);
+        }
 
         if (1) {
           //match(rect) = min(max(0, int(maxVal * 255)),255);
@@ -1046,6 +1062,8 @@ Mat mserMatch(const Mat &src, Mat &match, const Color r,
       }
     }
 
+    
+
     for (auto prect : plateRects) {
       float areasum = 0.f;
       int count = 0;
@@ -1055,12 +1073,20 @@ Mat mserMatch(const Mat &src, Mat &match, const Color r,
         
         Rect interRect = boundingrect & crect;
         if (interRect == crect) {
-
+ 
           Mat region = image(crect);
           Mat binary_region;
           threshold(region, binary_region, 0, 255, CV_THRESH_BINARY | CV_THRESH_OTSU);
 
           Mat charInput = preprocessChar(binary_region, 20);
+
+          	if(0)
+          	{ 
+          		std::stringstream ss(std::stringstream::in | std::stringstream::out);
+              ss << "resources/image/tmp/character" << char_index++ << ".jpg";
+              imwrite(ss.str(), charInput);
+          	}
+
           std::string label = "";
           float maxVal = -2.f;
           bool isCharacter = CharsIdentify::instance()->isCharacter(charInput, label, maxVal);
@@ -1089,5 +1115,87 @@ Mat mserMatch(const Mat &src, Mat &match, const Color r,
  
   return match;
 }
+
+
+bool mat_valid_position(const Mat& mat, int row, int col) {
+  return row >= 0 && col >= 0 && row < mat.rows && col < mat.cols;
+}
+
+
+template<class T>
+static void mat_set_invoke(Mat& mat, int row, int col, const Scalar& value) {
+  if (1 == mat.channels()) {
+    mat.at<T>(row, col) = (T)value.val[0];
+  }
+  else if (3 == mat.channels()) {
+    T* ptr_src = mat.ptr<T>(row, col);
+    *ptr_src++ = (T)value.val[0];
+    *ptr_src++ = (T)value.val[1];
+    *ptr_src = (T)value.val[2];
+  }
+  else if (4 == mat.channels()) {
+    T* ptr_src = mat.ptr<T>(row, col);
+    *ptr_src++ = (T)value.val[0];
+    *ptr_src++ = (T)value.val[1];
+    *ptr_src++ = (T)value.val[2];
+    *ptr_src = (T)value.val[3];
+  }
+}
+
+void setPoint(Mat& mat, int row, int col, const Scalar& value) {
+  if (CV_8U == mat.depth()) {
+    mat_set_invoke<uchar>(mat, row, col, value);
+  }
+  else if (CV_8S == mat.depth()) {
+    mat_set_invoke<char>(mat, row, col, value);
+  }
+  else if (CV_16U == mat.depth()) {
+    mat_set_invoke<ushort>(mat, row, col, value);
+  }
+  else if (CV_16S == mat.depth()) {
+    mat_set_invoke<short>(mat, row, col, value);
+  }
+  else if (CV_32S == mat.depth()) {
+    mat_set_invoke<int>(mat, row, col, value);
+  }
+  else if (CV_32F == mat.depth()) {
+    mat_set_invoke<float>(mat, row, col, value);
+  }
+  else if (CV_64F == mat.depth()) {
+    mat_set_invoke<double>(mat, row, col, value);
+  }
+}
+
+
+Mat adaptive_image_from_points(const std::vector<Point>& points,
+  const Rect& rect, const Size& size, const Scalar& backgroundColor /* = ml_color_white */, 
+  const Scalar& forgroundColor /* = ml_color_black */, bool gray /* = true */) {
+  int expendHeight = 0;
+  int expendWidth = 0;
+
+  if (rect.width > rect.height) {
+    expendHeight = (rect.width - rect.height) / 2;
+  }
+  else if (rect.height > rect.width) {
+    expendWidth = (rect.height - rect.width) / 2;
+  }
+
+  Mat image(rect.height + expendHeight * 2, rect.width + expendWidth * 2, gray ? CV_8UC1 : CV_8UC3, backgroundColor);
+
+  for (int i = 0; i < (int)points.size(); ++i) {
+    Point point = points[i];
+    Point currentPt(point.x - rect.tl().x + expendWidth, point.y - rect.tl().y + expendHeight);
+    if (mat_valid_position(image, currentPt.y, currentPt.x)) {
+      setPoint(image, currentPt.y, currentPt.x, forgroundColor);
+    }
+  }
+
+  Mat result;
+  resize(image, result, size, 0, 0, INTER_NEAREST);
+
+  return result;
+}
+
+
 
 }

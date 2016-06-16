@@ -91,8 +91,8 @@ namespace easypr {
 
       pr.setMaxPlates(4);
 
-      //pr.setDetectType(PR_DETECT_COLOR | PR_DETECT_SOBEL);
-      pr.setDetectType(PR_DETECT_CMSER);
+      pr.setDetectType(PR_DETECT_COLOR | PR_DETECT_SOBEL);
+      //pr.setDetectType(PR_DETECT_CMSER);
 
       int size = files.size();
 

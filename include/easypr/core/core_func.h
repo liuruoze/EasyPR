@@ -76,6 +76,18 @@ bool verifyRotatedPlateSizes(RotatedRect mr);
 
 Mat scaleImage(const Mat& image, const Size& maxSize, double& scale_ratio);
 
+
+/** @brief convert form mser point to image.
+
+The function created first by Hailiang Xu.
+Modified by Ruoze Liu.
+
+@param 
+*/
+Mat adaptive_image_from_points(const std::vector<Point>& points,
+  const Rect& rect, const Size& size, const Scalar& backgroundColor = Scalar(0, 0, 0),
+  const Scalar& forgroundColor = Scalar(255, 255, 255), bool gray = true);
+
 } /*! \namespace easypr*/
 
 #endif  // EASYPR_CORE_COREFUNC_H_
