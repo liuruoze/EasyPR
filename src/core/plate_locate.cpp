@@ -79,6 +79,7 @@ bool CPlateLocate::verifySizes(RotatedRect mr) {
     return true;
 }
 
+
 // !基于HSV空间的颜色搜索方法
 int CPlateLocate::mserSearch(const Mat &src, const Color r, Mat &out,
   vector<RotatedRect> &outRects, int index) {
@@ -88,7 +89,7 @@ int CPlateLocate::mserSearch(const Mat &src, const Color r, Mat &out,
   // width值对最终结果影响很大，可以考虑进行多次colorSerch，每次不同的值
   // 另一种解决方案就是在结果输出到SVM之前，进行线与角的再纠正
 
-  const int color_morph_width = 30;
+  const int color_morph_width = 20;
   const int color_morph_height = 5;
 
   std::vector<RotatedRect> plateRects;
@@ -142,7 +143,7 @@ int CPlateLocate::mserSearch(const Mat &src, const Color r, Mat &out,
       float height = mr.size.height;     
 
       RotatedRect candRect(mr.center,
-        Size2f(float(width * 1.1), float(height * 1.1)), mr.angle);
+        Size2f(float(width * 1.05), float(height * 1.1)), mr.angle);
 
       outRects.push_back(candRect);
 
@@ -159,35 +160,46 @@ int CPlateLocate::mserSearch(const Mat &src, const Color r, Mat &out,
   }
 
   for (auto prect : plateRects) {
-    for (auto rrect : contourRects) {
-      Rect rect = prect.boundingRect();
-      Rect interRect = rect & rrect.boundingRect();
-      Rect unionRect = rect | rrect.boundingRect();
-      double ratio = (double)interRect.area() / (double)unionRect.area();
-      
-      if (unionRect == rect && ratio > 0.618) {
-        std::cout << "ratio:" << ratio << std::endl;
-        float x = (float)rect.tl().x;
-        float y = (float)rect.tl().y;
-        float width = (float)rect.width;
-        float height = (float)rect.height;
-        RotatedRect candRect(Point2f(float(x + width / 2), float(y + height / 2)),
-          Size2f(float(width), float(height)), 0);
+    outRects.push_back(prect);
 
-        Rect_<float> outputRect;
-        calcSafeRect(candRect, src, outputRect);
+    Rect_<float> outputRect;
+    calcSafeRect(prect, src, outputRect);
 
-        cv::rectangle(result, outputRect, Scalar(0, 255, 0));
+    cv::rectangle(result, outputRect, Scalar(0, 0, 255));
 
-        if (0) {
-          imshow("outputRect", src(outputRect));
-          waitKey(0);
-        }
-
-        outRects.push_back(candRect);
-      }
-        
+    if (0) {
+      imshow("outputRect", src(outputRect));
+      waitKey(0);
     }
+    //for (auto rrect : contourRects) {
+    //  Rect rect = prect.boundingRect();
+    //  Rect interRect = rect & rrect.boundingRect();
+    //  Rect unionRect = rect | rrect.boundingRect();
+    //  double ratio = (double)interRect.area() / (double)unionRect.area();
+    //  
+    //  if (unionRect == rect && ratio > 0.618) {
+    //    std::cout << "ratio:" << ratio << std::endl;
+    //    float x = (float)rect.tl().x;
+    //    float y = (float)rect.tl().y;
+    //    float width = (float)rect.width;
+    //    float height = (float)rect.height;
+    //    RotatedRect candRect(Point2f(float(x + width / 2), float(y + height / 2)),
+    //      Size2f(float(width), float(height)), 0);
+
+    //    Rect_<float> outputRect;
+    //    calcSafeRect(candRect, src, outputRect);
+
+    //    cv::rectangle(result, outputRect, Scalar(0, 255, 0));
+
+    //    if (0) {
+    //      imshow("outputRect", src(outputRect));
+    //      waitKey(0);
+    //    }
+
+    //    outRects.push_back(candRect);
+    //  }
+    //    
+    //}
   }
 
   if (1) {

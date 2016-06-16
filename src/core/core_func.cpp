@@ -891,7 +891,7 @@ bool verifyPlateSize(Rect mr) {
 }
 
 bool verifyRotatedPlateSizes(RotatedRect mr) {
-  float error = 0.3f;
+  float error = 0.5f;
   // Spain car plate size: 52x11 aspect 4,7272
   // China car plate size: 440mm*140mm，aspect 3.142857
 
@@ -906,7 +906,7 @@ bool verifyRotatedPlateSizes(RotatedRect mr) {
 
   // Get only patchs that match to a respect ratio.
   float aspect_min = aspect - aspect * error;
-  float aspect_max = aspect + aspect * error;
+  float aspect_max = aspect + aspect * error * 0.5f;
 
   float width_max = 400.f;
   float width_min = 40.f;
@@ -942,8 +942,8 @@ bool verifyRotatedPlateSizes(RotatedRect mr) {
     //  std::cout << "min:" << min << std::endl;
     //  std::cout << "max:" << max << std::endl;
     //  std::cout << "area:" << area << std::endl;
-    //  //std::cout << "ratio:" << ratio << std::endl;
-    //  //std::cout << "angle:" << angle << std::endl;
+    //  std::cout << "ratio:" << ratio << std::endl;
+    //  std::cout << "angle:" << angle << std::endl;
     //  return true;
     //}     
     return false;
@@ -954,10 +954,13 @@ bool verifyRotatedPlateSizes(RotatedRect mr) {
 
 
 Mat mserMatch(const Mat &src, Mat &match, const Color r,
-  std::vector<RotatedRect>& plateRect) {
+  std::vector<RotatedRect>& out_plateRect) {
 
   std::vector<Mat> channelImages;
   std::vector<int> flags;
+
+  std::vector<RotatedRect> plateRects;
+  std::vector<Rect> charRects;
 
   // only conside blue plate
   if (1) {
@@ -1011,8 +1014,8 @@ Mat mserMatch(const Mat &src, Mat &match, const Color r,
       RotatedRect rrect = minAreaRect(Mat(contour));
 
       if (verifyRotatedPlateSizes(rrect)) {
-        cv::rectangle(result, rrect.boundingRect(), Scalar(0, 255, 0));
-        plateRect.push_back(rrect);
+        //cv::rectangle(result, rrect.boundingRect(), Scalar(0, 255, 0));
+        plateRects.push_back(rrect);
       }
 
       if (verifyCharSizes(rect)) {
@@ -1032,7 +1035,7 @@ Mat mserMatch(const Mat &src, Mat &match, const Color r,
           match(rect) = 255;
 
           cv::rectangle(result, rect, Scalar(255, 0, 0));
-
+          charRects.push_back(rect);
           //CCharacter character;
           //character.setCharacterPos(rect);
           //character.setCharacterMat(binary_region);
@@ -1040,6 +1043,40 @@ Mat mserMatch(const Mat &src, Mat &match, const Color r,
           //character.setCharacterScore(maxVal);
           //charVec.push_back(character);
         }
+      }
+    }
+
+    for (auto prect : plateRects) {
+      float areasum = 0.f;
+      int count = 0;
+
+      Rect boundingrect = prect.boundingRect();
+      for (auto crect : charRects) {
+        
+        Rect interRect = boundingrect & crect;
+        if (interRect == crect) {
+
+          Mat region = image(crect);
+          Mat binary_region;
+          threshold(region, binary_region, 0, 255, CV_THRESH_BINARY | CV_THRESH_OTSU);
+
+          Mat charInput = preprocessChar(binary_region, 20);
+          std::string label = "";
+          float maxVal = -2.f;
+          bool isCharacter = CharsIdentify::instance()->isCharacter(charInput, label, maxVal);
+          if (isCharacter) {
+            areasum += crect.area();
+            count++;
+          }
+        }
+      }
+
+      float ratio = areasum / (float)boundingrect.area();
+      if (ratio - 0.5f > 0 && count >= 5) {
+        std::cout << "ratio:" << ratio << std::endl;
+        std::cout << "count:" << count << std::endl;
+        cv::rectangle(result, prect.boundingRect(), Scalar(0, 255, 0));
+        out_plateRect.push_back(prect);
       }
     }
 
