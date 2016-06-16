@@ -908,8 +908,11 @@ bool verifyRotatedPlateSizes(RotatedRect mr) {
   float aspect_min = aspect - aspect * error;
   float aspect_max = aspect + aspect * error;
 
-  int min = int(40.f * 40.f * aspect_min * 1.f);  // minimum area
-  int max = int(40.f * 40.f * aspect_max * 100.f);  // maximum area
+  float width_max = 400.f;
+  float width_min = 40.f;
+
+  float min = float(width_min * width_min / aspect_max);  // minimum area
+  float max = float(width_max * width_max / aspect_min);  // maximum area
 
   float width = mr.size.width;
   float height = mr.size.height;
@@ -925,18 +928,26 @@ bool verifyRotatedPlateSizes(RotatedRect mr) {
     //std::cout << "angle:" << angle << std::endl;
   }
 
-  float angle_f = -90.f + 50;
-  float angle_l = 90.f - 50;
+  float angle_min = -60.f;
+  float angle_max = 60.f;
 
-  float width_max = 400;
-  float width_min = 40;
-
-  // cout << "area:" << area << endl;
-  // cout << "r:" << r << endl;
+  //std::cout << "area:" << area << std::endl;
+  //std::cout << "ratio:" << ratio << std::endl;
+  //std::cout << "angle:" << angle << std::endl;
 
   if ((area < min || area > max) || (ratio < aspect_min || ratio > aspect_max)
-    || (angle < angle_f || angle > angle_l) || (width < width_min || width > width_max))
+    || (angle < angle_min || angle > angle_max) || (width < width_min || width > width_max)) {
+
+    //if (abs(angle) - 0.f < 3.f ) {
+    //  std::cout << "min:" << min << std::endl;
+    //  std::cout << "max:" << max << std::endl;
+    //  std::cout << "area:" << area << std::endl;
+    //  //std::cout << "ratio:" << ratio << std::endl;
+    //  //std::cout << "angle:" << angle << std::endl;
+    //  return true;
+    //}     
     return false;
+  }
   else
     return true;
 }

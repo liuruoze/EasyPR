@@ -83,6 +83,7 @@ bool CPlateLocate::verifySizes(RotatedRect mr) {
 int CPlateLocate::mserSearch(const Mat &src, const Color r, Mat &out,
   vector<RotatedRect> &outRects, int index) {
   Mat match_grey;
+  Mat result = src.clone();
 
   // width值对最终结果影响很大，可以考虑进行多次colorSerch，每次不同的值
   // 另一种解决方案就是在结果输出到SVM之前，进行线与角的再纠正
@@ -131,14 +132,15 @@ int CPlateLocate::mserSearch(const Mat &src, const Color r, Mat &out,
     RotatedRect mr = minAreaRect(Mat(*itc));
 
     // 需要进行大小尺寸判断
-    if (!verifySizes(mr))
+    if (!verifyRotatedPlateSizes(mr))
       itc = contours.erase(itc);
     else {
       ++itc;
       contourRects.push_back(mr);
 
       float width = mr.size.width;
-      float height = mr.size.height;
+      float height = mr.size.height;     
+
       RotatedRect candRect(mr.center,
         Size2f(float(width * 1.1), float(height * 1.1)), mr.angle);
 
@@ -146,8 +148,11 @@ int CPlateLocate::mserSearch(const Mat &src, const Color r, Mat &out,
 
       Rect_<float> outputRect;
       calcSafeRect(candRect, src, outputRect);
+
+      cv::rectangle(result, outputRect, Scalar(0, 0, 255));
+
       if (0) {
-        imshow("inMat", src(outputRect));
+        imshow("outputRect", src(outputRect));
         waitKey(0);
       }
     }
@@ -169,10 +174,25 @@ int CPlateLocate::mserSearch(const Mat &src, const Color r, Mat &out,
         RotatedRect candRect(Point2f(float(x + width / 2), float(y + height / 2)),
           Size2f(float(width), float(height)), 0);
 
+        Rect_<float> outputRect;
+        calcSafeRect(candRect, src, outputRect);
+
+        cv::rectangle(result, outputRect, Scalar(0, 255, 0));
+
+        if (0) {
+          imshow("outputRect", src(outputRect));
+          waitKey(0);
+        }
+
         outRects.push_back(candRect);
       }
         
     }
+  }
+
+  if (1) {
+    imshow("result", result);
+    waitKey(0);
   }
 
 

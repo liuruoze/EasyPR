@@ -372,6 +372,13 @@ namespace easypr {
           }
       }
 
+      //RotatedRect testrr(Point2f(200, 200), Size2f(375, 100), 1.f);
+      //Point2f rect_points[4]; 
+      //testrr.points(rect_points);
+      //for (int j = 0; j < 4; j++)
+      //  line(result, rect_points[j], rect_points[(j + 1) % 4], Scalar(0,0,255), 2, 8);
+
+
       if (1) {
         imshow("result", result);
         waitKey(0);
