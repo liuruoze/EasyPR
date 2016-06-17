@@ -57,7 +57,7 @@ Color getPlateType(const Mat& src, const bool adaptive_minsv);
 //! 直方图均衡
 
 Mat histeq(Mat in);
-Mat features(Mat in, int sizeData);
+Mat charFeatures(Mat in, int sizeData);
 Rect GetCenterRect(Mat& in);
 Mat CutTheRect(Mat& in, Rect& rect);
 int ThresholdOtsu(Mat mat);

@@ -9,7 +9,7 @@ namespace easypr {
 
 //! 获取垂直和水平的直方图图值
 
-Mat getTheFeatures(Mat in) {
+Mat getHistogram(Mat in) {
   const int VERTICAL = 0;
   const int HORIZONTAL = 1;
 
@@ -49,7 +49,7 @@ void getHistogramFeatures(const Mat& image, Mat& features) {
   Mat img_threshold;
   threshold(grayImage, img_threshold, 0, 255,
             CV_THRESH_OTSU + CV_THRESH_BINARY);
-  features = getTheFeatures(img_threshold);
+  features = getHistogram(img_threshold);
 }
 
 //! EasyPR的getFeatures回调函数

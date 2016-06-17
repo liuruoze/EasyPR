@@ -85,9 +85,7 @@ int CPlateLocate::mserSearch(const Mat &src, const Color r, Mat &out,
   vector<RotatedRect> &outRects, int index) {
   Mat match_grey;
   Mat result = src.clone();
-
-  // width值对最终结果影响很大，可以考虑进行多次colorSerch，每次不同的值
-  // 另一种解决方案就是在结果输出到SVM之前，进行线与角的再纠正
+  cvtColor(result, result, COLOR_GRAY2BGR);
 
   const int color_morph_width = 20;
   const int color_morph_height = 5;
@@ -179,6 +177,7 @@ int CPlateLocate::mserSearch(const Mat &src, const Color r, Mat &out,
         Point center(charRect.tl().x + charRect.width / 2, charRect.tl().y + charRect.height / 2);
         points.push_back(center);
 
+        cv::circle(result, center, 3, Scalar(0, 255, 0), 2);
         if (charRect.area() - maxarea > 0.1f) {
           maxrect = charRect;
           maxarea = charRect.area();
@@ -206,10 +205,24 @@ int CPlateLocate::mserSearch(const Mat &src, const Color r, Mat &out,
     Rect rightRect(Point2f(rightPoint.x, rightPoint.y - maxrect.height / 2), maxrect.size());
 
     cv::rectangle(result, leftRect, Scalar(255, 255, 0));
-
-
     cv::rectangle(result, rightRect, Scalar(255, 255, 0));
 
+    /*vector<Mat> slideMat;
+
+    int steplength = maxrect.width;
+    for (int step = - steplength / 2; step < steplength / 2; step++) {
+      int rightx = right + step;
+      Point2f rightPoint((float)rightx, k * (rightx - line[2]) + line[3]);
+      Rect slideRightRect(Point2f(rightPoint.x, rightPoint.y - maxrect.height / 2), maxrect.size());
+
+      Mat region = grayImage(slideRightRect);
+      Mat binary_region;
+      threshold(region, binary_region, 0, 255, CV_THRESH_BINARY | CV_THRESH_OTSU);
+
+      Mat charInput = preprocessChar(binary_region, 20);
+
+      slideMat.push_back(charInput);
+    }*/
   }
 
 
@@ -962,21 +975,45 @@ int CPlateLocate::plateColorLocate(Mat src, vector<CPlate> &candPlates,
 //! MSER plate locate
 
 int CPlateLocate::plateMserLocate(Mat src, vector<CPlate> &candPlates, int index) {
+  std::vector<Mat> channelImages;
+  std::vector<int> flags;
+
+  // only conside blue plate
+  if (1) {
+    Mat grayImage;
+    cvtColor(src, grayImage, COLOR_BGR2GRAY);
+    channelImages.push_back(grayImage);
+    flags.push_back(0);
+
+    //Mat singleChannelImage;
+    //extractChannel(src, singleChannelImage, 2);
+    //channelImages.push_back(singleChannelImage);
+    //flags.push_back(0);
+
+    //channelImages.push_back(255 - grayImage);
+    //flags.push_back(1);
+  }
 
   vector<RotatedRect> rects_mser_blue;
   vector<CPlate> plates;
   Mat src_b;
 
-  //// 查找蓝色车牌
-  //// 查找颜色匹配车牌
-  mserSearch(src, BLUE, src_b, rects_mser_blue, index);
+  for (size_t i = 0; i < channelImages.size(); ++i)
+  {
+    Mat channelImage = channelImages[i];
+    int scale_size = 1024;
+    double scale_ratio = 1;
+    Mat image = scaleImage(channelImage, Size(scale_size, scale_size), scale_ratio);
 
-  //// 进行抗扭斜处理
-  deskew(src, src_b, rects_mser_blue, plates);
-
-  for (size_t i = 0; i < plates.size(); i++) {
-    candPlates.push_back(plates[i]);
+    mserSearch(image, BLUE, src_b, rects_mser_blue, index);
   }
+
+  //deskew(src, src_b, rects_mser_blue, plates);
+
+  //for (size_t i = 0; i < plates.size(); i++) {
+  //  candPlates.push_back(plates[i]);
+  //}
+
   return 0;
 }
 

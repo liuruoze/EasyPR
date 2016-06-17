@@ -101,7 +101,7 @@ cv::Ptr<cv::ml::TrainData> AnnTrain::tdata() {
     auto chars_files = utils::getFiles(sub_folder);
     for (auto file : chars_files) {
       auto img = cv::imread(file, 0);  // a grayscale image
-      auto fps = features(img, kPredictSize);
+      auto fps = charFeatures(img, kPredictSize);
 
       samples.push_back(fps);
       labels.push_back(i);

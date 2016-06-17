@@ -778,7 +778,7 @@ namespace cv
       // dont need when plate is blue
       preprocess1(src, level_size);
       if (!params.pass2Only)
-        //pass(src, msers, bboxes, size, level_size, 0);
+        pass(src, msers, bboxes, size, level_size, 0);
 
       // brighter to darker (MSER-)
       preprocess2(src, level_size);

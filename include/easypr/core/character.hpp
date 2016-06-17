@@ -54,20 +54,19 @@ namespace easypr {
 
   private:
     //! character mat
-
     Mat m_characterMat;
 
     //! character rect
-
     Rect m_characterPos;
 
     //! character str
-
     String m_characterStr;
 
     //! character likely
-
     double m_score;
+
+    //! weather is chinese
+    bool isChinese;
 
   };
 

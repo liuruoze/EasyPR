@@ -7,7 +7,7 @@ namespace easypr {
 
 //! 获得车牌的特征数
 
-cv::Mat getTheFeatures(cv::Mat in);
+cv::Mat getHistogram(cv::Mat in);
 
 //! EasyPR的getFeatures回调函数
 //! 用于从车牌的image生成svm的训练特征features

@@ -1,4 +1,5 @@
 #include "easypr/core/chars_identify.h"
+#include "easypr/core/character.hpp"
 #include "easypr/config.h"
 #include "easypr/core/core_func.h"
 
@@ -96,7 +97,7 @@ namespace easypr {
   }
 
   bool CharsIdentify::isCharacter(cv::Mat input, std::string& label, float& maxVal, bool isChinese) {
-    cv::Mat feature = features(input, kPredictSize);
+    cv::Mat feature = charFeatures(input, kPredictSize);
     auto index = static_cast<int>(classify(feature, maxVal, isChinese));
 
     if (isChinese)
@@ -118,8 +119,32 @@ namespace easypr {
       return false;
   }
 
+  /*bool CharsIdentify::charsJudge(std::vector<CCharacter>& charVec) {
+    cv::Mat feature = charFeatures(input, kPredictSize);
+    auto index = static_cast<int>(classify(feature, maxVal, isChinese));
+
+    if (isChinese)
+      std::cout << "maxVal:" << maxVal << std::endl;
+
+    if (maxVal >= 0.9) {
+      if (index < kCharactersNumber) {
+        label = std::make_pair(kChars[index], kChars[index]).second;
+      }
+      else {
+        const char* key = kChars[index];
+        std::string s = key;
+        std::string province = kv_->get(s);
+        label = std::make_pair(s, province).second;
+      }
+      return true;
+    }
+    else
+      return false;
+  }*/
+
+
   std::pair<std::string, std::string> CharsIdentify::identify(cv::Mat input, bool isChinese) {
-    cv::Mat feature = features(input, kPredictSize);
+    cv::Mat feature = charFeatures(input, kPredictSize);
     float maxVal = -2;
     auto index = static_cast<int>(classify(feature, maxVal, isChinese));
     if (index < kCharactersNumber) {
@@ -139,7 +164,7 @@ namespace easypr {
     size_t input_size = inputs.size();
     for (size_t i = 0; i < input_size; i++) {
       Mat input = inputs[i];
-      cv::Mat feature = features(input, kPredictSize);
+      cv::Mat feature = charFeatures(input, kPredictSize);
       featureRows.push_back(feature);
     }
 

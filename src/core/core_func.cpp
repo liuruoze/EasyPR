@@ -685,7 +685,7 @@ Rect GetCenterRect(Mat &in) {
   return _rect;
 }
 
-Mat features(Mat in, int sizeData) {
+Mat charFeatures(Mat in, int sizeData) {
 
   //抠取中间区域
 
@@ -720,8 +720,7 @@ Mat features(Mat in, int sizeData) {
   }
   for (int x = 0; x < lowData.cols; x++) {
     for (int y = 0; y < lowData.rows; y++) {
-      out.at<float>(j) += (float) lowData.at < unsigned
-      char > (x, y);
+      out.at<float>(j) += (float) lowData.at <unsigned char> (x, y);
       j++;
     }
   }
@@ -952,99 +951,56 @@ bool verifyRotatedPlateSizes(RotatedRect mr) {
     return true;
 }
 
-
+//! use verify size to first generate candidates
 Mat mserMatch(const Mat &src, Mat &match, const Color r,
   std::vector<RotatedRect>& out_plateRect, std::vector<Rect>& out_charRect) {
-
-  std::vector<Mat> channelImages;
-  std::vector<int> flags;
-
+  Mat image = src;
+ 
   std::vector<RotatedRect> plateRects;
   std::vector<Rect> charRects;
 
-  // only conside blue plate
-  if (1) {
-    Mat grayImage;
-    cvtColor(src, grayImage, COLOR_BGR2GRAY);
-    channelImages.push_back(grayImage);
-    flags.push_back(0);
+  std::vector<std::vector<Point>> all_contours;
+  std::vector<Rect> all_boxes;
 
-    //Mat singleChannelImage;
-    //extractChannel(src, singleChannelImage, 2);
-    //channelImages.push_back(singleChannelImage);
-    //flags.push_back(0);
-  }
-
-  std::vector<std::vector<std::vector<Point>>> all_contours;
-  std::vector<std::vector<Rect>> all_boxes;
-
-  all_contours.resize(channelImages.size());
-  all_boxes.resize(channelImages.size());
-
-  for (int i = 0; i < (int)channelImages.size(); ++i)
-  {
     Ptr<MSER> mser;
     std::vector<CCharacter> charVec;
-    Mat channelImage = channelImages[i];
-
-    //int scale_size = 1600;
-    //double scale_ratio = 1;
-    //Mat image = scaleImage(channelImage, Size(scale_size, scale_size), scale_ratio);
-
-
-    Mat image = channelImage;
+  
     match = Mat::zeros(image.rows, image.cols, image.type());
 
     Mat result = image.clone();
     cvtColor(result, result, COLOR_GRAY2BGR);
 
     int imageArea = image.rows * image.cols;
+    mser = MSER::create(1, 30, int(0.05 * imageArea));
+    mser->detectRegions(image, all_contours, all_boxes);
 
-    if (3 == flags[i]) {
-      mser = MSER::create(3, 30, int(0.05 * imageArea));
-    }
-    else {
-      mser = MSER::create(1, 30, int(0.05 * imageArea));
-    }
-    mser->detectRegions(image, all_contours[i], all_boxes[i]);
-
-    size_t size = all_contours[i].size();
+    size_t size = all_contours.size();
 
     int char_index = 0;
 
     for (size_t index = 0; index < size; index++) {
-      Rect rect = all_boxes[i][index];
-      std::vector<Point> contour = all_contours[i][index];
+      Rect rect = all_boxes[index];
+      std::vector<Point> contour = all_contours[index];
       RotatedRect rrect = minAreaRect(Mat(contour));
 
       if (verifyRotatedPlateSizes(rrect)) {
         //cv::rectangle(result, rrect.boundingRect(), Scalar(0, 255, 0));
+
+        Point2f rect_points[4];
+        rrect.points(rect_points);
+        for (int j = 0; j < 4; j++)
+          line(result, rect_points[j], rect_points[(j + 1) % 4], Scalar(0, 255, 0), 1, 8);
+
         plateRects.push_back(rrect);
       }
 
       if (verifyCharSizes(rect)) {
-        float aspect = float(rect.width) / float(rect.height);
-
-        Mat region = image(rect);
-        Mat binary_region;
-        threshold(region, binary_region, 0, 255, CV_THRESH_BINARY | CV_THRESH_OTSU);
-
-        Mat charInput = preprocessChar(binary_region, 20);
-        std::string label = "";
-        float maxVal = -2.f;
-        
-        // use mserMat
-        Mat mserMat = adaptive_image_from_points(contour, rect, Size(20, 20));
-
-        // use charMat
-        bool isCharacter = CharsIdentify::instance()->isCharacter(charInput, label, maxVal);
-
-        if (1)
-        {
-          std::stringstream ss(std::stringstream::in | std::stringstream::out);
-          ss << "resources/image/tmp/character" << char_index++ << ".jpg";
-          imwrite(ss.str(), mserMat);
-        }
+        //if (0)
+        //{
+        //  std::stringstream ss(std::stringstream::in | std::stringstream::out);
+        //  ss << "resources/image/tmp/character" << char_index++ << ".jpg";
+        //  imwrite(ss.str(), mserMat);
+        //}
 
         if (1) {
           //match(rect) = min(max(0, int(maxVal * 255)),255);
@@ -1053,7 +1009,7 @@ Mat mserMatch(const Mat &src, Mat &match, const Color r,
           cv::rectangle(result, rect, Scalar(255, 0, 0));
           Point center(rect.tl().x + rect.width / 2, rect.tl().y + rect.height / 2);
 
-          cv::circle(result, center, 3, Scalar(0, 255, 0), 2);
+          //cv::circle(result, center, 3, Scalar(0, 255, 0), 2);
 
           charRects.push_back(rect);
           out_charRect.push_back(rect);
@@ -1066,9 +1022,7 @@ Mat mserMatch(const Mat &src, Mat &match, const Color r,
         }
       }
     }
-
-    
-
+ 
     for (auto prect : plateRects) {
       float areasum = 0.f;
       int count = 0;
@@ -1106,7 +1060,7 @@ Mat mserMatch(const Mat &src, Mat &match, const Color r,
       if (ratio - 0.5f > 0 && count >= 5) {
         std::cout << "ratio:" << ratio << std::endl;
         std::cout << "count:" << count << std::endl;
-        cv::rectangle(result, prect.boundingRect(), Scalar(0, 255, 0));
+        //cv::rectangle(result, prect.boundingRect(), Scalar(0, 255, 0));
         out_plateRect.push_back(prect);
       }
     }
@@ -1115,7 +1069,6 @@ Mat mserMatch(const Mat &src, Mat &match, const Color r,
       imshow("result", result);
       waitKey(0);
     }
-  }
 
  
   return match;
