@@ -12,8 +12,12 @@ class CharsIdentify {
   static CharsIdentify* instance();
 
   int classify(cv::Mat f, float& maxVal, bool isChinses = false);
+  void classify(cv::Mat featureRows, std::vector<int>& out_maxIndexs,
+    std::vector<float>& out_maxVals, std::vector<bool> isChineseVec);
 
   std::pair<std::string, std::string> identify(cv::Mat input, bool isChinese = false);
+  int identify(std::vector<cv::Mat> inputs, std::vector<std::pair<std::string, std::string>>& outputs,
+    std::vector<bool> isChineseVec);
 
   bool isCharacter(cv::Mat input, std::string& label, float& maxVal, bool isChinese = false);
 

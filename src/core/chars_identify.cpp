@@ -24,6 +24,44 @@ namespace easypr {
     ann_->ml::ANN_MLP::load<ml::ANN_MLP>(path);
   }
 
+  void CharsIdentify::classify(cv::Mat featureRows, std::vector<int>& out_maxIndexs, 
+    std::vector<float>& out_maxVals, std::vector<bool> isChineseVec){
+    int rowNum = featureRows.rows;
+
+    cv::Mat output(rowNum, kCharsTotalNumber, CV_32FC1);
+    ann_->predict(featureRows, output);
+
+    for (int output_index = 0; output_index < rowNum; output_index++) {
+      int result = -1;
+      float maxVal = -2.f;
+      bool isChinses = isChineseVec[output_index];
+      if (!isChinses) {
+        result = 0;
+        for (int j = 0; j < kCharactersNumber; j++) {
+          float val = output.at<float>(j);
+          // std::cout << "j:" << j << "val:" << val << std::endl;
+          if (val > maxVal) {
+            maxVal = val;
+            result = j;
+          }
+        }
+      } 
+      else {
+        result = kCharactersNumber;
+        for (int j = kCharactersNumber; j < kCharsTotalNumber; j++) {
+          float val = output.at<float>(j);
+          //std::cout << "j:" << j << "val:" << val << std::endl;
+          if (val > maxVal) {
+            maxVal = val;
+            result = j;
+          }
+        }
+      }
+      out_maxIndexs[output_index] = result;
+      out_maxVals[output_index] = maxVal;
+    }
+  }
+
   int CharsIdentify::classify(cv::Mat f, float& maxVal, bool isChinses){
     int result = -1;
 
@@ -31,29 +69,23 @@ namespace easypr {
     ann_->predict(f, output);
 
     maxVal = -2.f;
-    if (!isChinses)
-    {
+    if (!isChinses) {
       result = 0;
-      for (int j = 0; j < kCharactersNumber; j++)
-      {
+      for (int j = 0; j < kCharactersNumber; j++) {
         float val = output.at<float>(j);
         // std::cout << "j:" << j << "val:" << val << std::endl;
-        if (val > maxVal)
-        {
+        if (val > maxVal) {
           maxVal = val;
           result = j;
         }
       }
     }
-    else
-    {
+    else {
       result = kCharactersNumber;
-      for (int j = kCharactersNumber; j < kCharsTotalNumber; j++)
-      {
+      for (int j = kCharactersNumber; j < kCharsTotalNumber; j++) {
         float val = output.at<float>(j);
         //std::cout << "j:" << j << "val:" << val << std::endl;
-        if (val > maxVal)
-        {
+        if (val > maxVal) {
           maxVal = val;
           result = j;
         }
@@ -86,7 +118,6 @@ namespace easypr {
       return false;
   }
 
-
   std::pair<std::string, std::string> CharsIdentify::identify(cv::Mat input, bool isChinese) {
     cv::Mat feature = features(input, kPredictSize);
     float maxVal = -2;
@@ -100,6 +131,34 @@ namespace easypr {
       std::string province = kv_->get(s);
       return std::make_pair(s, province);
     }
+  }
 
+  int CharsIdentify::identify(std::vector<cv::Mat> inputs, std::vector<std::pair<std::string, std::string>>& outputs,
+    std::vector<bool> isChineseVec) {
+    Mat featureRows;
+    size_t input_size = inputs.size();
+    for (size_t i = 0; i < input_size; i++) {
+      Mat input = inputs[i];
+      cv::Mat feature = features(input, kPredictSize);
+      featureRows.push_back(feature);
+    }
+
+    std::vector<int> maxIndexs;
+    std::vector<float> maxVals;
+    classify(featureRows, maxIndexs, maxVals, isChineseVec);
+
+    for (size_t row_index = 0; row_index < input_size; row_index++) {
+      int index = maxIndexs[row_index];
+      if (index < kCharactersNumber) {
+        outputs[row_index] = std::make_pair(kChars[index], kChars[index]);
+      }
+      else {
+        const char* key = kChars[index];
+        std::string s = key;
+        std::string province = kv_->get(s);
+        outputs[row_index] = std::make_pair(s, province);
+      }
+    }
+    return 0;
   }
 }
