@@ -54,11 +54,6 @@ class CPlateLocate {
 
   int sobelOper(const Mat& in, Mat& out, int blurSize, int morphW, int morphH);
 
-  //! 计算一个安全的Rect
-
-  bool calcSafeRect(const RotatedRect& roi_rect, const Mat& src,
-                    Rect_<float>& safeBoundRect);
-
   //! 旋转操作
 
   bool rotation(Mat& in, Mat& out, const Size rect_size, const Point2f center,

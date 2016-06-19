@@ -88,6 +88,10 @@ Mat adaptive_image_from_points(const std::vector<Point>& points,
   const Rect& rect, const Size& size, const Scalar& backgroundColor = Scalar(0, 0, 0),
   const Scalar& forgroundColor = Scalar(255, 255, 255), bool gray = true);
 
+//! 计算一个安全的Rect
+bool calcSafeRect(const RotatedRect& roi_rect, const Mat& src,
+  Rect_<float>& safeBoundRect);
+
 } /*! \namespace easypr*/
 
 #endif  // EASYPR_CORE_COREFUNC_H_

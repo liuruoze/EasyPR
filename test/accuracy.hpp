@@ -6,7 +6,10 @@
 #include <fstream>
 #include <list>
 #include <memory>
+#include <numeric> 
 #include "xml/xmlParser.h"
+#include "easypr/core/core_func.h"
+#include "easypr/util/util.h"
 
 using namespace std;
 
@@ -41,7 +44,12 @@ namespace easypr {
 
           string plateStr = plateNode.getText();
 
-          RotatedRect rr(Point2f(float(x), float(y)), Size2f(float(width), float(height)), angle);
+          if (width < height) {
+            std::swap(width, height);
+            angle = angle + 90;
+          }
+
+          RotatedRect rr(Point2f(float(x), float(y)), Size2f(float(width), float(height)), (float)angle);
 
           CPlate plate;
           plate.setPlateStr(plateStr);
@@ -133,6 +141,11 @@ namespace easypr {
 
       float match_rate = 0;
 
+      // calucate the detect precise and recall
+      // use icdar 2003 evalution protoocal
+      vector<float> icdar2003_recall_all;
+      vector<float> icdar2003_precise_all;
+
       // 开始和结束时间
 
       time_t begin, end;
@@ -159,22 +172,106 @@ namespace easypr {
         XMLNode xNode = xMainNode.addChild("image");
         xNode.addChild("imageName").addText(plateLicense.c_str());
 
-        map<string, vector<CPlate>>::iterator it;
+        XMLNode rectangleNodes = xNode.addChild("taggedRectangles");
 
+        vector<CPlate> plateVec;
+        int result = pr.plateRecognize(src, plateVec);
+
+        // get the ground truth and compare it with the detect list;
+        map<string, vector<CPlate>>::iterator it;
+        vector<CPlate> plateVecGT;
         it = xmlMap.find(plateLicense);
         if (it != xmlMap.end()) {
           cout << it->first << endl;
-          vector<CPlate> plateVec = it->second;
-          for (auto plate : plateVec) {
-            cout << plate.getPlateStr() << " (g)" << endl;
+          plateVecGT = it->second;        
+        }
+        
+        // calucate the detect recall
+        // use icdar 2003 evalution protoocal
+        vector<float> icdar2003_recall;
+        vector<float> icdar2003_precise;
+
+        for (auto plate_g : plateVecGT) {
+          float bestmatch = 0.f;
+
+          RotatedRect platePos_g = plate_g.getPlatePos();
+          Rect_<float> plateRect_g;
+          calcSafeRect(platePos_g, src, plateRect_g);
+
+          for (auto plate_d : plateVec) {
+            RotatedRect platePos_d = plate_d.getPlatePos();
+            Rect_<float> plateRect_d;
+            calcSafeRect(platePos_d, src, plateRect_d);
+
+            Rect interRect = plateRect_g & plateRect_d;
+
+            float match = 2 * (interRect.area()) / (plateRect_g.area() + plateRect_d.area());
+            if (match > bestmatch)
+              bestmatch = match;
+          }
+
+          icdar2003_recall_all.push_back(bestmatch);
+          icdar2003_recall.push_back(bestmatch);
+
+          string plateLicense = plate_g.getPlateStr();
+          string license = Utils::splitString(plateLicense, ':')[1];
+          cout << plate_g.getPlateStr() << " (g)" << endl;
+          if (1)
+          {
+            std::stringstream ss(std::stringstream::in | std::stringstream::out);
+            ss << "resources/image/tmp/plate_" << license << ".jpg";
+            Mat outMat = src(plateRect_g);
+            Mat plate_mat;
+            plate_mat.create(36, 136, 16);
+            resize(outMat, plate_mat, plate_mat.size(), 0, 0, INTER_AREA);
+            imwrite(ss.str(), plate_mat);
           }
         }
 
-        XMLNode rectangleNodes = xNode.addChild("taggedRectangles");
-        vector<CPlate> plateVec;
+        // calucate the detect precise
+        // use icdar 2003 evalution protoocal
+        for (auto plate_d : plateVec) {
+          float bestmatch = 0.f;
 
-        int result = pr.plateRecognize(src, plateVec);
-        //int result = pr.plateRecognizeAsText(src, plateVec);
+          RotatedRect platePos_d = plate_d.getPlatePos();
+          Rect_<float> plateRect_d;
+          calcSafeRect(platePos_d, src, plateRect_d);
+
+          for (auto plate_g : plateVecGT) {
+            RotatedRect platePos_g = plate_g.getPlatePos();
+            Rect_<float> plateRect_g;
+            calcSafeRect(platePos_g, src, plateRect_g);
+
+            Rect interRect = plateRect_g & plateRect_d;
+
+            float match = 2 * (interRect.area()) / (plateRect_g.area() + plateRect_d.area());
+            if (match > bestmatch)
+              bestmatch = match;
+          }
+
+          icdar2003_precise_all.push_back(bestmatch);     
+          icdar2003_precise.push_back(bestmatch);
+        }
+
+        double recall_result = 0;
+        if (icdar2003_recall.size() > 0) {
+          recall_result = std::accumulate(icdar2003_recall.begin(),
+            icdar2003_recall.end(), 0.0) / (double)icdar2003_recall.size();
+        }
+
+        double precise_result = 0;
+        if (icdar2003_precise.size() > 0) {
+          precise_result = std::accumulate(icdar2003_precise.begin(),
+            icdar2003_precise.end(), 0.0) / (double)icdar2003_precise.size();
+        }
+
+        double fscore_result = 0;
+        if (recall_result + precise_result != 0) {
+          fscore_result = 2 * (recall_result * precise_result) /
+            (recall_result + precise_result);
+        }
+
+
         if (result == 0) {
           int num = plateVec.size();
 
@@ -222,17 +319,13 @@ namespace easypr {
 
             cout << kv->get("diff") << ":" << mindiff << kv->get("char") << endl;
             if (mindiff == 0) {
-
               // 完全匹配
-
               match_count++;
             }
             diff_all = diff_all + mindiff;
           }
           else {
-
             // 单车牌只计算一次diff
-
             for (int j = 0; j < num; j++) {
               cout << plateVec[j].getPlateStr() << endl;
 
@@ -271,11 +364,17 @@ namespace easypr {
               }
             }
           }
+
+          cout << "Recall" << ":" << recall_result << ",  ";
+          cout << "Precise" << ":" << precise_result << ",  ";
+          cout << "Fscore" << ":" << fscore_result << ".  " << endl;
         }
         else {
           cout << kv->get("error_code") << ":" << result << endl;
           count_err++;
         }
+
+
         count_all++;
       }
       time(&end);
@@ -302,6 +401,29 @@ namespace easypr {
         match_rate = match_count / count_recogin * 100;
       }
 
+      double recall_2003_result = 0;
+      if (icdar2003_recall_all.size() > 0) {
+        recall_2003_result = std::accumulate(icdar2003_recall_all.begin(),
+          icdar2003_recall_all.end(), 0.0) / (double)icdar2003_recall_all.size();
+      }
+
+      double precise_2003_result = 0;
+      if (icdar2003_precise_all.size() > 0) {
+        precise_2003_result = std::accumulate(icdar2003_precise_all.begin(),
+          icdar2003_precise_all.end(), 0.0) / (double)icdar2003_precise_all.size();
+      }
+
+      double fscore_2003_result = 0;
+      if (recall_2003_result + precise_2003_result != 0) {
+        fscore_2003_result = 2 * (recall_2003_result * precise_2003_result) /
+          (recall_2003_result + precise_2003_result);
+      }
+
+      cout << "Detect quality evalution result:" << endl;
+      cout << "Recall" << ":" << recall_2003_result << ",  ";
+      cout << "Precise" << ":" << precise_2003_result << ",  ";
+      cout << "Fscore" << ":" << fscore_2003_result << ".  " << endl;
+
       cout << kv->get("diff_average") << ":" << diff_avg << ",  ";
       cout << kv->get("full_match") << ":" << match_count << ",  ";
       cout << kv->get("full_rate") << ":" << match_rate << "%  " << endl;
@@ -311,7 +433,6 @@ namespace easypr {
 
       cout << kv->get("seconds") << ":" << seconds << kv->get("sec") << ",  ";
       cout << kv->get("seconds_average") << ":" << avgsec << kv->get("sec") << endl;
-
       cout << kv->get("unrecognized") << ":" << endl;
 
       for (auto it = not_recognized_files.begin(); it != not_recognized_files.end();
@@ -320,7 +441,6 @@ namespace easypr {
       }
 
       cout << endl;
-
       cout << "------------------" << endl;
 
       ofstream myfile("accuracy.txt", ios::app);

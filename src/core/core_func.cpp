@@ -1065,7 +1065,7 @@ Mat mserMatch(const Mat &src, Mat &match, const Color r,
       }
     }
 
-    if (1) {
+    if (0) {
       imshow("result", result);
       waitKey(0);
     }
@@ -1154,6 +1154,37 @@ Mat adaptive_image_from_points(const std::vector<Point>& points,
   return result;
 }
 
+//! 计算一个安全的Rect
+//! 如果不存在，返回false
 
+bool calcSafeRect(const RotatedRect &roi_rect, const Mat &src,
+  Rect_<float> &safeBoundRect) {
+  Rect_<float> boudRect = roi_rect.boundingRect();
+
+  // boudRect的左上的x和y有可能小于0
+
+  float tl_x = boudRect.x > 0 ? boudRect.x : 0;
+  float tl_y = boudRect.y > 0 ? boudRect.y : 0;
+
+  // boudRect的右下的x和y有可能大于src的范围
+
+  float br_x = boudRect.x + boudRect.width < src.cols
+    ? boudRect.x + boudRect.width - 1
+    : src.cols - 1;
+  float br_y = boudRect.y + boudRect.height < src.rows
+    ? boudRect.y + boudRect.height - 1
+    : src.rows - 1;
+
+  float roi_width = br_x - tl_x;
+  float roi_height = br_y - tl_y;
+
+  if (roi_width <= 0 || roi_height <= 0) return false;
+
+  // 新建一个mat，确保地址不越界，以防mat定位roi时抛异常
+
+  safeBoundRect = Rect_<float>(tl_x, tl_y, roi_width, roi_height);
+
+  return true;
+}
 
 }
