@@ -271,9 +271,9 @@ namespace easypr {
             (recall_result + precise_result);
         }
 
-        cout << "Recall" << ":" << recall_result << ",  ";
-        cout << "Precise" << ":" << precise_result << ",  ";
-        cout << "Fscore" << ":" << fscore_result << ".  " << endl;
+        cout << "Recall" << ":" << recall_result * 100 << "%" << ", ";
+        cout << "Precise" << ":" << precise_result * 100 << "%" << ", ";
+        cout << "Fscore" << ":" << fscore_result * 100 << "%" << "." << endl;
 
         if (result == 0) {
           int num = plateVec.size();
@@ -404,9 +404,9 @@ namespace easypr {
       }
 
       cout << "Detect quality evalution result:" << endl;
-      cout << "Recall" << ":" << recall_2003_result << ",  ";
-      cout << "Precise" << ":" << precise_2003_result << ",  ";
-      cout << "Fscore" << ":" << fscore_2003_result << ".  " << endl;
+      cout << "Recall" << ":" << recall_2003_result * 100 << "%" << ", ";
+      cout << "Precise" << ":" << precise_2003_result * 100 << "%" << ", ";
+      cout << "Fscore" << ":" << fscore_2003_result * 100 << "%" << "." << endl;
 
       cout << kv->get("diff_average") << ":" << diff_avg << ",  ";
       cout << kv->get("full_match") << ":" << match_count << ",  ";
@@ -440,6 +440,12 @@ namespace easypr {
         myfile << kv->get("unrecognized") << ":" << count_norecogin << ",  ";
         myfile << kv->get("locate_rate") << ":" << count_rate * 100 << "%  "
           << endl;
+
+
+        myfile << "Recall" << ":" << recall_2003_result * 100 << "%" << ", ";
+        myfile << "Precise" << ":" << precise_2003_result * 100 << "%" << ", ";
+        myfile << "Fscore" << ":" << fscore_2003_result * 100 << "%" << "." << endl;
+
         myfile << kv->get("diff_average") << ":" << diff_avg << ",  ";
         myfile << kv->get("full_match") << ":" << match_count << ",  ";
         myfile << kv->get("full_rate") << ":" << match_rate << "%  " << endl;
