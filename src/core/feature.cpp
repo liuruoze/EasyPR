@@ -4,6 +4,7 @@
 
 #include "easypr/core/feature.h"
 #include "easypr/core/core_func.h"
+#include "third/lbp.hpp"
 
 namespace easypr {
 
@@ -75,6 +76,19 @@ void getHOGFeatures(const Mat& image, Mat& features) {
 
 void getHSVHistFeatures(const Mat& image, Mat& features) {
   // TODO
+}
+
+//! LBP feature
+void getLBPFeatures(const Mat& image, Mat& features) {
+
+  Mat grayImage;
+  cvtColor(image, grayImage, CV_RGB2GRAY);
+
+  Mat lbpimage;
+  lbpimage = libfacerec::olbp(grayImage);
+  Mat lbp_hist = libfacerec::spatial_histogram(lbpimage, 32, 4, 4);
+
+  features = lbp_hist;
 }
 
 }

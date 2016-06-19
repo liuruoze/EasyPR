@@ -182,7 +182,7 @@ namespace easypr {
         vector<CPlate> plateVecGT;
         it = xmlMap.find(plateLicense);
         if (it != xmlMap.end()) {
-          cout << it->first << endl;
+          //cout << it->first << endl;
           plateVecGT = it->second;        
         }
         
@@ -271,10 +271,12 @@ namespace easypr {
             (recall_result + precise_result);
         }
 
+        cout << "Recall" << ":" << recall_result << ",  ";
+        cout << "Precise" << ":" << precise_result << ",  ";
+        cout << "Fscore" << ":" << fscore_result << ".  " << endl;
 
         if (result == 0) {
           int num = plateVec.size();
-
           if (num == 0) {
             cout << kv->get("empty_plate") << endl;
             if (plateLicense != kv->get("empty_plate")) {
@@ -283,9 +285,6 @@ namespace easypr {
             }
           }
           else if (num > 1) {
-
-            // 多车牌使用diff最小的那个记录
-
             int mindiff = 10000;
             for (int j = 0; j < num; j++) {
               cout << plateVec[j].getPlateStr() << " (" << j + 1 << ")" << endl;
@@ -304,9 +303,6 @@ namespace easypr {
               rectangleNode.addText(plateVec[j].getPlateStr().c_str());
 
               string colorplate = plateVec[j].getPlateStr();
-
-              // 计算"蓝牌:苏E7KU22"中冒号后面的车牌大小"
-
               vector<string> spilt_plate = Utils::splitString(colorplate, ':');
 
               int size = spilt_plate.size();
@@ -316,16 +312,13 @@ namespace easypr {
                 if (diff < mindiff) mindiff = diff;
               }
             }
-
             cout << kv->get("diff") << ":" << mindiff << kv->get("char") << endl;
             if (mindiff == 0) {
-              // 完全匹配
               match_count++;
             }
             diff_all = diff_all + mindiff;
           }
           else {
-            // 单车牌只计算一次diff
             for (int j = 0; j < num; j++) {
               cout << plateVec[j].getPlateStr() << endl;
 
@@ -355,26 +348,17 @@ namespace easypr {
                 cout << kv->get("diff") << ":" << diff << kv->get("char") << endl;
 
                 if (diff == 0) {
-
-                  // 完全匹配
-
                   match_count++;
                 }
                 diff_all = diff_all + diff;
               }
             }
           }
-
-          cout << "Recall" << ":" << recall_result << ",  ";
-          cout << "Precise" << ":" << precise_result << ",  ";
-          cout << "Fscore" << ":" << fscore_result << ".  " << endl;
         }
         else {
           cout << kv->get("error_code") << ":" << result << endl;
           count_err++;
         }
-
-
         count_all++;
       }
       time(&end);

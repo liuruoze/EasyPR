@@ -39,13 +39,12 @@
 // the use of this software, even if advised of the possibility of such damage.
 //
 //M*/
-
-#include "text/erfilter.hpp"
-#include "opencv2/imgproc.hpp"
-#include "opencv2/ml.hpp"
 #include <limits>
 #include <fstream>
 #include <queue>
+#include "opencv2/imgproc.hpp"
+#include "opencv2/ml.hpp"
+#include "third/erfilter.hpp"
 
 #if defined _MSC_VER && _MSC_VER == 1500
 typedef int int_fast32_t;

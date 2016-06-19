@@ -158,7 +158,9 @@
     <ClCompile Include="..\src\preprocess\deface.cpp" />
     <ClCompile Include="..\src\preprocess\gdts.cpp" />
     <ClCompile Include="..\src\preprocess\mc_data.cpp" />
-    <ClCompile Include="..\src\text\erfilter.cpp" />
+    <ClCompile Include="..\src\third\erfilter.cpp" />
+    <ClCompile Include="..\src\third\helper.cpp" />
+    <ClCompile Include="..\src\third\lbp.cpp" />
     <ClCompile Include="..\src\train\ann_train.cpp" />
     <ClCompile Include="..\src\train\svm_train.cpp" />
     <ClCompile Include="..\src\train\train.cpp" />
@@ -190,7 +192,9 @@
     <ClInclude Include="..\include\easypr\util\program_options.h" />
     <ClInclude Include="..\include\easypr\util\switch.hpp" />
     <ClInclude Include="..\include\easypr\util\util.h" />
-    <ClInclude Include="..\include\text\erfilter.hpp" />
+    <ClInclude Include="..\include\third\erfilter.hpp" />
+    <ClInclude Include="..\include\third\helper.hpp" />
+    <ClInclude Include="..\include\third\lbp.hpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\LICENSE" />

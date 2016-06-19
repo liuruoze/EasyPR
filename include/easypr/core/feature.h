@@ -31,6 +31,9 @@ void getHOGFeatures(const cv::Mat& image, cv::Mat& features);
 
 void getHSVHistFeatures(const cv::Mat& image, cv::Mat& features);
 
+//! LBP feature
+void getLBPFeatures(const cv::Mat& image, cv::Mat& features);
+
 } /*! \namespace easypr*/
 
 #endif  // EASYPR_CORE_FEATURE_H_

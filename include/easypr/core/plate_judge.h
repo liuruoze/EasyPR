@@ -32,7 +32,10 @@ class PlateJudge {
 
   static PlateJudge* instance_;
 
+  svmCallback extractFeature;
+
   cv::Ptr<ml::SVM> svm_;
+
 };
 }
 

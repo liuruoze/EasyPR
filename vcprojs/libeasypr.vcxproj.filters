@@ -46,11 +46,11 @@
     <Filter Include="源文件\experi">
       <UniqueIdentifier>{94e5b7c3-7dad-4f9f-a036-25ff09d69868}</UniqueIdentifier>
     </Filter>
-    <Filter Include="源文件\text">
-      <UniqueIdentifier>{d3e9abaf-0380-43d6-bbb2-ceba356062b7}</UniqueIdentifier>
+    <Filter Include="头文件\third">
+      <UniqueIdentifier>{4853f249-0c7a-4329-8ea7-464c7a8c85b9}</UniqueIdentifier>
     </Filter>
-    <Filter Include="头文件\text">
-      <UniqueIdentifier>{93590952-3745-4c27-b112-2e0f6226b00c}</UniqueIdentifier>
+    <Filter Include="源文件\third">
+      <UniqueIdentifier>{e6887e2f-ccf8-4e16-bdac-b8dc6c452855}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -108,11 +108,17 @@
     <ClCompile Include="..\src\util\kv.cpp">
       <Filter>源文件\util</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\text\erfilter.cpp">
-      <Filter>源文件\text</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\core\better_mser.cpp">
       <Filter>源文件\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\third\erfilter.cpp">
+      <Filter>源文件\third</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\third\helper.cpp">
+      <Filter>源文件\third</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\third\lbp.cpp">
+      <Filter>源文件\third</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -179,14 +185,20 @@
     <ClInclude Include="..\include\easypr\train\train.h">
       <Filter>头文件\easypr\train</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\text\erfilter.hpp">
-      <Filter>头文件\text</Filter>
-    </ClInclude>
     <ClInclude Include="..\include\easypr\core\character.hpp">
       <Filter>头文件\easypr\core</Filter>
     </ClInclude>
     <ClInclude Include="..\include\easypr\core\plate.hpp">
       <Filter>头文件\easypr\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\third\erfilter.hpp">
+      <Filter>头文件\third</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\third\helper.hpp">
+      <Filter>头文件\third</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\third\lbp.hpp">
+      <Filter>头文件\third</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

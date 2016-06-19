@@ -12,7 +12,10 @@ namespace easypr {
     return instance_;
   }
 
-  PlateJudge::PlateJudge() { svm_ = ml::SVM::load<ml::SVM>(kDefaultSvmPath); }
+  PlateJudge::PlateJudge() { 
+    svm_ = ml::SVM::load<ml::SVM>(kDefaultSvmPath); 
+    extractFeature = getHistogramFeatures;
+  }
 
   void PlateJudge::LoadModel(std::string path) {
     svm_->clear();
@@ -23,7 +26,7 @@ namespace easypr {
 
   int PlateJudge::plateJudge(const Mat &inMat, int &result) {
     Mat features;
-    getHistogramFeatures(inMat, features);
+    extractFeature(inMat, features);
 
     float response = svm_->predict(features);
     result = (int)response;
@@ -51,7 +54,7 @@ namespace easypr {
   //! 返回值，0代表是车牌，其他值代表不是
   int PlateJudge::plateSetScore(CPlate& plate) {
     Mat features;
-    getHistogramFeatures(plate.getPlateMat(), features);
+    extractFeature(plate.getPlateMat(), features);
 
     float score = svm_->predict(features, noArray(), cv::ml::StatModel::Flags::RAW_OUTPUT);
 

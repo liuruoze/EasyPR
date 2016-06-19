@@ -1,6 +1,6 @@
 #include "easypr/core/plate_recognize.h"
 #include "easypr/config.h"
-#include "text/erfilter.hpp"
+#include "third/erfilter.hpp"
 
 namespace easypr {
 
