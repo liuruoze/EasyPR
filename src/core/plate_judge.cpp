@@ -119,8 +119,8 @@ namespace easypr {
         waitKey(0);
       }
 
-      int response = plateSetScore(plate);
-      if (response == 0) {
+      int result = plateSetScore(plate);
+      if (result == 0) {
         plateVec.push_back(plate);
         if (0) {
           imshow("plateMat", inMat);
@@ -139,9 +139,9 @@ namespace easypr {
 
         plate.setPlateMat(tmpDes);
 
-        int responseCascade = plateSetScore(plate);
+        int resultCascade = plateSetScore(plate);
 
-        if (responseCascade == 0) {
+        if (resultCascade == 0) {
           plateVec.push_back(plate);
         }
       }

@@ -90,17 +90,18 @@ namespace easypr {
       CPlateRecognize pr;
 
       // 设置Debug模式
-
       pr.setDebug(false);
-
       pr.setLifemode(true);
 
       // 设置要处理的一张图片中最多有多少车牌
-
       pr.setMaxPlates(4);
-
       pr.setDetectType(PR_DETECT_COLOR | PR_DETECT_SOBEL);
       //pr.setDetectType(PR_DETECT_CMSER);
+
+      //CPlateDetect pd;
+      //pd.setDetectType(PR_DETECT_CMSER);
+      //pd.setPDDebug(false);
+      //pd.setPDLifemode(true);
 
       int size = files.size();
 
@@ -176,6 +177,8 @@ namespace easypr {
 
         vector<CPlate> plateVec;
         int result = pr.plateRecognize(src, plateVec);
+
+        //pd.plateDetect(src, plateVec);
 
         // get the ground truth and compare it with the detect list;
         map<string, vector<CPlate>>::iterator it;

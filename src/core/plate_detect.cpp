@@ -22,8 +22,7 @@ namespace easypr {
     std::vector<CPlate> all_result_Plates;
 
     //如果颜色查找找到n个以上（包含n个）的车牌，就不再进行Sobel查找了。
-    const int color_find_max = m_maxPlates;
-  
+
     if ( !type || type & PR_DETECT_SOBEL)
     {
       m_plateLocate->plateSobelLocate(src, sobel_Plates, index);
@@ -70,6 +69,37 @@ namespace easypr {
 
     // 使用非极大值抑制来判断车牌
     PlateJudge::instance()->plateJudgeUsingNMS(all_result_Plates, resultVec, m_maxPlates);
+
+    if (0) 
+    {
+      Mat result = src.clone();
+      for (size_t i = 0; i < resultVec.size(); i++)
+      {
+        CPlate plate = resultVec[i];
+
+        Rect_<float> outputRect;
+        calcSafeRect(plate.getPlatePos(), src, outputRect);
+
+        if (1)
+        {
+          cv::rectangle(result, outputRect, Scalar(0, 0, 255));
+        }
+
+        if (0)
+        {
+          std::stringstream ss(std::stringstream::in | std::stringstream::out);
+          ss << "resources/image/tmp/plate_" << i << ".jpg";
+          imwrite(ss.str(), src(outputRect));
+        }
+      }
+
+      if (1) 
+      {
+        imshow("result", result);
+        waitKey(0);
+        destroyWindow("result");
+      }
+    }
 
     return 0;
   }
