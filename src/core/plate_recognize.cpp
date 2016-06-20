@@ -394,7 +394,7 @@ namespace easypr {
 
   // !车牌识别模块
   int CPlateRecognize::plateRecognize(Mat src,
-    std::vector<CPlate> &licenseVec) {
+    std::vector<CPlate> &licenseVec, int index) {
 
     // 车牌集合
     std::vector<CPlate> plateVec;
@@ -407,7 +407,7 @@ namespace easypr {
     //src = ret;
 
     // 进行深度定位，使用颜色信息与二次Sobel
-    int resultPD = plateDetect(src, plateVec);
+    int resultPD = plateDetect(src, plateVec, false, index);
 
     if (resultPD == 0) {
       size_t num = plateVec.size();

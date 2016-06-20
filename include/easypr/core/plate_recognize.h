@@ -25,7 +25,7 @@ namespace easypr {
     CPlateRecognize();
 
     //! 车牌检测与字符识别
-    int plateRecognize(Mat src, std::vector<CPlate> &licenseVec);
+    int plateRecognize(Mat src, std::vector<CPlate> &licenseVec, int index = 0);
     int plateRecognize(Mat src, std::vector<std::string> &licenseVec);
 
     int plateRecognizeAsText(Mat src, std::vector<CPlate> &licenseVec);

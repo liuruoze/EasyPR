@@ -176,7 +176,7 @@ namespace easypr {
         XMLNode rectangleNodes = xNode.addChild("taggedRectangles");
 
         vector<CPlate> plateVec;
-        int result = pr.plateRecognize(src, plateVec);
+        int result = pr.plateRecognize(src, plateVec, i);
 
         //pd.plateDetect(src, plateVec);
 

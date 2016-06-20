@@ -87,7 +87,7 @@ int CPlateLocate::mserSearch(const Mat &src, const Color r, Mat &out,
   Mat result = src.clone();
   cvtColor(result, result, COLOR_GRAY2BGR);
 
-  const int color_morph_width = 20;
+  const int color_morph_width = 30;
   const int color_morph_height = 5;
 
   std::vector<RotatedRect> plateRects;
@@ -98,7 +98,8 @@ int CPlateLocate::mserSearch(const Mat &src, const Color r, Mat &out,
 
   // 进行颜色查找
 
-  mserMatch(src, match_grey, r, plateRects, charRects);
+  //mserMatch(src, match_grey, r, plateRects, charRects);
+  mserCharMatch(src, match_grey, charRects);
 
   if (m_debug) {
     utils::imwrite("resources/image/tmp/match_grey.jpg", match_grey);
@@ -964,6 +965,9 @@ int CPlateLocate::plateMserLocate(Mat src, vector<CPlate> &candPlates, int index
     //flags.push_back(1);
   }
 
+  int scale_size = 1024;
+  double scale_ratio = 1;
+
   vector<RotatedRect> rects_mser;
   vector<CPlate> plates;
   Mat src_b;
@@ -971,11 +975,21 @@ int CPlateLocate::plateMserLocate(Mat src, vector<CPlate> &candPlates, int index
   for (size_t i = 0; i < channelImages.size(); ++i)
   {
     Mat channelImage = channelImages[i];
-    //int scale_size = 1024;
-    //double scale_ratio = 1;
-    //Mat image = scaleImage(channelImage, Size(scale_size, scale_size), scale_ratio);
-    Mat image = channelImage;
-    mserSearch(image, BLUE, src_b, rects_mser, index);
+    Mat image = scaleImage(channelImage, Size(scale_size, scale_size), scale_ratio);
+
+    vector<RotatedRect> rects;
+    mserSearch(image, BLUE, src_b, rects, index);
+
+    for (size_t j = 0; j < rects.size(); ++j) {
+      RotatedRect rr = rects[j];
+      float width = rr.size.width * (float)scale_ratio;
+      float height = rr.size.height * (float)scale_ratio;
+      float x = rr.center.x * (float)scale_ratio;
+      float y = rr.center.y * (float)scale_ratio;
+      RotatedRect mserRect(Point2f(x, y), Size2f(width, height), rr.angle);
+      rects_mser.push_back(mserRect);
+    }
+
   }
 
   for (size_t i = 0; i < rects_mser.size(); ++i)

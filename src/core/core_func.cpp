@@ -951,6 +951,66 @@ bool verifyRotatedPlateSizes(RotatedRect mr) {
     return true;
 }
 
+
+//! use verify size to first generate char candidates
+Mat mserCharMatch(const Mat &src, Mat &match, std::vector<Rect>& out_charRect) {
+  Mat image = src;
+
+  std::vector<std::vector<Point>> all_contours;
+  std::vector<Rect> all_boxes;
+
+  Ptr<MSER> mser;
+  std::vector<CCharacter> charVec;
+
+  match = Mat::zeros(image.rows, image.cols, image.type());
+
+  Mat result = image.clone();
+  cvtColor(result, result, COLOR_GRAY2BGR);
+
+  int imageArea = image.rows * image.cols;
+  mser = MSER::create(1, 30, int(0.05 * imageArea));
+  mser->detectRegions(image, all_contours, all_boxes);
+
+  size_t size = all_contours.size();
+
+  int char_index = 0;
+
+  for (size_t index = 0; index < size; index++) {
+    Rect rect = all_boxes[index];
+    std::vector<Point> contour = all_contours[index];
+    RotatedRect rrect = minAreaRect(Mat(contour));
+
+    if (verifyCharSizes(rect)) {
+      if (1) {
+        //match(rect) = min(max(0, int(maxVal * 255)),255);
+        match(rect) = 255;
+
+        cv::rectangle(result, rect, Scalar(255, 0, 0));
+        Point center(rect.tl().x + rect.width / 2, rect.tl().y + rect.height / 2);
+
+        //cv::circle(result, center, 3, Scalar(0, 255, 0), 2);
+        out_charRect.push_back(rect);
+        //CCharacter character;
+        //character.setCharacterPos(rect);
+        //character.setCharacterMat(binary_region);
+        //character.setCharacterStr(label);
+        //character.setCharacterScore(maxVal);
+        //charVec.push_back(character);
+      }
+    }
+  }
+
+  if (1) {
+    imshow("result", result);
+    waitKey(0);
+    destroyWindow("result");
+  }
+
+  return match;
+}
+
+
+
 //! use verify size to first generate candidates
 Mat mserMatch(const Mat &src, Mat &match, const Color r,
   std::vector<RotatedRect>& out_plateRect, std::vector<Rect>& out_charRect) {
@@ -1065,7 +1125,7 @@ Mat mserMatch(const Mat &src, Mat &match, const Color r,
       }
     }
 
-    if (0) {
+    if (1) {
       imshow("result", result);
       waitKey(0);
     }

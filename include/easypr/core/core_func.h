@@ -77,6 +77,9 @@ bool verifyRotatedPlateSizes(RotatedRect mr);
 Mat scaleImage(const Mat& image, const Size& maxSize, double& scale_ratio);
 
 
+//! use verify size to first generate char candidates
+Mat mserCharMatch(const Mat &src, Mat &match, std::vector<Rect>& out_charRect);
+
 /** @brief convert form mser point to image.
 
 The function created first by Hailiang Xu.

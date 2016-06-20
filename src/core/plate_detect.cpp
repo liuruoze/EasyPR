@@ -70,7 +70,7 @@ namespace easypr {
     // 使用非极大值抑制来判断车牌
     PlateJudge::instance()->plateJudgeUsingNMS(all_result_Plates, resultVec, m_maxPlates);
 
-    if (0) 
+    if (1) 
     {
       Mat result = src.clone();
       for (size_t i = 0; i < resultVec.size(); i++)
@@ -80,20 +80,20 @@ namespace easypr {
         Rect_<float> outputRect;
         calcSafeRect(plate.getPlatePos(), src, outputRect);
 
-        if (1)
+        if (0)
         {
           cv::rectangle(result, outputRect, Scalar(0, 0, 255));
         }
 
-        if (0)
+        if (1)
         {
           std::stringstream ss(std::stringstream::in | std::stringstream::out);
-          ss << "resources/image/tmp/plate_" << i << ".jpg";
+          ss << "resources/image/tmp/plate_" << index << "_" << i << ".jpg";
           imwrite(ss.str(), src(outputRect));
         }
       }
 
-      if (1) 
+      if (0) 
       {
         imshow("result", result);
         waitKey(0);
