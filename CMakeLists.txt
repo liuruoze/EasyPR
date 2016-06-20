@@ -27,7 +27,6 @@ set(SOURCE_FILES
     src/core/chars_recognise.cpp
     src/core/chars_segment.cpp
     src/core/feature.cpp
-    src/core/plate.cpp
     src/core/plate_detect.cpp
     src/core/plate_judge.cpp
     src/core/plate_locate.cpp
@@ -41,6 +40,9 @@ set(SOURCE_FILES
     src/util/util.cpp
     src/util/program_options.cpp
     src/util/kv.cpp
+	src/third/erfilter.cpp
+	src/third/helper.cpp
+	src/third/lbp.cpp
 )
 add_library(easypr STATIC ${SOURCE_FILES})
 

@@ -14,7 +14,7 @@ namespace easypr {
 
   PlateJudge::PlateJudge() { 
     svm_ = ml::SVM::load<ml::SVM>(kDefaultSvmPath); 
-    extractFeature = getHistogramFeatures;
+    extractFeature = getLBPFeatures;
   }
 
   void PlateJudge::LoadModel(std::string path) {
