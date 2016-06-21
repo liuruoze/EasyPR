@@ -6,7 +6,7 @@
 #include <fstream>
 #include <list>
 #include <memory>
-#include <numeric> 
+#include <numeric>
 #include "easypr/core/core_func.h"
 #include "easypr/util/util.h"
 #include "thirdparty/xmlParser/xmlParser.h"
@@ -89,11 +89,13 @@ namespace easypr {
 
       CPlateRecognize pr;
 
-      // ����Debugģʽ
+      // 设置Debug模式
+
       pr.setDebug(false);
       pr.setLifemode(true);
 
-      // ����Ҫ�����һ��ͼƬ������ж��ٳ���
+      // 设置要处理的一张图片中最多有多少车牌
+
       pr.setMaxPlates(4);
       pr.setDetectType(PR_DETECT_COLOR | PR_DETECT_SOBEL);
       //pr.setDetectType(PR_DETECT_CMSER);
@@ -112,33 +114,33 @@ namespace easypr {
 
       cout << "Begin to test the easypr accuracy!" << endl;
 
-      // �ܵĲ���ͼƬ����
+      // 总的测试图片数量
 
       int count_all = 0;
 
-      // �����ͼƬ����
+      // 错误的图片数量
 
       int count_err = 0;
 
-      // δʶ���ͼƬ����
+      // 未识别的图片数量
 
       int count_norecogin = 0;
 
       std::list<std::string> not_recognized_files;
 
-      // �ܵ��ַ����
+      // 总的字符差距
 
       float diff_all = 0;
 
-      // ƽ���ַ����
+      // 平均字符差距
 
       float diff_avg = 0;
 
-      // ��ȫƥ���ʶ�����
+      // 完全匹配的识别次数
 
       float match_count = 0;
 
-      // ��ȫƥ���ʶ�������ռʶ��ͼƬ�еı���
+      // 完全匹配的识别次数所占识别图片中的比例
 
       float match_rate = 0;
 
@@ -147,7 +149,7 @@ namespace easypr {
       vector<float> icdar2003_recall_all;
       vector<float> icdar2003_precise_all;
 
-      // ��ʼ�ͽ���ʱ��
+      // 开始和结束时间
 
       time_t begin, end;
       time(&begin);
@@ -155,17 +157,17 @@ namespace easypr {
       for (int i = 0; i < size; i++) {
         string filepath = files[i].c_str();
 
-        // EasyPR��ʼ�жϳ���
+        // EasyPR开始判断车牌
 
         Mat src = imread(filepath);
 
-        // ����Ƿ�ͼ���ļ���ֱ�ӹ�ȥ
+        // 如果是非图像文件，直接过去
 
         if (!src.data) continue;
 
         cout << "------------------" << endl;
 
-        // ��ȡ��ʵ�ĳ���
+        // 获取真实的车牌
 
         string plateLicense = Utils::getFileName(filepath);
         cout << kv->get("original_plate") << ":" << plateLicense << endl;
@@ -340,7 +342,7 @@ namespace easypr {
 
               string colorplate = plateVec[j].getPlateStr();
 
-              // ����"����:��E7KU22"��ð�ź���ĳ��ƴ�С"
+              // 计算"蓝牌:苏E7KU22"中冒号后面的车牌大小"
 
               vector<string> spilt_plate = Utils::splitString(colorplate, ':');
 

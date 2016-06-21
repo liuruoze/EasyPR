@@ -153,7 +153,8 @@ namespace easypr {
     return true;
   }
 
-  //! �Ǽ���ֵ����
+  //! 非极大值抑制
+
   void NMStoCharacter(std::vector<CCharacter> &inVec, std::vector<CCharacter> &resultVec, double overlap) {
 
     std::sort(inVec.begin(), inVec.end());
@@ -214,7 +215,9 @@ namespace easypr {
 
   int CPlateRecognize::plateRecognizeAsText(Mat src, std::vector<CPlate> &licenseVec) 
   {
-    // ���Ʒ��鼯��
+
+    // 车牌方块集合
+
     std::vector<CPlate> plateVec;
 
     std::vector<Mat> channelImages;
@@ -246,8 +249,9 @@ namespace easypr {
       std::vector<CCharacter> charVec;
       Mat channelImage = channelImages[i];
 
-      // ��ͼ�����ͳһ���ţ�ȷ��ͼ��Ҫ����
-      // ���ٶ�������������
+      // 对图像进行统一缩放，确保图像不要过大
+      // 对速度提升帮助不大
+
       int scale_size = 1200;
       double scale_ratio = 1;
       Mat image = scaleImage(channelImage, Size(scale_size, scale_size), scale_ratio);
@@ -392,38 +396,42 @@ namespace easypr {
   }
  
 
-  // !����ʶ��ģ��
+  // !车牌识别模块
+
   int CPlateRecognize::plateRecognize(Mat src,
     std::vector<CPlate> &licenseVec, int index) {
 
-    // ���Ƽ���
+    // 车牌集合
+
     std::vector<CPlate> plateVec;
 
-    // ��ͼ�����ͳһ���ţ�ȷ��ͼ��Ҫ����
-    // ���ٶ�������������
+    // 对图像进行统一缩放，确保图像不要过大
+    // 对速度提升帮助不大
+
     //int scale_size = 1600;
     //double scale_ratio = 1;
     //Mat ret = scaleImage(src, Size(scale_size, scale_size), scale_ratio);
     //src = ret;
 
-    // ������ȶ�λ��ʹ����ɫ��Ϣ�����Sobel
+    // 进行深度定位，使用颜色信息与二次Sobel
+
     int resultPD = plateDetect(src, plateVec, false, index);
 
     if (resultPD == 0) {
       size_t num = plateVec.size();
       int index = 0;
 
-      //����ʶ��ÿ�������ڵķ���
+      //依次识别每个车牌内的符号
 
       for (size_t j = 0; j < num; j++) {
         CPlate item = plateVec[j];
         Mat plate = item.getPlateMat();
 
-        //��ȡ������ɫ
+        //获取车牌颜色
 
         std::string plateType = getPlateColor(plate);
 
-        //��ȡ���ƺ�
+        //获取车牌号
 
         std::string plateIdentify = "";
         int resultCR = charsRecognise(plate, plateIdentify);
@@ -434,9 +442,9 @@ namespace easypr {
         }
       }
 
-      //����ʶ����̵��˽���
+      //完整识别过程到此结束
 
-      //�����Debugģʽ������Ҫ����λ��ͼƬ��ʾ��ԭͼ���Ͻ�
+      //如果是Debug模式，则还需要将定位的图片显示在原图左上角
 
       if (getPDDebug()) {
         Mat result;
@@ -471,7 +479,7 @@ namespace easypr {
             8);
         }
 
-        //��ʾ��λ���ͼƬ
+        //显示定位框的图片
 
         showResult(result);
       }
@@ -484,11 +492,11 @@ namespace easypr {
   int CPlateRecognize::plateRecognize(Mat src,
     std::vector<std::string> &licenseVec) {
 
-    // ���Ʒ��鼯��
+    // 车牌方块集合
 
     std::vector<CPlate> plateVec;
 
-    // ������ȶ�λ��ʹ����ɫ��Ϣ�����Sobel
+    // 进行深度定位，使用颜色信息与二次Sobel
 
     int resultPD = plateDetect(src, plateVec, 0, kDebug, 0);
 
@@ -496,17 +504,17 @@ namespace easypr {
       size_t num = plateVec.size();
       int index = 0;
 
-      //����ʶ��ÿ�������ڵķ���
+      //依次识别每个车牌内的符号
 
       for (size_t j = 0; j < num; j++) {
         CPlate item = plateVec[j];
         Mat plate = item.getPlateMat();
 
-        //��ȡ������ɫ
+        //获取车牌颜色
 
         std::string plateType = getPlateColor(plate);
 
-        //��ȡ���ƺ�
+        //获取车牌号
 
         std::string plateIdentify = "";
         int resultCR = charsRecognise(plate, plateIdentify);
@@ -516,9 +524,9 @@ namespace easypr {
         }
       }
 
-      //����ʶ����̵��˽���
+      //完整识别过程到此结束
 
-      //�����Debugģʽ������Ҫ����λ��ͼƬ��ʾ��ԭͼ���Ͻ�
+      //如果是Debug模式，则还需要将定位的图片显示在原图左上角
 
       if (getPDDebug()) {
         Mat result;
@@ -551,7 +559,7 @@ namespace easypr {
             8);
         }
 
-        //��ʾ��λ���ͼƬ
+        //显示定位框的图片
 
         showResult(result);
       }
