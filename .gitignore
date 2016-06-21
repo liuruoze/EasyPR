@@ -9,7 +9,6 @@ resources/image/tmp/
 *.ilk
 *.lib
 *.pdb
-demo
 experi
 /tmp
 
@@ -27,7 +26,6 @@ Thumbs.db
 *.tlb
 *.tlh
 *.bak
-[Bb]in
 [Dd]ebug*/
 *.sbr
 obj/
