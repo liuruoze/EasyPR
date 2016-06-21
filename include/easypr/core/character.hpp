@@ -9,7 +9,8 @@
 //////////////////////////////////////////////////////////////////////////
 #ifndef EASYPR_CORE_CHARACTER_H_
 #define EASYPR_CORE_CHARACTER_H_
-#include "core_func.h"
+
+#include "easypr/core/core_func.h"
 
 /*! \namespace easypr
 Namespace where all the C++ EasyPR functionality resides
@@ -20,6 +21,11 @@ namespace easypr {
   public:
     CCharacter()
     {
+      m_characterMat = Mat();
+      m_characterPos = Rect();
+      m_characterStr = "";
+      m_score = 0;
+      m_isChinese = false;
     }
 
     CCharacter(const CCharacter& other)
@@ -28,6 +34,7 @@ namespace easypr {
       m_characterPos = other.m_characterPos;
       m_characterStr = other.m_characterStr;
       m_score = other.m_score;
+      m_isChinese = other.m_isChinese;
     }
 
     inline void setCharacterMat(Mat param) { m_characterMat = param; }
@@ -41,6 +48,18 @@ namespace easypr {
 
     inline void setCharacterScore(double param) { m_score = param; }
     inline double getCharacterScore() const { return m_score; }
+
+    inline void setIsChinese(bool param) { m_isChinese = param; }
+    inline bool getIsChinese() const { return m_isChinese; }
+
+    //inline void setIsStrong(bool param) { isStrong = param; }
+    inline bool getIsStrong() const { return m_score >= 0.9; }
+
+    //inline void setIsWeak(bool param) { isWeak = param; }
+    inline bool getIsWeak() const { return m_score < 0.9 && m_score >= 0.5; }
+
+    //inline void setIsLittle(bool param) { isLittle = param; }
+    inline bool getIsLittle() const { return m_score < 0.5; }
 
     bool operator < (const CCharacter& other) const
     {
@@ -66,8 +85,16 @@ namespace easypr {
     double m_score;
 
     //! weather is chinese
-    bool isChinese;
+    bool m_isChinese;
 
+    ////!  m_score >= 0.9
+    //bool isStrong;
+
+    ////!  m_score < 0.9 && m_score >= 0.5
+    //bool isWeak;
+
+    ////!  m_score < 0.5 
+    //bool isLittle;
   };
 
 } /*! \namespace easypr*/

@@ -3,7 +3,6 @@
 // 这个部分中的函数轻易不要改动
 
 #include "easypr/core/core_func.h"
-#include "easypr/core/character.hpp"
 #include "easypr/core/chars_identify.h"
 
 using namespace cv;
@@ -688,7 +687,6 @@ Rect GetCenterRect(Mat &in) {
 Mat charFeatures(Mat in, int sizeData) {
 
   //抠取中间区域
-
   Rect _rect = GetCenterRect(in);
 
   Mat tmpIn = CutTheRect(in, _rect);
@@ -724,6 +722,9 @@ Mat charFeatures(Mat in, int sizeData) {
       j++;
     }
   }
+
+  //std::cout << out << std::endl;
+
   return out;
 }
 
@@ -963,6 +964,106 @@ bool verifyRotatedPlateSizes(RotatedRect mr) {
     return true;
 }
 
+//! 非极大值抑制
+void NMStoCharacter(std::vector<CCharacter> &inVec, std::vector<CCharacter> &resultVec, double overlap) {
+
+  std::sort(inVec.begin(), inVec.end());
+
+  std::vector<CCharacter>::iterator it = inVec.begin();
+  for (; it != inVec.end(); ++it) {
+    CCharacter charSrc = *it;
+    //std::cout << "plateScore:" << plateSrc.getPlateScore() << std::endl;
+    Rect rectSrc = charSrc.getCharacterPos();
+
+    std::vector<CCharacter>::iterator itc = it + 1;
+
+    for (; itc != inVec.end();) {
+      CCharacter charComp = *itc;
+      Rect rectComp = charComp.getCharacterPos();
+      Rect rectInter = rectSrc & rectComp;
+      Rect rectUnion = rectSrc | rectComp;
+      double r = double(rectInter.area()) / double(rectUnion.area());
+      if (r > overlap) {
+        itc = inVec.erase(itc);
+      }
+      else {
+        ++itc;
+      }
+    }
+  }
+
+  resultVec = inVec;
+}
+
+// judge weather two CCharacter are nearly the same;
+bool compareCharRect(const CCharacter& character1, const CCharacter& character2)
+{
+  Rect rect1 = character1.getCharacterPos();
+  Rect rect2 = character2.getCharacterPos();
+
+  // the character in plate are similar height
+  float width_1 = float(rect1.width);
+  float height_1 = float(rect1.height);
+
+  float width_2 = float(rect2.width);
+  float height_2 = float(rect2.height);
+
+  float height_diff = abs(height_1 - height_2);
+  double height_diff_ratio = height_diff / min(height_1, height_2);
+
+  if (height_diff_ratio > 0.25)
+    return false;
+
+  // the character in plate are similar in the y-axis
+  float y_1 = float(rect1.tl().y);
+  float y_2 = float(rect2.tl().y);
+
+  float y_diff = abs(y_1 - y_2);
+  double y_diff_ratio = y_diff / min(height_1, height_2);
+
+  if (y_diff_ratio > 0.5)
+    return false;
+
+  // the character in plate are near in the x-axis but not very near
+  float x_margin_left = float(min(rect1.br().x, rect2.br().x));
+  float x_margin_right = float(max(rect1.tl().x, rect2.tl().x));
+
+  float x_margin_diff = abs(x_margin_left - x_margin_right);
+  double x_margin_diff_ratio = x_margin_diff / max(width_1, width_2);
+
+  if (x_margin_diff_ratio > 3)
+    return false;
+
+  return true;
+}
+
+//! merge chars to group, using the similarity
+void mergeCharToGroup(std::vector<CCharacter> vecRect,
+  std::vector<std::vector<CCharacter>>& charGroupVec) {
+
+  std::vector<CCharacter> charVec;
+
+  std::vector<int> labels;
+  double overlap = 0.9;
+  NMStoCharacter(vecRect, charVec, overlap);
+
+  int numbers = partition(charVec, labels, &compareCharRect);
+  for (size_t j = 0; j < size_t(numbers); j++) {
+    std::vector<CCharacter> charGroup;
+
+    for (size_t t = 0; t < charVec.size(); t++) {
+      int label = labels[t];
+
+      if (label == j)
+        charGroup.push_back(charVec[t]);
+    }
+
+    if (charGroup.size() < 2)
+      continue;
+
+    charGroupVec.push_back(charGroup);
+  }
+}
 
 //! use verify size to first generate char candidates
 Mat mserCharMatch(const Mat &src, Mat &match, std::vector<Rect>& out_charRect) {
@@ -979,8 +1080,12 @@ Mat mserCharMatch(const Mat &src, Mat &match, std::vector<Rect>& out_charRect) {
   Mat result = image.clone();
   cvtColor(result, result, COLOR_GRAY2BGR);
 
-  int imageArea = image.rows * image.cols;
-  mser = MSER::create(1, 30, int(0.05 * imageArea));
+  const int imageArea = image.rows * image.cols;
+  const int delta = 1;
+  const int minArea = 30;
+  const double maxAreaRatio = 0.05;
+
+  mser = MSER::create(delta, minArea, int(maxAreaRatio * imageArea));
 
   mser->setPass2Only(true);
   mser->detectRegions(image, all_contours, all_boxes);
@@ -988,45 +1093,80 @@ Mat mserCharMatch(const Mat &src, Mat &match, std::vector<Rect>& out_charRect) {
   size_t size = all_contours.size();
 
   int char_index = 0;
+  int char_size = 20;
 
+  // verify char size and output to rects;
   for (size_t index = 0; index < size; index++) {
     Rect rect = all_boxes[index];
     std::vector<Point> contour = all_contours[index];
-    RotatedRect rrect = minAreaRect(Mat(contour));
 
     if (verifyCharSizes(rect)) {
-      Mat mserMat = adaptive_image_from_points(contour, rect, rect.size());
-
-      /*Mat region = image(rect);
-      Mat binaryMat;
-      threshold(region, binaryMat, 0, 255, CV_THRESH_BINARY | CV_THRESH_OTSU);*/
-
-      Mat charInput = preprocessChar(mserMat, 20);
+      Mat mserMat = adaptive_image_from_points(contour, rect, Size(char_size, char_size));
+      Mat charInput = preprocessChar(mserMat, char_size);
       
-      std::string label = "";
-      float maxVal = -2.f;
-      bool isCharacter = CharsIdentify::instance()->isCharacter(charInput, label, maxVal);
-
-      if (1) {
-        //match(rect) = min(max(0, int(maxVal * 255)),255);
-        match(rect) = 255;
-
-        cv::rectangle(result, rect, Scalar(255, 0, 0));
-        Point center(rect.tl().x + rect.width / 2, rect.tl().y + rect.height / 2);
-
-        cv::circle(result, center, 3, Scalar(0, 255, 0), 2);
-        out_charRect.push_back(rect);
-        //CCharacter character;
-        //character.setCharacterPos(rect);
-        //character.setCharacterMat(binary_region);
-        //character.setCharacterStr(label);
-        //character.setCharacterScore(maxVal);
-        //charVec.push_back(character);
-      }
+      CCharacter charCandidate;
+      charCandidate.setCharacterPos(rect);
+      charCandidate.setCharacterMat(charInput);
+      charCandidate.setIsChinese(false);
+      charVec.push_back(charCandidate);
     }
   }
 
-  if (0) {
+  CharsIdentify::instance()->classify(charVec);
+
+  std::vector<CCharacter> strongSeedVec;
+  std::vector<CCharacter> weakSeedVec;
+  std::vector<CCharacter> littleSeedVec;
+
+  size_t charCan_size = charVec.size();
+  for (size_t index = 0; index < charCan_size; index++) {
+    CCharacter& charCandidate = charVec[index];
+    Rect postion = charCandidate.getCharacterPos();
+    double score = charCandidate.getCharacterScore();
+    if (charCandidate.getIsStrong()) {
+      strongSeedVec.push_back(charCandidate);
+    }
+    else if (charCandidate.getIsWeak()) {
+      weakSeedVec.push_back(charCandidate);
+    }
+    else if (charCandidate.getIsLittle()) {
+      littleSeedVec.push_back(charCandidate);
+    }
+
+  }
+
+  //merge chars to group
+  std::vector<std::vector<CCharacter>> charGroupVec;
+  mergeCharToGroup(strongSeedVec, charGroupVec);
+
+  //draw the line of the group
+  for (auto charGroup : charGroupVec) {
+    std::vector<Point> points;
+    Vec4f line;
+    int maxarea = 0;
+    Rect maxrect;
+
+    for (auto character : charGroup) {
+      Rect charRect = character.getCharacterPos();
+      Point center(charRect.tl().x + charRect.width / 2, charRect.tl().y + charRect.height / 2);
+      points.push_back(center);
+
+      cv::circle(result, center, 3, Scalar(0, 255, 0), 2);
+      if (charRect.area() > maxarea) {
+        maxrect = charRect;
+        maxarea = charRect.area();
+      }
+    }
+
+    if (points.size() >= 2) {
+      fitLine(Mat(points), line, CV_DIST_L2, 0, 0.01, 0.01);
+      float k = line[1] / line[0];
+      float step = 10.f * (float)maxrect.width;
+      cv::line(result, Point2f(line[2] - step, line[3] - k*step), Point2f(line[2] + step, k*step + line[3]), Scalar(255, 255, 255));
+    }
+  }
+
+  if (1) {
     imshow("result", result);
     waitKey(0);
     destroyWindow("result");
@@ -1034,8 +1174,6 @@ Mat mserCharMatch(const Mat &src, Mat &match, std::vector<Rect>& out_charRect) {
 
   return match;
 }
-
-
 
 //! use verify size to first generate candidates
 Mat mserMatch(const Mat &src, Mat &match, const Color r,

@@ -985,8 +985,7 @@ int CPlateLocate::plateMserLocate(Mat src, vector<CPlate> &candPlates, int index
   vector<CPlate> plates;
   Mat src_b;
 
-  for (size_t i = 0; i < channelImages.size(); ++i)
-  {
+  for (size_t i = 0; i < channelImages.size(); ++i) {
     Mat channelImage = channelImages[i];
     Mat image = scaleImage(channelImage, Size(scale_size, scale_size), scale_ratio);
 
@@ -999,13 +998,11 @@ int CPlateLocate::plateMserLocate(Mat src, vector<CPlate> &candPlates, int index
     }
   }
 
-  for (size_t i = 0; i < rects_mser.size(); ++i)
-  {
+  for (size_t i = 0; i < rects_mser.size(); ++i) {
     Rect_<float> outputRect;
     calcSafeRect(rects_mser[i], src, outputRect);
 
-    if (0)
-    {
+    if (0) {
       std::stringstream ss(std::stringstream::in | std::stringstream::out);
       ss << "resources/image/tmp/plate_" << i << ".jpg";
       imwrite(ss.str(), src(outputRect));
@@ -1015,8 +1012,7 @@ int CPlateLocate::plateMserLocate(Mat src, vector<CPlate> &candPlates, int index
     plate.setPlateLocateType(CMSER);
     plate.setPlateMat(src(outputRect));
     plate.setPlatePos(rects_mser[i]);
-
-    candPlates.push_back(plate);
+    //candPlates.push_back(plate);
   }
 
   //deskew(src, src_b, rects_mser_blue, plates);

@@ -33,14 +33,13 @@ namespace easypr {
     ann_->predict(featureRows, output);
 
     for (int output_index = 0; output_index < rowNum; output_index++) {
-      Mat output_row = output.row(output_index);
       int result = -1;
       float maxVal = -2.f;
       bool isChinses = isChineseVec[output_index];
       if (!isChinses) {
         result = 0;
         for (int j = 0; j < kCharactersNumber; j++) {
-          float val = output_row.at<float>(j);
+          float val = output.at<float>(j);
           // std::cout << "j:" << j << "val:" << val << std::endl;
           if (val > maxVal) {
             maxVal = val;
@@ -51,7 +50,7 @@ namespace easypr {
       else {
         result = kCharactersNumber;
         for (int j = kCharactersNumber; j < kCharsTotalNumber; j++) {
-          float val = output_row.at<float>(j);
+          float val = output.at<float>(j);
           //std::cout << "j:" << j << "val:" << val << std::endl;
           if (val > maxVal) {
             maxVal = val;
@@ -66,58 +65,49 @@ namespace easypr {
 
 
   void CharsIdentify::classify(std::vector<CCharacter>& charVec){
-    size_t charVecSize = charVec.size();
+    size_t charVec_size = charVec.size();
 
     Mat featureRows;
-    for (size_t index = 0; index < charVecSize; index++) {
+    for (size_t index = 0; index < charVec_size; index++) {
       Mat charInput = charVec[index].getCharacterMat();
       Mat feature = charFeatures(charInput, kPredictSize);
       featureRows.push_back(feature);
     }
 
-    cv::Mat output(charVecSize, kCharsTotalNumber, CV_32FC1);
+    int rowNum = featureRows.rows;
+    cv::Mat output(rowNum, kCharsTotalNumber, CV_32FC1);
     ann_->predict(featureRows, output);
 
-    for (size_t output_index = 0; output_index < charVecSize; output_index++) {
+    for (int output_index = 0; output_index < rowNum; output_index++) {
       CCharacter& character = charVec[output_index];
-      Mat output_row = output.row(output_index);
-
       int result = -1;
       float maxVal = -2.f;
-      std::string label = "";
-
+      string label = "";
       bool isChinses = character.getIsChinese();
       if (!isChinses) {
         result = 0;
         for (int j = 0; j < kCharactersNumber; j++) {
-          float val = output_row.at<float>(j);
-          //std::cout << "j:" << j << "val:" << val << std::endl;
+          float val = output.at<float>(j);
+          // std::cout << "j:" << j << "val:" << val << std::endl;
           if (val > maxVal) {
             maxVal = val;
             result = j;
           }
         }
-        label = std::make_pair(kChars[result], kChars[result]).second;
       }
       else {
         result = kCharactersNumber;
         for (int j = kCharactersNumber; j < kCharsTotalNumber; j++) {
-          float val = output_row.at<float>(j);
+          float val = output.at<float>(j);
           //std::cout << "j:" << j << "val:" << val << std::endl;
           if (val > maxVal) {
             maxVal = val;
             result = j;
           }
         }
-        const char* key = kChars[result];
-        std::string s = key;
-        std::string province = kv_->get(s);
-        label = std::make_pair(s, province).second;
       }
-      /*std::cout << "result:" << result << std::endl;
-      std::cout << "maxVal:" << maxVal << std::endl;*/
       character.setCharacterScore(maxVal);
-      character.setCharacterStr(label);
+      character.setCharacterStr(result);
     }
   }
 

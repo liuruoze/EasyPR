@@ -9,7 +9,8 @@
 //////////////////////////////////////////////////////////////////////////
 #ifndef EASYPR_CORE_PLATE_H_
 #define EASYPR_CORE_PLATE_H_
-#include "core_func.h"
+
+#include "easypr/core/core_func.h"
 
 /*! \namespace easypr
 Namespace where all the C++ EasyPR functionality resides
