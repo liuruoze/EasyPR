@@ -6,10 +6,10 @@
 #include <fstream>
 #include <list>
 #include <memory>
-#include <numeric> 
-#include "xml/xmlParser.h"
+#include <numeric>
 #include "easypr/core/core_func.h"
 #include "easypr/util/util.h"
+#include "thirdparty/xmlParser/xmlParser.h"
 
 using namespace std;
 
@@ -89,11 +89,13 @@ namespace easypr {
 
       CPlateRecognize pr;
 
-      // ÉèÖÃDebugÄ£Ê½
+      // è®¾ç½®Debugæ¨¡å¼
+
       pr.setDebug(false);
       pr.setLifemode(true);
 
-      // ÉèÖÃÒª´¦ÀíµÄÒ»ÕÅÍ¼Æ¬ÖĞ×î¶àÓĞ¶àÉÙ³µÅÆ
+      // è®¾ç½®è¦å¤„ç†çš„ä¸€å¼ å›¾ç‰‡ä¸­æœ€å¤šæœ‰å¤šå°‘è½¦ç‰Œ
+
       pr.setMaxPlates(4);
       //pr.setDetectType(PR_DETECT_COLOR | PR_DETECT_SOBEL);
       pr.setDetectType(PR_DETECT_CMSER);
@@ -112,33 +114,33 @@ namespace easypr {
 
       cout << "Begin to test the easypr accuracy!" << endl;
 
-      // ×ÜµÄ²âÊÔÍ¼Æ¬ÊıÁ¿
+      // æ€»çš„æµ‹è¯•å›¾ç‰‡æ•°é‡
 
       int count_all = 0;
 
-      // ´íÎóµÄÍ¼Æ¬ÊıÁ¿
+      // é”™è¯¯çš„å›¾ç‰‡æ•°é‡
 
       int count_err = 0;
 
-      // Î´Ê¶±ğµÄÍ¼Æ¬ÊıÁ¿
+      // æœªè¯†åˆ«çš„å›¾ç‰‡æ•°é‡
 
       int count_norecogin = 0;
 
       std::list<std::string> not_recognized_files;
 
-      // ×ÜµÄ×Ö·û²î¾à
+      // æ€»çš„å­—ç¬¦å·®è·
 
       float diff_all = 0;
 
-      // Æ½¾ù×Ö·û²î¾à
+      // å¹³å‡å­—ç¬¦å·®è·
 
       float diff_avg = 0;
 
-      // ÍêÈ«Æ¥ÅäµÄÊ¶±ğ´ÎÊı
+      // å®Œå…¨åŒ¹é…çš„è¯†åˆ«æ¬¡æ•°
 
       float match_count = 0;
 
-      // ÍêÈ«Æ¥ÅäµÄÊ¶±ğ´ÎÊıËùÕ¼Ê¶±ğÍ¼Æ¬ÖĞµÄ±ÈÀı
+      // å®Œå…¨åŒ¹é…çš„è¯†åˆ«æ¬¡æ•°æ‰€å è¯†åˆ«å›¾ç‰‡ä¸­çš„æ¯”ä¾‹
 
       float match_rate = 0;
 
@@ -147,7 +149,7 @@ namespace easypr {
       vector<float> icdar2003_recall_all;
       vector<float> icdar2003_precise_all;
 
-      // ¿ªÊ¼ºÍ½áÊøÊ±¼ä
+      // å¼€å§‹å’Œç»“æŸæ—¶é—´
 
       time_t begin, end;
       time(&begin);
@@ -155,17 +157,17 @@ namespace easypr {
       for (int i = 0; i < size; i++) {
         string filepath = files[i].c_str();
 
-        // EasyPR¿ªÊ¼ÅĞ¶Ï³µÅÆ
+        // EasyPRå¼€å§‹åˆ¤æ–­è½¦ç‰Œ
 
         Mat src = imread(filepath);
 
-        // Èç¹ûÊÇ·ÇÍ¼ÏñÎÄ¼ş£¬Ö±½Ó¹ıÈ¥
+        // å¦‚æœæ˜¯éå›¾åƒæ–‡ä»¶ï¼Œç›´æ¥è¿‡å»
 
         if (!src.data) continue;
 
         cout << "------------------" << endl;
 
-        // »ñÈ¡ÕæÊµµÄ³µÅÆ
+        // è·å–çœŸå®çš„è½¦ç‰Œ
 
         string plateLicense = Utils::getFileName(filepath);
         cout << kv->get("original_plate") << ":" << plateLicense << endl;
@@ -340,7 +342,7 @@ namespace easypr {
 
               string colorplate = plateVec[j].getPlateStr();
 
-              // ¼ÆËã"À¶ÅÆ:ËÕE7KU22"ÖĞÃ°ºÅºóÃæµÄ³µÅÆ´óĞ¡"
+              // è®¡ç®—"è“ç‰Œ:è‹E7KU22"ä¸­å†’å·åé¢çš„è½¦ç‰Œå¤§å°"
 
               vector<string> spilt_plate = Utils::splitString(colorplate, ':');
 

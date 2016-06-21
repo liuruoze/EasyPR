@@ -1,5 +1,5 @@
-#include "third/lbp.hpp"
-#include "third/helper.hpp"
+#include "lbp.hpp"
+#include "helper.hpp"
 
 using namespace cv;
 

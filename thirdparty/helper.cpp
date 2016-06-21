@@ -16,7 +16,7 @@
  *   See <http://www.opensource.org/licenses/bsd-license>
  */
 #include <opencv2/opencv.hpp>
-#include "third/helper.hpp"
+#include "helper.hpp"
 
 using namespace cv;
 
@@ -107,7 +107,7 @@ histc_(const Mat& src, int minVal=0, int maxVal=255, bool normed=false) {
     // Establish the number of bins.
     int histSize = maxVal-minVal+1;
     // Set the ranges.
-    float range[] = { minVal, maxVal+1 } ;
+    float range[] = {static_cast<float>(minVal), static_cast<float>(maxVal + 1)} ;
     const float* histRange = { range };
     // calc histogram
     calcHist(&src, 1, 0, Mat(), result, 1, &histSize, &histRange, true, false);
