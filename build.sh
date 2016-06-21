@@ -2,7 +2,12 @@
 
 __dirname=`dirname $0`
 BUILD_TMP_PATH=${__dirname}/_build
+EXECUTABLE=demo_linux_amd64
 
+# cleanup
+rm bin/${EXECUTABLE}
+
+# create tmp dir for cmake
 mkdir -p ${BUILD_TMP_PATH} && cd ${BUILD_TMP_PATH}
 
 # Generate Makefile
@@ -13,11 +18,12 @@ if [ -f 'Makefile' ];then
   make --jobs 4
 fi
 
-# Copy binary files to bin/
-BINARY_PATH=../bin
+if [ $? -eq 0 ];then
+  # Copy binary files to bin/
+  BINARY_PATH=../bin
 
-cp libeasypr.a ${BINARY_PATH}
-cp demo_linux_amd64 ${BINARY_PATH}
+  cp ${EXECUTABLE} ${BINARY_PATH}
 
-# Run demo program
-cd .. && bin/demo_linux_amd64
+  # Run demo program
+  cd .. && bin/demo_linux_amd64
+fi

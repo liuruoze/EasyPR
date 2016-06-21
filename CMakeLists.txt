@@ -14,6 +14,9 @@ else ()
   message(STATUS "The compiler ${CMAKE_CXX_COMPILER} doesn’t support C++11. Please upgrade or use a different C++ compiler.")
 endif ()
 
+# sub directories
+add_subdirectory(thirdparty)
+
 # OpenVC3 required
 find_package(OpenCV 3.1.0 REQUIRED)
 
@@ -46,11 +49,6 @@ set(SOURCE_FILES
         src/util/util.cpp
         src/util/program_options.cpp
         src/util/kv.cpp
-
-        thirdparty/xmlParser/xmlParser.cpp
-        thirdparty/erfilter.cpp
-        thirdparty/helper.cpp
-        thirdparty/lbp.cpp
         )
 
 # pack objects to static library
@@ -60,4 +58,4 @@ add_library(easypr STATIC ${SOURCE_FILES})
 add_executable(demo_linux_amd64 test/main.cpp)
 
 # link opencv libs
-target_link_libraries(demo_linux_amd64 easypr ${OpenCV_LIBS})
+target_link_libraries(demo_linux_amd64 easypr thirdparty ${OpenCV_LIBS})
