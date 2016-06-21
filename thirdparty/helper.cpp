@@ -16,7 +16,7 @@
  *   See <http://www.opensource.org/licenses/bsd-license>
  */
 #include <opencv2/opencv.hpp>
-#include "third/helper.hpp"
+#include "helper.hpp"
 
 using namespace cv;
 
