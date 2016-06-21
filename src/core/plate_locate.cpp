@@ -87,8 +87,8 @@ int CPlateLocate::mserSearch(const Mat &src, const Color r, Mat &out,
   Mat result = src.clone();
   cvtColor(result, result, COLOR_GRAY2BGR);
 
-  const int color_morph_width = 30;
-  const int color_morph_height = 5;
+  const int color_morph_width = 24;
+  const int color_morph_height = 4;
 
   std::vector<RotatedRect> plateRects;
   std::vector<Rect> charRects;
@@ -105,6 +105,12 @@ int CPlateLocate::mserSearch(const Mat &src, const Color r, Mat &out,
     utils::imwrite("resources/image/tmp/match_grey.jpg", match_grey);
   }
 
+  if (0) {
+    imshow("match_grey", match_grey);
+    waitKey(0);
+    destroyWindow("match_grey");
+  }
+
   Mat src_threshold;
   threshold(match_grey, src_threshold, 0, 255,
     CV_THRESH_OTSU + CV_THRESH_BINARY);
@@ -115,6 +121,13 @@ int CPlateLocate::mserSearch(const Mat &src, const Color r, Mat &out,
 
   if (m_debug) {
     utils::imwrite("resources/image/tmp/mser.jpg", src_threshold);
+  }
+
+
+  if (0) {
+    imshow("src_threshold", src_threshold);
+    waitKey(0);
+    destroyWindow("src_threshold");
   }
 
   src_threshold.copyTo(out);
@@ -961,8 +974,8 @@ int CPlateLocate::plateMserLocate(Mat src, vector<CPlate> &candPlates, int index
     //channelImages.push_back(singleChannelImage);
     //flags.push_back(0);
 
-    //channelImages.push_back(255 - grayImage);
-    //flags.push_back(1);
+    channelImages.push_back(255 - grayImage);
+    flags.push_back(1);
   }
 
   int scale_size = 1024;
@@ -981,15 +994,9 @@ int CPlateLocate::plateMserLocate(Mat src, vector<CPlate> &candPlates, int index
     mserSearch(image, BLUE, src_b, rects, index);
 
     for (size_t j = 0; j < rects.size(); ++j) {
-      RotatedRect rr = rects[j];
-      float width = rr.size.width * (float)scale_ratio;
-      float height = rr.size.height * (float)scale_ratio;
-      float x = rr.center.x * (float)scale_ratio;
-      float y = rr.center.y * (float)scale_ratio;
-      RotatedRect mserRect(Point2f(x, y), Size2f(width, height), rr.angle);
+      RotatedRect mserRect = scaleBackRRect(rects[j], (float)scale_ratio);
       rects_mser.push_back(mserRect);
     }
-
   }
 
   for (size_t i = 0; i < rects_mser.size(); ++i)

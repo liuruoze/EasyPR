@@ -117,15 +117,12 @@ namespace easypr {
       if (0) {
         imshow("inMat", inMat);
         waitKey(0);
+        destroyWindow("inMat");
       }
 
       int result = plateSetScore(plate);
       if (result == 0) {
         plateVec.push_back(plate);
-        if (0) {
-          imshow("plateMat", inMat);
-          waitKey(0);
-        }
       }
       else {
         int w = inMat.cols;
@@ -158,6 +155,13 @@ namespace easypr {
     int count = 0;
     for (; it != reDupPlateVec.end(); ++it) {
       resultVec.push_back(*it);
+
+      if (0) {
+        imshow("plateMat", it->getPlateMat());
+        waitKey(0);
+        destroyWindow("plateMat");
+      }
+
       count++;
       if (count >= maxPlates)
         break;

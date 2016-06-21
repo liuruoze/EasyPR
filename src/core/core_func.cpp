@@ -858,6 +858,18 @@ Mat scaleImage(const Mat& image, const Size& maxSize, double& scale_ratio) {
   return ret;
 }
 
+
+// Scale back RotatedRect
+RotatedRect scaleBackRRect(const RotatedRect& rr, const float scale_ratio) {
+  float width = rr.size.width * scale_ratio;
+  float height = rr.size.height * scale_ratio;
+  float x = rr.center.x * scale_ratio;
+  float y = rr.center.y * scale_ratio;
+  RotatedRect mserRect(Point2f(x, y), Size2f(width, height), rr.angle);
+  
+  return mserRect;
+}
+
 bool verifyPlateSize(Rect mr) {
   float error = 0.6f;
   // Spain car plate size: 52x11 aspect 4,7272
@@ -969,6 +981,8 @@ Mat mserCharMatch(const Mat &src, Mat &match, std::vector<Rect>& out_charRect) {
 
   int imageArea = image.rows * image.cols;
   mser = MSER::create(1, 30, int(0.05 * imageArea));
+
+  mser->setPass2Only(true);
   mser->detectRegions(image, all_contours, all_boxes);
 
   size_t size = all_contours.size();
@@ -981,6 +995,18 @@ Mat mserCharMatch(const Mat &src, Mat &match, std::vector<Rect>& out_charRect) {
     RotatedRect rrect = minAreaRect(Mat(contour));
 
     if (verifyCharSizes(rect)) {
+      Mat mserMat = adaptive_image_from_points(contour, rect, rect.size());
+
+      /*Mat region = image(rect);
+      Mat binaryMat;
+      threshold(region, binaryMat, 0, 255, CV_THRESH_BINARY | CV_THRESH_OTSU);*/
+
+      Mat charInput = preprocessChar(mserMat, 20);
+      
+      std::string label = "";
+      float maxVal = -2.f;
+      bool isCharacter = CharsIdentify::instance()->isCharacter(charInput, label, maxVal);
+
       if (1) {
         //match(rect) = min(max(0, int(maxVal * 255)),255);
         match(rect) = 255;
@@ -988,7 +1014,7 @@ Mat mserCharMatch(const Mat &src, Mat &match, std::vector<Rect>& out_charRect) {
         cv::rectangle(result, rect, Scalar(255, 0, 0));
         Point center(rect.tl().x + rect.width / 2, rect.tl().y + rect.height / 2);
 
-        //cv::circle(result, center, 3, Scalar(0, 255, 0), 2);
+        cv::circle(result, center, 3, Scalar(0, 255, 0), 2);
         out_charRect.push_back(rect);
         //CCharacter character;
         //character.setCharacterPos(rect);
@@ -1000,7 +1026,7 @@ Mat mserCharMatch(const Mat &src, Mat &match, std::vector<Rect>& out_charRect) {
     }
   }
 
-  if (1) {
+  if (0) {
     imshow("result", result);
     waitKey(0);
     destroyWindow("result");

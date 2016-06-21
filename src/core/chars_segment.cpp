@@ -137,6 +137,7 @@ int CCharsSegment::charsSegment(Mat input, vector<Mat>& resultVec) {
   // 如果不是车牌，返回ErrorCode=0x02
 
   if (!clearLiuDing(img_threshold)) return 0x02;
+  //clearLiuDing(img_threshold);
 
   // 在二值化图像中提取轮廓
 

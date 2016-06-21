@@ -74,8 +74,11 @@ bool verifyCharSizes(Rect r);
 bool verifyPlateSize(Rect mr);
 bool verifyRotatedPlateSizes(RotatedRect mr);
 
+// Scale to small image (for the purpose of comput mser in large image)
 Mat scaleImage(const Mat& image, const Size& maxSize, double& scale_ratio);
 
+// Scale back RotatedRect
+RotatedRect scaleBackRRect(const RotatedRect& rr, const float scale_ratio);
 
 //! use verify size to first generate char candidates
 Mat mserCharMatch(const Mat &src, Mat &match, std::vector<Rect>& out_charRect);

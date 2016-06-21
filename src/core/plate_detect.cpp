@@ -73,9 +73,9 @@ namespace easypr {
     if (1) 
     {
       Mat result = src.clone();
-      for (size_t i = 0; i < resultVec.size(); i++)
+      for (size_t i = 0; i < all_result_Plates.size(); i++)
       {
-        CPlate plate = resultVec[i];
+        CPlate plate = all_result_Plates[i];
 
         Rect_<float> outputRect;
         calcSafeRect(plate.getPlatePos(), src, outputRect);

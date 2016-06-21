@@ -31,6 +31,7 @@ set(SOURCE_FILES
     src/core/plate_judge.cpp
     src/core/plate_locate.cpp
     src/core/plate_recognize.cpp
+	src/core/better_mser.cpp
     src/train/ann_train.cpp
     src/train/svm_train.cpp
     src/train/train.cpp
