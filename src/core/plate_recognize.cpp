@@ -1,6 +1,6 @@
 #include "easypr/core/plate_recognize.h"
 #include "easypr/config.h"
-#include "third/erfilter.hpp"
+#include "thirdparty/erfilter.hpp"
 
 namespace easypr {
 
@@ -153,7 +153,7 @@ namespace easypr {
     return true;
   }
 
-  //! ·Ç¼«´óÖµÒÖÖÆ
+  //! ï¿½Ç¼ï¿½ï¿½ï¿½Öµï¿½ï¿½ï¿½ï¿½
   void NMStoCharacter(std::vector<CCharacter> &inVec, std::vector<CCharacter> &resultVec, double overlap) {
 
     std::sort(inVec.begin(), inVec.end());
@@ -214,7 +214,7 @@ namespace easypr {
 
   int CPlateRecognize::plateRecognizeAsText(Mat src, std::vector<CPlate> &licenseVec) 
   {
-    // ³µÅÆ·½¿é¼¯ºÏ
+    // ï¿½ï¿½ï¿½Æ·ï¿½ï¿½é¼¯ï¿½ï¿½
     std::vector<CPlate> plateVec;
 
     std::vector<Mat> channelImages;
@@ -246,8 +246,8 @@ namespace easypr {
       std::vector<CCharacter> charVec;
       Mat channelImage = channelImages[i];
 
-      // ¶ÔÍ¼Ïñ½øÐÐÍ³Ò»Ëõ·Å£¬È·±£Í¼Ïñ²»Òª¹ý´ó
-      // ¶ÔËÙ¶ÈÌáÉý°ïÖú²»´ó
+      // ï¿½ï¿½Í¼ï¿½ï¿½ï¿½ï¿½ï¿½Í³Ò»ï¿½ï¿½ï¿½Å£ï¿½È·ï¿½ï¿½Í¼ï¿½ï¿½Òªï¿½ï¿½ï¿½ï¿½
+      // ï¿½ï¿½ï¿½Ù¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
       int scale_size = 1200;
       double scale_ratio = 1;
       Mat image = scaleImage(channelImage, Size(scale_size, scale_size), scale_ratio);
@@ -392,38 +392,38 @@ namespace easypr {
   }
  
 
-  // !³µÅÆÊ¶±ðÄ£¿é
+  // !ï¿½ï¿½ï¿½ï¿½Ê¶ï¿½ï¿½Ä£ï¿½ï¿½
   int CPlateRecognize::plateRecognize(Mat src,
     std::vector<CPlate> &licenseVec, int index) {
 
-    // ³µÅÆ¼¯ºÏ
+    // ï¿½ï¿½ï¿½Æ¼ï¿½ï¿½ï¿½
     std::vector<CPlate> plateVec;
 
-    // ¶ÔÍ¼Ïñ½øÐÐÍ³Ò»Ëõ·Å£¬È·±£Í¼Ïñ²»Òª¹ý´ó
-    // ¶ÔËÙ¶ÈÌáÉý°ïÖú²»´ó
+    // ï¿½ï¿½Í¼ï¿½ï¿½ï¿½ï¿½ï¿½Í³Ò»ï¿½ï¿½ï¿½Å£ï¿½È·ï¿½ï¿½Í¼ï¿½ï¿½Òªï¿½ï¿½ï¿½ï¿½
+    // ï¿½ï¿½ï¿½Ù¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     //int scale_size = 1600;
     //double scale_ratio = 1;
     //Mat ret = scaleImage(src, Size(scale_size, scale_size), scale_ratio);
     //src = ret;
 
-    // ½øÐÐÉî¶È¶¨Î»£¬Ê¹ÓÃÑÕÉ«ÐÅÏ¢Óë¶þ´ÎSobel
+    // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È¶ï¿½Î»ï¿½ï¿½Ê¹ï¿½ï¿½ï¿½ï¿½É«ï¿½ï¿½Ï¢ï¿½ï¿½ï¿½ï¿½ï¿½Sobel
     int resultPD = plateDetect(src, plateVec, false, index);
 
     if (resultPD == 0) {
       size_t num = plateVec.size();
       int index = 0;
 
-      //ÒÀ´ÎÊ¶±ðÃ¿¸ö³µÅÆÄÚµÄ·ûºÅ
+      //ï¿½ï¿½ï¿½ï¿½Ê¶ï¿½ï¿½Ã¿ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ÚµÄ·ï¿½ï¿½ï¿½
 
       for (size_t j = 0; j < num; j++) {
         CPlate item = plateVec[j];
         Mat plate = item.getPlateMat();
 
-        //»ñÈ¡³µÅÆÑÕÉ«
+        //ï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½É«
 
         std::string plateType = getPlateColor(plate);
 
-        //»ñÈ¡³µÅÆºÅ
+        //ï¿½ï¿½È¡ï¿½ï¿½ï¿½Æºï¿½
 
         std::string plateIdentify = "";
         int resultCR = charsRecognise(plate, plateIdentify);
@@ -434,9 +434,9 @@ namespace easypr {
         }
       }
 
-      //ÍêÕûÊ¶±ð¹ý³Ìµ½´Ë½áÊø
+      //ï¿½ï¿½ï¿½ï¿½Ê¶ï¿½ï¿½ï¿½ï¿½Ìµï¿½ï¿½Ë½ï¿½ï¿½ï¿½
 
-      //Èç¹ûÊÇDebugÄ£Ê½£¬Ôò»¹ÐèÒª½«¶¨Î»µÄÍ¼Æ¬ÏÔÊ¾ÔÚÔ­Í¼×óÉÏ½Ç
+      //ï¿½ï¿½ï¿½ï¿½ï¿½DebugÄ£Ê½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Òªï¿½ï¿½ï¿½ï¿½Î»ï¿½ï¿½Í¼Æ¬ï¿½ï¿½Ê¾ï¿½ï¿½Ô­Í¼ï¿½ï¿½ï¿½Ï½ï¿½
 
       if (getPDDebug()) {
         Mat result;
@@ -471,7 +471,7 @@ namespace easypr {
             8);
         }
 
-        //ÏÔÊ¾¶¨Î»¿òµÄÍ¼Æ¬
+        //ï¿½ï¿½Ê¾ï¿½ï¿½Î»ï¿½ï¿½ï¿½Í¼Æ¬
 
         showResult(result);
       }
@@ -484,11 +484,11 @@ namespace easypr {
   int CPlateRecognize::plateRecognize(Mat src,
     std::vector<std::string> &licenseVec) {
 
-    // ³µÅÆ·½¿é¼¯ºÏ
+    // ï¿½ï¿½ï¿½Æ·ï¿½ï¿½é¼¯ï¿½ï¿½
 
     std::vector<CPlate> plateVec;
 
-    // ½øÐÐÉî¶È¶¨Î»£¬Ê¹ÓÃÑÕÉ«ÐÅÏ¢Óë¶þ´ÎSobel
+    // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È¶ï¿½Î»ï¿½ï¿½Ê¹ï¿½ï¿½ï¿½ï¿½É«ï¿½ï¿½Ï¢ï¿½ï¿½ï¿½ï¿½ï¿½Sobel
 
     int resultPD = plateDetect(src, plateVec, 0, kDebug, 0);
 
@@ -496,17 +496,17 @@ namespace easypr {
       size_t num = plateVec.size();
       int index = 0;
 
-      //ÒÀ´ÎÊ¶±ðÃ¿¸ö³µÅÆÄÚµÄ·ûºÅ
+      //ï¿½ï¿½ï¿½ï¿½Ê¶ï¿½ï¿½Ã¿ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ÚµÄ·ï¿½ï¿½ï¿½
 
       for (size_t j = 0; j < num; j++) {
         CPlate item = plateVec[j];
         Mat plate = item.getPlateMat();
 
-        //»ñÈ¡³µÅÆÑÕÉ«
+        //ï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½É«
 
         std::string plateType = getPlateColor(plate);
 
-        //»ñÈ¡³µÅÆºÅ
+        //ï¿½ï¿½È¡ï¿½ï¿½ï¿½Æºï¿½
 
         std::string plateIdentify = "";
         int resultCR = charsRecognise(plate, plateIdentify);
@@ -516,9 +516,9 @@ namespace easypr {
         }
       }
 
-      //ÍêÕûÊ¶±ð¹ý³Ìµ½´Ë½áÊø
+      //ï¿½ï¿½ï¿½ï¿½Ê¶ï¿½ï¿½ï¿½ï¿½Ìµï¿½ï¿½Ë½ï¿½ï¿½ï¿½
 
-      //Èç¹ûÊÇDebugÄ£Ê½£¬Ôò»¹ÐèÒª½«¶¨Î»µÄÍ¼Æ¬ÏÔÊ¾ÔÚÔ­Í¼×óÉÏ½Ç
+      //ï¿½ï¿½ï¿½ï¿½ï¿½DebugÄ£Ê½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Òªï¿½ï¿½ï¿½ï¿½Î»ï¿½ï¿½Í¼Æ¬ï¿½ï¿½Ê¾ï¿½ï¿½Ô­Í¼ï¿½ï¿½ï¿½Ï½ï¿½
 
       if (getPDDebug()) {
         Mat result;
@@ -551,7 +551,7 @@ namespace easypr {
             8);
         }
 
-        //ÏÔÊ¾¶¨Î»¿òµÄÍ¼Æ¬
+        //ï¿½ï¿½Ê¾ï¿½ï¿½Î»ï¿½ï¿½ï¿½Í¼Æ¬
 
         showResult(result);
       }
