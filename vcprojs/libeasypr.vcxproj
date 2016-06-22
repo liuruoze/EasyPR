@@ -87,7 +87,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(OPENCV)\include;$(SolutionDir)include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(OPENCV)\include;$(SolutionDir)include;$(SolutionDir);</AdditionalIncludeDirectories>
       <DisableSpecificWarnings>4819</DisableSpecificWarnings>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
@@ -158,15 +158,15 @@
     <ClCompile Include="..\src\preprocess\deface.cpp" />
     <ClCompile Include="..\src\preprocess\gdts.cpp" />
     <ClCompile Include="..\src\preprocess\mc_data.cpp" />
-    <ClCompile Include="..\src\third\erfilter.cpp" />
-    <ClCompile Include="..\src\third\helper.cpp" />
-    <ClCompile Include="..\src\third\lbp.cpp" />
     <ClCompile Include="..\src\train\ann_train.cpp" />
     <ClCompile Include="..\src\train\svm_train.cpp" />
     <ClCompile Include="..\src\train\train.cpp" />
     <ClCompile Include="..\src\util\kv.cpp" />
     <ClCompile Include="..\src\util\program_options.cpp" />
     <ClCompile Include="..\src\util\util.cpp" />
+    <ClCompile Include="..\thirdparty\erfilter.cpp" />
+    <ClCompile Include="..\thirdparty\helper.cpp" />
+    <ClCompile Include="..\thirdparty\lbp.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\easypr.h" />
@@ -192,9 +192,9 @@
     <ClInclude Include="..\include\easypr\util\program_options.h" />
     <ClInclude Include="..\include\easypr\util\switch.hpp" />
     <ClInclude Include="..\include\easypr\util\util.h" />
-    <ClInclude Include="..\include\third\erfilter.hpp" />
-    <ClInclude Include="..\include\third\helper.hpp" />
-    <ClInclude Include="..\include\third\lbp.hpp" />
+    <ClInclude Include="..\thirdparty\erfilter.hpp" />
+    <ClInclude Include="..\thirdparty\helper.hpp" />
+    <ClInclude Include="..\thirdparty\lbp.hpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\LICENSE" />
