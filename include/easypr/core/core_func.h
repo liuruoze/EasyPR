@@ -81,7 +81,7 @@ Mat scaleImage(const Mat& image, const Size& maxSize, double& scale_ratio);
 RotatedRect scaleBackRRect(const RotatedRect& rr, const float scale_ratio);
 
 //! use verify size to first generate char candidates
-Mat mserCharMatch(const Mat &src, Mat &match, std::vector<Rect>& out_charRect);
+Mat mserCharMatch(const Mat &src, Mat &match, std::vector<Rect>& out_charRect, Color color, int index = 0, bool showDebug = false);
 
 /** @brief convert form mser point to image.
 

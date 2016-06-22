@@ -52,13 +52,10 @@ namespace easypr {
     inline void setIsChinese(bool param) { m_isChinese = param; }
     inline bool getIsChinese() const { return m_isChinese; }
 
-    //inline void setIsStrong(bool param) { isStrong = param; }
     inline bool getIsStrong() const { return m_score >= 0.9; }
 
-    //inline void setIsWeak(bool param) { isWeak = param; }
     inline bool getIsWeak() const { return m_score < 0.9 && m_score >= 0.5; }
 
-    //inline void setIsLittle(bool param) { isLittle = param; }
     inline bool getIsLittle() const { return m_score < 0.5; }
 
     bool operator < (const CCharacter& other) const

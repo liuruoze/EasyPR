@@ -82,7 +82,7 @@ class CPlateLocate {
 
   //! mser search
   int mserSearch(const Mat& src, const Color r, Mat& out, 
-    std::vector<RotatedRect>& outRects, int index = 0);
+    std::vector<RotatedRect>& outRects, int index = 0, bool showDebug = false);
 
   //! 未使用函数与代码
   //! 开始------------

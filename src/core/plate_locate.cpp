@@ -81,8 +81,8 @@ bool CPlateLocate::verifySizes(RotatedRect mr) {
 
 
 // !基于HSV空间的颜色搜索方法
-int CPlateLocate::mserSearch(const Mat &src, const Color r, Mat &out,
-  vector<RotatedRect> &outRects, int index) {
+int CPlateLocate::mserSearch(const Mat &src, const Color color, Mat &out,
+  vector<RotatedRect> &outRects, int index, bool showDebug) {
   Mat match_grey;
   Mat result = src.clone();
   cvtColor(result, result, COLOR_GRAY2BGR);
@@ -99,7 +99,7 @@ int CPlateLocate::mserSearch(const Mat &src, const Color r, Mat &out,
   // 进行颜色查找
 
   //mserMatch(src, match_grey, r, plateRects, charRects);
-  mserCharMatch(src, match_grey, charRects);
+  mserCharMatch(src, match_grey, charRects, color, index, showDebug);
 
   if (m_debug) {
     utils::imwrite("resources/image/tmp/match_grey.jpg", match_grey);
@@ -960,14 +960,14 @@ int CPlateLocate::plateColorLocate(Mat src, vector<CPlate> &candPlates,
 
 int CPlateLocate::plateMserLocate(Mat src, vector<CPlate> &candPlates, int index) {
   std::vector<Mat> channelImages;
-  std::vector<int> flags;
+  std::vector<Color> flags;
 
   // only conside blue plate
   if (1) {
     Mat grayImage;
     cvtColor(src, grayImage, COLOR_BGR2GRAY);
     channelImages.push_back(grayImage);
-    flags.push_back(0);
+    flags.push_back(BLUE);
 
     //Mat singleChannelImage;
     //extractChannel(src, singleChannelImage, 2);
@@ -975,7 +975,7 @@ int CPlateLocate::plateMserLocate(Mat src, vector<CPlate> &candPlates, int index
     //flags.push_back(0);
 
     channelImages.push_back(255 - grayImage);
-    flags.push_back(1);
+    flags.push_back(YELLOW);
   }
 
   int scale_size = 1024;
@@ -990,7 +990,7 @@ int CPlateLocate::plateMserLocate(Mat src, vector<CPlate> &candPlates, int index
     Mat image = scaleImage(channelImage, Size(scale_size, scale_size), scale_ratio);
 
     vector<RotatedRect> rects;
-    mserSearch(image, BLUE, src_b, rects, index);
+    mserSearch(image, flags[i], src_b, rects, index);
 
     for (size_t j = 0; j < rects.size(); ++j) {
       RotatedRect mserRect = scaleBackRRect(rects[j], (float)scale_ratio);

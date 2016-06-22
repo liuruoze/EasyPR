@@ -28,6 +28,9 @@ namespace easypr {
       m_platePos = plate.m_platePos;
       m_plateStr = plate.m_plateStr;
       m_locateType = plate.m_locateType;
+      m_line = plate.m_line;
+      m_leftPoint = plate.m_leftPoint;
+      m_rightPoint = plate.m_rightPoint;
     }
 
     inline void setPlateMat(Mat param) { m_plateMat = param; }
@@ -45,6 +48,15 @@ namespace easypr {
     inline void setPlateScore(double param) { m_score = param; }
     inline double getPlateScore() const { return m_score; }
 
+    inline void setPlateLine(Vec4f param) { m_line = param; }
+    inline Vec4f getPlateLine() const { return m_line; }
+
+    inline void setPlateLeftPoint(Point param) { m_leftPoint = param; }
+    inline Point getPlateLeftPoint() const { return m_leftPoint; }
+
+    inline void setPlateRightPoint(Point param) { m_rightPoint = param; }
+    inline Point getPlateRightPoint() const { return m_rightPoint; }
+
     bool operator < (const CPlate& plate) const
     {
       return (m_score < plate.m_score);
@@ -57,24 +69,26 @@ namespace easypr {
 
   private:
     //! plate mat
-
     Mat m_plateMat;
 
     //! plate rect
-
     RotatedRect m_platePos;
 
     //! plate license
-
     String m_plateStr;
 
     //! plate locate type
-
     LocateType m_locateType;
 
     //! plate likely
-
     double m_score;
+
+    //! middle line
+    Vec4f m_line;
+
+    //! left point and right point;
+    Point m_leftPoint;
+    Point m_rightPoint;
 
   };
 

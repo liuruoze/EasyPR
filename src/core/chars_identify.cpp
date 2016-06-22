@@ -68,6 +68,9 @@ namespace easypr {
   void CharsIdentify::classify(std::vector<CCharacter>& charVec){
     size_t charVecSize = charVec.size();
 
+    if (charVecSize == 0)
+      return;
+
     Mat featureRows;
     for (size_t index = 0; index < charVecSize; index++) {
       Mat charInput = charVec[index].getCharacterMat();
@@ -158,10 +161,11 @@ namespace easypr {
     cv::Mat feature = charFeatures(input, kPredictSize);
     auto index = static_cast<int>(classify(feature, maxVal, isChinese));
 
-    if (isChinese)
-      std::cout << "maxVal:" << maxVal << std::endl;
+    if (isChinese) {
+      //std::cout << "maxVal:" << maxVal << std::endl;
+    }
 
-    if (maxVal >= 0.9) {
+    if (maxVal >= 0.9 || (isChinese && maxVal >= 0.25)) {
       if (index < kCharactersNumber) {
         label = std::make_pair(kChars[index], kChars[index]).second;
       }
