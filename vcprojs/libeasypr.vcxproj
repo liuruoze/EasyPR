@@ -164,9 +164,9 @@
     <ClCompile Include="..\src\util\kv.cpp" />
     <ClCompile Include="..\src\util\program_options.cpp" />
     <ClCompile Include="..\src\util\util.cpp" />
-    <ClCompile Include="..\thirdparty\erfilter.cpp" />
-    <ClCompile Include="..\thirdparty\helper.cpp" />
-    <ClCompile Include="..\thirdparty\lbp.cpp" />
+    <ClCompile Include="..\thirdparty\LBP\helper.cpp" />
+    <ClCompile Include="..\thirdparty\LBP\lbp.cpp" />
+    <ClCompile Include="..\thirdparty\textDetect\erfilter.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\easypr.h" />
@@ -192,9 +192,9 @@
     <ClInclude Include="..\include\easypr\util\program_options.h" />
     <ClInclude Include="..\include\easypr\util\switch.hpp" />
     <ClInclude Include="..\include\easypr\util\util.h" />
-    <ClInclude Include="..\thirdparty\erfilter.hpp" />
-    <ClInclude Include="..\thirdparty\helper.hpp" />
-    <ClInclude Include="..\thirdparty\lbp.hpp" />
+    <ClInclude Include="..\thirdparty\LBP\helper.hpp" />
+    <ClInclude Include="..\thirdparty\LBP\lbp.hpp" />
+    <ClInclude Include="..\thirdparty\textDetect\erfilter.hpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\LICENSE" />

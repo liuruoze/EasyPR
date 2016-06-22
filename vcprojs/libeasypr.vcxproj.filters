@@ -111,13 +111,13 @@
     <ClCompile Include="..\src\core\better_mser.cpp">
       <Filter>源文件\core</Filter>
     </ClCompile>
-    <ClCompile Include="..\thirdparty\erfilter.cpp">
+    <ClCompile Include="..\thirdparty\textDetect\erfilter.cpp">
       <Filter>源文件\thirdparty</Filter>
     </ClCompile>
-    <ClCompile Include="..\thirdparty\helper.cpp">
+    <ClCompile Include="..\thirdparty\LBP\helper.cpp">
       <Filter>源文件\thirdparty</Filter>
     </ClCompile>
-    <ClCompile Include="..\thirdparty\lbp.cpp">
+    <ClCompile Include="..\thirdparty\LBP\lbp.cpp">
       <Filter>源文件\thirdparty</Filter>
     </ClCompile>
   </ItemGroup>
@@ -191,13 +191,13 @@
     <ClInclude Include="..\include\easypr\core\plate.hpp">
       <Filter>头文件\easypr\core</Filter>
     </ClInclude>
-    <ClInclude Include="..\thirdparty\erfilter.hpp">
+    <ClInclude Include="..\thirdparty\LBP\helper.hpp">
       <Filter>头文件\thirdparty</Filter>
     </ClInclude>
-    <ClInclude Include="..\thirdparty\helper.hpp">
+    <ClInclude Include="..\thirdparty\LBP\lbp.hpp">
       <Filter>头文件\thirdparty</Filter>
     </ClInclude>
-    <ClInclude Include="..\thirdparty\lbp.hpp">
+    <ClInclude Include="..\thirdparty\textDetect\erfilter.hpp">
       <Filter>头文件\thirdparty</Filter>
     </ClInclude>
   </ItemGroup>

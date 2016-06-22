@@ -10,9 +10,9 @@ include_directories(${OpenCV_INCLUDE_DIRS})
 # sources to be compiled
 set(SOURCE_FILES
         xmlParser/xmlParser.cpp
-        erfilter.cpp
-        helper.cpp
-        lbp.cpp
+        textDetect/erfilter.cpp
+        LBP/helper.cpp
+        LBP/lbp.cpp
         )
 
 # pack objects to static library
