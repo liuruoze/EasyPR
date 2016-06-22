@@ -1029,9 +1029,9 @@ bool compareCharRect(const CCharacter& character1, const CCharacter& character2)
   float x_margin_right = float(max(rect1.tl().x, rect2.tl().x));
 
   float x_margin_diff = abs(x_margin_left - x_margin_right);
-  double x_margin_diff_ratio = x_margin_diff / max(width_1, width_2);
+  double x_margin_diff_ratio = x_margin_diff / min(height_1, height_2);
 
-  if (x_margin_diff_ratio > 3)
+  if (x_margin_diff_ratio > 1.0)
     return false;
 
   return true;
@@ -1041,21 +1041,20 @@ bool compareCharRect(const CCharacter& character1, const CCharacter& character2)
 void mergeCharToGroup(std::vector<CCharacter> vecRect,
   std::vector<std::vector<CCharacter>>& charGroupVec) {
 
-  std::vector<CCharacter> charVec;
-
   std::vector<int> labels;
-  double overlap = 0.9;
-  NMStoCharacter(vecRect, charVec, overlap);
 
-  int numbers = partition(charVec, labels, &compareCharRect);
+  int numbers = 0;
+  if (vecRect.size() > 0)
+    numbers = partition(vecRect, labels, &compareCharRect);
+
   for (size_t j = 0; j < size_t(numbers); j++) {
     std::vector<CCharacter> charGroup;
 
-    for (size_t t = 0; t < charVec.size(); t++) {
+    for (size_t t = 0; t < vecRect.size(); t++) {
       int label = labels[t];
 
       if (label == j)
-        charGroup.push_back(charVec[t]);
+        charGroup.push_back(vecRect[t]);
     }
 
     if (charGroup.size() < 2)
@@ -1135,9 +1134,14 @@ Mat mserCharMatch(const Mat &src, Mat &match, std::vector<Rect>& out_charRect) {
 
   }
 
+  //nms
+  std::vector<CCharacter> nmsStrongSeedVec;
+  double overlapThresh = 0.3;
+  NMStoCharacter(strongSeedVec, nmsStrongSeedVec, overlapThresh);
+
   //merge chars to group
   std::vector<std::vector<CCharacter>> charGroupVec;
-  mergeCharToGroup(strongSeedVec, charGroupVec);
+  mergeCharToGroup(nmsStrongSeedVec, charGroupVec);
 
   //draw the line of the group
   for (auto charGroup : charGroupVec) {
