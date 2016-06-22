@@ -16,7 +16,7 @@
  *   See <http://www.opensource.org/licenses/bsd-license>
  */
 #include <opencv2/opencv.hpp>
-#include "third/helper.hpp"
+#include "helper.hpp"
 
 using namespace cv;
 
@@ -107,7 +107,7 @@ histc_(const Mat& src, int minVal=0, int maxVal=255, bool normed=false) {
     // Establish the number of bins.
     int histSize = maxVal-minVal+1;
     // Set the ranges.
-    float range[] = { minVal, maxVal+1 } ;
+    float range[] = {static_cast<float>(minVal), static_cast<float>(maxVal + 1)} ;
     const float* histRange = { range };
     // calc histogram
     calcHist(&src, 1, 0, Mat(), result, 1, &histSize, &histRange, true, false);
@@ -160,7 +160,7 @@ void libfacerec::sortMatrixColumnsByIndices(InputArray _src, InputArray _indices
     vector<int> indices = _indices.getMat();
     _dst.create(src.rows, src.cols, src.type());
     Mat dst = _dst.getMat();
-    for(int idx = 0; idx < indices.size(); idx++) {
+    for(size_t idx = 0; idx < indices.size(); idx++) {
         Mat originalCol = src.col(indices[idx]);
         Mat sortedCol = dst.col(idx);
         originalCol.copyTo(sortedCol);
@@ -185,7 +185,7 @@ void libfacerec::sortMatrixRowsByIndices(InputArray _src, InputArray _indices, O
     vector<int> indices = _indices.getMat();
     _dst.create(src.rows, src.cols, src.type());
     Mat dst = _dst.getMat();
-    for(int idx = 0; idx < indices.size(); idx++) {
+    for (size_t idx = 0; idx < indices.size(); idx++) {
         Mat originalRow = src.row(indices[idx]);
         Mat sortedRow = dst.row(idx);
         originalRow.copyTo(sortedRow);
@@ -216,7 +216,7 @@ Mat libfacerec::asRowMatrix(InputArrayOfArrays src, int rtype, double alpha, dou
     // create data matrix
     Mat data(n, d, rtype);
     // now copy data
-    for(int i = 0; i < n; i++) {
+    for (size_t i = 0; i < n; i++) {
         // make sure data can be reshaped, throw exception if not!
         if(src.getMat(i).total() != d) {
             string error_message = format("Wrong number of elements in matrix #%d! Expected %d was %d.", i, d, src.getMat(i).total());

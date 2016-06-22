@@ -44,7 +44,7 @@
 #include <queue>
 #include "opencv2/imgproc.hpp"
 #include "opencv2/ml.hpp"
-#include "third/erfilter.hpp"
+#include "erfilter.hpp"
 
 #if defined _MSC_VER && _MSC_VER == 1500
 typedef int int_fast32_t;

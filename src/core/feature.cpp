@@ -4,7 +4,7 @@
 
 #include "easypr/core/feature.h"
 #include "easypr/core/core_func.h"
-#include "third/lbp.hpp"
+#include "thirdparty/lbp.hpp"
 
 namespace easypr {
 
