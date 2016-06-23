@@ -14,6 +14,8 @@ enum Color { BLUE, YELLOW, WHITE, UNKNOWN };
 
 enum LocateType { SOBEL, COLOR, CMSER, OTHER };
 
+enum CharSearchDirection { LEFT, RIGHT };
+
 enum
 {
   PR_DETECT_SOBEL = 0x01,  /**Sobel detect type，using twice Sobel  */

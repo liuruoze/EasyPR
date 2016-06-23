@@ -1065,6 +1065,7 @@ void mergeCharToGroup(std::vector<CCharacter> vecRect,
   }
 }
 
+
 void rotatedRectangle(InputOutputArray image, RotatedRect rrect, const Scalar& color, int thickness, int lineType, int shift) {
   Point2f rect_points[4];
   rrect.points(rect_points);
@@ -1072,6 +1073,140 @@ void rotatedRectangle(InputOutputArray image, RotatedRect rrect, const Scalar& c
     line(image, rect_points[j], rect_points[(j + 1) % 4], color, thickness, lineType, shift);
   }
 }
+
+
+void searchWeakSeed(const std::vector<CCharacter>& charVec, std::vector<CCharacter>& mserCharacter,
+  const Vec4f& line, Point& boundaryPoint, const Rect& maxrect, Rect& plateResult, CharSearchDirection searchDirection) {
+
+  float k = line[1] / line[0];
+  float x_1 = line[2];
+  float y_1 = line[3];
+
+  std::vector<CCharacter> searchWeakSeedVec;
+
+  for (auto weakSeed : charVec) {
+    Rect weakRect = weakSeed.getCharacterPos();
+    Point weakCenter(weakRect.tl().x + weakRect.width / 2, weakRect.tl().y + weakRect.height / 2);
+    float x_2 = (float)weakCenter.x;
+
+    if (searchDirection == CharSearchDirection::LEFT) {
+      if (weakCenter.x + weakRect.width / 2 > boundaryPoint.x) {
+        continue;
+      }
+    }
+    else if (searchDirection == CharSearchDirection::RIGHT) {
+      if (weakCenter.x - weakRect.width / 2 < boundaryPoint.x) {
+        continue;
+      }
+    }
+
+    float y_2l = k * (x_2 - x_1) + y_1;
+    float y_2 = (float)weakCenter.y;
+
+    float y_diff_ratio = abs(y_2l - y_2) / maxrect.height;
+
+    if (y_diff_ratio < 0.1) {
+      float width_1 = float(maxrect.width);
+      float height_1 = float(maxrect.height);
+
+      float width_2 = float(weakRect.width);
+      float height_2 = float(weakRect.height);
+
+      float height_diff = abs(height_1 - height_2);
+      double height_diff_ratio = height_diff / min(height_1, height_2);
+
+      if (height_diff_ratio < 0.15) {
+        searchWeakSeedVec.push_back(weakSeed);
+      }
+    }
+  }
+
+  // form right to left to split
+  if (searchWeakSeedVec.size() != 0) {
+    if (searchDirection == CharSearchDirection::LEFT) {
+      std::sort(searchWeakSeedVec.begin(), searchWeakSeedVec.end(),
+        [](const CCharacter& r1, const CCharacter& r2) {
+        return r1.getCharacterPos().tl().x > r2.getCharacterPos().tl().x;
+      });
+    }
+    else if (searchDirection == CharSearchDirection::RIGHT) {
+      std::sort(searchWeakSeedVec.begin(), searchWeakSeedVec.end(),
+        [](const CCharacter& r1, const CCharacter& r2) {
+        return r1.getCharacterPos().tl().x < r2.getCharacterPos().tl().x;
+      });
+    }
+
+    CCharacter firstWeakSeed = searchWeakSeedVec[0];
+    Rect firstWeakRect = firstWeakSeed.getCharacterPos();
+    Point firstWeakCenter(firstWeakRect.tl().x + firstWeakRect.width / 2,
+      firstWeakRect.tl().y + firstWeakRect.height / 2);
+
+
+    if (abs(firstWeakCenter.x - boundaryPoint.x) / firstWeakRect.height > 2.0)
+      return;
+
+    mserCharacter.push_back(firstWeakSeed);
+    plateResult |= firstWeakRect;
+    boundaryPoint = firstWeakCenter;
+
+    /*if (searchDirection == CharSearchDirection::LEFT) {
+      if (firstWeakCenter.x < boundaryPoint.x) {
+        boundaryPoint = firstWeakCenter;
+      }
+    }
+    else if (searchDirection == CharSearchDirection::RIGHT) {
+      if (firstWeakCenter.x > boundaryPoint.x) {
+        boundaryPoint = firstWeakCenter;
+      }
+    }*/
+
+    for (size_t weakSeedIndex = 0; weakSeedIndex + 1 < searchWeakSeedVec.size(); weakSeedIndex++) {
+      CCharacter weakSeed = searchWeakSeedVec[weakSeedIndex];
+      CCharacter weakSeedCompare = searchWeakSeedVec[weakSeedIndex + 1];
+
+      Rect rect1 = weakSeed.getCharacterPos();
+      Rect rect2 = weakSeedCompare.getCharacterPos();
+
+      Rect weakRect = rect2;
+      Point weakCenter(weakRect.tl().x + weakRect.width / 2, weakRect.tl().y + weakRect.height / 2);
+
+      // the character in plate are similar height
+      float width_1 = float(rect1.width);
+      float height_1 = float(rect1.height);
+
+      float width_2 = float(rect2.width);
+      float height_2 = float(rect2.height);
+
+      // the character in plate are near in the x-axis but not very near
+      float x_margin_left = float(min(rect1.br().x, rect2.br().x));
+      float x_margin_right = float(max(rect1.tl().x, rect2.tl().x));
+
+      float x_margin_diff = abs(x_margin_left - x_margin_right);
+      double x_margin_diff_ratio = x_margin_diff / min(height_1, height_2);
+
+      if (x_margin_diff_ratio > 2.0) {
+        std::cout << "x_margin_diff_ratio:" << x_margin_diff_ratio << std::endl;
+        break;
+      }
+      else {
+        //::rectangle(result, weakRect, Scalar(255, 0, 0), 1);
+        mserCharacter.push_back(weakSeedCompare);
+        plateResult |= weakRect;
+        if (searchDirection == CharSearchDirection::LEFT) {
+          if (weakCenter.x < boundaryPoint.x) {
+            boundaryPoint = weakCenter;
+          }
+        }
+        else if (searchDirection == CharSearchDirection::RIGHT) {
+          if (weakCenter.x > boundaryPoint.x) {
+            boundaryPoint = weakCenter;
+          }
+        }      
+      }
+    }
+  }
+}
+
 
 //! use verify size to first generate char candidates
 Mat mserCharMatch(const Mat &src, Mat &match, std::vector<Rect>& out_charRect, Color color, int img_index, bool showDebug) {
@@ -1162,6 +1297,8 @@ Mat mserCharMatch(const Mat &src, Mat &match, std::vector<Rect>& out_charRect, C
     
     int leftx = image.cols;
     Point leftPoint(leftx, 0);
+    int rightx = 0;
+    Point rightPoint(rightx, 0);
 
     std::vector<CCharacter> mserCharVec;
     for (auto character : charGroup) {
@@ -1178,6 +1315,9 @@ Mat mserCharMatch(const Mat &src, Mat &match, std::vector<Rect>& out_charRect, C
       if (center.x < leftPoint.x) {
         leftPoint = center;
       }
+      if (center.x > rightPoint.x) {
+        rightPoint = center;
+      }
     }
 
     if (points.size() >= 2) {
@@ -1192,6 +1332,8 @@ Mat mserCharMatch(const Mat &src, Mat &match, std::vector<Rect>& out_charRect, C
 
       CPlate plate;
       plate.setPlateLeftPoint(leftPoint);
+      plate.setPlateRightPoint(rightPoint);
+
       plate.setPlateLine(line);
       plate.setPlateMergeCharRect(plateResult);
       plate.setPlateMaxCharRect(maxrect);
@@ -1203,6 +1345,7 @@ Mat mserCharMatch(const Mat &src, Mat &match, std::vector<Rect>& out_charRect, C
   for (auto plate : plateVec) {
     Vec4f line = plate.getPlateLine();
     Point leftPoint = plate.getPlateLeftPoint();
+    Point rightPoint = plate.getPlateRightPoint();
 
     Rect plateResult = plate.getPlateMergeCharRect();
     Rect maxrect = plate.getPlateMaxCharRect();
@@ -1214,8 +1357,9 @@ Mat mserCharMatch(const Mat &src, Mat &match, std::vector<Rect>& out_charRect, C
     float y_1 = line[3];
 
     std::vector<CCharacter> searchWeakSeedVec;
-    int weakLeftx = leftPoint.x;
-    Point weakLeftPoint(weakLeftx, 0);
+
+    std::vector<CCharacter> searchLeftWeakSeed;
+    std::vector<CCharacter> searchRightWeakSeed;
 
     //draw weak seed and little seed from line;
     //search for mser rect
@@ -1226,97 +1370,23 @@ Mat mserCharMatch(const Mat &src, Mat &match, std::vector<Rect>& out_charRect, C
       imwrite(ss.str(), result);
     }
 
-    for (auto weakSeed : charVec) {
-      Rect weakRect = weakSeed.getCharacterPos();
-      Point weakCenter(weakRect.tl().x + weakRect.width / 2, weakRect.tl().y + weakRect.height / 2);
+    std::cout << "mserCharacter:" << mserCharacter.size() << std::endl;
+   
 
-      float x_2 = (float)weakCenter.x;
-
-      // point in line;
-      float y_2l = k * (x_2 - x_1) + y_1;
-      float y_2 = (float)weakCenter.y;
-
-      float y_diff_ratio = abs(y_2l - y_2) / maxrect.height;
-
-      //std::cout << "weakRect y_diff_ratio:" << y_diff_ratio << std::endl;
-      if (y_diff_ratio < 0.1 && x_2 < leftPoint.x) {
-
-        float width_1 = float(maxrect.width);
-        float height_1 = float(maxrect.height);
-
-        float width_2 = float(weakRect.width);
-        float height_2 = float(weakRect.height);
-
-        float height_diff = abs(height_1 - height_2);
-        double height_diff_ratio = height_diff / min(height_1, height_2);
-
-        if (height_diff_ratio < 0.25) {
-          //cv::rectangle(result, weakRect, Scalar(0, 255, 0));
-          searchWeakSeedVec.push_back(weakSeed);
-        }
+    if (mserCharacter.size() < 7) {
+      searchWeakSeed(charVec, searchRightWeakSeed, line, rightPoint, maxrect, plateResult, CharSearchDirection::RIGHT);
+      std::cout << "searchRightWeakSeed:" << searchRightWeakSeed.size() << std::endl;     
+      for (auto seed : searchRightWeakSeed) {
+        cv::rectangle(result, seed.getCharacterPos(), Scalar(255, 0, 0), 1);
+        mserCharacter.push_back(seed);
+      }
+      searchWeakSeed(charVec, searchLeftWeakSeed, line, leftPoint, maxrect, plateResult, CharSearchDirection::LEFT);
+      std::cout << "searchLeftWeakSeed:" << searchLeftWeakSeed.size() << std::endl;
+      for (auto seed : searchLeftWeakSeed) {
+        mserCharacter.push_back(seed);
       }
     }
-
-    // form right to left to split
-    if (searchWeakSeedVec.size() != 0) {
-      std::sort(searchWeakSeedVec.begin(), searchWeakSeedVec.end(),
-        [](const CCharacter& r1, const CCharacter& r2) {
-        return r1.getCharacterPos().tl().x > r2.getCharacterPos().tl().x;
-      });
-
-      CCharacter firstWeakSeed = searchWeakSeedVec[0];
-      Rect firstWeakRect = firstWeakSeed.getCharacterPos();
-      Point firstWeakCenter(firstWeakRect.tl().x + firstWeakRect.width / 2,
-        firstWeakRect.tl().y + firstWeakRect.height / 2);
-
-      mserCharacter.push_back(firstWeakSeed);
-      plateResult |= firstWeakRect;
-
-      if (firstWeakCenter.x < weakLeftx) {
-        weakLeftx = (int)firstWeakCenter.x;
-      }
-
-      for (size_t weakSeedIndex = 0; weakSeedIndex + 1 < searchWeakSeedVec.size(); weakSeedIndex++) {
-        CCharacter weakSeed = searchWeakSeedVec[weakSeedIndex];
-        CCharacter weakSeedCompare = searchWeakSeedVec[weakSeedIndex + 1];
-
-        Rect rect1 = weakSeed.getCharacterPos();
-        Rect rect2 = weakSeedCompare.getCharacterPos();
-
-        Rect weakRect = rect2;
-        Point weakCenter(weakRect.tl().x + weakRect.width / 2, weakRect.tl().y + weakRect.height / 2);
-
-        float x_2 = (float)weakCenter.x;
-
-        // the character in plate are similar height
-        float width_1 = float(rect1.width);
-        float height_1 = float(rect1.height);
-
-        float width_2 = float(rect2.width);
-        float height_2 = float(rect2.height);
-
-        // the character in plate are near in the x-axis but not very near
-        float x_margin_left = float(min(rect1.br().x, rect2.br().x));
-        float x_margin_right = float(max(rect1.tl().x, rect2.tl().x));
-
-        float x_margin_diff = abs(x_margin_left - x_margin_right);
-        double x_margin_diff_ratio = x_margin_diff / min(height_1, height_2);
-
-        if (x_margin_diff_ratio > 2.0) {
-          std::cout << "x_margin_diff_ratio:" << x_margin_diff_ratio << std::endl;
-          break;
-        }
-        else {
-          cv::rectangle(result, weakRect, Scalar(255, 0, 0), 1);
-          mserCharacter.push_back(weakSeedCompare);
-          plateResult |= weakRect;
-          if (x_2 < weakLeftx) {
-            weakLeftx = (int)x_2;
-          }
-        }
-      }
-    }
-
+      
     std::cout << "judege the left is chinese:" << std::endl;
     bool leftIsChinese = false;
     if (1) {
@@ -1354,7 +1424,7 @@ Mat mserCharMatch(const Mat &src, Mat &match, std::vector<Rect>& out_charRect, C
       std::cout << "search for sliding window:" << std::endl;
       int slideLength = int(1.25 * maxrect.width);
       int slideStep = 1;
-      int fromX = weakLeftx - maxrect.width / 2;
+      int fromX = leftPoint.x - maxrect.width / 2;
       std::vector<CCharacter> chineseCandidate;
       for (int slideX = 0; slideX < slideLength; slideX += slideStep) {
         float x_slide = float(fromX - slideX);
