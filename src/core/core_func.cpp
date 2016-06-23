@@ -1176,7 +1176,7 @@ Mat mserCharMatch(const Mat &src, Mat &match, std::vector<Rect>& out_charRect, C
       lineVec.push_back(line);
 
       float k = line[1] / line[0];
-      std::cout << "k:" << k << std::endl;
+      //std::cout << "k:" << k << std::endl;
 
       float step = 10.f * (float)maxrect.width;
       cv::line(result, Point2f(line[2] - step, line[3] - k*step), Point2f(line[2] + step, k*step + line[3]), Scalar(255, 255, 255));
@@ -1191,7 +1191,7 @@ Mat mserCharMatch(const Mat &src, Mat &match, std::vector<Rect>& out_charRect, C
 
       //draw weak seed and little seed from line;
       //search for mser rect
-      std::cout << "search for mser rect:" << std::endl;
+      //std::cout << "search for mser rect:" << std::endl;
       if (0) {
         std::stringstream ss(std::stringstream::in | std::stringstream::out);
         ss << "resources/image/tmp/" << img_index << "_1_" << "searcgMserRect.jpg";
@@ -1225,17 +1225,70 @@ Mat mserCharMatch(const Mat &src, Mat &match, std::vector<Rect>& out_charRect, C
           if (height_diff_ratio < 0.25) {
             //cv::rectangle(result, weakRect, Scalar(0, 255, 0));
             searchWeakSeedVec.push_back(weakSeed);
-            mserCharacter.push_back(weakSeed);
-            plateResult |= weakRect;
-            if (x_2 < weakLeftx) {
-              weakLeftx = (int)x_2;
-            }
           }         
         }
       }
 
+      // form right to left to split
+      if (searchWeakSeedVec.size() != 0) {
+        std::sort(searchWeakSeedVec.begin(), searchWeakSeedVec.end(),
+          [](const CCharacter& r1, const CCharacter& r2) {
+          return r1.getCharacterPos().tl().x > r2.getCharacterPos().tl().x;
+        });
 
-      std::cout << "judege the left is chinese:" << std::endl;
+        CCharacter firstWeakSeed = searchWeakSeedVec[0];
+        Rect firstWeakRect = firstWeakSeed.getCharacterPos();
+        Point firstWeakCenter(firstWeakRect.tl().x + firstWeakRect.width / 2, 
+          firstWeakRect.tl().y + firstWeakRect.height / 2);
+        mserCharacter.push_back(firstWeakSeed);
+        plateResult |= firstWeakRect;
+
+        if (firstWeakCenter.x < weakLeftx) {
+          weakLeftx = (int)firstWeakCenter.x;
+        }
+
+        for (size_t weakSeedIndex = 0; weakSeedIndex + 1 < searchWeakSeedVec.size(); weakSeedIndex++) {
+          CCharacter weakSeed = searchWeakSeedVec[weakSeedIndex];
+          CCharacter weakSeedCompare = searchWeakSeedVec[weakSeedIndex + 1];
+
+          Rect rect1 = weakSeed.getCharacterPos();
+          Rect rect2 = weakSeedCompare.getCharacterPos();
+
+          Rect weakRect = rect2;
+          Point weakCenter(weakRect.tl().x + weakRect.width / 2, weakRect.tl().y + weakRect.height / 2);
+
+          float x_2 = (float)weakCenter.x;
+
+          // the character in plate are similar height
+          float width_1 = float(rect1.width);
+          float height_1 = float(rect1.height);
+
+          float width_2 = float(rect2.width);
+          float height_2 = float(rect2.height);
+
+          // the character in plate are near in the x-axis but not very near
+          float x_margin_left = float(min(rect1.br().x, rect2.br().x));
+          float x_margin_right = float(max(rect1.tl().x, rect2.tl().x));
+
+          float x_margin_diff = abs(x_margin_left - x_margin_right);
+          double x_margin_diff_ratio = x_margin_diff / min(height_1, height_2);
+
+          if (x_margin_diff_ratio > 2.0) {
+            std::cout << "x_margin_diff_ratio:" << x_margin_diff_ratio << std::endl;
+            break;
+          }
+          else {
+            cv::rectangle(result, weakRect, Scalar(255, 0, 0), 1);
+            mserCharacter.push_back(weakSeedCompare);
+            plateResult |= weakRect;
+            if (x_2 < weakLeftx) {
+              weakLeftx = (int)x_2;
+            }
+          }
+        }
+      }
+
+      //std::cout << "judege the left is chinese:" << std::endl;
       bool leftIsChinese = false;
       if (1) {
         std::sort(mserCharacter.begin(), mserCharacter.end(),
@@ -1262,24 +1315,29 @@ Mat mserCharMatch(const Mat &src, Mat &match, std::vector<Rect>& out_charRect, C
         float maxVal = -2.f;
         leftIsChinese = CharsIdentify::instance()->isCharacter(charInput, label, maxVal, true);
         std::cout << "isChinese:" << leftIsChinese << std::endl;
-        std::cout << "chinese:" << label << std::endl;
-        std::cout << " score:" << maxVal << std::endl;
+        std::cout << "chinese:" << label;
+        std::cout << "__score:" << maxVal << std::endl;
       }
       
 
       //search for sliding window
       if (!leftIsChinese) {
         std::cout << "search for sliding window:" << std::endl;
-        int slideLength = maxrect.width;
-        int slideStep = 3;
-        int fromX = weakLeftx - maxrect.width;
+        int slideLength = int(1.25 * maxrect.width);
+        int slideStep = 1;
+        int fromX = weakLeftx - maxrect.width / 2;
         std::vector<CCharacter> chineseCandidate;
         for (int slideX = 0; slideX < slideLength; slideX += slideStep) {
           float x_slide = float(fromX - slideX);
           float y_slide = k * (x_slide - x_1) + y_1;
           Point2f p_slide(x_slide, y_slide);
           //cv::circle(result, p_slide, 2, Scalar(0, 0, 255), 1);
-          Rect rect(Point2f(x_slide - maxrect.width / 2, y_slide - maxrect.height / 2), maxrect.size());
+          int chineseWidth = int(maxrect.width * 1.05);
+          int chineseHeight = int(maxrect.height * 1.05);
+
+          Rect rect(Point2f(x_slide - chineseWidth / 2, y_slide - chineseHeight / 2), Size(chineseWidth, chineseHeight));
+
+          //cv::rectangle(result, rect, Scalar(0, 0, 255), 1);
 
           if (rect.tl().x < 0 || rect.tl().y < 0 || rect.br().x >= image.cols || rect.br().y >= image.rows)
             continue;
@@ -1290,6 +1348,12 @@ Mat mserCharMatch(const Mat &src, Mat &match, std::vector<Rect>& out_charRect, C
           threshold(region, binary_region, 0, 255, CV_THRESH_BINARY | CV_THRESH_OTSU);
 
           Mat charInput = preprocessChar(binary_region, 20);
+
+          if (0) {
+            imshow("charInput", charInput);
+            waitKey(0);
+            destroyWindow("charInput");
+          }
 
           CCharacter charCandidate;
           charCandidate.setCharacterPos(rect);

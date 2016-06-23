@@ -972,7 +972,7 @@ int CPlateLocate::plateMserLocate(Mat src, vector<CPlate> &candPlates, int index
     //Mat singleChannelImage;
     //extractChannel(src, singleChannelImage, 2);
     //channelImages.push_back(singleChannelImage);
-    //flags.push_back(0);
+    //flags.push_back(BLUE);
 
     channelImages.push_back(255 - grayImage);
     flags.push_back(YELLOW);
