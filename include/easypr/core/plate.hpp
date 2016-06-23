@@ -10,7 +10,10 @@
 #ifndef EASYPR_CORE_PLATE_H_
 #define EASYPR_CORE_PLATE_H_
 
+#include "easypr/core/character.hpp"
 #include "easypr/core/core_func.h"
+
+using namespace cv;
 
 /*! \namespace easypr
 Namespace where all the C++ EasyPR functionality resides
@@ -31,6 +34,10 @@ namespace easypr {
       m_line = plate.m_line;
       m_leftPoint = plate.m_leftPoint;
       m_rightPoint = plate.m_rightPoint;
+      m_mergeCharRect = plate.m_mergeCharRect;
+      m_maxCharRect = plate.m_maxCharRect;
+
+      m_mserCharVec = plate.m_mserCharVec;
     }
 
     inline void setPlateMat(Mat param) { m_plateMat = param; }
@@ -56,6 +63,24 @@ namespace easypr {
 
     inline void setPlateRightPoint(Point param) { m_rightPoint = param; }
     inline Point getPlateRightPoint() const { return m_rightPoint; }
+
+    inline void setPlateMergeCharRect(Rect param) { m_mergeCharRect = param; }
+    inline Rect getPlateMergeCharRect() const { return m_mergeCharRect; }
+
+    inline void setPlateMaxCharRect(Rect param) { m_maxCharRect = param; }
+    inline Rect getPlateMaxCharRect() const { return m_maxCharRect; }
+
+    inline void setMserCharacter(const std::vector<CCharacter>& param) {
+      m_mserCharVec = param;
+    }
+
+    inline void addMserCharacter(CCharacter param) {
+      m_mserCharVec.push_back(param);
+    }
+
+    inline std::vector<CCharacter> getCopyOfMserCharacters() {
+      return m_mserCharVec;
+    }
 
     bool operator < (const CPlate& plate) const
     {
@@ -90,6 +115,13 @@ namespace easypr {
     Point m_leftPoint;
     Point m_rightPoint;
 
+    Rect m_mergeCharRect;
+    Rect m_maxCharRect;
+
+    std::vector<CCharacter> m_mserCharVec;
+    std::vector<CCharacter> m_slwdCharVec;
+
+    int m_charCount;
   };
 
 } /*! \namespace easypr*/

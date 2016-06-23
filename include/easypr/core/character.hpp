@@ -10,7 +10,9 @@
 #ifndef EASYPR_CORE_CHARACTER_H_
 #define EASYPR_CORE_CHARACTER_H_
 
-#include "easypr/core/core_func.h"
+#include <opencv2/opencv.hpp>
+
+using namespace cv;
 
 /*! \namespace easypr
 Namespace where all the C++ EasyPR functionality resides

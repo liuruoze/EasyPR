@@ -74,6 +74,11 @@ bool verifyCharSizes(Rect r);
 bool verifyPlateSize(Rect mr);
 bool verifyRotatedPlateSizes(RotatedRect mr);
 
+
+void rotatedRectangle(InputOutputArray img, RotatedRect rect,
+  const Scalar& color, int thickness = 1,
+  int lineType = LINE_8, int shift = 0);
+
 // Scale to small image (for the purpose of comput mser in large image)
 Mat scaleImage(const Mat& image, const Size& maxSize, double& scale_ratio);
 
