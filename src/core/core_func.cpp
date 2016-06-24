@@ -1028,6 +1028,16 @@ bool compareCharRect(const CCharacter& character1, const CCharacter& character2)
   if (y_diff_ratio > 0.5)
     return false;
 
+  // the character center in plate are not to near in the x-axis
+  float x_1 = float(rect1.tl().x + rect1.width / 2);
+  float x_2 = float(rect2.tl().x + rect2.width / 2);
+
+  float x_diff = abs(x_1 - x_2);
+  double x_diff_ratio = x_diff / min(height_1, height_2);
+
+  if (x_diff_ratio < 0.25)
+    return false;
+
   // the character in plate are near in the x-axis but not very near
   float x_margin_left = float(min(rect1.br().x, rect2.br().x));
   float x_margin_right = float(max(rect1.tl().x, rect2.tl().x));
@@ -1144,7 +1154,6 @@ void searchWeakSeed(const std::vector<CCharacter>& charVec, std::vector<CCharact
     Point firstWeakCenter(firstWeakRect.tl().x + firstWeakRect.width / 2,
       firstWeakRect.tl().y + firstWeakRect.height / 2);
 
-
     if (abs(firstWeakCenter.x - boundaryPoint.x) / firstWeakRect.height > 2.0)
       return;
 
@@ -1210,6 +1219,84 @@ void searchWeakSeed(const std::vector<CCharacter>& charVec, std::vector<CCharact
   }
 }
 
+void slideWindowSearch(const Mat &image, std::vector<CCharacter>& slideCharacter, const Vec4f& line, 
+  Point& fromPoint, const Vec2i& dist, const Rect& maxrect, Rect& plateResult, 
+  CharSearchDirection searchDirection, bool isChinese) {
+  float k = line[1] / line[0];
+  float x_1 = line[2];
+  float y_1 = line[3];
+
+  int slideLength = int(0.5 * maxrect.width);
+  int slideStep = 1;
+  int fromX = 0;
+  if (searchDirection == CharSearchDirection::LEFT) {
+    fromX = fromPoint.x - dist[0];
+  }
+  else if (searchDirection == CharSearchDirection::RIGHT) {
+    fromX = fromPoint.x + dist[0];
+  }
+  
+  std::vector<CCharacter> charCandidateVec;
+  for (int slideX = -slideLength; slideX < slideLength; slideX += slideStep) {
+    float x_slide = 0; 
+
+    if (searchDirection == CharSearchDirection::LEFT) {
+      x_slide = float(fromX - slideX);
+    }
+    else if (searchDirection == CharSearchDirection::RIGHT) {
+      x_slide = float(fromX + slideX);
+    }
+
+    float y_slide = k * (x_slide - x_1) + y_1;
+    Point2f p_slide(x_slide, y_slide);
+
+    int chineseWidth = int(maxrect.width * 1.05);
+    int chineseHeight = int(maxrect.height * 1.05);
+
+    Rect rect(Point2f(x_slide - chineseWidth / 2, y_slide - chineseHeight / 2), Size(chineseWidth, chineseHeight));
+
+    if (rect.tl().x < 0 || rect.tl().y < 0 || rect.br().x >= image.cols || rect.br().y >= image.rows)
+      continue;
+
+    Mat region = image(rect);
+    Mat binary_region;
+
+    threshold(region, binary_region, 0, 255, CV_THRESH_BINARY | CV_THRESH_OTSU);
+    Mat charInput = preprocessChar(binary_region, 20);
+
+    if (0) {
+      imshow("charInput", charInput);
+      waitKey(0);
+      destroyWindow("charInput");
+    }
+
+    CCharacter charCandidate;
+    charCandidate.setCharacterPos(rect);
+    charCandidate.setCharacterMat(charInput);
+    charCandidate.setIsChinese(isChinese);
+    charCandidateVec.push_back(charCandidate);
+  }
+
+  CharsIdentify::instance()->classify(charCandidateVec);
+  double overlapThresh = 0.1;
+  NMStoCharacter(charCandidateVec, overlapThresh);
+
+  for (auto character : charCandidateVec) {
+    Rect rect = character.getCharacterPos();
+    Point center(rect.tl().x + rect.width / 2, rect.tl().y + rect.height / 2);
+
+    if (character.getCharacterScore() > 0.5 && character.getCharacterStr() != "1") {
+      //cv::rectangle(result, rect, Scalar(255, 255, 255), 1);
+      plateResult |= rect;
+      slideCharacter.push_back(character);
+      fromPoint = center;
+
+      std::cout << "label:" << character.getCharacterStr();
+      std::cout << "__score:" << character.getCharacterScore() << std::endl;
+    }
+  }
+}
+
 
 //! use verify size to first generate char candidates
 Mat mserCharMatch(const Mat &src, Mat &match, std::vector<Rect>& out_charRect, Color color, int img_index, bool showDebug) {
@@ -1250,6 +1337,8 @@ Mat mserCharMatch(const Mat &src, Mat &match, std::vector<Rect>& out_charRect, C
       Mat mserMat = adaptive_image_from_points(contour, rect, Size(char_size, char_size));
       Mat charInput = preprocessChar(mserMat, char_size);
 
+      //cv::rectangle(result, rect, Scalar(0, 255, 0), 1);
+
       CCharacter charCandidate;
       charCandidate.setCharacterPos(rect);
       charCandidate.setCharacterMat(charInput);
@@ -1260,8 +1349,8 @@ Mat mserCharMatch(const Mat &src, Mat &match, std::vector<Rect>& out_charRect, C
 
   CharsIdentify::instance()->classify(charVec);
 
-  //double overlapThresh = 0.5;
-  //NMStoCharacter(charVec, overlapThresh);
+  double overlapThresh = 0.5;
+  NMStoCharacter(charVec, overlapThresh);
 
   std::vector<CCharacter> strongSeedVec;
   std::vector<CCharacter> weakSeedVec;
@@ -1286,7 +1375,7 @@ Mat mserCharMatch(const Mat &src, Mat &match, std::vector<Rect>& out_charRect, C
   std::vector<CCharacter> searchCandidate = charVec;
 
   //nms
-  double overlapThresh = 0.3;
+  overlapThresh = 0.3;
   NMStoCharacter(strongSeedVec, overlapThresh);
 
   //merge chars to group
@@ -1335,8 +1424,51 @@ Mat mserCharMatch(const Mat &src, Mat &match, std::vector<Rect>& out_charRect, C
       float k = line[1] / line[0];
       //std::cout << "k:" << k << std::endl;
 
-      float step = 10.f * (float)maxrect.width;
-      cv::line(result, Point2f(line[2] - step, line[3] - k*step), Point2f(line[2] + step, k*step + line[3]), Scalar(255, 255, 255));
+      std::sort(mserCharVec.begin(), mserCharVec.end(),
+        [](const CCharacter& r1, const CCharacter& r2) {
+        return r1.getCharacterPos().tl().x < r2.getCharacterPos().tl().x;
+      });
+
+      CCharacter midChar = mserCharVec.at(int(mserCharVec.size() / 2.f));
+      Rect midRect = midChar.getCharacterPos();
+      Point midCenter(midRect.tl().x + midRect.width / 2, midRect.tl().y + midRect.height / 2);
+
+      int mindist = 7 * maxrect.width;
+      std::vector<Vec2i> distVecVec;
+      Vec2i mindistVec;
+      Vec2i avgdistVec;
+
+      for (size_t mser_i = 0; mser_i + 1 < mserCharVec.size(); mser_i++) {
+        Rect charRect = mserCharVec.at(mser_i).getCharacterPos();
+        Point center(charRect.tl().x + charRect.width / 2, charRect.tl().y + charRect.height / 2);
+
+        Rect charRectCompare = mserCharVec.at(mser_i + 1).getCharacterPos();
+        Point centerCompare(charRectCompare.tl().x + charRectCompare.width / 2,
+          charRectCompare.tl().y + charRectCompare.height / 2);
+
+        int dist = charRectCompare.x - charRect.x;
+        Vec2i distVec(charRectCompare.x - charRect.x, charRectCompare.y - charRect.y);
+        distVecVec.push_back(distVec);
+
+        //if (dist < mindist) {
+        //  mindist = dist;
+        //  mindistVec = distVec;
+        //}
+      }
+
+      std::sort(distVecVec.begin(), distVecVec.end(),
+        [](const Vec2i& r1, const Vec2i& r2) {
+        return r1[0] < r2[0];
+      });
+
+      avgdistVec = distVecVec.at(int(distVecVec.size() / 2.f));
+
+      //float step = 10.f * (float)maxrect.width;
+      //float step = (float)mindistVec[0];
+      float step = (float)avgdistVec[0];
+
+      //cv::line(result, Point2f(line[2] - step, line[3] - k*step), Point2f(line[2] + step, k*step + line[3]), Scalar(255, 255, 255));
+      cv::line(result, Point2f(midCenter.x - step, midCenter.y - k*step), Point2f(midCenter.x + step, k*step + midCenter.y), Scalar(255, 255, 255));
       //cv::circle(result, leftPoint, 3, Scalar(0, 0, 255), 2);
 
       CPlate plate;
@@ -1344,6 +1476,8 @@ Mat mserCharMatch(const Mat &src, Mat &match, std::vector<Rect>& out_charRect, C
       plate.setPlateRightPoint(rightPoint);
 
       plate.setPlateLine(line);
+      plate.setPlatDistVec(avgdistVec);
+
       plate.setPlateMergeCharRect(plateResult);
       plate.setPlateMaxCharRect(maxrect);
       plate.setMserCharacter(mserCharVec);
@@ -1358,6 +1492,7 @@ Mat mserCharMatch(const Mat &src, Mat &match, std::vector<Rect>& out_charRect, C
 
     Rect plateResult = plate.getPlateMergeCharRect();
     Rect maxrect = plate.getPlateMaxCharRect();
+    Vec2i dist = plate.getPlateDistVec();
 
     std::vector<CCharacter> mserCharacter = plate.getCopyOfMserCharacters();
 
@@ -1367,9 +1502,12 @@ Mat mserCharMatch(const Mat &src, Mat &match, std::vector<Rect>& out_charRect, C
 
     std::vector<CCharacter> searchWeakSeedVec;
 
-    std::vector<CCharacter> searchLeftWeakSeed;
     std::vector<CCharacter> searchRightWeakSeed;
+    std::vector<CCharacter> searchLeftWeakSeed;
 
+    std::vector<CCharacter> slideRightWindow;
+    std::vector<CCharacter> slideLeftWindow;
+    
     //draw weak seed and little seed from line;
     //search for mser rect
     std::cout << "search for mser rect:" << std::endl;
@@ -1378,10 +1516,8 @@ Mat mserCharMatch(const Mat &src, Mat &match, std::vector<Rect>& out_charRect, C
       ss << "resources/image/tmp/" << img_index << "_1_" << "searcgMserRect.jpg";
       imwrite(ss.str(), result);
     }
-
     std::cout << "mserCharacter:" << mserCharacter.size() << std::endl;
    
-
     if (mserCharacter.size() < 7) {
       searchWeakSeed(searchCandidate, searchRightWeakSeed, line, rightPoint, maxrect, plateResult, CharSearchDirection::RIGHT);
       std::cout << "searchRightWeakSeed:" << searchRightWeakSeed.size() << std::endl;     
@@ -1389,6 +1525,18 @@ Mat mserCharMatch(const Mat &src, Mat &match, std::vector<Rect>& out_charRect, C
         cv::rectangle(result, seed.getCharacterPos(), Scalar(255, 0, 0), 1);
         mserCharacter.push_back(seed);
       }
+
+      slideWindowSearch(image, slideRightWindow, line, rightPoint, dist, maxrect, plateResult, CharSearchDirection::RIGHT, false);
+      std::cout << "slideRightWindow:" << slideRightWindow.size() << std::endl;
+      for (auto seed : slideRightWindow) {
+        cv::rectangle(result, seed.getCharacterPos(), Scalar(0, 255, 0), 1);
+        mserCharacter.push_back(seed);
+      }
+  
+      //cv::circle(result, leftPoint, 3, Scalar(0, 0, 255), 2);
+      //std::cout << "widthRatio:" << float(rightPoint.x - leftPoint.x) / (float)dist[0] << std::endl;
+      //cv::circle(result, Point(rightPoint.x - 4 * (float)dist[0], rightPoint.y), 3, Scalar(0, 0, 255), 2);
+
       searchWeakSeed(searchCandidate, searchLeftWeakSeed, line, leftPoint, maxrect, plateResult, CharSearchDirection::LEFT);
       std::cout << "searchLeftWeakSeed:" << searchLeftWeakSeed.size() << std::endl;
       for (auto seed : searchLeftWeakSeed) {
@@ -1396,94 +1544,96 @@ Mat mserCharMatch(const Mat &src, Mat &match, std::vector<Rect>& out_charRect, C
       }
     }
       
-    std::cout << "judege the left is chinese:" << std::endl;
-    bool leftIsChinese = false;
-    if (1) {
-      std::sort(mserCharacter.begin(), mserCharacter.end(),
-        [](const CCharacter& r1, const CCharacter& r2) {
-        return r1.getCharacterPos().tl().x < r2.getCharacterPos().tl().x;
-      });
+    if (mserCharacter.size() < 7) {
+      std::cout << "search chinese:" << std::endl;
+      std::cout << "judege the left is chinese:" << std::endl;
+      bool leftIsChinese = false;
+      if (1) {
+        std::sort(mserCharacter.begin(), mserCharacter.end(),
+          [](const CCharacter& r1, const CCharacter& r2) {
+          return r1.getCharacterPos().tl().x < r2.getCharacterPos().tl().x;
+        });
 
-      CCharacter leftChar = mserCharacter[0];
-      Rect theRect = leftChar.getCharacterPos();
-      cv::rectangle(result, theRect, Scalar(255, 0, 0), 1);
+        CCharacter leftChar = mserCharacter[0];
+        Rect theRect = leftChar.getCharacterPos();
+        cv::rectangle(result, theRect, Scalar(255, 0, 0), 1);
 
-      Mat region = image(theRect);
-      Mat binary_region;
-      threshold(region, binary_region, 0, 255, CV_THRESH_BINARY | CV_THRESH_OTSU);
-
-      Mat charInput = preprocessChar(binary_region, 20);
-      if (0) {
-        imshow("charInput", charInput);
-        waitKey(0);
-        destroyWindow("charInput");
-      }
-
-      std::string label = "";
-      float maxVal = -2.f;
-      leftIsChinese = CharsIdentify::instance()->isCharacter(charInput, label, maxVal, true);
-      std::cout << "isChinese:" << leftIsChinese << std::endl;
-      std::cout << "chinese:" << label;
-      std::cout << "__score:" << maxVal << std::endl;
-    }
-
-
-    //search for sliding window
-    if (!leftIsChinese) {
-      std::cout << "search for sliding window:" << std::endl;
-      int slideLength = int(1.25 * maxrect.width);
-      int slideStep = 1;
-      int fromX = leftPoint.x - maxrect.width / 2;
-      std::vector<CCharacter> chineseCandidate;
-      for (int slideX = 0; slideX < slideLength; slideX += slideStep) {
-        float x_slide = float(fromX - slideX);
-        float y_slide = k * (x_slide - x_1) + y_1;
-        Point2f p_slide(x_slide, y_slide);
-        //cv::circle(result, p_slide, 2, Scalar(0, 0, 255), 1);
-        int chineseWidth = int(maxrect.width * 1.05);
-        int chineseHeight = int(maxrect.height * 1.05);
-
-        Rect rect(Point2f(x_slide - chineseWidth / 2, y_slide - chineseHeight / 2), Size(chineseWidth, chineseHeight));
-
-        //cv::rectangle(result, rect, Scalar(0, 0, 255), 1);
-        if (rect.tl().x < 0 || rect.tl().y < 0 || rect.br().x >= image.cols || rect.br().y >= image.rows)
-          continue;
-
-        Mat region = image(rect);
+        Mat region = image(theRect);
         Mat binary_region;
-
         threshold(region, binary_region, 0, 255, CV_THRESH_BINARY | CV_THRESH_OTSU);
 
         Mat charInput = preprocessChar(binary_region, 20);
-
         if (0) {
           imshow("charInput", charInput);
           waitKey(0);
           destroyWindow("charInput");
         }
 
-        CCharacter charCandidate;
-        charCandidate.setCharacterPos(rect);
-        charCandidate.setCharacterMat(charInput);
-        charCandidate.setIsChinese(true);
-        chineseCandidate.push_back(charCandidate);
+        std::string label = "";
+        float maxVal = -2.f;
+        leftIsChinese = CharsIdentify::instance()->isCharacter(charInput, label, maxVal, true);
+        std::cout << "isChinese:" << leftIsChinese << std::endl;
+        std::cout << "chinese:" << label;
+        std::cout << "__score:" << maxVal << std::endl;
       }
 
-      CharsIdentify::instance()->classify(chineseCandidate);
-      double overlapThresh = 0.1;
-      NMStoCharacter(chineseCandidate, overlapThresh);
 
-      for (auto chinese : chineseCandidate) {
-        Rect rect = chinese.getCharacterPos();
-        if (chinese.getCharacterScore() > 0.5) {
-          cv::rectangle(result, rect, Scalar(255, 255, 255), 1);
-          plateResult |= rect;
-          std::cout << "chinese:" << chinese.getCharacterStr();
-          std::cout << "__score:" << chinese.getCharacterScore() << std::endl;
+      //search for sliding window
+      if (!leftIsChinese) {
+        std::cout << "search for sliding window:" << std::endl;
+        int slideLength = int(1.25 * maxrect.width);
+        int slideStep = 1;
+        int fromX = leftPoint.x - maxrect.width / 2;
+        std::vector<CCharacter> chineseCandidate;
+        for (int slideX = 0; slideX < slideLength; slideX += slideStep) {
+          float x_slide = float(fromX - slideX);
+          float y_slide = k * (x_slide - x_1) + y_1;
+          Point2f p_slide(x_slide, y_slide);
+          //cv::circle(result, p_slide, 2, Scalar(0, 0, 255), 1);
+          int chineseWidth = int(maxrect.width * 1.05);
+          int chineseHeight = int(maxrect.height * 1.05);
+
+          Rect rect(Point2f(x_slide - chineseWidth / 2, y_slide - chineseHeight / 2), Size(chineseWidth, chineseHeight));
+
+          //cv::rectangle(result, rect, Scalar(0, 0, 255), 1);
+          if (rect.tl().x < 0 || rect.tl().y < 0 || rect.br().x >= image.cols || rect.br().y >= image.rows)
+            continue;
+
+          Mat region = image(rect);
+          Mat binary_region;
+
+          threshold(region, binary_region, 0, 255, CV_THRESH_BINARY | CV_THRESH_OTSU);
+
+          Mat charInput = preprocessChar(binary_region, 20);
+
+          if (0) {
+            imshow("charInput", charInput);
+            waitKey(0);
+            destroyWindow("charInput");
+          }
+
+          CCharacter charCandidate;
+          charCandidate.setCharacterPos(rect);
+          charCandidate.setCharacterMat(charInput);
+          charCandidate.setIsChinese(true);
+          chineseCandidate.push_back(charCandidate);
+        }
+
+        CharsIdentify::instance()->classify(chineseCandidate);
+        double overlapThresh = 0.1;
+        NMStoCharacter(chineseCandidate, overlapThresh);
+
+        for (auto chinese : chineseCandidate) {
+          Rect rect = chinese.getCharacterPos();
+          if (chinese.getCharacterScore() > 0.5) {
+            cv::rectangle(result, rect, Scalar(255, 255, 255), 1);
+            plateResult |= rect;
+            std::cout << "chinese:" << chinese.getCharacterStr();
+            std::cout << "__score:" << chinese.getCharacterScore() << std::endl;
+          }
         }
       }
     }
-
 
     std::cout << "k:" << k << std::endl;
     float angle = atan(k) * 180 / (float)CV_PI;

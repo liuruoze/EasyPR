@@ -37,6 +37,8 @@ namespace easypr {
       m_mergeCharRect = plate.m_mergeCharRect;
       m_maxCharRect = plate.m_maxCharRect;
 
+      m_distVec = plate.m_distVec;
+
       m_mserCharVec = plate.m_mserCharVec;
     }
 
@@ -69,6 +71,9 @@ namespace easypr {
 
     inline void setPlateMaxCharRect(Rect param) { m_maxCharRect = param; }
     inline Rect getPlateMaxCharRect() const { return m_maxCharRect; }
+
+    inline void setPlatDistVec(Vec2i param) { m_distVec = param; }
+    inline Vec2i getPlateDistVec() const { return m_distVec; }
 
     inline void setMserCharacter(const std::vector<CCharacter>& param) {
       m_mserCharVec = param;
@@ -122,6 +127,9 @@ namespace easypr {
     std::vector<CCharacter> m_slwdCharVec;
 
     int m_charCount;
+
+    //! distVec
+    Vec2i m_distVec;
   };
 
 } /*! \namespace easypr*/
