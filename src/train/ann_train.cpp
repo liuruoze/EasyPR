@@ -9,14 +9,19 @@ namespace easypr {
 AnnTrain::AnnTrain(const char* chars_folder, const char* xml)
     : chars_folder_(chars_folder), ann_xml_(xml) {
   ann_ = cv::ml::ANN_MLP::create();
+  type = 0;
 }
 
 void AnnTrain::train() {
+  int classNumber = 0;
+  if (type == 0) classNumber = kCharsTotalNumber;
+  if (type == 1) classNumber = kChineseNumber;
+
   cv::Mat layers(1, 3, CV_32SC1);
   layers.at<int>(0) = 120;                // the input layer
   layers.at<int>(1) = kNeurons;           // the neurons
-  layers.at<int>(2) = kCharsTotalNumber;  // the output layer
-
+  layers.at<int>(2) = classNumber;        // the output layer
+  
   ann_->setLayerSizes(layers);
   ann_->setActivationFunction(cv::ml::ANN_MLP::SIGMOID_SYM, 1, 1);
   ann_->setTrainMethod(cv::ml::ANN_MLP::TrainingMethods::BACKPROP);
@@ -33,6 +38,8 @@ void AnnTrain::train() {
 
   ann_->save(ann_xml_);
   std::cout << "Your ANN Model was saved to " << ann_xml_ << std::endl;
+
+  //test();
 }
 
 void AnnTrain::test() {
@@ -90,8 +97,12 @@ cv::Ptr<cv::ml::TrainData> AnnTrain::tdata() {
 
   std::cout << "Collecting chars in " << chars_folder_ << std::endl;
 
-  for (int i = 0; i < kCharsTotalNumber; ++i) {
-    auto char_key = kChars[i];
+  int classNumber = 0;
+  if (type == 0) classNumber = kCharsTotalNumber;
+  if (type == 1) classNumber = kChineseNumber;
+
+  for (int i = 0; i < classNumber; ++i) {
+    auto char_key = kChars[i + kCharsTotalNumber - classNumber];
     char sub_folder[512] = {0};
 
     sprintf(sub_folder, "%s/%s", chars_folder_, char_key);
@@ -111,7 +122,7 @@ cv::Ptr<cv::ml::TrainData> AnnTrain::tdata() {
   cv::Mat samples_;
   samples.convertTo(samples_, CV_32F);
   cv::Mat train_classes =
-      cv::Mat::zeros((int)labels.size(), kCharsTotalNumber, CV_32F);
+    cv::Mat::zeros((int)labels.size(), classNumber, CV_32F);
 
   for (int i = 0; i < train_classes.rows; ++i) {
     train_classes.at<float>(i, labels[i]) = 1.f;

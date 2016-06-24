@@ -46,6 +46,7 @@ static const char *kChars[] = {
 };
 
 static const int kCharactersNumber = 34;
+static const int kChineseNumber = 31;
 static const int kCharsTotalNumber = 65;
 
 static bool kDebug = false;

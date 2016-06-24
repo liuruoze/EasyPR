@@ -19,6 +19,8 @@ class AnnTrain : public ITrain {
   cv::Ptr<cv::ml::ANN_MLP> ann_;
   const char* ann_xml_;
   const char* chars_folder_;
+
+  int type;
 };
 }
 
