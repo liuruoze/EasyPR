@@ -919,10 +919,10 @@ bool verifyRotatedPlateSizes(RotatedRect mr) {
 
   // Get only patchs that match to a respect ratio.
   float aspect_min = aspect - aspect * error;
-  float aspect_max = aspect + aspect * error * 0.5f;
+  float aspect_max = aspect + aspect * error;
 
-  float width_max = 400.f;
-  float width_min = 40.f;
+  float width_max = 600.f;
+  float width_min = 30.f;
 
   float min = float(width_min * width_min / aspect_max);  // minimum area
   float max = float(width_max * width_max / aspect_min);  // maximum area
@@ -944,29 +944,34 @@ bool verifyRotatedPlateSizes(RotatedRect mr) {
   float angle_min = -60.f;
   float angle_max = 60.f;
 
-  //std::cout << "area:" << area << std::endl;
-  //std::cout << "ratio:" << ratio << std::endl;
-  //std::cout << "angle:" << angle << std::endl;
+  //std::cout << "aspect_min:" << aspect_min << std::endl;
+  //std::cout << "aspect_max:" << aspect_max << std::endl;
 
-  if ((area < min || area > max) || (ratio < aspect_min || ratio > aspect_max)
-    || (angle < angle_min || angle > angle_max) || (width < width_min || width > width_max)) {
-
-    //if (abs(angle) - 0.f < 3.f ) {
-    //  std::cout << "min:" << min << std::endl;
-    //  std::cout << "max:" << max << std::endl;
-    //  std::cout << "area:" << area << std::endl;
-    //  std::cout << "ratio:" << ratio << std::endl;
-    //  std::cout << "angle:" << angle << std::endl;
-    //  return true;
-    //}     
+  if (area < min || area > max) {
+    std::cout << "area < min || area > max: " << area << std::endl;
     return false;
   }
-  else
+  else if (ratio < aspect_min || ratio > aspect_max) {
+    std::cout << "ratio < aspect_min || ratio > aspect_max: " << ratio << std::endl;
+    return false;
+  }
+  else if (angle < angle_min || angle > angle_max) {
+    std::cout << "angle < angle_min || angle > angle_max: " << angle << std::endl;
+    return false;
+  }
+  else if (width < width_min || width > width_max) {
+    std::cout << "width < width_min || width > width_max: " << width << std::endl;
+    return false;  
+  }
+  else {
     return true;
+  }
+
+  return true;
 }
 
 //! 非极大值抑制
-void NMStoCharacter(std::vector<CCharacter> &inVec, std::vector<CCharacter> &resultVec, double overlap) {
+void NMStoCharacter(std::vector<CCharacter> &inVec, double overlap) {
 
   std::sort(inVec.begin(), inVec.end());
 
@@ -992,8 +997,6 @@ void NMStoCharacter(std::vector<CCharacter> &inVec, std::vector<CCharacter> &res
       }
     }
   }
-
-  resultVec = inVec;
 }
 
 // judge weather two CCharacter are nearly the same;
@@ -1257,13 +1260,16 @@ Mat mserCharMatch(const Mat &src, Mat &match, std::vector<Rect>& out_charRect, C
 
   CharsIdentify::instance()->classify(charVec);
 
+  //double overlapThresh = 0.5;
+  //NMStoCharacter(charVec, overlapThresh);
+
   std::vector<CCharacter> strongSeedVec;
   std::vector<CCharacter> weakSeedVec;
   std::vector<CCharacter> littleSeedVec;
 
-  size_t charCan_size = charVec.size();
-  for (size_t char_index = 0; char_index < charCan_size; char_index++) {
-    CCharacter& charCandidate = charVec[char_index];
+  //size_t charCan_size = charVec.size();
+  for (auto charCandidate : charVec) {
+    //CCharacter& charCandidate = charVec[char_index];
     Rect rect = charCandidate.getCharacterPos();
     double score = charCandidate.getCharacterScore();
     if (charCandidate.getIsStrong()) {
@@ -1277,14 +1283,15 @@ Mat mserCharMatch(const Mat &src, Mat &match, std::vector<Rect>& out_charRect, C
     }
   }
 
+  std::vector<CCharacter> searchCandidate = charVec;
+
   //nms
-  std::vector<CCharacter> nmsStrongSeedVec;
   double overlapThresh = 0.3;
-  NMStoCharacter(strongSeedVec, nmsStrongSeedVec, overlapThresh);
+  NMStoCharacter(strongSeedVec, overlapThresh);
 
   //merge chars to group
   std::vector<std::vector<CCharacter>> charGroupVec;
-  mergeCharToGroup(nmsStrongSeedVec, charGroupVec);
+  mergeCharToGroup(strongSeedVec, charGroupVec);
 
   //genenrate the line of the group
   std::vector<CPlate> plateVec;
@@ -1307,7 +1314,7 @@ Mat mserCharMatch(const Mat &src, Mat &match, std::vector<Rect>& out_charRect, C
       Point center(charRect.tl().x + charRect.width / 2, charRect.tl().y + charRect.height / 2);
       points.push_back(center);
       mserCharVec.push_back(character);
-      //cv::circle(result, center, 3, Scalar(0, 255, 0), 2);
+      cv::circle(result, center, 3, Scalar(0, 255, 0), 2);
       if (charRect.area() > maxarea) {
         maxrect = charRect;
         maxarea = charRect.area();
@@ -1320,7 +1327,9 @@ Mat mserCharMatch(const Mat &src, Mat &match, std::vector<Rect>& out_charRect, C
       }
     }
 
-    if (points.size() >= 2) {
+    float ratio_maxrect = (float)maxrect.width / (float)maxrect.height;
+
+    if (points.size() >= 2 && ratio_maxrect >= 0.3) {
       fitLine(Mat(points), line, CV_DIST_L2, 0, 0.01, 0.01);
 
       float k = line[1] / line[0];
@@ -1374,13 +1383,13 @@ Mat mserCharMatch(const Mat &src, Mat &match, std::vector<Rect>& out_charRect, C
    
 
     if (mserCharacter.size() < 7) {
-      searchWeakSeed(charVec, searchRightWeakSeed, line, rightPoint, maxrect, plateResult, CharSearchDirection::RIGHT);
+      searchWeakSeed(searchCandidate, searchRightWeakSeed, line, rightPoint, maxrect, plateResult, CharSearchDirection::RIGHT);
       std::cout << "searchRightWeakSeed:" << searchRightWeakSeed.size() << std::endl;     
       for (auto seed : searchRightWeakSeed) {
         cv::rectangle(result, seed.getCharacterPos(), Scalar(255, 0, 0), 1);
         mserCharacter.push_back(seed);
       }
-      searchWeakSeed(charVec, searchLeftWeakSeed, line, leftPoint, maxrect, plateResult, CharSearchDirection::LEFT);
+      searchWeakSeed(searchCandidate, searchLeftWeakSeed, line, leftPoint, maxrect, plateResult, CharSearchDirection::LEFT);
       std::cout << "searchLeftWeakSeed:" << searchLeftWeakSeed.size() << std::endl;
       for (auto seed : searchLeftWeakSeed) {
         mserCharacter.push_back(seed);
@@ -1461,14 +1470,13 @@ Mat mserCharMatch(const Mat &src, Mat &match, std::vector<Rect>& out_charRect, C
       }
 
       CharsIdentify::instance()->classify(chineseCandidate);
-      std::vector<CCharacter> nmsChineseVec;
       double overlapThresh = 0.1;
-      NMStoCharacter(chineseCandidate, nmsChineseVec, overlapThresh);
+      NMStoCharacter(chineseCandidate, overlapThresh);
 
-      for (auto chinese : nmsChineseVec) {
+      for (auto chinese : chineseCandidate) {
         Rect rect = chinese.getCharacterPos();
         if (chinese.getCharacterScore() > 0.5) {
-          cv::rectangle(result, rect, Scalar(0, 0, 255), 1);
+          cv::rectangle(result, rect, Scalar(255, 255, 255), 1);
           plateResult |= rect;
           std::cout << "chinese:" << chinese.getCharacterStr();
           std::cout << "__score:" << chinese.getCharacterScore() << std::endl;
@@ -1482,11 +1490,13 @@ Mat mserCharMatch(const Mat &src, Mat &match, std::vector<Rect>& out_charRect, C
     std::cout << "angle:" << angle << std::endl;
 
     RotatedRect platePos(Point2f((float)plateResult.x + plateResult.width / 2.f, (float)plateResult.y + plateResult.height / 2.f),
-      Size2f(plateResult.width * 1.05f, maxrect.height * 1.2f), angle);
+      Size2f(plateResult.width * 1.05f, maxrect.height * 1.25f), angle);
 
-    rotatedRectangle(result, platePos, Scalar(0, 0, 255), 1);
+    if (verifyRotatedPlateSizes(platePos)) {
+      rotatedRectangle(result, platePos, Scalar(0, 0, 255), 1);
+      plate.setPlatePos(platePos);
+    }
 
-    plate.setPlatePos(platePos);
     //cv::rectangle(result, plateResult, Scalar(0, 0, 255), 1);
     match(plateResult) = 255;
   }
