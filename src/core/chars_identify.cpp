@@ -204,6 +204,32 @@ namespace easypr {
       return false;
   }*/
 
+  std::pair<std::string, std::string> CharsIdentify::identifyChinese(cv::Mat input) {
+    cv::Mat feature = charFeatures(input, kPredictSize);
+    float maxVal = -2;
+
+    int result = -1;
+
+    cv::Mat output(1, kChineseNumber, CV_32FC1);
+    ann_->predict(feature, output);
+
+    for (int j = 0; j < kChineseNumber; j++) {
+      float val = output.at<float>(j);
+      // std::cout << "j:" << j << "val:" << val << std::endl;
+      if (val > maxVal) {
+        maxVal = val;
+        result = j;
+      }
+    }
+
+    auto index = result + kCharsTotalNumber - kChineseNumber;
+    const char* key = kChars[index];
+    std::string s = key;
+    std::string province = kv_->get(s);
+
+    return std::make_pair(s, province);
+  }
+
 
   std::pair<std::string, std::string> CharsIdentify::identify(cv::Mat input, bool isChinese) {
     cv::Mat feature = charFeatures(input, kPredictSize);

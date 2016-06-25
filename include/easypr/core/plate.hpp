@@ -24,8 +24,7 @@ namespace easypr {
   public:
     CPlate() { }
 
-    CPlate(const CPlate& plate)
-    {
+    CPlate(const CPlate& plate) {
       m_plateMat = plate.m_plateMat;
       m_score = plate.m_score;
       m_platePos = plate.m_platePos;
@@ -40,6 +39,26 @@ namespace easypr {
       m_distVec = plate.m_distVec;
 
       m_mserCharVec = plate.m_mserCharVec;
+    }
+
+    CPlate& operator=(const CPlate& plate) {
+      if (this != &plate) { 
+        m_plateMat = plate.m_plateMat;
+        m_score = plate.m_score;
+        m_platePos = plate.m_platePos;
+        m_plateStr = plate.m_plateStr;
+        m_locateType = plate.m_locateType;
+        m_line = plate.m_line;
+        m_leftPoint = plate.m_leftPoint;
+        m_rightPoint = plate.m_rightPoint;
+        m_mergeCharRect = plate.m_mergeCharRect;
+        m_maxCharRect = plate.m_maxCharRect;
+
+        m_distVec = plate.m_distVec;
+
+        m_mserCharVec = plate.m_mserCharVec;
+      }     
+      return *this;
     }
 
     inline void setPlateMat(Mat param) { m_plateMat = param; }
