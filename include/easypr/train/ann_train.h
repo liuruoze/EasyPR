@@ -16,6 +16,7 @@ class AnnTrain : public ITrain {
   virtual void test();
 
   std::pair<std::string, std::string> identifyChinese(cv::Mat input);
+  std::pair<std::string, std::string> identify(cv::Mat input);
 
  private:
   virtual cv::Ptr<cv::ml::TrainData> tdata();

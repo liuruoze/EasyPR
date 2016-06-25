@@ -59,7 +59,6 @@ Color getPlateType(const Mat& src, const bool adaptive_minsv);
 //! 直方图均衡
 
 Mat histeq(Mat in);
-Mat charFeatures(Mat in, int sizeData);
 Rect GetCenterRect(Mat& in);
 Mat CutTheRect(Mat& in, Rect& rect);
 int ThresholdOtsu(Mat mat);
@@ -107,6 +106,12 @@ Rect adaptive_charrect_from_rect(const Rect& rect);
 //! 计算一个安全的Rect
 bool calcSafeRect(const RotatedRect& roi_rect, const Mat& src,
   Rect_<float>& safeBoundRect);
+
+// shift an image
+Mat translateImg(Mat img, int offsetx, int offsety);
+
+// rotate an image
+Mat rotateImg(Mat source, float angle);
 
 } /*! \namespace easypr*/
 

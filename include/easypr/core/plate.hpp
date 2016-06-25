@@ -39,6 +39,7 @@ namespace easypr {
       m_distVec = plate.m_distVec;
 
       m_mserCharVec = plate.m_mserCharVec;
+      m_reutCharVec = plate.m_reutCharVec;
     }
 
     CPlate& operator=(const CPlate& plate) {
@@ -57,6 +58,7 @@ namespace easypr {
         m_distVec = plate.m_distVec;
 
         m_mserCharVec = plate.m_mserCharVec;
+        m_reutCharVec = plate.m_reutCharVec;
       }     
       return *this;
     }
@@ -94,17 +96,13 @@ namespace easypr {
     inline void setPlatDistVec(Vec2i param) { m_distVec = param; }
     inline Vec2i getPlateDistVec() const { return m_distVec; }
 
-    inline void setMserCharacter(const std::vector<CCharacter>& param) {
-      m_mserCharVec = param;
-    }
+    inline void setMserCharacter(const std::vector<CCharacter>& param) { m_mserCharVec = param; }
+    inline void addMserCharacter(CCharacter param) { m_mserCharVec.push_back(param); }
+    inline std::vector<CCharacter> getCopyOfMserCharacters() { return m_mserCharVec; }
 
-    inline void addMserCharacter(CCharacter param) {
-      m_mserCharVec.push_back(param);
-    }
-
-    inline std::vector<CCharacter> getCopyOfMserCharacters() {
-      return m_mserCharVec;
-    }
+    inline void setReutCharacter(const std::vector<CCharacter>& param) { m_reutCharVec = param; }
+    inline void addReutCharacter(CCharacter param) { m_reutCharVec.push_back(param); }
+    inline std::vector<CCharacter> getCopyOfReutCharacters() { return m_reutCharVec; }
 
     bool operator < (const CPlate& plate) const
     {
@@ -144,6 +142,9 @@ namespace easypr {
 
     std::vector<CCharacter> m_mserCharVec;
     std::vector<CCharacter> m_slwdCharVec;
+
+    std::vector<CCharacter> m_ostuCharVec;
+    std::vector<CCharacter> m_reutCharVec;
 
     int m_charCount;
 

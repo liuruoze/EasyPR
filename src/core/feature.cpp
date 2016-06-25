@@ -91,4 +91,51 @@ void getLBPFeatures(const Mat& image, Mat& features) {
   features = lbp_hist;
 }
 
+
+Mat charFeatures(Mat in, int sizeData) {
+  const int VERTICAL = 0;
+  const int HORIZONTAL = 1;
+
+  // cut the cetner, will afect 5% perices.
+  Rect _rect = GetCenterRect(in);
+  Mat tmpIn = CutTheRect(in, _rect);
+  //Mat tmpIn = in.clone();
+
+  // Low data feature
+  Mat lowData;
+  resize(tmpIn, lowData, Size(sizeData, sizeData));
+
+  // Histogram features
+  Mat vhist = ProjectedHistogram(lowData, VERTICAL);
+  Mat hhist = ProjectedHistogram(lowData, HORIZONTAL);
+
+  // Last 10 is the number of moments components
+  int numCols = vhist.cols + hhist.cols + lowData.cols * lowData.cols;
+
+  Mat out = Mat::zeros(1, numCols, CV_32F);
+  // Asign values to
+
+  // feature,ANN的样本特征为水平、垂直直方图和低分辨率图像所组成的矢量
+
+  int j = 0;
+  for (int i = 0; i < vhist.cols; i++) {
+    out.at<float>(j) = vhist.at<float>(i);
+    j++;
+  }
+  for (int i = 0; i < hhist.cols; i++) {
+    out.at<float>(j) = hhist.at<float>(i);
+    j++;
+  }
+  for (int x = 0; x < lowData.cols; x++) {
+    for (int y = 0; y < lowData.rows; y++) {
+      out.at<float>(j) += (float)lowData.at <unsigned char>(x, y);
+      j++;
+    }
+  }
+
+  //std::cout << out << std::endl;
+
+  return out;
+}
+
 }

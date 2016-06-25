@@ -56,14 +56,10 @@ namespace easypr {
           plate.setPlatePos(rr);
           plateVec.push_back(plate);
         }
-
         xmlMap[imageName] = plateVec;
       }
-
       return 0;
     }
-
-
 
     int accuracyTest(const char* test_path) {
       std::shared_ptr<easypr::Kv> kv(new easypr::Kv);
@@ -90,12 +86,10 @@ namespace easypr {
       CPlateRecognize pr;
 
       // 设置Debug模式
-
       pr.setDebug(false);
       pr.setLifemode(true);
 
       // 设置要处理的一张图片中最多有多少车牌
-
       pr.setMaxPlates(4);
       pr.setDetectType(PR_DETECT_COLOR | PR_DETECT_SOBEL);
       //pr.setDetectType(PR_DETECT_CMSER);
@@ -267,6 +261,14 @@ namespace easypr {
                 if (diff == 2) {
                   one_error_count++;
                 }
+
+                vector<CCharacter> charVec = matchPlate->getCopyOfReutCharacters();
+                CCharacter character = charVec.at(0);
+                if (1) {
+                  std::stringstream ss(std::stringstream::in | std::stringstream::out);
+                  ss << "resources/image/tmp/chinese" << "/" << i << "_" << t << "_" << character.getCharacterStr() << ".jpg";
+                  imwrite(ss.str(), character.getCharacterMat());
+                }
               }
               cout << "  chineseError:" << chineseError << endl;
             } 
@@ -282,7 +284,8 @@ namespace easypr {
             }
           }
 
-          /*if (1)
+          /* REMAIN
+          if (1)
           {
             std::stringstream ss(std::stringstream::in | std::stringstream::out);
             ss << "resources/image/tmp/plate_" << license << ".jpg";
@@ -398,12 +401,14 @@ namespace easypr {
       cout << kv->get("seconds") << ":" << seconds << kv->get("sec") << ",  ";
       cout << kv->get("seconds_average") << ":" << avgsec << kv->get("sec") << endl;
 
-      /*cout << kv->get("unrecognized") << ":" << endl;
+      /* REMAIN
+      cout << kv->get("unrecognized") << ":" << endl;
       for (auto it = not_recognized_files.begin(); it != not_recognized_files.end();
         ++it) {
         cout << *it << endl;
       }
-      cout << endl;*/
+      cout << endl;
+      */
       cout << "------------------" << endl;
 
       ofstream myfile("accuracy.txt", ios::app);

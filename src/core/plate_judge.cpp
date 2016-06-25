@@ -109,6 +109,7 @@ namespace easypr {
   int PlateJudge::plateJudgeUsingNMS(const std::vector<CPlate> &inVec, std::vector<CPlate> &resultVec, int maxPlates) {
     std::vector<CPlate> plateVec;
     int num = inVec.size();
+    bool outputResult = false;
 
     for (int j = 0; j < num; j++) {
       CPlate plate = inVec[j];
@@ -123,6 +124,13 @@ namespace easypr {
       int result = plateSetScore(plate);
       if (result == 0) {
         plateVec.push_back(plate);
+        if (outputResult) {
+          std::stringstream ss(std::stringstream::in | std::stringstream::out);
+          ss << "resources/image/tmp/plate/has" << "/" << plate.getPlatePos().center << "_"
+            << plate.getPlatePos().size << "_" << plate.getPlatePos().angle << "_"
+            << plate.getPlateScore() << ".jpg";
+          imwrite(ss.str(), inMat);
+        }
       }
       else {
         int w = inMat.cols;
@@ -140,6 +148,22 @@ namespace easypr {
 
         if (resultCascade == 0) {
           plateVec.push_back(plate);
+          if (outputResult) {
+            std::stringstream ss(std::stringstream::in | std::stringstream::out);
+            ss << "resources/image/tmp/plate/has" << "/" << plate.getPlatePos().center << "_" 
+              << plate.getPlatePos().size << "_" << plate.getPlatePos().angle << "_" 
+              << plate.getPlateScore() << ".jpg";
+            imwrite(ss.str(), tmpDes);
+          }
+        }
+        else {
+          if (outputResult) {
+            std::stringstream ss(std::stringstream::in | std::stringstream::out);
+            ss << "resources/image/tmp/plate/no" << "/" << plate.getPlatePos().center << "_"
+              << plate.getPlatePos().size << "_" << plate.getPlatePos().angle << "_"
+              << plate.getPlateScore() << ".jpg";
+            imwrite(ss.str(), tmpDes);
+          }
         }
       }
     }

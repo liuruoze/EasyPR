@@ -1,6 +1,7 @@
 #include "easypr/train/ann_train.h"
 #include "easypr/config.h"
 #include "easypr/core/chars_identify.h"
+#include "easypr/core/feature.h"
 #include "easypr/core/core_func.h"
 #include "easypr/util/util.h"
 #include <numeric>
@@ -64,7 +65,6 @@ void AnnTrain::train() {
     layers.at<int>(3) = output_number;
   }
 
-
   ann_->setLayerSizes(layers);
   ann_->setActivationFunction(cv::ml::ANN_MLP::SIGMOID_SYM, 1, 1);
   ann_->setTrainMethod(cv::ml::ANN_MLP::TrainingMethods::BACKPROP);
@@ -74,13 +74,13 @@ void AnnTrain::train() {
 
   //using raw data or raw + synthic data.
   //auto traindata = tdata();
-  auto traindata = sdata();
+  auto traindata = sdata(100);
 
   std::cout << "Training ANN model, please wait..." << std::endl;
   long start = utils::getTimestamp();
   ann_->train(traindata);
   long end = utils::getTimestamp();
-  std::cout << "Training done. Time elapse: " << (end - start) << "ms"
+  std::cout << "Training done. Time elapse: " << (end - start) / (1000 * 60) << "minute"
             << std::endl;
 
   ann_->save(ann_xml_);
@@ -92,7 +92,6 @@ void AnnTrain::train() {
 std::pair<std::string, std::string> AnnTrain::identifyChinese(cv::Mat input) {
   cv::Mat feature = charFeatures(input, kPredictSize);
   float maxVal = -2;
-
   int result = -1;
 
   cv::Mat output(1, kChineseNumber, CV_32FC1);
@@ -113,6 +112,36 @@ std::pair<std::string, std::string> AnnTrain::identifyChinese(cv::Mat input) {
   std::string province = kv_->get(s);
 
   return std::make_pair(s, province);
+}
+
+
+std::pair<std::string, std::string> AnnTrain::identify(cv::Mat input) {
+  cv::Mat feature = charFeatures(input, kPredictSize);
+  float maxVal = -2;
+  int result = -1;
+
+  cv::Mat output(1, kCharsTotalNumber, CV_32FC1);
+  ann_->predict(feature, output);
+
+  for (int j = 0; j < kCharsTotalNumber; j++) {
+    float val = output.at<float>(j);
+    // std::cout << "j:" << j << "val:" << val << std::endl;
+    if (val > maxVal) {
+      maxVal = val;
+      result = j;
+    }
+  }
+
+  auto index = result;
+  if (index < kCharactersNumber) {
+    return std::make_pair(kChars[index], kChars[index]);
+  }
+  else {
+    const char* key = kChars[index];
+    std::string s = key;
+    std::string province = kv_->get(s);
+    return std::make_pair(s, province);
+  }
 }
 
 void AnnTrain::test() {
@@ -137,7 +166,11 @@ void AnnTrain::test() {
 
     for (auto file : chars_files) {
       auto img = cv::imread(file, 0);  // a grayscale image
-      std::pair<std::string, std::string> ch = identifyChinese(img);
+      std::pair<std::string, std::string> ch;
+
+      if (type == 0) ch = identify(img);
+      if (type == 1) ch = identifyChinese(img);
+
       if (ch.first == char_key) {
         ++corrects;
         ++corrects_all;
@@ -179,7 +212,21 @@ void AnnTrain::test() {
 }
 
 cv::Mat getSyntheticImage(const Mat& image) {
+  int rand_type = rand();
   Mat result = image.clone();
+
+  if (rand_type % 2 == 0) {
+    int ran_x = rand() % 7 - 3;
+    int ran_y = rand() % 7 - 3;
+
+    result = translateImg(result, ran_x, ran_y);
+  }
+  else if (rand_type % 2 != 0) {
+    float angle = float(rand() % 15 - 7);
+
+    result = rotateImg(result, angle);
+  }
+  
   return result;
 }
 
@@ -193,9 +240,9 @@ cv::Ptr<cv::ml::TrainData> AnnTrain::sdata(size_t number_for_count) {
   if (type == 0) classNumber = kCharsTotalNumber;
   if (type == 1) classNumber = kChineseNumber;
   
+  srand((unsigned)time(0));
   for (int i = 0; i < classNumber; ++i) {
-    srand((unsigned)time(0));
-
+   
     auto char_key = kChars[i + kCharsTotalNumber - classNumber];
     char sub_folder[512] = { 0 };
 
@@ -219,6 +266,11 @@ cv::Ptr<cv::ml::TrainData> AnnTrain::sdata(size_t number_for_count) {
       auto img = matVec.at(ran_num);
       auto simg = getSyntheticImage(img);
       matVec.push_back(simg);
+      if (1) {
+        std::stringstream ss(std::stringstream::in | std::stringstream::out);
+        ss << sub_folder << "/" << i << "_" << t << "_" << ran_num << ".jpg";
+        imwrite(ss.str(), simg);
+      }
     }
 
     fprintf(stdout, ">> Characters count: %d \n", matVec.size());

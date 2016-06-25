@@ -2,6 +2,7 @@
 #include "easypr/core/character.hpp"
 #include "easypr/config.h"
 #include "easypr/core/core_func.h"
+#include "easypr/core/feature.h"
 
 namespace easypr {
 

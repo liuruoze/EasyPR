@@ -685,50 +685,6 @@ Rect GetCenterRect(Mat &in) {
   return _rect;
 }
 
-Mat charFeatures(Mat in, int sizeData) {
-
-  //抠取中间区域
-  Rect _rect = GetCenterRect(in);
-
-  Mat tmpIn = CutTheRect(in, _rect);
-  // Mat tmpIn = in.clone();
-  // Low data feature
-  Mat lowData;
-  resize(tmpIn, lowData, Size(sizeData, sizeData));
-
-  // Histogram features
-  Mat vhist = ProjectedHistogram(lowData, VERTICAL);
-  Mat hhist = ProjectedHistogram(lowData, HORIZONTAL);
-
-  // Last 10 is the number of moments components
-  int numCols = vhist.cols + hhist.cols + lowData.cols * lowData.cols;
-
-  Mat out = Mat::zeros(1, numCols, CV_32F);
-  // Asign values to
-
-  // feature,ANN的样本特征为水平、垂直直方图和低分辨率图像所组成的矢量
-
-  int j = 0;
-  for (int i = 0; i < vhist.cols; i++) {
-    out.at<float>(j) = vhist.at<float>(i);
-    j++;
-  }
-  for (int i = 0; i < hhist.cols; i++) {
-    out.at<float>(j) = hhist.at<float>(i);
-    j++;
-  }
-  for (int x = 0; x < lowData.cols; x++) {
-    for (int y = 0; y < lowData.rows; y++) {
-      out.at<float>(j) += (float) lowData.at <unsigned char> (x, y);
-      j++;
-    }
-  }
-
-  //std::cout << out << std::endl;
-
-  return out;
-}
-
 float countOfBigValue(Mat &mat, int iValue) {
   float iCount = 0.0;
   if (mat.rows > 1) {
@@ -1892,6 +1848,23 @@ Mat adaptive_image_from_points(const std::vector<Point>& points,
   resize(image, result, size, 0, 0, INTER_NEAREST);
 
   return result;
+}
+
+// shift an image
+Mat translateImg(Mat img, int offsetx, int offsety){
+  Mat dst;
+  Mat trans_mat = (Mat_<double>(2, 3) << 1, 0, offsetx, 0, 1, offsety);
+  warpAffine(img, dst, trans_mat, img.size());
+  return dst;
+}
+
+// rotate an image
+Mat rotateImg(Mat source, float angle){
+  Point2f src_center(source.cols / 2.0F, source.rows / 2.0F);
+  Mat rot_mat = getRotationMatrix2D(src_center, angle, 1.0);
+  Mat dst;
+  warpAffine(source, dst, rot_mat, source.size());
+  return dst;
 }
 
 //! 计算一个安全的Rect

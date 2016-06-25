@@ -296,12 +296,9 @@ int CPlateRecognize::plateRecognizeAsText(Mat src, std::vector<CPlate> &licenseV
 
 
 // !车牌识别模块
-
-int CPlateRecognize::plateRecognize(Mat src,
-                                    std::vector<CPlate> &licenseVec, int index) {
+int CPlateRecognize::plateRecognize(Mat src, std::vector<CPlate> &licenseVec, int index) {
 
   // 车牌集合
-
   std::vector<CPlate> plateVec;
 
   // 对图像进行统一缩放，确保图像不要过大
@@ -321,19 +318,17 @@ int CPlateRecognize::plateRecognize(Mat src,
     int index = 0;
 
     //依次识别每个车牌内的符号
-
     for (size_t j = 0; j < num; j++) {
-      CPlate item = plateVec[j];
+      CPlate item = plateVec.at(j);
       Mat plate = item.getPlateMat();
 
       //获取车牌颜色
-
       std::string plateType = getPlateColor(plate);
 
       //获取车牌号
-
       std::string plateIdentify = "";
-      int resultCR = charsRecognise(plate, plateIdentify);
+      int resultCR = charsRecognise(item, plateIdentify);
+           
       if (resultCR == 0) {
         std::string license = plateType + ":" + plateIdentify;
         item.setPlateStr(license);

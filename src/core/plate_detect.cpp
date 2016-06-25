@@ -85,7 +85,7 @@ namespace easypr {
           cv::rectangle(result, outputRect, Scalar(0, 0, 255));
         }
 
-        if (1)
+        if (0)
         {
           std::stringstream ss(std::stringstream::in | std::stringstream::out);
           ss << "resources/image/tmp/plate_" << index << "_" << i << ".jpg";
