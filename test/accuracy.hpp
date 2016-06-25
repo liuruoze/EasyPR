@@ -128,21 +128,21 @@ namespace easypr {
 
       std::list<std::string> not_recognized_files;
 
-      // 总的字符差距
 
-      float diff_all = 0;
+      // all the ground-truth plates
+      float all_plate_count = 0;
 
-      // 平均字符差距
+      // all the characters are right
+      float non_error_count = 0;
+      float non_error_rate = 0;
 
-      float diff_avg = 0;
+      // only one character is wrong
+      float one_error_count = 0;
+      float one_error_rate = 0;
 
-      // 完全匹配的识别次数
-
-      float match_count = 0;
-
-      // 完全匹配的识别次数所占识别图片中的比例
-
-      float match_rate = 0;
+      // chinese character is wrong
+      float chinese_error_count = 0;
+      float chinese_error_rate = 0;
 
       // calucate the detect precise and recall
       // use icdar 2003 evalution protoocal
@@ -198,12 +198,14 @@ namespace easypr {
 
         for (auto plate_g : plateVecGT) {
           float bestmatch = 0.f;
+          CPlate* matchPlate = NULL;
 
           RotatedRect platePos_g = plate_g.getPlatePos();
           Rect_<float> plateRect_g;
           calcSafeRect(platePos_g, src, plateRect_g);
 
-          for (auto plate_d : plateVec) {
+          size_t t = 0;
+          for (CPlate plate_d : plateVec) {
             RotatedRect platePos_d = plate_d.getPlatePos();
             Rect_<float> plateRect_d;
             calcSafeRect(platePos_d, src, plateRect_d);
@@ -211,17 +213,76 @@ namespace easypr {
             Rect interRect = plateRect_g & plateRect_d;
 
             float match = 2 * (interRect.area()) / (plateRect_g.area() + plateRect_d.area());
-            if (match > bestmatch)
+            if (match - bestmatch > 0.1f) {
               bestmatch = match;
+              matchPlate = &(plateVec.at(t));
+            } 
+            t++;
           }
 
           icdar2003_recall_all.push_back(bestmatch);
           icdar2003_recall.push_back(bestmatch);
 
           string plateLicense = plate_g.getPlateStr();
-          string license = Utils::splitString(plateLicense, ':')[1];
+          string license = Utils::splitString(plateLicense, ':').at(1);
           cout << plate_g.getPlateStr() << " (g)" << endl;
-          if (1)
+
+          all_plate_count++;
+
+          if (matchPlate) {
+            string matchPlateLicense = matchPlate->getPlateStr();
+            vector<string> spilt_plate = Utils::splitString(matchPlateLicense, ':');
+
+            size_t size = spilt_plate.size();
+            if (size == 2 && spilt_plate.at(1) != "") {
+              string matchLicense = spilt_plate.at(1);
+
+              cout << matchPlateLicense << " (d)" << endl;
+
+              XMLNode rectangleNode = rectangleNodes.addChild("taggedRectangle");
+              RotatedRect rr = matchPlate->getPlatePos();
+              LocateType locateType = matchPlate->getPlateLocateType();
+
+              rectangleNode.addAttribute("x", to_string((int)rr.center.x).c_str());
+              rectangleNode.addAttribute("y", to_string((int)rr.center.y).c_str());
+              rectangleNode.addAttribute("width", to_string((int)rr.size.width).c_str());
+              rectangleNode.addAttribute("height", to_string((int)rr.size.height).c_str());
+
+              rectangleNode.addAttribute("rotation", to_string((int)rr.angle).c_str());
+              rectangleNode.addAttribute("locateType", to_string(locateType).c_str());
+              rectangleNode.addText(matchPlate->getPlateStr().c_str());
+
+              int diff = utils::levenshtein_distance(license, matchLicense);
+              if (diff == 0) {
+                non_error_count++;
+                one_error_count++;
+              }
+              else if (diff == 1) {
+                one_error_count++;
+              }
+              cout << kv->get("diff") << ":" << diff << kv->get("char");
+              bool chineseError = (license.substr(0, 2) != matchLicense.substr(0, 2));
+              if (chineseError) {
+                chinese_error_count++;
+                if (diff == 2) {
+                  one_error_count++;
+                }
+              }
+              cout << "  chineseError:" << chineseError << endl;
+            } 
+            else {
+              cout << "No string" << " (d)" << endl;
+            }
+          }
+          else {
+            cout << kv->get("empty_plate") << endl;
+            if (license != kv->get("empty_plate")) {
+              not_recognized_files.push_back(license);
+              count_norecogin++;
+            }
+          }
+
+          /*if (1)
           {
             std::stringstream ss(std::stringstream::in | std::stringstream::out);
             ss << "resources/image/tmp/plate_" << license << ".jpg";
@@ -230,7 +291,7 @@ namespace easypr {
             plate_mat.create(36, 136, 16);
             resize(outMat, plate_mat, plate_mat.size(), 0, 0, INTER_AREA);
             imwrite(ss.str(), plate_mat);
-          }
+          }*/
         }
 
         // calucate the detect precise
@@ -280,90 +341,6 @@ namespace easypr {
         cout << "Precise" << ":" << precise_result * 100 << "%" << ", ";
         cout << "Fscore" << ":" << fscore_result * 100 << "%" << "." << endl;
 
-        if (result == 0) {
-          int num = plateVec.size();
-          if (num == 0) {
-            cout << kv->get("empty_plate") << endl;
-            if (plateLicense != kv->get("empty_plate")) {
-              not_recognized_files.push_back(plateLicense);
-              count_norecogin++;
-            }
-          }
-          else if (num > 1) {
-            int mindiff = 10000;
-            for (int j = 0; j < num; j++) {
-              cout << plateVec[j].getPlateStr() << " (" << j + 1 << ")" << endl;
-
-              XMLNode rectangleNode = rectangleNodes.addChild("taggedRectangle");
-              RotatedRect rr = plateVec[j].getPlatePos();
-              LocateType locateType = plateVec[j].getPlateLocateType();
-
-              rectangleNode.addAttribute("x", to_string((int)rr.center.x).c_str());
-              rectangleNode.addAttribute("y", to_string((int)rr.center.y).c_str());
-              rectangleNode.addAttribute("width", to_string((int)rr.size.width).c_str());
-              rectangleNode.addAttribute("height", to_string((int)rr.size.height).c_str());
-
-              rectangleNode.addAttribute("rotation", to_string((int)rr.angle).c_str());
-              rectangleNode.addAttribute("locateType", to_string(locateType).c_str());
-              rectangleNode.addText(plateVec[j].getPlateStr().c_str());
-
-              string colorplate = plateVec[j].getPlateStr();
-              vector<string> spilt_plate = Utils::splitString(colorplate, ':');
-
-              int size = spilt_plate.size();
-              if (size == 2 && spilt_plate[1] != "") {
-                int diff = utils::levenshtein_distance(plateLicense,
-                  spilt_plate[size - 1]);
-                if (diff < mindiff) mindiff = diff;
-              }
-            }
-            cout << kv->get("diff") << ":" << mindiff << kv->get("char") << endl;
-            if (mindiff == 0) {
-              match_count++;
-            }
-            diff_all = diff_all + mindiff;
-          }
-          else {
-            for (int j = 0; j < num; j++) {
-              cout << plateVec[j].getPlateStr() << endl;
-
-              XMLNode rectangleNode = rectangleNodes.addChild("taggedRectangle");
-              RotatedRect rr = plateVec[j].getPlatePos();
-              LocateType locateType = plateVec[j].getPlateLocateType();
-
-              rectangleNode.addAttribute("x", to_string((int)rr.center.x).c_str());
-              rectangleNode.addAttribute("y", to_string((int)rr.center.y).c_str());
-              rectangleNode.addAttribute("width", to_string((int)rr.size.width).c_str());
-              rectangleNode.addAttribute("height", to_string((int)rr.size.height).c_str());
-
-              rectangleNode.addAttribute("rotation", to_string((int)rr.angle).c_str());
-              rectangleNode.addAttribute("locateType", to_string(locateType).c_str());
-              rectangleNode.addText(plateVec[j].getPlateStr().c_str());
-
-              string colorplate = plateVec[j].getPlateStr();
-
-              // 计算"蓝牌:苏E7KU22"中冒号后面的车牌大小"
-
-              vector<string> spilt_plate = Utils::splitString(colorplate, ':');
-
-              int size = spilt_plate.size();
-              if (size == 2 && spilt_plate[1] != "") {
-                int diff = utils::levenshtein_distance(plateLicense,
-                  spilt_plate[size - 1]);
-                cout << kv->get("diff") << ":" << diff << kv->get("char") << endl;
-
-                if (diff == 0) {
-                  match_count++;
-                }
-                diff_all = diff_all + diff;
-              }
-            }
-          }
-        }
-        else {
-          cout << kv->get("error_code") << ":" << result << endl;
-          count_err++;
-        }
         count_all++;
       }
       time(&end);
@@ -374,20 +351,18 @@ namespace easypr {
       cout << endl;
       cout << kv->get("summaries") << ":" << endl;
       cout << kv->get("sum_pictures") << ":" << count_all << ",  ";
-      cout << kv->get("unrecognized") << ":" << count_norecogin << ",  ";
+      cout << "Plates count" << ":" << all_plate_count << ",  ";
 
       xMainNode.writeToFile(path_result.c_str());
 
-      float count_recogin = float(count_all - (count_err + count_norecogin));
-      float count_rate = count_recogin / count_all;
+      float count_recogin = float(all_plate_count - count_norecogin);
+      float count_rate = count_recogin / all_plate_count;
       cout << kv->get("locate_rate") << ":" << count_rate * 100 << "%  " << endl;
 
       if (count_recogin > 0) {
-        diff_avg = diff_all / count_recogin;
-      }
-
-      if (count_recogin > 0) {
-        match_rate = match_count / count_recogin * 100;
+        non_error_rate = non_error_count / count_recogin;
+        one_error_rate = one_error_count / count_recogin;
+        chinese_error_rate = chinese_error_count / count_recogin;
       }
 
       double recall_2003_result = 0;
@@ -408,28 +383,27 @@ namespace easypr {
           (recall_2003_result + precise_2003_result);
       }
 
-      cout << "Detect quality evalution result:" << endl;
+      //cout << "Detect quality evalution result:" << endl;
       cout << "Recall" << ":" << recall_2003_result * 100 << "%" << ", ";
       cout << "Precise" << ":" << precise_2003_result * 100 << "%" << ", ";
       cout << "Fscore" << ":" << fscore_2003_result * 100 << "%" << "." << endl;
 
-      cout << kv->get("diff_average") << ":" << diff_avg << ",  ";
-      cout << kv->get("full_match") << ":" << match_count << ",  ";
-      cout << kv->get("full_rate") << ":" << match_rate << "%  " << endl;
+      cout << "0-error" << ":" << non_error_rate * 100 << "%,  ";
+      cout << "1-error" << ":" << one_error_rate * 100 << "%,  ";
+      cout << "Chinese-error" << ":" << chinese_error_rate * 100 << "%  " << endl;
 
       double seconds = difftime(end, begin);
       double avgsec = seconds / double(count_all);
 
       cout << kv->get("seconds") << ":" << seconds << kv->get("sec") << ",  ";
       cout << kv->get("seconds_average") << ":" << avgsec << kv->get("sec") << endl;
-      cout << kv->get("unrecognized") << ":" << endl;
 
+      /*cout << kv->get("unrecognized") << ":" << endl;
       for (auto it = not_recognized_files.begin(); it != not_recognized_files.end();
         ++it) {
         cout << *it << endl;
       }
-
-      cout << endl;
+      cout << endl;*/
       cout << "------------------" << endl;
 
       ofstream myfile("accuracy.txt", ios::app);
@@ -440,23 +414,22 @@ namespace easypr {
 
         strftime(buf, sizeof(buf), "%Y-%m-%d %X", now);
         myfile << string(buf) << endl;
-
+       
         myfile << kv->get("sum_pictures") << ":" << count_all << ",  ";
+        myfile << "Plates count" << ":" << all_plate_count << ",  ";
         myfile << kv->get("unrecognized") << ":" << count_norecogin << ",  ";
         myfile << kv->get("locate_rate") << ":" << count_rate * 100 << "%  "
           << endl;
-
 
         myfile << "Recall" << ":" << recall_2003_result * 100 << "%" << ", ";
         myfile << "Precise" << ":" << precise_2003_result * 100 << "%" << ", ";
         myfile << "Fscore" << ":" << fscore_2003_result * 100 << "%" << "." << endl;
 
-        myfile << kv->get("diff_average") << ":" << diff_avg << ",  ";
-        myfile << kv->get("full_match") << ":" << match_count << ",  ";
-        myfile << kv->get("full_rate") << ":" << match_rate << "%  " << endl;
+        myfile << "0-error" << ":" << non_error_rate * 100 << "%,  ";
+        myfile << "1-error" << ":" << one_error_rate * 100 << "%,  ";
+        myfile << "Chinese error" << ":" << chinese_error_rate * 100 << "%  " << endl;
         myfile << kv->get("seconds") << ":" << seconds << kv->get("sec") << ",  ";
-        myfile << kv->get("seconds_average") << ":" << avgsec << kv->get("sec")
-          << endl;
+        myfile << kv->get("seconds_average") << ":" << avgsec << kv->get("sec") << endl;
         myfile.close();
       }
       else {
