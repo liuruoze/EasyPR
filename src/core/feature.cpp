@@ -138,4 +138,48 @@ Mat charFeatures(Mat in, int sizeData) {
   return out;
 }
 
+
+void getLBPplusHistFeatures(const Mat& image, Mat& features) {
+  // TODO
+  Mat grayImage;
+  cvtColor(image, grayImage, CV_RGB2GRAY);
+
+  Mat lbpimage;
+  lbpimage = libfacerec::olbp(grayImage);
+  Mat lbp_hist = libfacerec::spatial_histogram(lbpimage, 64, 8, 4);
+  //features = lbp_hist.reshape(1, 1);
+
+  Mat greyImage;
+  cvtColor(image, greyImage, CV_RGB2GRAY);
+  //Mat src_hsv;
+  //cvtColor(image, src_hsv, CV_BGR2HSV);
+  //std::vector<cv::Mat> hsvSplit;
+  //split(src_hsv, hsvSplit);
+
+  /*std::vector<cv::Mat> bgrSplit;
+  split(image, bgrSplit);*/
+
+  //grayImage = histeq(grayImage);
+  Mat img_threshold;
+  threshold(greyImage, img_threshold, 0, 255,
+    CV_THRESH_OTSU + CV_THRESH_BINARY);
+  Mat histomFeatures = getHistogram(img_threshold);
+
+  /*Mat img_threshold2;
+  threshold(bgrSplit[1], img_threshold2, 0, 255,
+  CV_THRESH_OTSU + CV_THRESH_BINARY);
+  Mat greenHistomFeatures = getTheFeatures(img_threshold2);
+
+  Mat histomFeatures;
+  hconcat(blueHistomFeatures.reshape(1, 1), greenHistomFeatures.reshape(1, 1), histomFeatures);*/
+
+  //Mat histomFeatures = getTheColorFeatures(greyImage);
+
+  //features.push_back(histomFeatures.reshape(1, 1));
+
+  hconcat(lbp_hist.reshape(1, 1), histomFeatures.reshape(1, 1), features);
+  //std::cout << features << std::endl;
+  //features = histomFeatures;
+}
+
 }

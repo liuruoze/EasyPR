@@ -258,13 +258,13 @@ namespace easypr {
               bool chineseError = (license.substr(0, 2) != matchLicense.substr(0, 2));
               if (chineseError) {
                 chinese_error_count++;
-                if (diff == 2) {
-                  one_error_count++;
-                }
-
+                //if (diff == 2) {
+                //  one_error_count++;
+                //}
+                // output chinese errror mat
                 vector<CCharacter> charVec = matchPlate->getCopyOfReutCharacters();
                 CCharacter character = charVec.at(0);
-                if (1) {
+                if (0) {
                   std::stringstream ss(std::stringstream::in | std::stringstream::out);
                   ss << "resources/image/tmp/chinese" << "/" << i << "_" << t << "_" << character.getCharacterStr() << ".jpg";
                   imwrite(ss.str(), character.getCharacterMat());
@@ -393,7 +393,7 @@ namespace easypr {
 
       cout << "0-error" << ":" << non_error_rate * 100 << "%,  ";
       cout << "1-error" << ":" << one_error_rate * 100 << "%,  ";
-      cout << "Chinese-error" << ":" << chinese_error_rate * 100 << "%  " << endl;
+      cout << "Chinese-precise" << ":" << (1 - chinese_error_rate) * 100 << "%  " << endl;
 
       double seconds = difftime(end, begin);
       double avgsec = seconds / double(count_all);
@@ -432,7 +432,7 @@ namespace easypr {
 
         myfile << "0-error" << ":" << non_error_rate * 100 << "%,  ";
         myfile << "1-error" << ":" << one_error_rate * 100 << "%,  ";
-        myfile << "Chinese error" << ":" << chinese_error_rate * 100 << "%  " << endl;
+        myfile << "Chinese-precise" << ":" << (1 - chinese_error_rate) * 100 << "%  " << endl;
         myfile << kv->get("seconds") << ":" << seconds << kv->get("sec") << ",  ";
         myfile << kv->get("seconds_average") << ":" << avgsec << kv->get("sec") << endl;
         myfile.close();

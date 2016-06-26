@@ -37,6 +37,8 @@ void getLBPFeatures(const cv::Mat& image, cv::Mat& features);
 //! get character feature
 cv::Mat charFeatures(cv::Mat in, int sizeData);
 
+void getLBPplusHistFeatures(const cv::Mat& image, cv::Mat& features);
+
 } /*! \namespace easypr*/
 
 #endif  // EASYPR_CORE_FEATURE_H_
