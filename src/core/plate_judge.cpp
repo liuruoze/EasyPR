@@ -14,7 +14,7 @@ namespace easypr {
 
   PlateJudge::PlateJudge() { 
     svm_ = ml::SVM::load<ml::SVM>(kDefaultSvmPath); 
-    extractFeature = getHistogramFeatures;
+    extractFeature = getLBPFeatures;
   }
 
   void PlateJudge::LoadModel(std::string path) {
@@ -122,50 +122,74 @@ namespace easypr {
       }
 
       int result = plateSetScore(plate);
+
       if (result == 0) {
-        plateVec.push_back(plate);
-        if (outputResult) {
-          std::stringstream ss(std::stringstream::in | std::stringstream::out);
-          ss << "resources/image/tmp/plate/has" << "/" << plate.getPlatePos().center << "_"
-            << plate.getPlatePos().size << "_" << plate.getPlatePos().angle << "_"
-            << plate.getPlateScore() << ".jpg";
-          imwrite(ss.str(), inMat);
-        }
-      }
-      else {
-        int w = inMat.cols;
-        int h = inMat.rows;
+          int w = inMat.cols;
+          int h = inMat.rows;
 
-        //再取中间部分判断一次
+          Mat tmpmat = inMat(Rect_<double>(w * 0.05, h * 0.1, w * 0.9, h * 0.8));
+          Mat tmpDes = inMat.clone();
+          resize(tmpmat, tmpDes, Size(inMat.size()));
 
-        Mat tmpmat = inMat(Rect_<double>(w * 0.05, h * 0.1, w * 0.9, h * 0.8));
-        Mat tmpDes = inMat.clone();
-        resize(tmpmat, tmpDes, Size(inMat.size()));
+          plate.setPlateMat(tmpDes);
 
-        plate.setPlateMat(tmpDes);
+          int resultCascade = plateSetScore(plate);
 
-        int resultCascade = plateSetScore(plate);
-
-        if (resultCascade == 0) {
-          plateVec.push_back(plate);
-          if (outputResult) {
-            std::stringstream ss(std::stringstream::in | std::stringstream::out);
-            ss << "resources/image/tmp/plate/has" << "/" << plate.getPlatePos().center << "_" 
-              << plate.getPlatePos().size << "_" << plate.getPlatePos().angle << "_" 
-              << plate.getPlateScore() << ".jpg";
-            imwrite(ss.str(), tmpDes);
+          if (resultCascade == 0) {
+            if (0) {
+              imshow("inMat", inMat);
+              waitKey(0);
+              destroyWindow("inMat");
+            }
+            plateVec.push_back(plate);      
           }
-        }
-        else {
-          if (outputResult) {
-            std::stringstream ss(std::stringstream::in | std::stringstream::out);
-            ss << "resources/image/tmp/plate/no" << "/" << plate.getPlatePos().center << "_"
-              << plate.getPlatePos().size << "_" << plate.getPlatePos().angle << "_"
-              << plate.getPlateScore() << ".jpg";
-            imwrite(ss.str(), tmpDes);
-          }
-        }
       }
+
+      //if (result == 0) {
+      //  plateVec.push_back(plate);
+      //  if (outputResult) {
+      //    std::stringstream ss(std::stringstream::in | std::stringstream::out);
+      //    ss << "resources/image/tmp/plate/has" << "/" << plate.getPlatePos().center << "_"
+      //      << plate.getPlatePos().size << "_" << plate.getPlatePos().angle << "_"
+      //      << plate.getPlateScore() << ".jpg";
+      //    imwrite(ss.str(), inMat);
+      //  }
+      //}
+      //else {
+      //  int w = inMat.cols;
+      //  int h = inMat.rows;
+
+      //  //再取中间部分判断一次
+
+      //  Mat tmpmat = inMat(Rect_<double>(w * 0.05, h * 0.1, w * 0.9, h * 0.8));
+      //  Mat tmpDes = inMat.clone();
+      //  resize(tmpmat, tmpDes, Size(inMat.size()));
+
+      //  plate.setPlateMat(tmpDes);
+
+      //  int resultCascade = plateSetScore(plate);
+
+      //  if (resultCascade == 0) {
+      //    plateVec.push_back(plate);
+      //    if (outputResult) {
+      //      std::stringstream ss(std::stringstream::in | std::stringstream::out);
+      //      ss << "resources/image/tmp/plate/has" << "/" << plate.getPlatePos().center << "_" 
+      //        << plate.getPlatePos().size << "_" << plate.getPlatePos().angle << "_" 
+      //        << plate.getPlateScore() << ".jpg";
+      //      imwrite(ss.str(), tmpDes);
+      //    }
+      //  }
+      //  else {
+      //    if (outputResult) {
+      //      std::stringstream ss(std::stringstream::in | std::stringstream::out);
+      //      ss << "resources/image/tmp/plate/no" << "/" << plate.getPlatePos().center << "_"
+      //        << plate.getPlatePos().size << "_" << plate.getPlatePos().angle << "_"
+      //        << plate.getPlateScore() << ".jpg";
+      //      imwrite(ss.str(), tmpDes);
+      //    }
+      //  }
+      //}
+
     }
 
     std::vector<CPlate> reDupPlateVec;

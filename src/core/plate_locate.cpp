@@ -79,218 +79,230 @@ bool CPlateLocate::verifySizes(RotatedRect mr) {
     return true;
 }
 
-
 // !基于HSV空间的颜色搜索方法
 int CPlateLocate::mserSearch(const Mat &src, const Color color, Mat &out,
-  vector<RotatedRect> &outRects, int index, bool showDebug) {
+  vector<CPlate>& plateVec, int index, bool showDebug) {
   Mat match_grey;
-  Mat result = src.clone();
-  cvtColor(result, result, COLOR_GRAY2BGR);
-
-  const int color_morph_width = 24;
-  const int color_morph_height = 4;
-
-  std::vector<RotatedRect> plateRects;
-  std::vector<Rect> charRects;
-  std::vector<RotatedRect> contourRects;
-
-  std::vector<Rect> mergedRects;
-
-  // 进行颜色查找
 
   //mserMatch(src, match_grey, r, plateRects, charRects);
-  mserCharMatch(src, match_grey, charRects, color, index, showDebug);
-
-  if (m_debug) {
-    utils::imwrite("resources/image/tmp/match_grey.jpg", match_grey);
-  }
-
-  if (0) {
-    imshow("match_grey", match_grey);
-    waitKey(0);
-    destroyWindow("match_grey");
-  }
-
-  Mat src_threshold;
-  threshold(match_grey, src_threshold, 0, 255,
-    CV_THRESH_OTSU + CV_THRESH_BINARY);
-
-  Mat element = getStructuringElement(
-    MORPH_RECT, Size(color_morph_width, color_morph_height));
-  morphologyEx(src_threshold, src_threshold, MORPH_CLOSE, element);
-
-  if (m_debug) {
-    utils::imwrite("resources/image/tmp/mser.jpg", src_threshold);
-  }
-
-
-  if (0) {
-    imshow("src_threshold", src_threshold);
-    waitKey(0);
-    destroyWindow("src_threshold");
-  }
-
-  src_threshold.copyTo(out);
-
-  // 查找轮廓
-
-  vector<vector<Point>> contours;
-
-  // 注意，findContours会改变src_threshold
-  // 因此要输出src_threshold必须在这之前使用copyTo方法
-
-  findContours(src_threshold,
-    contours,               // a vector of contours
-    CV_RETR_EXTERNAL,
-    CV_CHAIN_APPROX_NONE);  // all pixels of each contours
-
-  vector<vector<Point>>::iterator itc = contours.begin();
-  while (itc != contours.end()) {
-    RotatedRect mr = minAreaRect(Mat(*itc));
-
-    // 需要进行大小尺寸判断
-    if (!verifyRotatedPlateSizes(mr))
-      itc = contours.erase(itc);
-    else {
-      ++itc;
-      contourRects.push_back(mr);
-
-      float width = mr.size.width;
-      float height = mr.size.height;     
-
-      RotatedRect candRect(mr.center,
-        Size2f(float(width * 1.05), float(height * 1.1)), mr.angle);
-
-      outRects.push_back(candRect);
-
-      Rect_<float> outputRect;
-      calcSafeRect(candRect, src, outputRect);
-
-      cv::rectangle(result, outputRect, Scalar(0, 0, 255));
-      mergedRects.push_back(outputRect);
-      if (0) {
-        imshow("outputRect", src(outputRect));
-        waitKey(0);
-      }
-    }
-  }
-
-
-  for (auto mergeRect : mergedRects) {
-    std::vector<Point> points;
-    Vec4f line;
-
-    int maxarea = 0;
-    Rect maxrect;
-
-    for (auto charRect : charRects) {
-      Rect interRect = mergeRect & charRect;
-
-      if (interRect == charRect) {
-
-        Point center(charRect.tl().x + charRect.width / 2, charRect.tl().y + charRect.height / 2);
-        points.push_back(center);
-
-        cv::circle(result, center, 3, Scalar(0, 255, 0), 2);
-        if (charRect.area() - maxarea > 0.1f) {
-          maxrect = charRect;
-          maxarea = charRect.area();
-        }
-      }       
-    }
-
-    if (points.size() < 5)
-      continue;
-
-    int left = mergeRect.tl().x - maxrect.width / 8 * 9;
-    left = left > 0 ? left : 0;
-    int right = mergeRect.br().x + maxrect.width / 8;
-    right = right + maxrect.width < src_threshold.cols - 1 ? right : src_threshold.cols - (maxrect.width + 1);
-
-    fitLine(Mat(points), line, CV_DIST_L2, 0, 0.01, 0.01);
-    float k = line[1] / line[0];
-    float step = 100;
-    cv::line(result, Point2f(line[2] - step, line[3] - k*step), Point2f(line[2] + step, k*step + line[3]), Scalar(255, 255, 255));
-
-    Point2f leftPoint((float)left, k * (left - line[2]) + line[3]);
-    Point2f rightPoint((float)right, k * (right - line[2]) + line[3]);
-
-    Rect leftRect(Point2f(leftPoint.x, leftPoint.y - maxrect.height / 2), maxrect.size());
-    Rect rightRect(Point2f(rightPoint.x, rightPoint.y - maxrect.height / 2), maxrect.size());
-
-    cv::rectangle(result, leftRect, Scalar(255, 255, 0));
-    cv::rectangle(result, rightRect, Scalar(255, 255, 0));
-
-    /*vector<Mat> slideMat;
-
-    int steplength = maxrect.width;
-    for (int step = - steplength / 2; step < steplength / 2; step++) {
-      int rightx = right + step;
-      Point2f rightPoint((float)rightx, k * (rightx - line[2]) + line[3]);
-      Rect slideRightRect(Point2f(rightPoint.x, rightPoint.y - maxrect.height / 2), maxrect.size());
-
-      Mat region = grayImage(slideRightRect);
-      Mat binary_region;
-      threshold(region, binary_region, 0, 255, CV_THRESH_BINARY | CV_THRESH_OTSU);
-
-      Mat charInput = preprocessChar(binary_region, 20);
-
-      slideMat.push_back(charInput);
-    }*/
-  }
-
-
-  for (auto prect : plateRects) {
-    outRects.push_back(prect);
-
-    Rect_<float> outputRect;
-    calcSafeRect(prect, src, outputRect);
-
-    cv::rectangle(result, outputRect, Scalar(0, 0, 255));
-
-    if (0) {
-      imshow("outputRect", src(outputRect));
-      waitKey(0);
-    }
-    //for (auto rrect : contourRects) {
-    //  Rect rect = prect.boundingRect();
-    //  Rect interRect = rect & rrect.boundingRect();
-    //  Rect unionRect = rect | rrect.boundingRect();
-    //  double ratio = (double)interRect.area() / (double)unionRect.area();
-    //  
-    //  if (unionRect == rect && ratio > 0.618) {
-    //    std::cout << "ratio:" << ratio << std::endl;
-    //    float x = (float)rect.tl().x;
-    //    float y = (float)rect.tl().y;
-    //    float width = (float)rect.width;
-    //    float height = (float)rect.height;
-    //    RotatedRect candRect(Point2f(float(x + width / 2), float(y + height / 2)),
-    //      Size2f(float(width), float(height)), 0);
-
-    //    Rect_<float> outputRect;
-    //    calcSafeRect(candRect, src, outputRect);
-
-    //    cv::rectangle(result, outputRect, Scalar(0, 255, 0));
-
-    //    if (0) {
-    //      imshow("outputRect", src(outputRect));
-    //      waitKey(0);
-    //    }
-
-    //    outRects.push_back(candRect);
-    //  }
-    //    
-    //}
-  }
-
-  if (0) {
-    imshow("result", result);
-    waitKey(0);
-  }
-
+  mserCharMatch(src, match_grey, plateVec, color, index, showDebug);
 
   return 0;
 }
+
+
+// 
+//int mserSearch2(const Mat &src, const Color color, Mat &out,
+//  vector<RotatedRect> &outRects, int index, bool showDebug) {
+//  Mat match_grey;
+//  Mat result = src.clone();
+//  cvtColor(result, result, COLOR_GRAY2BGR);
+//
+//  const int color_morph_width = 24;
+//  const int color_morph_height = 4;
+//
+//  std::vector<RotatedRect> plateRects;
+//  std::vector<Rect> charRects;
+//  std::vector<RotatedRect> contourRects;
+//
+//  std::vector<Rect> mergedRects;
+//
+//  // 进行颜色查找
+//
+//  //mserMatch(src, match_grey, r, plateRects, charRects);
+//  mserCharMatch(src, match_grey, plateRects, color, index, showDebug);
+//
+//
+//  if (0) {
+//    utils::imwrite("resources/image/tmp/match_grey.jpg", match_grey);
+//  }
+//
+//  if (0) {
+//    imshow("match_grey", match_grey);
+//    waitKey(0);
+//    destroyWindow("match_grey");
+//  }
+//
+//  Mat src_threshold;
+//  threshold(match_grey, src_threshold, 0, 255,
+//    CV_THRESH_OTSU + CV_THRESH_BINARY);
+//
+//  Mat element = getStructuringElement(
+//    MORPH_RECT, Size(color_morph_width, color_morph_height));
+//  morphologyEx(src_threshold, src_threshold, MORPH_CLOSE, element);
+//
+//  if (0) {
+//    utils::imwrite("resources/image/tmp/mser.jpg", src_threshold);
+//  }
+//
+//
+//  if (0) {
+//    imshow("src_threshold", src_threshold);
+//    waitKey(0);
+//    destroyWindow("src_threshold");
+//  }
+//
+//  src_threshold.copyTo(out);
+//
+//  // 查找轮廓
+//
+//  vector<vector<Point>> contours;
+//
+//  // 注意，findContours会改变src_threshold
+//  // 因此要输出src_threshold必须在这之前使用copyTo方法
+//
+//  findContours(src_threshold,
+//    contours,               // a vector of contours
+//    CV_RETR_EXTERNAL,
+//    CV_CHAIN_APPROX_NONE);  // all pixels of each contours
+//
+//  vector<vector<Point>>::iterator itc = contours.begin();
+//  while (itc != contours.end()) {
+//    RotatedRect mr = minAreaRect(Mat(*itc));
+//
+//    // 需要进行大小尺寸判断
+//    if (!verifyRotatedPlateSizes(mr))
+//      itc = contours.erase(itc);
+//    else {
+//      ++itc;
+//      contourRects.push_back(mr);
+//
+//      float width = mr.size.width;
+//      float height = mr.size.height;     
+//
+//      RotatedRect candRect(mr.center,
+//        Size2f(float(width * 1.05), float(height * 1.1)), mr.angle);
+//
+//      outRects.push_back(candRect);
+//
+//      Rect_<float> outputRect;
+//      calcSafeRect(candRect, src, outputRect);
+//
+//      cv::rectangle(result, outputRect, Scalar(0, 0, 255));
+//      mergedRects.push_back(outputRect);
+//      if (0) {
+//        imshow("outputRect", src(outputRect));
+//        waitKey(0);
+//      }
+//    }
+//  }
+//
+//
+//  for (auto mergeRect : mergedRects) {
+//    std::vector<Point> points;
+//    Vec4f line;
+//
+//    int maxarea = 0;
+//    Rect maxrect;
+//
+//    for (auto charRect : charRects) {
+//      Rect interRect = mergeRect & charRect;
+//
+//      if (interRect == charRect) {
+//
+//        Point center(charRect.tl().x + charRect.width / 2, charRect.tl().y + charRect.height / 2);
+//        points.push_back(center);
+//
+//        cv::circle(result, center, 3, Scalar(0, 255, 0), 2);
+//        if (charRect.area() - maxarea > 0.1f) {
+//          maxrect = charRect;
+//          maxarea = charRect.area();
+//        }
+//      }       
+//    }
+//
+//    if (points.size() < 5)
+//      continue;
+//
+//    int left = mergeRect.tl().x - maxrect.width / 8 * 9;
+//    left = left > 0 ? left : 0;
+//    int right = mergeRect.br().x + maxrect.width / 8;
+//    right = right + maxrect.width < src_threshold.cols - 1 ? right : src_threshold.cols - (maxrect.width + 1);
+//
+//    fitLine(Mat(points), line, CV_DIST_L2, 0, 0.01, 0.01);
+//    float k = line[1] / line[0];
+//    float step = 100;
+//    cv::line(result, Point2f(line[2] - step, line[3] - k*step), Point2f(line[2] + step, k*step + line[3]), Scalar(255, 255, 255));
+//
+//    Point2f leftPoint((float)left, k * (left - line[2]) + line[3]);
+//    Point2f rightPoint((float)right, k * (right - line[2]) + line[3]);
+//
+//    Rect leftRect(Point2f(leftPoint.x, leftPoint.y - maxrect.height / 2), maxrect.size());
+//    Rect rightRect(Point2f(rightPoint.x, rightPoint.y - maxrect.height / 2), maxrect.size());
+//
+//    cv::rectangle(result, leftRect, Scalar(255, 255, 0));
+//    cv::rectangle(result, rightRect, Scalar(255, 255, 0));
+//
+//    /*vector<Mat> slideMat;
+//
+//    int steplength = maxrect.width;
+//    for (int step = - steplength / 2; step < steplength / 2; step++) {
+//      int rightx = right + step;
+//      Point2f rightPoint((float)rightx, k * (rightx - line[2]) + line[3]);
+//      Rect slideRightRect(Point2f(rightPoint.x, rightPoint.y - maxrect.height / 2), maxrect.size());
+//
+//      Mat region = grayImage(slideRightRect);
+//      Mat binary_region;
+//      threshold(region, binary_region, 0, 255, CV_THRESH_BINARY | CV_THRESH_OTSU);
+//
+//      Mat charInput = preprocessChar(binary_region, 20);
+//
+//      slideMat.push_back(charInput);
+//    }*/
+//  }
+//
+//
+//  for (auto prect : plateRects) {
+//    outRects.push_back(prect);
+//
+//    Rect_<float> outputRect;
+//    calcSafeRect(prect, src, outputRect);
+//
+//    cv::rectangle(result, outputRect, Scalar(0, 0, 255));
+//
+//    if (0) {
+//      imshow("outputRect", src(outputRect));
+//      waitKey(0);
+//    }
+//    //for (auto rrect : contourRects) {
+//    //  Rect rect = prect.boundingRect();
+//    //  Rect interRect = rect & rrect.boundingRect();
+//    //  Rect unionRect = rect | rrect.boundingRect();
+//    //  double ratio = (double)interRect.area() / (double)unionRect.area();
+//    //  
+//    //  if (unionRect == rect && ratio > 0.618) {
+//    //    std::cout << "ratio:" << ratio << std::endl;
+//    //    float x = (float)rect.tl().x;
+//    //    float y = (float)rect.tl().y;
+//    //    float width = (float)rect.width;
+//    //    float height = (float)rect.height;
+//    //    RotatedRect candRect(Point2f(float(x + width / 2), float(y + height / 2)),
+//    //      Size2f(float(width), float(height)), 0);
+//
+//    //    Rect_<float> outputRect;
+//    //    calcSafeRect(candRect, src, outputRect);
+//
+//    //    cv::rectangle(result, outputRect, Scalar(0, 255, 0));
+//
+//    //    if (0) {
+//    //      imshow("outputRect", src(outputRect));
+//    //      waitKey(0);
+//    //    }
+//
+//    //    outRects.push_back(candRect);
+//    //  }
+//    //    
+//    //}
+//  }
+//
+//  if (0) {
+//    imshow("result", result);
+//    waitKey(0);
+//  }
+//
+//
+//  return 0;
+//}
 
 
 // !基于HSV空间的颜色搜索方法
@@ -989,31 +1001,45 @@ int CPlateLocate::plateMserLocate(Mat src, vector<CPlate> &candPlates, int index
     Mat channelImage = channelImages[i];
     Mat image = scaleImage(channelImage, Size(scale_size, scale_size), scale_ratio);
 
-    vector<RotatedRect> rects;
-    mserSearch(image, flags[i], src_b, rects, index);
+    //vector<RotatedRect> rects;
+    mserSearch(image, flags[i], src_b, plates, index);
 
-    for (size_t j = 0; j < rects.size(); ++j) {
-      RotatedRect mserRect = scaleBackRRect(rects[j], (float)scale_ratio);
-      rects_mser.push_back(mserRect);
+    for (size_t j = 0; j < plates.size(); ++j) {
+      CPlate plate = plates.at(j);
+      RotatedRect rrect = plate.getPlatePos();
+      RotatedRect scaleRect = scaleBackRRect(rrect, (float)scale_ratio);
+      plate.setPlatePos(scaleRect);
+
+      Rect_<float> outputRect;
+      calcSafeRect(scaleRect, src, outputRect);
+
+      Mat plate_mat;
+      plate_mat.create(HEIGHT, WIDTH, TYPE);
+
+      resize(src(outputRect), plate_mat, plate_mat.size(), 0, 0, INTER_AREA);
+
+      plate.setPlateMat(plate_mat);
+
+      candPlates.push_back(plate);
     }
   }
 
-  for (size_t i = 0; i < rects_mser.size(); ++i) {
-    Rect_<float> outputRect;
-    calcSafeRect(rects_mser[i], src, outputRect);
+  //for (size_t i = 0; i < rects_mser.size(); ++i) {
+  //  Rect_<float> outputRect;
+  //  calcSafeRect(rects_mser[i], src, outputRect);
 
-    if (0) {
-      std::stringstream ss(std::stringstream::in | std::stringstream::out);
-      ss << "resources/image/tmp/plate_" << i << ".jpg";
-      imwrite(ss.str(), src(outputRect));
-    }
+  //  if (0) {
+  //    std::stringstream ss(std::stringstream::in | std::stringstream::out);
+  //    ss << "resources/image/tmp/plate_" << i << ".jpg";
+  //    imwrite(ss.str(), src(outputRect));
+  //  }
 
-    CPlate plate;
-    plate.setPlateLocateType(CMSER);
-    plate.setPlateMat(src(outputRect));
-    plate.setPlatePos(rects_mser[i]);
-    //candPlates.push_back(plate);
-  }
+  //  CPlate plate;
+  //  plate.setPlateLocateType(CMSER);
+  //  plate.setPlateMat(src(outputRect));
+  //  plate.setPlatePos(rects_mser[i]);
+  //  candPlates.push_back(plate);
+  //}
 
   //deskew(src, src_b, rects_mser_blue, plates);
 

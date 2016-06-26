@@ -1,4 +1,5 @@
 #include "easypr/core/chars_segment.h"
+#include "easypr/config.h"
 
 using namespace std;
 

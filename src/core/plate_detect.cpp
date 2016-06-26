@@ -20,16 +20,11 @@ namespace easypr {
     std::vector<CPlate> mser_Plates;
 
     std::vector<CPlate> all_result_Plates;
-
-    //如果颜色查找找到n个以上（包含n个）的车牌，就不再进行Sobel查找了。
-
-    if ( !type || type & PR_DETECT_SOBEL)
-    {
+    if ( !type || type & PR_DETECT_SOBEL) {
       m_plateLocate->plateSobelLocate(src, sobel_Plates, index);
       std::vector<CPlate>& sobel_result_Plates = sobel_Plates;
 
-      for (size_t i = 0; i < sobel_result_Plates.size(); i++) 
-      {
+      for (size_t i = 0; i < sobel_result_Plates.size(); i++) {
         CPlate plate = sobel_result_Plates[i];
         plate.setPlateLocateType(SOBEL);
 
@@ -37,14 +32,11 @@ namespace easypr {
       }
     }
 
-    if ( !type || type & PR_DETECT_COLOR)
-    {
-
+    if ( !type || type & PR_DETECT_COLOR) {
       m_plateLocate->plateColorLocate(src, color_Plates, index);
       std::vector<CPlate>& color_result_Plates = color_Plates;
 
-      for (size_t i = 0; i < color_result_Plates.size(); i++)
-      {
+      for (size_t i = 0; i < color_result_Plates.size(); i++) {
         CPlate plate = color_result_Plates[i];
 
         plate.setPlateLocateType(COLOR);
@@ -52,14 +44,11 @@ namespace easypr {
       }
     }
 
-    if ( !type || type & PR_DETECT_CMSER)
-    {
-
+    if ( !type || type & PR_DETECT_CMSER) {
       m_plateLocate->plateMserLocate(src, mser_Plates, index);
       std::vector<CPlate>& mser_result_Plates = mser_Plates;
 
-      for (size_t i = 0; i < mser_result_Plates.size(); i++)
-      {
+      for (size_t i = 0; i < mser_result_Plates.size(); i++) {
         CPlate plate = mser_result_Plates[i];
 
         plate.setPlateLocateType(CMSER);
@@ -70,31 +59,23 @@ namespace easypr {
     // 使用非极大值抑制来判断车牌
     PlateJudge::instance()->plateJudgeUsingNMS(all_result_Plates, resultVec, m_maxPlates);
 
-    if (1) 
-    {
+    if (0) {
       Mat result = src.clone();
-      for (size_t i = 0; i < all_result_Plates.size(); i++)
-      {
-        CPlate plate = all_result_Plates[i];
+      for (size_t i = 0; i < all_result_Plates.size(); i++) {
+        CPlate plate = all_result_Plates.at(i);
 
         Rect_<float> outputRect;
         calcSafeRect(plate.getPlatePos(), src, outputRect);
+        cv::rectangle(result, outputRect, Scalar(0, 0, 255));
 
-        if (0)
-        {
-          cv::rectangle(result, outputRect, Scalar(0, 0, 255));
-        }
-
-        if (0)
-        {
+        if (0){
           std::stringstream ss(std::stringstream::in | std::stringstream::out);
           ss << "resources/image/tmp/plate_" << index << "_" << i << ".jpg";
           imwrite(ss.str(), src(outputRect));
         }
       }
 
-      if (0) 
-      {
+      if (0) {
         imshow("result", result);
         waitKey(0);
         destroyWindow("result");

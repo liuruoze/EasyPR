@@ -86,7 +86,7 @@ namespace easypr {
       CPlateRecognize pr;
 
       // 设置Debug模式
-      pr.setDebug(false);
+      pr.setDebug(true);
       pr.setLifemode(true);
 
       // 设置要处理的一张图片中最多有多少车牌

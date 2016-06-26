@@ -2,6 +2,7 @@
 #define EASYPR_CORE_COREFUNC_H_
 
 #include <opencv2/opencv.hpp>
+#include "easypr/core/plate.hpp"
 
 using namespace cv;
 
@@ -9,19 +10,6 @@ using namespace cv;
 Namespace where all the C++ EasyPR functionality resides
 */
 namespace easypr {
-
-enum Color { BLUE, YELLOW, WHITE, UNKNOWN };
-
-enum LocateType { SOBEL, COLOR, CMSER, OTHER };
-
-enum CharSearchDirection { LEFT, RIGHT };
-
-enum
-{
-  PR_DETECT_SOBEL = 0x01,  /**Sobel detect type，using twice Sobel  */
-  PR_DETECT_COLOR = 0x02,  /**Color detect type   */
-  PR_DETECT_CMSER = 0x04,  /**Character detect type，using mser  */
-};
 
 //! 根据一幅图像与颜色模板获取对应的二值图
 //! 输入RGB图像, 颜色模板（蓝色、黄色）
@@ -87,7 +75,7 @@ Mat scaleImage(const Mat& image, const Size& maxSize, double& scale_ratio);
 RotatedRect scaleBackRRect(const RotatedRect& rr, const float scale_ratio);
 
 //! use verify size to first generate char candidates
-Mat mserCharMatch(const Mat &src, Mat &match, std::vector<Rect>& out_charRect, Color color, int index = 0, bool showDebug = false);
+Mat mserCharMatch(const Mat &src, Mat &match, std::vector<CPlate>& plateVec, Color color, int index = 0, bool showDebug = false);
 
 /** @brief convert form mser point to image.
 

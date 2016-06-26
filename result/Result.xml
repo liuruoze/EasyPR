@@ -6,7 +6,9 @@
 	</image>
 	<image>
 		<imageName>¥®A095Q5</imageName>
-		<taggedRectangles/>
+		<taggedRectangles>
+			<taggedRectangle x="444" y="222" width="107" height="30" rotation="2" locateType="2">¿∂≈∆:”Â11A095</taggedRectangle>
+		</taggedRectangles>
 	</image>
 	<image>
 		<imageName>¥®A105LR</imageName>
@@ -14,7 +16,9 @@
 	</image>
 	<image>
 		<imageName>¥®A113YP</imageName>
-		<taggedRectangles/>
+		<taggedRectangles>
+			<taggedRectangle x="346" y="207" width="125" height="33" rotation="0" locateType="2">¿∂≈∆:ΩÚA113YF</taggedRectangle>
+		</taggedRectangles>
 	</image>
 	<image>
 		<imageName>¥®A561WP</imageName>
@@ -26,7 +30,9 @@
 	</image>
 	<image>
 		<imageName>¥®A762ZS</imageName>
-		<taggedRectangles/>
+		<taggedRectangles>
+			<taggedRectangle x="457" y="175" width="115" height="31" rotation="1" locateType="2">¿∂≈∆:¥®A762ZS</taggedRectangle>
+		</taggedRectangles>
 	</image>
 	<image>
 		<imageName>¥®AE8H60</imageName>
@@ -42,11 +48,15 @@
 	</image>
 	<image>
 		<imageName>¥®AKM065</imageName>
-		<taggedRectangles/>
+		<taggedRectangles>
+			<taggedRectangle x="450" y="191" width="112" height="33" rotation="0" locateType="2">¿∂≈∆:ÕÓ4AKM06</taggedRectangle>
+		</taggedRectangles>
 	</image>
 	<image>
 		<imageName>¥®AKQ291</imageName>
-		<taggedRectangles/>
+		<taggedRectangles>
+			<taggedRectangle x="417" y="152" width="89" height="27" rotation="-4" locateType="2">¿∂≈∆:√…929111</taggedRectangle>
+		</taggedRectangles>
 	</image>
 	<image>
 		<imageName>¥®AM1186</imageName>
@@ -66,11 +76,15 @@
 	</image>
 	<image>
 		<imageName>¥®AUU093</imageName>
-		<taggedRectangles/>
+		<taggedRectangles>
+			<taggedRectangle x="406" y="200" width="111" height="32" rotation="1" locateType="2">¿∂≈∆:πÛAUU093</taggedRectangle>
+		</taggedRectangles>
 	</image>
 	<image>
 		<imageName>¥®AY116F</imageName>
-		<taggedRectangles/>
+		<taggedRectangles>
+			<taggedRectangle x="427" y="189" width="107" height="32" rotation="1" locateType="2">¿∂≈∆:≤ÿ11AY11</taggedRectangle>
+		</taggedRectangles>
 	</image>
 	<image>
 		<imageName>¥®AZ408T</imageName>
@@ -86,7 +100,9 @@
 	</image>
 	<image>
 		<imageName>ª¶ALB022</imageName>
-		<taggedRectangles/>
+		<taggedRectangles>
+			<taggedRectangle x="392" y="390" width="115" height="31" rotation="-3" locateType="2">¿∂≈∆:ª¶ALB022</taggedRectangle>
+		</taggedRectangles>
 	</image>
 	<image>
 		<imageName>ª¶B683J8</imageName>
@@ -194,7 +210,9 @@
 	</image>
 	<image>
 		<imageName>‘•U00000</imageName>
-		<taggedRectangles/>
+		<taggedRectangles>
+			<taggedRectangle x="888" y="650" width="102" height="28" rotation="0" locateType="2">¿∂≈∆:ª¶1D0DCL</taggedRectangle>
+		</taggedRectangles>
 	</image>
 	<image>
 		<imageName>∏”K11978</imageName>

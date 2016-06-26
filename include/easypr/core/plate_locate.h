@@ -16,10 +16,14 @@
 
 #include "easypr/core/plate.hpp"
 #include "easypr/core/core_func.h"
+#include "easypr/config.h"
 
 /*! \namespace easypr
     Namespace where all the C++ EasyPR functionality resides
 */
+
+using namespace std;
+
 namespace easypr {
 
 class CPlateLocate {
@@ -82,7 +86,7 @@ class CPlateLocate {
 
   //! mser search
   int mserSearch(const Mat& src, const Color r, Mat& out, 
-    std::vector<RotatedRect>& outRects, int index = 0, bool showDebug = false);
+     vector<CPlate>& plateVec, int index = 0, bool showDebug = false);
 
   //! 未使用函数与代码
   //! 开始------------

@@ -17,6 +17,7 @@
 #include "easypr/core/character.hpp"
 #include "easypr/util/util.h"
 #include "easypr/core/plate.hpp"
+#include "easypr/config.h"
 
 namespace easypr {
 

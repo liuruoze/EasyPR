@@ -10,8 +10,9 @@
 #ifndef EASYPR_CORE_PLATE_H_
 #define EASYPR_CORE_PLATE_H_
 
+#include <opencv2/opencv.hpp>
 #include "easypr/core/character.hpp"
-#include "easypr/core/core_func.h"
+#include "easypr/config.h"
 
 using namespace cv;
 

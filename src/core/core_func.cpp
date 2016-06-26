@@ -5,6 +5,7 @@
 #include "easypr/core/core_func.h"
 #include "easypr/core/plate.hpp"
 #include "easypr/core/chars_identify.h"
+#include "easypr/config.h"
 
 using namespace cv;
 
@@ -1329,7 +1330,7 @@ bool judegMDOratio(const Mat& image, const Rect& rect, std::vector<Point>& conto
 
 
 //! use verify size to first generate char candidates
-Mat mserCharMatch(const Mat &src, Mat &match, std::vector<Rect>& out_charRect, Color color, int img_index, bool showDebug) {
+Mat mserCharMatch(const Mat &src, Mat &match, std::vector<CPlate>& out_plateVec, Color color, int img_index, bool showDebug) {
   Mat image = src;
 
   std::vector<std::vector<Point>> all_contours;
@@ -1428,7 +1429,6 @@ Mat mserCharMatch(const Mat &src, Mat &match, std::vector<Rect>& out_charRect, C
     Rect maxrect;
     double ostu_level_sum = 0;
     
-
     int leftx = image.cols;
     Point leftPoint(leftx, 0);
     int rightx = 0;
@@ -1458,7 +1458,6 @@ Mat mserCharMatch(const Mat &src, Mat &match, std::vector<Rect>& out_charRect, C
         rightPoint = center;
       }
     }
-
 
     double ostu_level_avg = ostu_level_sum / (double)charGroup.size();
     std::cout << "ostu_level_avg:" << ostu_level_avg << std::endl;
@@ -1574,10 +1573,6 @@ Mat mserCharMatch(const Mat &src, Mat &match, std::vector<Rect>& out_charRect, C
         mserCharacter.push_back(seed);
       }
 
-      //cv::circle(result, leftPoint, 3, Scalar(0, 0, 255), 2);
-      //std::cout << "widthRatio:" << float(rightPoint.x - leftPoint.x) / (float)dist[0] << std::endl;
-      //cv::circle(result, Point(rightPoint.x - 4 * (float)dist[0], rightPoint.y), 3, Scalar(0, 0, 255), 2);
-
       searchWeakSeed(searchCandidate, searchLeftWeakSeed, line, leftPoint, maxrect, plateResult, CharSearchDirection::LEFT);
       std::cout << "searchLeftWeakSeed:" << searchLeftWeakSeed.size() << std::endl;
       for (auto seed : searchLeftWeakSeed) {
@@ -1618,7 +1613,7 @@ Mat mserCharMatch(const Mat &src, Mat &match, std::vector<Rect>& out_charRect, C
         //plate.setOstuLevel(ostu_level);
 
         Mat charInput = preprocessChar(binary_region, 20);
-        if (1) {
+        if (0) {
           imshow("charInput", charInput);
           waitKey(0);
           destroyWindow("charInput");
@@ -1653,13 +1648,15 @@ Mat mserCharMatch(const Mat &src, Mat &match, std::vector<Rect>& out_charRect, C
     if (verifyRotatedPlateSizes(platePos)) {
       rotatedRectangle(result, platePos, Scalar(0, 0, 255), 1);
       plate.setPlatePos(platePos);
+
+      out_plateVec.push_back(plate);
     }
 
     //cv::rectangle(result, plateResult, Scalar(0, 0, 255), 1);
     match(plateResult) = 255;
   }
 
-  if (1) {
+  if (0) {
     imshow("result", result);
     waitKey(0);
     destroyWindow("result");
