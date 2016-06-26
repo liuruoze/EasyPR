@@ -91,8 +91,8 @@ namespace easypr {
 
       // 设置要处理的一张图片中最多有多少车牌
       pr.setMaxPlates(4);
-      pr.setDetectType(PR_DETECT_COLOR | PR_DETECT_SOBEL);
-      //pr.setDetectType(PR_DETECT_CMSER);
+      //pr.setDetectType(PR_DETECT_COLOR | PR_DETECT_SOBEL);
+      pr.setDetectType(PR_DETECT_CMSER);
 
       //CPlateDetect pd;
       //pd.setDetectType(PR_DETECT_CMSER);

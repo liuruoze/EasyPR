@@ -101,7 +101,7 @@ Mat adaptive_image_from_points(const std::vector<Point>& points,
   const Scalar& forgroundColor = Scalar(255, 255, 255), bool gray = true);
 
 // Calculate a rect have same length and width and remains the center
-Rect adaptive_charrect_from_rect(const Rect& rect);
+Rect adaptive_charrect_from_rect(const Rect& rect, int maxwidth, int maxheight);
 
 //! 计算一个安全的Rect
 bool calcSafeRect(const RotatedRect& roi_rect, const Mat& src,

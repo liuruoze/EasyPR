@@ -24,41 +24,43 @@ namespace easypr {
   public:
     CPlate() { }
 
-    CPlate(const CPlate& plate) {
-      m_plateMat = plate.m_plateMat;
-      m_score = plate.m_score;
-      m_platePos = plate.m_platePos;
-      m_plateStr = plate.m_plateStr;
-      m_locateType = plate.m_locateType;
-      m_line = plate.m_line;
-      m_leftPoint = plate.m_leftPoint;
-      m_rightPoint = plate.m_rightPoint;
-      m_mergeCharRect = plate.m_mergeCharRect;
-      m_maxCharRect = plate.m_maxCharRect;
+    CPlate(const CPlate& other) {
+      m_plateMat = other.m_plateMat;
+      m_score = other.m_score;
+      m_platePos = other.m_platePos;
+      m_plateStr = other.m_plateStr;
+      m_locateType = other.m_locateType;
+      m_line = other.m_line;
+      m_leftPoint = other.m_leftPoint;
+      m_rightPoint = other.m_rightPoint;
+      m_mergeCharRect = other.m_mergeCharRect;
+      m_maxCharRect = other.m_maxCharRect;
 
-      m_distVec = plate.m_distVec;
+      m_distVec = other.m_distVec;
 
-      m_mserCharVec = plate.m_mserCharVec;
-      m_reutCharVec = plate.m_reutCharVec;
+      m_mserCharVec = other.m_mserCharVec;
+      m_reutCharVec = other.m_reutCharVec;
+      m_ostuLevel = other.m_ostuLevel;
     }
 
-    CPlate& operator=(const CPlate& plate) {
-      if (this != &plate) { 
-        m_plateMat = plate.m_plateMat;
-        m_score = plate.m_score;
-        m_platePos = plate.m_platePos;
-        m_plateStr = plate.m_plateStr;
-        m_locateType = plate.m_locateType;
-        m_line = plate.m_line;
-        m_leftPoint = plate.m_leftPoint;
-        m_rightPoint = plate.m_rightPoint;
-        m_mergeCharRect = plate.m_mergeCharRect;
-        m_maxCharRect = plate.m_maxCharRect;
+    CPlate& operator=(const CPlate& other) {
+      if (this != &other) {
+        m_plateMat = other.m_plateMat;
+        m_score = other.m_score;
+        m_platePos = other.m_platePos;
+        m_plateStr = other.m_plateStr;
+        m_locateType = other.m_locateType;
+        m_line = other.m_line;
+        m_leftPoint = other.m_leftPoint;
+        m_rightPoint = other.m_rightPoint;
+        m_mergeCharRect = other.m_mergeCharRect;
+        m_maxCharRect = other.m_maxCharRect;
 
-        m_distVec = plate.m_distVec;
+        m_distVec = other.m_distVec;
 
-        m_mserCharVec = plate.m_mserCharVec;
-        m_reutCharVec = plate.m_reutCharVec;
+        m_mserCharVec = other.m_mserCharVec;
+        m_reutCharVec = other.m_reutCharVec;
+        m_ostuLevel = other.m_ostuLevel;
       }     
       return *this;
     }
@@ -96,6 +98,9 @@ namespace easypr {
     inline void setPlatDistVec(Vec2i param) { m_distVec = param; }
     inline Vec2i getPlateDistVec() const { return m_distVec; }
 
+    inline void setOstuLevel(double param) { m_ostuLevel = param; }
+    inline double getOstuLevel() const { return m_ostuLevel; }
+
     inline void setMserCharacter(const std::vector<CCharacter>& param) { m_mserCharVec = param; }
     inline void addMserCharacter(CCharacter param) { m_mserCharVec.push_back(param); }
     inline std::vector<CCharacter> getCopyOfMserCharacters() { return m_mserCharVec; }
@@ -129,6 +134,9 @@ namespace easypr {
 
     //! plate likely
     double m_score;
+
+    //! avg ostu level
+    double m_ostuLevel;
 
     //! middle line
     Vec4f m_line;

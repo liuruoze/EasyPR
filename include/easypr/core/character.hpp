@@ -28,6 +28,7 @@ namespace easypr {
       m_characterStr = "";
       m_score = 0;
       m_isChinese = false;
+      m_ostuLevel = 125;
     }
 
     CCharacter(const CCharacter& other)
@@ -37,6 +38,7 @@ namespace easypr {
       m_characterStr = other.m_characterStr;
       m_score = other.m_score;
       m_isChinese = other.m_isChinese;
+      m_ostuLevel = other.m_ostuLevel;
     }
 
     inline void setCharacterMat(Mat param) { m_characterMat = param; }
@@ -54,10 +56,11 @@ namespace easypr {
     inline void setIsChinese(bool param) { m_isChinese = param; }
     inline bool getIsChinese() const { return m_isChinese; }
 
+    inline void setOstuLevel(double param) { m_ostuLevel = param; }
+    inline double getOstuLevel() const { return m_ostuLevel; }
+
     inline bool getIsStrong() const { return m_score >= 0.9; }
-
     inline bool getIsWeak() const { return m_score < 0.9 && m_score >= 0.5; }
-
     inline bool getIsLittle() const { return m_score < 0.5; }
 
     bool operator < (const CCharacter& other) const
@@ -85,6 +88,9 @@ namespace easypr {
 
     //! weather is chinese
     bool m_isChinese;
+
+    //! ostu level
+    double m_ostuLevel;
 
     ////!  m_score >= 0.9
     //bool isStrong;
