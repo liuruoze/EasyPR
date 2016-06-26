@@ -46,7 +46,7 @@ void AnnTrain::train() {
   int first_hidden_neurons = int(std::sqrt((m + 2) * N) + 2 * std::sqrt(N / (m + 2)));
   int second_hidden_neurons = int(m * std::sqrt(N / (m + 2)));
 
-  bool useTLFN = false;
+  bool useTLFN = true;
   if (!useTLFN) {
     layers.create(1, 3, CV_32SC1);
     layers.at<int>(0) = input_number;
@@ -68,29 +68,28 @@ void AnnTrain::train() {
   ann_->setLayerSizes(layers);
   ann_->setActivationFunction(cv::ml::ANN_MLP::SIGMOID_SYM, 1, 1);
   ann_->setTrainMethod(cv::ml::ANN_MLP::TrainingMethods::BACKPROP);
-  ann_->setTermCriteria(cvTermCriteria(CV_TERMCRIT_ITER, 10000, 0.001));
+  ann_->setTermCriteria(cvTermCriteria(CV_TERMCRIT_ITER, 30000, 0.0001));
   ann_->setBackpropWeightScale(0.1);
   ann_->setBackpropMomentumScale(0.1);
 
   //using raw data or raw + synthic data.
   //auto traindata = tdata();
-  auto traindata = sdata(100);
+  auto traindata = sdata(350);
 
   std::cout << "Training ANN model, please wait..." << std::endl;
   long start = utils::getTimestamp();
   ann_->train(traindata);
   long end = utils::getTimestamp();
-  std::cout << "Training done. Time elapse: " << (end - start) / (1000 * 60) << "minute"
-            << std::endl;
-
   ann_->save(ann_xml_);
-  std::cout << "Your ANN Model was saved to " << ann_xml_ << std::endl;
-
+ 
   test();
+  std::cout << "Your ANN Model was saved to " << ann_xml_ << std::endl;
+  std::cout << "Training done. Time elapse: " << (end - start) / (1000 * 60) << "minute"
+    << std::endl;
 }
 
 std::pair<std::string, std::string> AnnTrain::identifyChinese(cv::Mat input) {
-  cv::Mat feature = charFeatures(input, kPredictSize);
+  cv::Mat feature = charFeatures2(input, kPredictSize);
   float maxVal = -2;
   int result = -1;
 
@@ -116,7 +115,7 @@ std::pair<std::string, std::string> AnnTrain::identifyChinese(cv::Mat input) {
 
 
 std::pair<std::string, std::string> AnnTrain::identify(cv::Mat input) {
-  cv::Mat feature = charFeatures(input, kPredictSize);
+  cv::Mat feature = charFeatures2(input, kPredictSize);
   float maxVal = -2;
   int result = -1;
 
@@ -216,8 +215,8 @@ cv::Mat getSyntheticImage(const Mat& image) {
   Mat result = image.clone();
 
   if (rand_type % 2 == 0) {
-    int ran_x = rand() % 7 - 3;
-    int ran_y = rand() % 7 - 3;
+    int ran_x = rand() % 5 - 2;
+    int ran_y = rand() % 5 - 2;
 
     result = translateImg(result, ran_x, ran_y);
   }
@@ -276,7 +275,7 @@ cv::Ptr<cv::ml::TrainData> AnnTrain::sdata(size_t number_for_count) {
     fprintf(stdout, ">> Characters count: %d \n", matVec.size());
 
     for (auto img : matVec) {
-      auto fps = charFeatures(img, kPredictSize);
+      auto fps = charFeatures2(img, kPredictSize);
 
       samples.push_back(fps);
       labels.push_back(i);
@@ -319,7 +318,7 @@ cv::Ptr<cv::ml::TrainData> AnnTrain::tdata() {
     auto chars_files = utils::getFiles(sub_folder);
     for (auto file : chars_files) {
       auto img = cv::imread(file, 0);  // a grayscale image
-      auto fps = charFeatures(img, kPredictSize);
+      auto fps = charFeatures2(img, kPredictSize);
 
       samples.push_back(fps);
       labels.push_back(i);

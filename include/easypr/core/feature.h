@@ -37,6 +37,10 @@ void getLBPFeatures(const cv::Mat& image, cv::Mat& features);
 //! get character feature
 cv::Mat charFeatures(cv::Mat in, int sizeData);
 
+//! get character feature
+cv::Mat charFeatures2(cv::Mat in, int sizeData);
+
+//! LBP feature + Histom feature
 void getLBPplusHistFeatures(const cv::Mat& image, cv::Mat& features);
 
 } /*! \namespace easypr*/
