@@ -23,7 +23,7 @@ class CPlateDetect {
   @param index
   */
   int plateDetect(Mat src, std::vector<CPlate> &resultVec, int type,
-                  bool showDetectArea = true, int index = 0);
+                  bool showDetectArea, int img_index = 0);
 
 
   /** @brief Plate detect in an image.
@@ -33,38 +33,32 @@ class CPlateDetect {
 
   @param src Source image.
   @param resultVec Destination vector of CPlate.
-  @param showDetectArea
   @param index
   */
-  int plateDetect(Mat src, std::vector<CPlate> &resultVec,
-    bool showDetectArea = true, int index = 0);
+  int plateDetect(Mat src, std::vector<CPlate> &resultVec, int img_index = 0);
 
 
   //! 展示中间的结果
-
-  int showResult(const Mat &result);
+  int showResult(const Mat &result, int img_index = 0);
 
   //! 装载SVM模型
-
   void LoadSVM(std::string s);
 
   //! 生活模式与工业模式切换
-
   inline void setPDLifemode(bool param) { m_plateLocate->setLifemode(param); }
 
   //! 是否开启调试模式
-
-  inline void setPDDebug(bool param) { m_plateLocate->setDebug(param); }
+  inline void setPDDebug(bool param) { 
+    m_plateLocate->setDebug(param); 
+    setDetectShow(param);
+  }
 
   //! 获取调试模式状态
-
   inline bool getPDDebug() { return m_plateLocate->getDebug(); }
-
 
   inline void setDetectType(int param) { m_type = param; }
 
   //! 设置与读取变量
-
   inline void setGaussianBlurSize(int param) {
     m_plateLocate->setGaussianBlurSize(param);
   }
@@ -115,6 +109,9 @@ class CPlateDetect {
 
   inline int getMaxPlates() const { return m_maxPlates; }
 
+  inline void setDetectShow(bool param) { m_showDetect = param; }
+  inline bool getDetectShow() const { return m_showDetect; }
+
  private:
 
   //! 设置一幅图中最多有多少车牌
@@ -128,6 +125,9 @@ class CPlateDetect {
   int m_type;
 
   static std::string m_pathSvm;
+
+  // show the detect result image
+  bool m_showDetect;
 
 };
 

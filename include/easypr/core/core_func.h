@@ -61,7 +61,7 @@ Rect GetChineseRect(const Rect rectSpe);
 
 bool verifyCharSizes(Rect r);
 bool verifyPlateSize(Rect mr);
-bool verifyRotatedPlateSizes(RotatedRect mr);
+bool verifyRotatedPlateSizes(RotatedRect mr, bool showDebug = false);
 
 
 void rotatedRectangle(InputOutputArray img, RotatedRect rect,

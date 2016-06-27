@@ -79,13 +79,100 @@ bool CPlateLocate::verifySizes(RotatedRect mr) {
     return true;
 }
 
-// !基于HSV空间的颜色搜索方法
+//! mser search method
 int CPlateLocate::mserSearch(const Mat &src, const Color color, Mat &out,
-  vector<CPlate>& plateVec, int index, bool showDebug) {
+  vector<CPlate>& out_plateVec, int img_index, bool showDebug) {
   Mat match_grey;
 
+  vector<CPlate> plateVec;
   //mserMatch(src, match_grey, r, plateRects, charRects);
-  mserCharMatch(src, match_grey, plateVec, color, index, showDebug);
+  mserCharMatch(src, match_grey, plateVec, color, img_index, showDebug);
+
+  //calculet avg dist
+  /*float sumdist = 0, avgdist = 0;
+  for (auto plate : plateVec) {
+    Vec2i disV = plate.getPlateDistVec();
+    sumdist += (float)disV[0];
+  }
+
+  avgdist = sumdist / (float)plateVec.size();
+  
+  const int mser_morph_width = (int)avgdist;
+  const int mser_morph_height = int(avgdist / 5);
+
+  Mat src_threshold;
+  threshold(match_grey, src_threshold, 0, 255, CV_THRESH_OTSU + CV_THRESH_BINARY);
+  
+  Mat element = getStructuringElement(MORPH_RECT, Size(mser_morph_width, mser_morph_height));
+    morphologyEx(src_threshold, src_threshold, MORPH_CLOSE, element);*/
+
+  Mat src_threshold = match_grey.clone();
+
+  vector<RotatedRect> mergeRects;
+  vector<vector<Point>> contours;
+
+  findContours(src_threshold,
+      contours,               // a vector of contours
+      CV_RETR_EXTERNAL,
+      CV_CHAIN_APPROX_NONE);  // all pixels of each contours
+  
+    vector<vector<Point>>::iterator itc = contours.begin();
+    while (itc != contours.end()) {
+      RotatedRect mr = minAreaRect(Mat(*itc));
+  
+      // 需要进行大小尺寸判断
+      if (!verifyRotatedPlateSizes(mr))
+        itc = contours.erase(itc);
+      else {
+        ++itc;
+        //contourRects.push_back(mr);
+  
+        float width = mr.size.width;
+        float height = mr.size.height;     
+  
+        RotatedRect candRect(mr.center,
+          Size2f(float(width * 1.15), float(height * 1.25)), mr.angle);
+  
+        //mergeRects.push_back(candRect);      
+      }
+    }
+
+    for (auto plate : plateVec) {
+      RotatedRect rrect = plate.getPlatePos();
+      Rect_<float> rectSrc;
+      calcSafeRect(rrect, src, rectSrc);
+      double maxr = 0;
+      RotatedRect similyRect;
+      for (auto mergeRect : mergeRects) {
+        Rect_<float> rectComp;
+        calcSafeRect(mergeRect, src, rectComp);
+
+        Rect rectInter = rectSrc & rectComp;
+        Rect rectUnion = rectSrc | rectComp;
+        double r = double(rectInter.area()) / double(rectUnion.area()); 
+        if (r > maxr){
+          maxr = r;
+          similyRect = mergeRect;
+        }
+      }
+      if (maxr > 0.5){
+        plate.setPlatePos(similyRect);
+      }
+    }
+
+    for (auto plate : plateVec){
+      RotatedRect rrect = plate.getPlatePos();
+      rotatedRectangle(match_grey, rrect, Scalar(255));
+    }
+
+    if (0) {
+      imshow("match", match_grey);
+      waitKey(0);
+      destroyWindow("match");
+    }
+  
+    out_plateVec = plateVec;
+    out = match_grey;
 
   return 0;
 }
@@ -724,11 +811,10 @@ int CPlateLocate::deskew(const Mat &src, const Mat &src_b,
       plate_mat.create(HEIGHT, WIDTH, TYPE);
 
       // haitungaga添加，删除非区域，这个函数影响了25%的完整定位率
-      DeleteNotArea(deskew_mat);
+      // DeleteNotArea(deskew_mat);
 
       // 这里对deskew_mat进行了一个筛选
       // 使用了经验数值：2.3和6
-
 
       if (deskew_mat.cols * 1.0 / deskew_mat.rows > 2.3 &&
           deskew_mat.cols * 1.0 / deskew_mat.rows < 6) {
@@ -744,9 +830,10 @@ int CPlateLocate::deskew(const Mat &src, const Mat &src_b,
         plate.setPlatePos(roi_rect);
         plate.setPlateMat(plate_mat);
 
-        if (0) {
+        if (1) {
           imshow("plate_mat", plate_mat);
           waitKey(0);
+          destroyWindow("plate_mat");
         }
 
         outPlates.push_back(plate);
@@ -970,7 +1057,7 @@ int CPlateLocate::plateColorLocate(Mat src, vector<CPlate> &candPlates,
 
 //! MSER plate locate
 
-int CPlateLocate::plateMserLocate(Mat src, vector<CPlate> &candPlates, int index) {
+int CPlateLocate::plateMserLocate(Mat src, vector<CPlate> &candPlates, int img_index) {
   std::vector<Mat> channelImages;
   std::vector<Color> flags;
 
@@ -993,17 +1080,26 @@ int CPlateLocate::plateMserLocate(Mat src, vector<CPlate> &candPlates, int index
   int scale_size = 1024;
   double scale_ratio = 1;
 
-  vector<RotatedRect> rects_mser;
-  vector<CPlate> plates;
-  Mat src_b;
-
   for (size_t i = 0; i < channelImages.size(); ++i) {
-    Mat channelImage = channelImages[i];
+    vector<RotatedRect> rects_mser;
+    vector<CPlate> plates;
+    Mat src_b;
+
+    Mat channelImage = channelImages.at(i);
+    Color color = flags.at(i);
     Mat image = scaleImage(channelImage, Size(scale_size, scale_size), scale_ratio);
 
-    //vector<RotatedRect> rects;
-    mserSearch(image, flags[i], src_b, plates, index);
+    // vector<RotatedRect> rects;
+    mserSearch(image, color, src_b, plates, img_index);
 
+    // deskew for rotation and slope image
+    /*for (auto plate : plates) {
+      RotatedRect rrect = plate.getPlatePos();
+      rects_mser.push_back(rrect);
+    }
+    deskew(image, src_b, rects_mser, candPlates);*/
+
+    // no deskew
     for (size_t j = 0; j < plates.size(); ++j) {
       CPlate plate = plates.at(j);
       RotatedRect rrect = plate.getPlatePos();

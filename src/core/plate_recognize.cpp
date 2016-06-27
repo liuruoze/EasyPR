@@ -4,10 +4,11 @@
 
 namespace easypr {
 
-CPlateRecognize::CPlateRecognize() { }
+CPlateRecognize::CPlateRecognize() { 
+  m_showResult = false;
+}
 
-void groups_draw(Mat &src, std::vector<Rect> &groups)
-{
+void groups_draw(Mat &src, std::vector<Rect> &groups) {
   for (int i = (int)groups.size() - 1; i >= 0; i--)
   {
     if (src.type() == CV_8UC3)
@@ -296,7 +297,7 @@ int CPlateRecognize::plateRecognizeAsText(Mat src, std::vector<CPlate> &licenseV
 
 
 // !车牌识别模块
-int CPlateRecognize::plateRecognize(Mat src, std::vector<CPlate> &licenseVec, int index) {
+int CPlateRecognize::plateRecognize(Mat src, std::vector<CPlate> &licenseVec, int img_index) {
 
   // 车牌集合
   std::vector<CPlate> plateVec;
@@ -311,7 +312,7 @@ int CPlateRecognize::plateRecognize(Mat src, std::vector<CPlate> &licenseVec, in
 
   // 进行深度定位，使用颜色信息与二次Sobel
 
-  int resultPD = plateDetect(src, plateVec, false, index);
+  int resultPD = plateDetect(src, plateVec, img_index);
 
   if (resultPD == 0) {
     size_t num = plateVec.size();
@@ -340,7 +341,7 @@ int CPlateRecognize::plateRecognize(Mat src, std::vector<CPlate> &licenseVec, in
 
     //如果是Debug模式，则还需要将定位的图片显示在原图左上角
 
-    if (getPDDebug()) {
+    if (getResultShow()) {
       Mat result;
       src.copyTo(result);
 
@@ -363,22 +364,16 @@ int CPlateRecognize::plateRecognize(Mat src, std::vector<CPlate> &licenseVec, in
         Scalar lineColor = Scalar(255, 255, 255);
 
         if (item.getPlateLocateType() == SOBEL) lineColor = Scalar(255, 0, 0);
-
         if (item.getPlateLocateType() == COLOR) lineColor = Scalar(0, 255, 0);
-
         if (item.getPlateLocateType() == CMSER) lineColor = Scalar(0, 0, 255);
 
         for (int j = 0; j < 4; j++)
-          line(result, rect_points[j], rect_points[(j + 1) % 4], lineColor, 2,
-               8);
+          line(result, rect_points[j], rect_points[(j + 1) % 4], lineColor, 2, 8);
       }
-
-      //显示定位框的图片
 
       showResult(result);
     }
   }
-
   return resultPD;
 }
 
@@ -422,7 +417,7 @@ int CPlateRecognize::plateRecognize(Mat src,
 
     //如果是Debug模式，则还需要将定位的图片显示在原图左上角
 
-    if (getPDDebug()) {
+    if (getResultShow()) {
       Mat result;
       src.copyTo(result);
 

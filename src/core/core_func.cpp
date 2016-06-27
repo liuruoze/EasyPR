@@ -860,7 +860,7 @@ bool verifyPlateSize(Rect mr) {
     return true;
 }
 
-bool verifyRotatedPlateSizes(RotatedRect mr) {
+bool verifyRotatedPlateSizes(RotatedRect mr, bool showDebug) {
   float error = 0.65f;
   // Spain car plate size: 52x11 aspect 4,7272
   // China car plate size: 440mm*140mm，aspect 3.142857
@@ -905,19 +905,31 @@ bool verifyRotatedPlateSizes(RotatedRect mr) {
   //std::cout << "aspect_max:" << aspect_max << std::endl;
 
   if (area < min || area > max) {
-    std::cout << "area < min || area > max: " << area << std::endl;
+    if (0 && showDebug) {
+      std::cout << "area < min || area > max: " << area << std::endl;
+    }
+
     return false;
   }
   else if (ratio < aspect_min || ratio > aspect_max) {
-    std::cout << "ratio < aspect_min || ratio > aspect_max: " << ratio << std::endl;
+    if (0 && showDebug) {
+      std::cout << "ratio < aspect_min || ratio > aspect_max: " << ratio << std::endl;
+    }
+    
     return false;
   }
   else if (angle < angle_min || angle > angle_max) {
-    std::cout << "angle < angle_min || angle > angle_max: " << angle << std::endl;
+    if (0 && showDebug) {
+      std::cout << "angle < angle_min || angle > angle_max: " << angle << std::endl;
+    }
+    
     return false;
   }
   else if (width < width_min || width > width_max) {
-    std::cout << "width < width_min || width > width_max: " << width << std::endl;
+    if (0 && showDebug) {
+      std::cout << "width < width_min || width > width_max: " << width << std::endl;
+    }
+    
     return false;  
   }
   else {
@@ -1121,17 +1133,6 @@ void searchWeakSeed(const std::vector<CCharacter>& charVec, std::vector<CCharact
     plateResult |= firstWeakRect;
     boundaryPoint = firstWeakCenter;
 
-    /*if (searchDirection == CharSearchDirection::LEFT) {
-      if (firstWeakCenter.x < boundaryPoint.x) {
-        boundaryPoint = firstWeakCenter;
-      }
-    }
-    else if (searchDirection == CharSearchDirection::RIGHT) {
-      if (firstWeakCenter.x > boundaryPoint.x) {
-        boundaryPoint = firstWeakCenter;
-      }
-    }*/
-
     for (size_t weakSeedIndex = 0; weakSeedIndex + 1 < searchWeakSeedVec.size(); weakSeedIndex++) {
       CCharacter weakSeed = searchWeakSeedVec[weakSeedIndex];
       CCharacter weakSeedCompare = searchWeakSeedVec[weakSeedIndex + 1];
@@ -1157,7 +1158,9 @@ void searchWeakSeed(const std::vector<CCharacter>& charVec, std::vector<CCharact
       double x_margin_diff_ratio = x_margin_diff / min(height_1, height_2);
 
       if (x_margin_diff_ratio > 2.0) {
-        std::cout << "x_margin_diff_ratio:" << x_margin_diff_ratio << std::endl;
+        if (0) {
+          std::cout << "x_margin_diff_ratio:" << x_margin_diff_ratio << std::endl;
+        }       
         break;
       }
       else {
@@ -1255,8 +1258,10 @@ void slideWindowSearch(const Mat &image, std::vector<CCharacter>& slideCharacter
       slideCharacter.push_back(character);
       fromPoint = center;
 
-      std::cout << "label:" << character.getCharacterStr();
-      std::cout << "__score:" << character.getCharacterScore() << std::endl;
+      if (0) {
+        std::cout << "label:" << character.getCharacterStr();
+        std::cout << "__score:" << character.getCharacterScore() << std::endl;
+      }
     }
   }
 }
@@ -1330,7 +1335,8 @@ bool judegMDOratio(const Mat& image, const Rect& rect, std::vector<Point>& conto
 
 
 //! use verify size to first generate char candidates
-Mat mserCharMatch(const Mat &src, Mat &match, std::vector<CPlate>& out_plateVec, Color color, int img_index, bool showDebug) {
+Mat mserCharMatch(const Mat &src, Mat &match, std::vector<CPlate>& out_plateVec, Color color, int img_index, 
+  bool showDebug) {
   Mat image = src;
 
   std::vector<std::vector<Point>> all_contours;
@@ -1460,7 +1466,9 @@ Mat mserCharMatch(const Mat &src, Mat &match, std::vector<CPlate>& out_plateVec,
     }
 
     double ostu_level_avg = ostu_level_sum / (double)charGroup.size();
-    std::cout << "ostu_level_avg:" << ostu_level_avg << std::endl;
+    if (1 && showDebug) {
+      std::cout << "ostu_level_avg:" << ostu_level_avg << std::endl;
+    }  
     float ratio_maxrect = (float)maxrect.width / (float)maxrect.height;
 
     if (points.size() >= 2 && ratio_maxrect >= 0.3) {
@@ -1557,24 +1565,33 @@ Mat mserCharMatch(const Mat &src, Mat &match, std::vector<CPlate>& out_plateVec,
     
     //draw weak seed and little seed from line;
     //search for mser rect
-    std::cout << "search for mser rect:" << std::endl;
-    if (0) {
+    if (1 && showDebug) {
+      std::cout << "search for mser rect:" << std::endl;
+    }
+    
+    if (0 && showDebug) {
       std::stringstream ss(std::stringstream::in | std::stringstream::out);
       ss << "resources/image/tmp/" << img_index << "_1_" << "searcgMserRect.jpg";
       imwrite(ss.str(), result);
     }
-    std::cout << "mserCharacter:" << mserCharacter.size() << std::endl;
-   
+    if (1 && showDebug) {
+      std::cout << "mserCharacter:" << mserCharacter.size() << std::endl;
+    }
+     
     if (mserCharacter.size() < 7) {
-      searchWeakSeed(searchCandidate, searchRightWeakSeed, line, rightPoint, maxrect, plateResult, CharSearchDirection::RIGHT);
-      std::cout << "searchRightWeakSeed:" << searchRightWeakSeed.size() << std::endl;     
+      searchWeakSeed(searchCandidate, searchRightWeakSeed, line, rightPoint, maxrect, plateResult, CharSearchDirection::RIGHT);     
+      if (1 && showDebug) {
+        std::cout << "searchRightWeakSeed:" << searchRightWeakSeed.size() << std::endl;
+      }
       for (auto seed : searchRightWeakSeed) {
         cv::rectangle(result, seed.getCharacterPos(), Scalar(255, 0, 0), 1);
         mserCharacter.push_back(seed);
       }
 
-      searchWeakSeed(searchCandidate, searchLeftWeakSeed, line, leftPoint, maxrect, plateResult, CharSearchDirection::LEFT);
-      std::cout << "searchLeftWeakSeed:" << searchLeftWeakSeed.size() << std::endl;
+      searchWeakSeed(searchCandidate, searchLeftWeakSeed, line, leftPoint, maxrect, plateResult, CharSearchDirection::LEFT);     
+      if (1 && showDebug) {
+        std::cout << "searchLeftWeakSeed:" << searchLeftWeakSeed.size() << std::endl;
+      }
       for (auto seed : searchLeftWeakSeed) {
         cv::rectangle(result, seed.getCharacterPos(), Scalar(255, 0, 0), 1);
         mserCharacter.push_back(seed);
@@ -1582,15 +1599,19 @@ Mat mserCharMatch(const Mat &src, Mat &match, std::vector<CPlate>& out_plateVec,
     }
       
     if (mserCharacter.size() < 7) {
-      slideWindowSearch(image, slideRightWindow, line, rightPoint, dist, ostu_level, maxrect, plateResult, CharSearchDirection::RIGHT, false, result);
-      std::cout << "slideRightWindow:" << slideRightWindow.size() << std::endl;
+      slideWindowSearch(image, slideRightWindow, line, rightPoint, dist, ostu_level, maxrect, plateResult, CharSearchDirection::RIGHT, false, result);      
+      if (1 && showDebug) {
+        std::cout << "slideRightWindow:" << slideRightWindow.size() << std::endl;
+      }
       for (auto seed : slideRightWindow) {
         cv::rectangle(result, seed.getCharacterPos(), Scalar(0, 0, 255), 1);
         mserCharacter.push_back(seed);
       }
 
-      std::cout << "search chinese:" << std::endl;
-      std::cout << "judege the left is chinese:" << std::endl;
+      if (1 && showDebug) {
+        std::cout << "search chinese:" << std::endl;
+        std::cout << "judege the left is chinese:" << std::endl;
+      }
       bool leftIsChinese = false;
       if (1) {
         std::sort(mserCharacter.begin(), mserCharacter.end(),
@@ -1608,12 +1629,14 @@ Mat mserCharMatch(const Mat &src, Mat &match, std::vector<CPlate>& out_plateVec,
         Mat binary_region;
 
         ostu_level = threshold(region, binary_region, 0, 255, CV_THRESH_BINARY | CV_THRESH_OTSU);
-        std::cout << "left : ostu_level:" << ostu_level << std::endl;
-
+        if (1 && showDebug) {
+          std::cout << "left : ostu_level:" << ostu_level << std::endl;
+        }
+        
         //plate.setOstuLevel(ostu_level);
 
         Mat charInput = preprocessChar(binary_region, 20);
-        if (0) {
+        if (0 && showDebug) {
           imshow("charInput", charInput);
           waitKey(0);
           destroyWindow("charInput");
@@ -1622,44 +1645,71 @@ Mat mserCharMatch(const Mat &src, Mat &match, std::vector<CPlate>& out_plateVec,
         std::string label = "";
         float maxVal = -2.f;
         leftIsChinese = CharsIdentify::instance()->isCharacter(charInput, label, maxVal, true);
-        std::cout << "isChinese:" << leftIsChinese << std::endl;
-        std::cout << "chinese:" << label;
-        std::cout << "__score:" << maxVal << std::endl;
+        if (1 && showDebug) {
+          std::cout << "isChinese:" << leftIsChinese << std::endl;
+          std::cout << "chinese:" << label;
+          std::cout << "__score:" << maxVal << std::endl;
+        }
       }
 
       //search for sliding window
       if (!leftIsChinese) {
-        slideWindowSearch(image, slideLeftWindow, line, leftPoint, dist, ostu_level, maxrect, plateResult, CharSearchDirection::LEFT, true, result);
-        std::cout << "slideLeftWindow:" << slideLeftWindow.size() << std::endl;
+        slideWindowSearch(image, slideLeftWindow, line, leftPoint, dist, ostu_level, maxrect, plateResult, CharSearchDirection::LEFT, true, result);      
+        if (1 && showDebug) {
+          std::cout << "slideLeftWindow:" << slideLeftWindow.size() << std::endl;
+        }
         for (auto seed : slideLeftWindow) {
           cv::rectangle(result, seed.getCharacterPos(), Scalar(0, 0, 255), 1);
           mserCharacter.push_back(seed);
         }
       }
     }
-
-    std::cout << "k:" << k << std::endl;
+   
     float angle = atan(k) * 180 / (float)CV_PI;
-    std::cout << "angle:" << angle << std::endl;
+    if (1 && showDebug) {
+      std::cout << "k:" << k << std::endl;
+      std::cout << "angle:" << angle << std::endl;
+    }
 
     RotatedRect platePos(Point2f((float)plateResult.x + plateResult.width / 2.f, (float)plateResult.y + plateResult.height / 2.f),
-      Size2f(plateResult.width * 1.05f, maxrect.height * 1.25f), angle);
+      Size2f(plateResult.width * 1.15f, maxrect.height * 1.25f), angle);
 
     if (verifyRotatedPlateSizes(platePos)) {
       rotatedRectangle(result, platePos, Scalar(0, 0, 255), 1);
-      plate.setPlatePos(platePos);
 
+      plate.setPlatePos(platePos);
+      
       out_plateVec.push_back(plate);
     }
 
     //cv::rectangle(result, plateResult, Scalar(0, 0, 255), 1);
-    match(plateResult) = 255;
+    //match(plateResult) = 255;
+    if (1) {
+      for (auto mserChar : mserCharacter) {
+        Rect rect = mserChar.getCharacterPos();
+        match(rect) = 255;
+      }
+      cv::line(match, rightPoint, leftPoint, Scalar(255));
+    }
+    
   }
 
-  if (0) {
+  if (0 && showDebug) {
     imshow("result", result);
     waitKey(0);
     destroyWindow("result");
+  }
+
+  if (0) {
+    imshow("match", match);
+    waitKey(0);
+    destroyWindow("match");
+  }
+
+  if (1) {
+    std::stringstream ss(std::stringstream::in | std::stringstream::out);
+    ss << "resources/image/tmp/plateDetect/plate_" << img_index << "_" << color << ".jpg";
+    imwrite(ss.str(), result);
   }
 
   return match;

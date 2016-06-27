@@ -28,11 +28,11 @@ static const float kSvmPercentage   = 0.7f;
 
 static const int   kCharacterInput  = 120;
 static const int   kChineseInput    = 440;
-static const int   kAnnInput = kChineseInput;
+static const int   kAnnInput = kCharacterInput;
 
 static const int   kCharacterSize = 10;
 static const int   kChineseSize = 20;
-static const int   kPredictSize = kChineseSize;
+static const int   kPredictSize = kCharacterSize;
 
 static const int   kNeurons       = 40;
 
