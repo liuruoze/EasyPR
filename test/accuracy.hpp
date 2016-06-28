@@ -172,8 +172,8 @@ namespace easypr {
         XMLNode rectangleNodes = xNode.addChild("taggedRectangles");
 
         vector<CPlate> plateVec;
-        int result = pr.plateRecognize(src, plateVec, i);
-        //int result = pd.plateDetect(src, plateVec, i);
+        //int result = pr.plateRecognize(src, plateVec, i);
+        int result = pd.plateDetect(src, plateVec, i);
 
         // get the ground truth and compare it with the detect list;
         map<string, vector<CPlate>>::iterator it;

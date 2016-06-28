@@ -1334,7 +1334,104 @@ bool judegMDOratio(const Mat& image, const Rect& rect, std::vector<Point>& conto
   return true;
 }
 
+void removeRightOutliers(std::vector<CCharacter>& charGroup, std::vector<CCharacter>& out_charGroup, double thresh1, double thresh2, Mat result) {
+  std::sort(charGroup.begin(), charGroup.end(),
+    [](const CCharacter& r1, const CCharacter& r2) {
+    return r1.getCenterPoint().x < r2.getCenterPoint().x;
+  });
 
+  std::vector<float> slopeVec;
+  float slope_last = 0;
+  for (size_t charGroup_i = 0; charGroup_i + 1 < charGroup.size(); charGroup_i++) {
+    // line_between_two_points
+    Vec4f line_btp;
+    CCharacter leftChar = charGroup.at(charGroup_i);
+    CCharacter rightChar = charGroup.at(charGroup_i + 1);
+    std::vector<Point> two_points;
+    two_points.push_back(leftChar.getCenterPoint());
+    two_points.push_back(rightChar.getCenterPoint());
+    fitLine(Mat(two_points), line_btp, CV_DIST_L2, 0, 0.01, 0.01);
+    float slope = line_btp[1] / line_btp[0];
+    slopeVec.push_back(slope);
+
+    //std::cout << "slope:" << slope << std::endl;
+    cv::line(result, leftChar.getCenterPoint(), rightChar.getCenterPoint(), Scalar(0, 0, 255));
+  }
+
+  int uniformity_count = 0;
+  int outlier_index = -1;
+  for (size_t slopeVec_i = 0; slopeVec_i + 1 < slopeVec.size(); slopeVec_i++) {
+    float slope_1 = slopeVec.at(slopeVec_i);
+    float slope_2 = slopeVec.at(slopeVec_i+1);
+    float slope_diff = abs(slope_1 - slope_2);
+    std::cout << "slope_diff:" << slope_diff << std::endl;
+    if (slope_diff <= thresh1) {
+      uniformity_count++;
+    }
+    std::cout << "slope_1:" << slope_1 << std::endl;
+    std::cout << "slope_2:" << slope_2 << std::endl;
+    if ((slope_1 <= 0 && slope_2 >= 0) || (slope_1 >= 0 && slope_2 <= 0)) {
+      if (uniformity_count >= 2 && slope_diff > thresh2) {
+        outlier_index = slopeVec_i + 2;
+        break;
+      }
+    }
+  }
+  std::cout << "uniformity_count:" << uniformity_count << std::endl;
+  std::cout << "outlier_index:" << outlier_index << std::endl;
+
+  for (int charGroup_i = 0; charGroup_i < (int)charGroup.size(); charGroup_i++) {
+    if (charGroup_i != outlier_index) {
+      CCharacter theChar = charGroup.at(charGroup_i);
+      out_charGroup.push_back(theChar);
+    }
+  }
+  
+  std::cout << "end:" << std::endl;
+}
+
+
+void removeOutliers(std::vector<CCharacter>& charGroup, double thresh, Mat result) {
+  std::vector<Point> points;
+  Vec4f line;
+  for (auto character : charGroup) {
+    points.push_back(character.getCenterPoint());
+  }
+
+  fitLine(Mat(points), line, CV_DIST_L2, 0, 0.01, 0.01);
+
+  float k = line[1] / line[0];
+  float x_1 = line[2];
+  float y_1 = line[3];
+  float step = 100;
+  cv::line(result, Point2f(x_1 - step, y_1 - k*step), Point2f(x_1 + step, k*step + y_1), Scalar(0, 0, 255));
+
+  float a = k;
+  float b = -1;
+  float c = y_1 - k * x_1;
+  float sumdistance = 0;
+  for (auto character : charGroup) {
+    Point center = character.getCenterPoint();
+    float distance = (a * center.x + b * center.y + c) / std::sqrt(a * a + b * b);
+    std::cout << "distance:" << distance << std::endl;
+    sumdistance += distance;
+  }
+  float avgdistance = sumdistance / (float)charGroup.size();
+
+  /*std::vector<CCharacter>::iterator it = charGroup.begin();
+  for (; it != charGroup.end();) {
+    Point center = it->getCenterPoint();
+    float distance = a * center.x + b * center.y + c;
+    float ratio = distance / avgdistance;
+    std::cout << "ratio:" << ratio << std::endl;
+    if (ratio > (float)thresh) {
+      it = charGroup.erase(it);
+    }
+    else {
+      ++it;
+    }
+  }*/
+}
 
 //! use verify size to first generate char candidates
 Mat mserCharMatch(const Mat &src, Mat &match, std::vector<CPlate>& out_plateVec, Color color, int img_index, 
@@ -1376,7 +1473,8 @@ Mat mserCharMatch(const Mat &src, Mat &match, std::vector<CPlate>& out_plateVec,
       Mat mserMat = adaptive_image_from_points(contour, rect, Size(char_size, char_size));
       Mat charInput = preprocessChar(mserMat, char_size);
       Rect charRect = rect;
-      
+
+      Point center(charRect.tl().x + charRect.width / 2, charRect.tl().y + charRect.height / 2);
       Mat tmpMat;
       double ostu_level = threshold(image(charRect), tmpMat, 0, 255, CV_THRESH_BINARY | CV_THRESH_OTSU);
 
@@ -1386,6 +1484,7 @@ Mat mserCharMatch(const Mat &src, Mat &match, std::vector<CPlate>& out_plateVec,
         charCandidate.setCharacterPos(charRect);
         charCandidate.setCharacterMat(charInput);
         charCandidate.setOstuLevel(ostu_level);
+        charCandidate.setCenterPoint(center);
         charCandidate.setIsChinese(false);
         charVec.push_back(charCandidate);
       }     
@@ -1443,7 +1542,13 @@ Mat mserCharMatch(const Mat &src, Mat &match, std::vector<CPlate>& out_plateVec,
     Point rightPoint(rightx, 0);
 
     std::vector<CCharacter> mserCharVec;
-    for (auto character : charGroup) {
+
+    // remove outlier CharGroup
+    std::vector<CCharacter> roCharGroup;
+
+    removeRightOutliers(charGroup, roCharGroup, 0.2, 0.6, result);
+
+    for (auto character : roCharGroup) {
       Rect charRect = character.getCharacterPos();
       cv::rectangle(result, charRect, Scalar(0, 255, 0), 1);
       plateResult |= charRect;
@@ -1451,7 +1556,7 @@ Mat mserCharMatch(const Mat &src, Mat &match, std::vector<CPlate>& out_plateVec,
       Point center(charRect.tl().x + charRect.width / 2, charRect.tl().y + charRect.height / 2);
       points.push_back(center);
       mserCharVec.push_back(character);
-      cv::circle(result, center, 3, Scalar(0, 255, 0), 2);
+      //cv::circle(result, center, 3, Scalar(0, 255, 0), 2);
 
       ostu_level_sum += character.getOstuLevel();
 
@@ -1467,7 +1572,7 @@ Mat mserCharMatch(const Mat &src, Mat &match, std::vector<CPlate>& out_plateVec,
       }
     }
 
-    double ostu_level_avg = ostu_level_sum / (double)charGroup.size();
+    double ostu_level_avg = ostu_level_sum / (double)roCharGroup.size();
     if (1 && showDebug) {
       std::cout << "ostu_level_avg:" << ostu_level_avg << std::endl;
     }  

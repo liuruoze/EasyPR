@@ -29,6 +29,7 @@ namespace easypr {
       m_score = 0;
       m_isChinese = false;
       m_ostuLevel = 125;
+      m_center = Point(0, 0);
     }
 
     CCharacter(const CCharacter& other)
@@ -39,6 +40,7 @@ namespace easypr {
       m_score = other.m_score;
       m_isChinese = other.m_isChinese;
       m_ostuLevel = other.m_ostuLevel;
+      m_center = other.m_center;
     }
 
     inline void setCharacterMat(Mat param) { m_characterMat = param; }
@@ -58,6 +60,9 @@ namespace easypr {
 
     inline void setOstuLevel(double param) { m_ostuLevel = param; }
     inline double getOstuLevel() const { return m_ostuLevel; }
+
+    inline void setCenterPoint(Point param) { m_center = param; }
+    inline Point getCenterPoint() const { return m_center; }
 
     inline bool getIsStrong() const { return m_score >= 0.9; }
     inline bool getIsWeak() const { return m_score < 0.9 && m_score >= 0.5; }
@@ -91,6 +96,9 @@ namespace easypr {
 
     //! ostu level
     double m_ostuLevel;
+
+    //! center point
+    Point m_center;
 
     ////!  m_score >= 0.9
     //bool isStrong;

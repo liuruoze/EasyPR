@@ -1962,3 +1962,8 @@ Recall:62.3538%, Precise:76.3835%, Fscore:68.6593%.
 Recall:62.3538%, Precise:76.3835%, Fscore:68.6593%.
 0-error:44.1176%,  1-error:52.9412%,  Chinese-precise:55.8824%  
 总时间:300秒,  平均执行时间:6秒
+2016-06-28 20:05:49
+总图片数:200,  Plates count:238,  未识出图片:53,  定位率:77.7311%  
+Recall:68.9754%, Precise:76.1017%, Fscore:72.3635%.
+0-error:0%,  1-error:0%,  Chinese-precise:100%  
+总时间:600秒,  平均执行时间:3秒
