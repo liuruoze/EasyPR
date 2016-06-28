@@ -1354,8 +1354,9 @@ void removeRightOutliers(std::vector<CCharacter>& charGroup, std::vector<CCharac
     float slope = line_btp[1] / line_btp[0];
     slopeVec.push_back(slope);
 
-    //std::cout << "slope:" << slope << std::endl;
-    cv::line(result, leftChar.getCenterPoint(), rightChar.getCenterPoint(), Scalar(0, 0, 255));
+    if (1) {
+      cv::line(result, leftChar.getCenterPoint(), rightChar.getCenterPoint(), Scalar(0, 0, 255));
+    }
   }
 
   int uniformity_count = 0;
@@ -1364,21 +1365,27 @@ void removeRightOutliers(std::vector<CCharacter>& charGroup, std::vector<CCharac
     float slope_1 = slopeVec.at(slopeVec_i);
     float slope_2 = slopeVec.at(slopeVec_i+1);
     float slope_diff = abs(slope_1 - slope_2);
-    std::cout << "slope_diff:" << slope_diff << std::endl;
+    if (1) {
+      std::cout << "slope_diff:" << slope_diff << std::endl;
+    }  
     if (slope_diff <= thresh1) {
       uniformity_count++;
     }
-    std::cout << "slope_1:" << slope_1 << std::endl;
-    std::cout << "slope_2:" << slope_2 << std::endl;
+    if (1) {
+      std::cout << "slope_1:" << slope_1 << std::endl;
+      std::cout << "slope_2:" << slope_2 << std::endl;
+    }
     if ((slope_1 <= 0 && slope_2 >= 0) || (slope_1 >= 0 && slope_2 <= 0)) {
-      if (uniformity_count >= 2 && slope_diff > thresh2) {
+      if (uniformity_count >= 2 && slope_diff >= thresh2) {
         outlier_index = slopeVec_i + 2;
         break;
       }
     }
   }
-  std::cout << "uniformity_count:" << uniformity_count << std::endl;
-  std::cout << "outlier_index:" << outlier_index << std::endl;
+  if (1) {
+    std::cout << "uniformity_count:" << uniformity_count << std::endl;
+    std::cout << "outlier_index:" << outlier_index << std::endl;
+  }
 
   for (int charGroup_i = 0; charGroup_i < (int)charGroup.size(); charGroup_i++) {
     if (charGroup_i != outlier_index) {
@@ -1386,8 +1393,10 @@ void removeRightOutliers(std::vector<CCharacter>& charGroup, std::vector<CCharac
       out_charGroup.push_back(theChar);
     }
   }
-  
-  std::cout << "end:" << std::endl;
+
+  if (1) {
+    std::cout << "end:" << std::endl;
+  }
 }
 
 
@@ -1418,7 +1427,7 @@ void removeOutliers(std::vector<CCharacter>& charGroup, double thresh, Mat resul
   }
   float avgdistance = sumdistance / (float)charGroup.size();
 
-  /*std::vector<CCharacter>::iterator it = charGroup.begin();
+  std::vector<CCharacter>::iterator it = charGroup.begin();
   for (; it != charGroup.end();) {
     Point center = it->getCenterPoint();
     float distance = a * center.x + b * center.y + c;
@@ -1430,7 +1439,7 @@ void removeOutliers(std::vector<CCharacter>& charGroup, double thresh, Mat resul
     else {
       ++it;
     }
-  }*/
+  }
 }
 
 //! use verify size to first generate char candidates
@@ -1546,7 +1555,7 @@ Mat mserCharMatch(const Mat &src, Mat &match, std::vector<CPlate>& out_plateVec,
     // remove outlier CharGroup
     std::vector<CCharacter> roCharGroup;
 
-    removeRightOutliers(charGroup, roCharGroup, 0.2, 0.6, result);
+    removeRightOutliers(charGroup, roCharGroup, 0.2, 0.5, result);
 
     for (auto character : roCharGroup) {
       Rect charRect = character.getCharacterPos();
