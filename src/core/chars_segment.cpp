@@ -77,20 +77,17 @@ Mat CCharsSegment::preprocessChar(Mat in) {
 
 //! 字符分割与排序
 
-int CCharsSegment::charsSegment(Mat input, vector<Mat>& resultVec) {
+int CCharsSegment::charsSegment(Mat input, vector<Mat>& resultVec, Color color) {
   if (!input.data) return 0x01;
-
-  int w = input.cols;
-  int h = input.rows;
-
-  Mat tmpMat = input(Rect_<double>(w * 0.1, h * 0.1, w * 0.8, h * 0.8));
-
-  // 判断车牌颜色以此确认threshold方法
-
-  Color plateType = getPlateType(tmpMat, true);
 
   Mat input_grey;
   cvtColor(input, input_grey, CV_BGR2GRAY);
+
+  if (1) {
+    imshow("plate", input_grey);
+    waitKey(0);
+    destroyWindow("plate");
+  }
 
   Mat img_threshold;
 
@@ -98,38 +95,48 @@ int CCharsSegment::charsSegment(Mat input, vector<Mat>& resultVec) {
   // 根据车牌的不同颜色使用不同的阈值判断方法
   // TODO：使用MSER来提取这些轮廓
 
-  if (BLUE == plateType) {
-    // cout << "BLUE" << endl;
-    img_threshold = input_grey.clone();
+  //if (BLUE == plateType) {
+  //  // cout << "BLUE" << endl;
+  //  img_threshold = input_grey.clone();
 
-    int w = input_grey.cols;
-    int h = input_grey.rows;
-    Mat tmp = input_grey(Rect_<double>(w * 0.1, h * 0.1, w * 0.8, h * 0.8));
-    int threadHoldV = ThresholdOtsu(tmp);
+  //  int w = input_grey.cols;
+  //  int h = input_grey.rows;
+  //  Mat tmp = input_grey(Rect_<double>(w * 0.1, h * 0.1, w * 0.8, h * 0.8));
+  //  int threadHoldV = ThresholdOtsu(tmp);
+  //  threshold(input_grey, img_threshold, threadHoldV, 255, CV_THRESH_BINARY);
 
-    threshold(input_grey, img_threshold, threadHoldV, 255, CV_THRESH_BINARY);
+  //} else if (YELLOW == plateType) {
+  //  // cout << "YELLOW" << endl;
+  //  img_threshold = input_grey.clone();
+  //  int w = input_grey.cols;
+  //  int h = input_grey.rows;
+  //  Mat tmp = input_grey(Rect_<double>(w * 0.1, h * 0.1, w * 0.8, h * 0.8));
+  //  int threadHoldV = ThresholdOtsu(tmp);
+  //  // utils::imwrite("resources/image/tmp/inputgray2.jpg", input_grey);
 
-  } else if (YELLOW == plateType) {
-    // cout << "YELLOW" << endl;
-    img_threshold = input_grey.clone();
-    int w = input_grey.cols;
-    int h = input_grey.rows;
-    Mat tmp = input_grey(Rect_<double>(w * 0.1, h * 0.1, w * 0.8, h * 0.8));
-    int threadHoldV = ThresholdOtsu(tmp);
-    // utils::imwrite("resources/image/tmp/inputgray2.jpg", input_grey);
+  //  threshold(input_grey, img_threshold, threadHoldV, 255,
+  //            CV_THRESH_BINARY_INV);
 
-    threshold(input_grey, img_threshold, threadHoldV, 255,
-              CV_THRESH_BINARY_INV);
+  //} else if (WHITE == plateType) {
+  //  // cout << "WHITE" << endl;
 
-  } else if (WHITE == plateType) {
-    // cout << "WHITE" << endl;
+  //  threshold(input_grey, img_threshold, 10, 255,
+  //            CV_THRESH_OTSU + CV_THRESH_BINARY_INV);
+  //} else {
+  //  // cout << "UNKNOWN" << endl;
+  //  threshold(input_grey, img_threshold, 10, 255,
+  //            CV_THRESH_OTSU + CV_THRESH_BINARY);
+  //}
 
-    threshold(input_grey, img_threshold, 10, 255,
-              CV_THRESH_OTSU + CV_THRESH_BINARY_INV);
-  } else {
-    // cout << "UNKNOWN" << endl;
-    threshold(input_grey, img_threshold, 10, 255,
-              CV_THRESH_OTSU + CV_THRESH_BINARY);
+  Color plateType = color;
+
+  img_threshold = input_grey.clone();
+  spatial_ostu(img_threshold, 8, 2, plateType);
+
+  if (0) {
+    imshow("plate", img_threshold);
+    waitKey(0);
+    destroyWindow("plate");
   }
 
   // 去除车牌上方的柳钉以及下方的横线等干扰
@@ -191,6 +198,13 @@ int CCharsSegment::charsSegment(Mat input, vector<Mat>& resultVec) {
   else
     return 0x04;
 
+  if (1) {
+    rectangle(img_threshold, chineseRect, Scalar(255));
+    imshow("plate", img_threshold);
+    waitKey(0);
+    destroyWindow("plate");
+  }
+
   //新建一个全新的排序Rect
   //将中文字符Rect第一个加进来，因为它肯定是最左边的
   //其余的Rect只按照顺序去6个，车牌只可能是7个字符！这样可以避免阴影导致的“1”字符
@@ -214,28 +228,34 @@ int CCharsSegment::charsSegment(Mat input, vector<Mat>& resultVec) {
     Mat newRoi;
 
     if (BLUE == plateType) {
-      /* img_threshold = auxRoi.clone();
-       int w = input_grey.cols;
-       int h = input_grey.rows;
-       Mat tmp = input_grey(Rect_<double>(w * 0.1, h * 0.1, w * 0.8, h * 0.8));
-       int threadHoldV = ThresholdOtsu(tmp);*/
-
-      threshold(auxRoi, newRoi, 5, 255, CV_THRESH_BINARY + CV_THRESH_OTSU);
+      //newRoi = auxRoi.clone();
+      //spatial_ostu(newRoi, 5, 5, plateType);
+      if (i != 0) 
+        threshold(auxRoi, newRoi, 0, 255, CV_THRESH_BINARY + CV_THRESH_OTSU);
+      else
+        adaptiveThreshold(auxRoi, newRoi, 255, ADAPTIVE_THRESH_MEAN_C, THRESH_BINARY, 3, 0);
+      
     } else if (YELLOW == plateType) {
-      threshold(auxRoi, newRoi, 5, 255, CV_THRESH_BINARY_INV + CV_THRESH_OTSU);
+      threshold(auxRoi, newRoi, 0, 255, CV_THRESH_BINARY_INV + CV_THRESH_OTSU);
 
     } else if (WHITE == plateType) {
-      threshold(auxRoi, newRoi, 5, 255, CV_THRESH_OTSU + CV_THRESH_BINARY_INV);
+      threshold(auxRoi, newRoi, 0, 255, CV_THRESH_OTSU + CV_THRESH_BINARY_INV);
     } else {
-      threshold(auxRoi, newRoi, 5, 255, CV_THRESH_OTSU + CV_THRESH_BINARY);
+      threshold(auxRoi, newRoi, 0, 255, CV_THRESH_OTSU + CV_THRESH_BINARY);
     }
 
     // 归一化大小
-
     newRoi = preprocessChar(newRoi);
 
-    // 每个字符图块输入到下面的步骤进行处理
+    if (1) {
+      if (i == 0) {
+        imshow("chinese", newRoi);
+        waitKey(0);
+        destroyWindow("chinese");
+      }
+    }
 
+    // 每个字符图块输入到下面的步骤进行处理
     resultVec.push_back(newRoi);
   }
 

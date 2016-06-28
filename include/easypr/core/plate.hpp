@@ -23,7 +23,11 @@ namespace easypr {
 
   class CPlate {
   public:
-    CPlate() { }
+    CPlate() { 
+      m_score = -1;
+      m_plateStr = "";
+      m_plateColor = UNKNOWN;
+    }
 
     CPlate(const CPlate& other) {
       m_plateMat = other.m_plateMat;
@@ -31,6 +35,7 @@ namespace easypr {
       m_platePos = other.m_platePos;
       m_plateStr = other.m_plateStr;
       m_locateType = other.m_locateType;
+      m_plateColor = other.m_plateColor;
       m_line = other.m_line;
       m_leftPoint = other.m_leftPoint;
       m_rightPoint = other.m_rightPoint;
@@ -51,6 +56,7 @@ namespace easypr {
         m_platePos = other.m_platePos;
         m_plateStr = other.m_plateStr;
         m_locateType = other.m_locateType;
+        m_plateColor = other.m_plateColor;
         m_line = other.m_line;
         m_leftPoint = other.m_leftPoint;
         m_rightPoint = other.m_rightPoint;
@@ -77,6 +83,9 @@ namespace easypr {
 
     inline void setPlateLocateType(LocateType param) { m_locateType = param; }
     inline LocateType getPlateLocateType() const { return m_locateType; }
+
+    inline void setPlateColor(Color param) { m_plateColor = param; }
+    inline Color getPlateColor() const { return m_plateColor; }
 
     inline void setPlateScore(double param) { m_score = param; }
     inline double getPlateScore() const { return m_score; }
@@ -132,6 +141,9 @@ namespace easypr {
 
     //! plate locate type
     LocateType m_locateType;
+
+    //! plate color type
+    Color m_plateColor;
 
     //! plate likely
     double m_score;

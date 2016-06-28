@@ -63,10 +63,13 @@ bool verifyCharSizes(Rect r);
 bool verifyPlateSize(Rect mr);
 bool verifyRotatedPlateSizes(RotatedRect mr, bool showDebug = false);
 
-
+// draw rotatedRectangle
 void rotatedRectangle(InputOutputArray img, RotatedRect rect,
   const Scalar& color, int thickness = 1,
   int lineType = LINE_8, int shift = 0);
+
+// ostu region
+void spatial_ostu(InputArray _src, int grid_x, int grid_y, Color type = BLUE);
 
 // Scale to small image (for the purpose of comput mser in large image)
 Mat scaleImage(const Mat& image, const Size& maxSize, double& scale_ratio);

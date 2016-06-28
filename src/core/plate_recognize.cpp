@@ -321,19 +321,38 @@ int CPlateRecognize::plateRecognize(Mat src, std::vector<CPlate> &licenseVec, in
     //依次识别每个车牌内的符号
     for (size_t j = 0; j < num; j++) {
       CPlate item = plateVec.at(j);
-      Mat plate = item.getPlateMat();
+      Mat plateMat = item.getPlateMat();
 
-      //获取车牌颜色
-      std::string plateType = getPlateColor(plate);
+      if (0) {
+        imshow("plate", plateMat);
+        waitKey(0);
+        destroyWindow("plate");
+      }
+     
+      Color color = item.getPlateColor();
+      if (color == UNKNOWN) {
+        color = getPlateType(plateMat, true);
+        item.setPlateColor(color);
+      }
+
+      std::string plateColor = getPlateColor(color);
+      if (1) {
+        std::cout << "plateColor:" << plateColor << std::endl;
+      }
 
       //获取车牌号
       std::string plateIdentify = "";
       int resultCR = charsRecognise(item, plateIdentify);
            
       if (resultCR == 0) {
-        std::string license = plateType + ":" + plateIdentify;
+        std::string license = plateColor + ":" + plateIdentify;
         item.setPlateStr(license);
         licenseVec.push_back(item);
+      }
+      else {
+        if (1) {
+          std::cout << "resultCR:" << resultCR << std::endl;
+        }
       }
     }
 
@@ -347,13 +366,13 @@ int CPlateRecognize::plateRecognize(Mat src, std::vector<CPlate> &licenseVec, in
 
       for (size_t j = 0; j < num; j++) {
         CPlate item = plateVec[j];
-        Mat plate = item.getPlateMat();
+        Mat plateMat = item.getPlateMat();
 
         int height = 36;
         int width = 136;
         if (height * index + height < result.rows) {
           Mat imageRoi = result(Rect(0, 0 + height * index, width, height));
-          addWeighted(imageRoi, 0, plate, 1, 0, imageRoi);
+          addWeighted(imageRoi, 0, plateMat, 1, 0, imageRoi);
         }
         index++;
 

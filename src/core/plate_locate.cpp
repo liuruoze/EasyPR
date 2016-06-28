@@ -1115,6 +1115,7 @@ int CPlateLocate::plateMserLocate(Mat src, vector<CPlate> &candPlates, int img_i
       resize(src(outputRect), plate_mat, plate_mat.size(), 0, 0, INTER_AREA);
 
       plate.setPlateMat(plate_mat);
+      plate.setPlateColor(color);
 
       candPlates.push_back(plate);
     }

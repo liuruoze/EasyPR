@@ -86,7 +86,7 @@ namespace easypr {
       CPlateRecognize pr;
 
       // 设置Debug模式
-      pr.setResultShow(true);
+      pr.setResultShow(false);
       pr.setLifemode(true);
       // 设置要处理的一张图片中最多有多少车牌
       pr.setMaxPlates(4);
@@ -172,9 +172,8 @@ namespace easypr {
         XMLNode rectangleNodes = xNode.addChild("taggedRectangles");
 
         vector<CPlate> plateVec;
-        //int result = pr.plateRecognize(src, plateVec, i);
-
-        int result = pd.plateDetect(src, plateVec, i);
+        int result = pr.plateRecognize(src, plateVec, i);
+        //int result = pd.plateDetect(src, plateVec, i);
 
         // get the ground truth and compare it with the detect list;
         map<string, vector<CPlate>>::iterator it;
@@ -183,6 +182,9 @@ namespace easypr {
         if (it != xmlMap.end()) {
           //cout << it->first << endl;
           plateVecGT = it->second;        
+        }
+        else {
+          cout << "No ground truth found!" << endl;
         }
         
         // calucate the detect recall
@@ -232,20 +234,7 @@ namespace easypr {
               string matchLicense = spilt_plate.at(1);
 
               cout << matchPlateLicense << " (d)" << endl;
-
-              XMLNode rectangleNode = rectangleNodes.addChild("taggedRectangle");
-              RotatedRect rr = matchPlate->getPlatePos();
-              LocateType locateType = matchPlate->getPlateLocateType();
-
-              rectangleNode.addAttribute("x", to_string((int)rr.center.x).c_str());
-              rectangleNode.addAttribute("y", to_string((int)rr.center.y).c_str());
-              rectangleNode.addAttribute("width", to_string((int)rr.size.width).c_str());
-              rectangleNode.addAttribute("height", to_string((int)rr.size.height).c_str());
-
-              rectangleNode.addAttribute("rotation", to_string((int)rr.angle).c_str());
-              rectangleNode.addAttribute("locateType", to_string(locateType).c_str());
-              rectangleNode.addText(matchPlate->getPlateStr().c_str());
-
+             
               int diff = utils::levenshtein_distance(license, matchLicense);
               if (diff == 0) {
                 non_error_count++;
@@ -305,6 +294,19 @@ namespace easypr {
           RotatedRect platePos_d = plate_d.getPlatePos();
           Rect_<float> plateRect_d;
           calcSafeRect(platePos_d, src, plateRect_d);
+
+          XMLNode rectangleNode = rectangleNodes.addChild("taggedRectangle");
+          RotatedRect rr = platePos_d;
+          LocateType locateType = plate_d.getPlateLocateType();
+
+          rectangleNode.addAttribute("x", to_string((int)rr.center.x).c_str());
+          rectangleNode.addAttribute("y", to_string((int)rr.center.y).c_str());
+          rectangleNode.addAttribute("width", to_string((int)rr.size.width).c_str());
+          rectangleNode.addAttribute("height", to_string((int)rr.size.height).c_str());
+
+          rectangleNode.addAttribute("rotation", to_string((int)rr.angle).c_str());
+          rectangleNode.addAttribute("locateType", to_string(locateType).c_str());
+          rectangleNode.addText(plate_d.getPlateStr().c_str());
 
           for (auto plate_g : plateVecGT) {
             RotatedRect platePos_g = plate_g.getPlatePos();

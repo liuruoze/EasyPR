@@ -360,15 +360,17 @@ Color getPlateType(const Mat &src, const bool adaptive_minsv) {
     // cout << "WHITE" << endl;
     return WHITE;
   } else {
-    // cout << "OTHER" << endl;
+    //std::cout << "OTHER" << std::endl;
 
     // 如果任意一者都不大于阈值，则取值最大者
 
-    max_percent = blue_percent > yellow_percent ? blue_percent : yellow_percent;
+    /*max_percent = blue_percent > yellow_percent ? blue_percent : yellow_percent;
     max_color = blue_percent > yellow_percent ? BLUE : YELLOW;
+    max_color = max_percent > white_percent ? max_color : WHITE;*/
 
-    max_color = max_percent > white_percent ? max_color : WHITE;
-    return max_color;
+
+    // always return blue
+    return BLUE;
   }
 }
 
@@ -1836,6 +1838,30 @@ Mat mserMatch(const Mat &src, Mat &match, const Color r,
 
  
   return match;
+}
+
+
+void spatial_ostu(InputArray _src, int grid_x, int grid_y, Color type) {
+  Mat src = _src.getMat();
+
+  int width = src.cols / grid_x;
+  int height = src.rows / grid_y;
+
+  // iterate through grid
+  for (int i = 0; i < grid_y; i++) {
+    for (int j = 0; j < grid_x; j++) {
+      Mat src_cell = Mat(src, Range(i*height, (i + 1)*height), Range(j*width, (j + 1)*width));
+      if (type == BLUE) {
+        threshold(src_cell, src_cell, 0, 255, CV_THRESH_OTSU + CV_THRESH_BINARY);
+      }
+      else if (type == YELLOW) {
+        threshold(src_cell, src_cell, 0, 255, CV_THRESH_OTSU + CV_THRESH_BINARY_INV);
+      } 
+      else {
+        threshold(src_cell, src_cell, 0, 255, CV_THRESH_OTSU + CV_THRESH_BINARY);
+      }
+    }
+  }
 }
 
 

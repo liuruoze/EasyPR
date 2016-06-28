@@ -11,7 +11,7 @@ class CCharsSegment {
 
   //! 字符分割
 
-  int charsSegment(Mat input, std::vector<Mat>& resultVec);
+  int charsSegment(Mat input, std::vector<Mat>& resultVec, Color color = BLUE);
 
   //! 字符尺寸验证
 
