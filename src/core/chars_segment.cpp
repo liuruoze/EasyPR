@@ -198,7 +198,7 @@ int CCharsSegment::charsSegment(Mat input, vector<Mat>& resultVec, Color color) 
   else
     return 0x04;
 
-  if (1) {
+  if (0) {
     rectangle(img_threshold, chineseRect, Scalar(255));
     imshow("plate", img_threshold);
     waitKey(0);
@@ -247,7 +247,7 @@ int CCharsSegment::charsSegment(Mat input, vector<Mat>& resultVec, Color color) 
     // 归一化大小
     newRoi = preprocessChar(newRoi);
 
-    if (1) {
+    if (0) {
       if (i == 0) {
         imshow("chinese", newRoi);
         waitKey(0);
