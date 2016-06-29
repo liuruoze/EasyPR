@@ -1186,7 +1186,7 @@ void searchWeakSeed(const std::vector<CCharacter>& charVec, std::vector<CCharact
 
 void slideWindowSearch(const Mat &image, std::vector<CCharacter>& slideCharacter, const Vec4f& line, 
   Point& fromPoint, const Vec2i& dist, double ostu_level, const Rect& maxrect, Rect& plateResult, 
-  CharSearchDirection searchDirection, bool isChinese, Mat& result = Mat()) {
+  CharSearchDirection searchDirection, bool isChinese, Mat& result) {
   float k = line[1] / line[0];
   float x_1 = line[2];
   float y_1 = line[3];
