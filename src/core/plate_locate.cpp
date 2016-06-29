@@ -1090,7 +1090,7 @@ int CPlateLocate::plateMserLocate(Mat src, vector<CPlate> &candPlates, int img_i
     Mat image = scaleImage(channelImage, Size(scale_size, scale_size), scale_ratio);
 
     // vector<RotatedRect> rects;
-    mserSearch(image, color, src_b, plates, img_index);
+    mserSearch(image, color, src_b, plates, img_index, false);
 
     // deskew for rotation and slope image
     /*for (auto plate : plates) {
