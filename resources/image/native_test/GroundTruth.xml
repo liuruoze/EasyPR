@@ -218,6 +218,18 @@
 		</taggedRectangles>
 	</image>
 	<image>
+		<imageName>‘¡BA103N</imageName>
+		<taggedRectangles>
+			<taggedRectangle x="315" y="179" width="108" height="41" rotation="0" locateType="1">¿∂≈∆:‘¡BA103N</taggedRectangle>
+		</taggedRectangles>
+	</image>
+	<image>
+		<imageName>‘¡BE609T</imageName>
+		<taggedRectangles>
+			<taggedRectangle x="465" y="124" width="108" height="41" rotation="0" locateType="1">¿∂≈∆:‘¡BE609T</taggedRectangle>
+		</taggedRectangles>
+	</image>
+	<image>
 		<imageName>‘¡AB2893</imageName>
 		<taggedRectangles>
 			<taggedRectangle x="1230" y="792" width="161" height="92" rotation="0" locateType="1">ª∆≈∆:‘¡AB2893</taggedRectangle>
@@ -282,6 +294,12 @@
 		<imageName>‘•U00000</imageName>
 		<taggedRectangles>
 			<taggedRectangle x="889" y="652" width="104" height="37" rotation="0" locateType="0">¿∂≈∆:‘•U00000</taggedRectangle>
+		</taggedRectangles>
+	</image>
+	<image>
+		<imageName>∏”K11978</imageName>
+		<taggedRectangles>
+			<taggedRectangle x="1084" y="558" width="116" height="35" rotation="0" locateType="0">ª∆≈∆:∏”K11978</taggedRectangle>
 		</taggedRectangles>
 	</image>
 </tagset>

@@ -178,7 +178,7 @@ namespace easypr {
       result_resize.cols, result_resize.rows));
     addWeighted(imageRoi, 0, result_resize, 1, 0, imageRoi);
 
-    if (1) {
+    if (0) {
       imshow("EasyPR", img_window);
       waitKey(1000);
       destroyWindow("EasyPR");
