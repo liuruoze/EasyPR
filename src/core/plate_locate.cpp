@@ -738,7 +738,7 @@ void DeleteNotArea(Mat &inmat) {
 
 int CPlateLocate::deskew(const Mat &src, const Mat &src_b,
                          vector<RotatedRect> &inRects,
-                         vector<CPlate> &outPlates) {
+                         vector<CPlate> &outPlates, bool useDeteleArea) {
   Mat mat_debug;
   src.copyTo(mat_debug);
 
@@ -811,7 +811,8 @@ int CPlateLocate::deskew(const Mat &src, const Mat &src_b,
       plate_mat.create(HEIGHT, WIDTH, TYPE);
 
       // haitungaga添加，删除非区域，这个函数影响了25%的完整定位率
-      // DeleteNotArea(deskew_mat);
+      if (useDeteleArea)
+        DeleteNotArea(deskew_mat);
 
       // 这里对deskew_mat进行了一个筛选
       // 使用了经验数值：2.3和6
@@ -830,7 +831,7 @@ int CPlateLocate::deskew(const Mat &src, const Mat &src_b,
         plate.setPlatePos(roi_rect);
         plate.setPlateMat(plate_mat);
 
-        if (1) {
+        if (0) {
           imshow("plate_mat", plate_mat);
           waitKey(0);
           destroyWindow("plate_mat");
@@ -1092,58 +1093,51 @@ int CPlateLocate::plateMserLocate(Mat src, vector<CPlate> &candPlates, int img_i
     // vector<RotatedRect> rects;
     mserSearch(image, color, src_b, plates, img_index, false);
 
-    // deskew for rotation and slope image
-    /*for (auto plate : plates) {
-      RotatedRect rrect = plate.getPlatePos();
-      rects_mser.push_back(rrect);
-    }
-    deskew(image, src_b, rects_mser, candPlates);*/
+    std::vector<CPlate> deskewPlate;
+    std::vector<CPlate> mserPlate;
 
-    // no deskew
-    for (size_t j = 0; j < plates.size(); ++j) {
-      CPlate plate = plates.at(j);
+    // deskew for rotation and slope image
+    for (auto plate : plates) {
+      //RotatedRect rrect = plate.getPlatePos();
+      //rects_mser.push_back(rrect);
+
       RotatedRect rrect = plate.getPlatePos();
       RotatedRect scaleRect = scaleBackRRect(rrect, (float)scale_ratio);
       plate.setPlatePos(scaleRect);
-
-      Rect_<float> outputRect;
-      calcSafeRect(scaleRect, src, outputRect);
-
-      Mat plate_mat;
-      plate_mat.create(HEIGHT, WIDTH, TYPE);
-
-      resize(src(outputRect), plate_mat, plate_mat.size(), 0, 0, INTER_AREA);
-
-      plate.setPlateMat(plate_mat);
       plate.setPlateColor(color);
+      rects_mser.push_back(scaleRect);
+      mserPlate.push_back(plate);
+    }
 
-      candPlates.push_back(plate);
+    Mat resize_src_b;
+    resize(src_b, resize_src_b, Size(channelImage.cols, channelImage.rows));
+    deskew(src, resize_src_b, rects_mser, deskewPlate, false);
+
+    for (auto dplate : deskewPlate) {
+      RotatedRect drect = dplate.getPlatePos();
+      Mat dmat = dplate.getPlateMat();
+      Rect_<float> safe_dRect;
+      calcSafeRect(drect, src, safe_dRect);
+
+      for (auto splate : mserPlate) {
+        RotatedRect srect = splate.getPlatePos();
+        Rect_<float> safe_sRect;
+        calcSafeRect(srect, src, safe_sRect);
+
+        Rect inter = safe_dRect & safe_sRect;
+        Rect urect = safe_dRect | safe_sRect;
+
+        float iou = (float)inter.area() / (float)urect.area();
+        std::cout << "iou" << iou << std::endl;
+
+        if (iou > 0.95) {       
+          splate.setPlateMat(dmat);
+          candPlates.push_back(splate);
+          break;
+        }
+      }
     }
   }
-
-  //for (size_t i = 0; i < rects_mser.size(); ++i) {
-  //  Rect_<float> outputRect;
-  //  calcSafeRect(rects_mser[i], src, outputRect);
-
-  //  if (0) {
-  //    std::stringstream ss(std::stringstream::in | std::stringstream::out);
-  //    ss << "resources/image/tmp/plate_" << i << ".jpg";
-  //    imwrite(ss.str(), src(outputRect));
-  //  }
-
-  //  CPlate plate;
-  //  plate.setPlateLocateType(CMSER);
-  //  plate.setPlateMat(src(outputRect));
-  //  plate.setPlatePos(rects_mser[i]);
-  //  candPlates.push_back(plate);
-  //}
-
-  //deskew(src, src_b, rects_mser_blue, plates);
-
-  //for (size_t i = 0; i < plates.size(); i++) {
-  //  candPlates.push_back(plates[i]);
-  //}
-
   return 0;
 }
 
