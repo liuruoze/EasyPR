@@ -1059,7 +1059,7 @@ void rotatedRectangle(InputOutputArray image, RotatedRect rrect, const Scalar& c
 }
 
 
-void searchWeakSeed(const std::vector<CCharacter>& charVec, std::vector<CCharacter>& mserCharacter,
+void searchWeakSeed(const std::vector<CCharacter>& charVec, std::vector<CCharacter>& mserCharacter, double thresh1, double thresh2,
   const Vec4f& line, Point& boundaryPoint, const Rect& maxrect, Rect& plateResult, Mat result, CharSearchDirection searchDirection) {
 
   float k = line[1] / line[0];
@@ -1071,7 +1071,7 @@ void searchWeakSeed(const std::vector<CCharacter>& charVec, std::vector<CCharact
   for (auto weakSeed : charVec) {
     Rect weakRect = weakSeed.getCharacterPos();
 
-    cv::rectangle(result, weakRect, Scalar(255, 0, 255));
+    //cv::rectangle(result, weakRect, Scalar(255, 0, 255));
 
     Point weakCenter(weakRect.tl().x + weakRect.width / 2, weakRect.tl().y + weakRect.height / 2);
     float x_2 = (float)weakCenter.x;
@@ -1092,7 +1092,7 @@ void searchWeakSeed(const std::vector<CCharacter>& charVec, std::vector<CCharact
 
     float y_diff_ratio = abs(y_2l - y_2) / maxrect.height;
 
-    if (y_diff_ratio < 0.1) {
+    if (y_diff_ratio < thresh1) {
       float width_1 = float(maxrect.width);
       float height_1 = float(maxrect.height);
 
@@ -1102,7 +1102,7 @@ void searchWeakSeed(const std::vector<CCharacter>& charVec, std::vector<CCharact
       float height_diff = abs(height_1 - height_2);
       double height_diff_ratio = height_diff / min(height_1, height_2);
 
-      if (height_diff_ratio < 0.15) {
+      if (height_diff_ratio < thresh1) {
         searchWeakSeedVec.push_back(weakSeed);
       }
       else {
@@ -1132,11 +1132,13 @@ void searchWeakSeed(const std::vector<CCharacter>& charVec, std::vector<CCharact
       firstWeakRect.tl().y + firstWeakRect.height / 2);
 
     float ratio = (float)abs(firstWeakCenter.x - boundaryPoint.x) / (float)maxrect.height;
-    //std::cout << "ratio:" << ratio << std::endl;
-
-    if (ratio > 2.f)
+    if (ratio > thresh2) {
+      if (0) {
+        std::cout << "search seed ratio:" << ratio << std::endl;
+      }
       return;
-
+    }
+      
     mserCharacter.push_back(firstWeakSeed);
     plateResult |= firstWeakRect;
     boundaryPoint = firstWeakCenter;
@@ -1165,9 +1167,9 @@ void searchWeakSeed(const std::vector<CCharacter>& charVec, std::vector<CCharact
       float x_margin_diff = abs(x_margin_left - x_margin_right);
       double x_margin_diff_ratio = x_margin_diff / min(height_1, height_2);
 
-      if (x_margin_diff_ratio > 2.0) {
+      if (x_margin_diff_ratio > thresh2) {
         if (0) {
-          std::cout << "x_margin_diff_ratio:" << x_margin_diff_ratio << std::endl;
+          std::cout << "search seed x_margin_diff_ratio:" << x_margin_diff_ratio << std::endl;
         }       
         break;
       }
@@ -1371,13 +1373,13 @@ void removeRightOutliers(std::vector<CCharacter>& charGroup, std::vector<CCharac
     float slope_1 = slopeVec.at(slopeVec_i);
     float slope_2 = slopeVec.at(slopeVec_i+1);
     float slope_diff = abs(slope_1 - slope_2);
-    if (1) {
+    if (0) {
       std::cout << "slope_diff:" << slope_diff << std::endl;
     }  
     if (slope_diff <= thresh1) {
       uniformity_count++;
     }
-    if (1) {
+    if (0) {
       std::cout << "slope_1:" << slope_1 << std::endl;
       std::cout << "slope_2:" << slope_2 << std::endl;
     }
@@ -1388,7 +1390,7 @@ void removeRightOutliers(std::vector<CCharacter>& charGroup, std::vector<CCharac
       }
     }
   }
-  if (1) {
+  if (0) {
     std::cout << "uniformity_count:" << uniformity_count << std::endl;
     std::cout << "outlier_index:" << outlier_index << std::endl;
   }
@@ -1400,7 +1402,7 @@ void removeRightOutliers(std::vector<CCharacter>& charGroup, std::vector<CCharac
     }
   }
 
-  if (1) {
+  if (0) {
     std::cout << "end:" << std::endl;
   }
 }
@@ -1441,7 +1443,7 @@ void reFoundAndCombineRect(std::vector<CCharacter>& mserCharacter, float min_thr
   });
 
   int comparDist = dist[0] * dist[0] + dist[1] * dist[1];
-  if (1) {
+  if (0) {
     std::cout << "comparDist:" << comparDist << std::endl;
   }
 
@@ -1461,7 +1463,7 @@ void reFoundAndCombineRect(std::vector<CCharacter>& mserCharacter, float min_thr
     // distance between two centers
     int distance2 = x_diff * x_diff + y_diff * y_diff;
     
-    if (1) {
+    if (0) {
       std::cout << "distance2:" << distance2 << std::endl;
     }
 
@@ -1716,7 +1718,7 @@ Mat mserCharMatch(const Mat &src, Mat &match, std::vector<CPlate>& out_plateVec,
       fitLine(Mat(points), line, CV_DIST_L2, 0, 0.01, 0.01);
 
       float k = line[1] / line[0];
-      float angle = atan(k) * 180 / (float)CV_PI;
+      //float angle = atan(k) * 180 / (float)CV_PI;
       //std::cout << "k:" << k << std::endl;
       //std::cout << "angle:" << angle << std::endl;
       //std::cout << "cos:" << 0.3 * cos(k) << std::endl;
@@ -1824,7 +1826,10 @@ Mat mserCharMatch(const Mat &src, Mat &match, std::vector<CPlate>& out_plateVec,
     }
      
     if (mserCharacter.size() < 7) {
-      searchWeakSeed(searchCandidate, searchRightWeakSeed, line, rightPoint, maxrect, plateResult, result, CharSearchDirection::RIGHT);     
+      double thresh1 = 0.1;
+      double thresh2 = 2.0;
+      searchWeakSeed(searchCandidate, searchRightWeakSeed, thresh1, thresh2, line, rightPoint,
+        maxrect, plateResult, result, CharSearchDirection::RIGHT);
       if (1 && showDebug) {
         std::cout << "searchRightWeakSeed:" << searchRightWeakSeed.size() << std::endl;
       }
@@ -1833,7 +1838,8 @@ Mat mserCharMatch(const Mat &src, Mat &match, std::vector<CPlate>& out_plateVec,
         mserCharacter.push_back(seed);
       }
 
-      searchWeakSeed(searchCandidate, searchLeftWeakSeed, line, leftPoint, maxrect, plateResult, result, CharSearchDirection::LEFT);
+      searchWeakSeed(searchCandidate, searchLeftWeakSeed, thresh1, thresh2, line, leftPoint,
+        maxrect, plateResult, result, CharSearchDirection::LEFT);
       if (1 && showDebug) {
         std::cout << "searchLeftWeakSeed:" << searchLeftWeakSeed.size() << std::endl;
       }
@@ -1932,7 +1938,8 @@ Mat mserCharMatch(const Mat &src, Mat &match, std::vector<CPlate>& out_plateVec,
       rotatedRectangle(result, platePos, Scalar(0, 0, 255), 1);
 
       plate.setPlatePos(platePos);
-      
+      plate.setPlateColor(color);
+      plate.setPlateLocateType(CMSER);
       out_plateVec.push_back(plate);
     }
 
@@ -1948,7 +1955,7 @@ Mat mserCharMatch(const Mat &src, Mat &match, std::vector<CPlate>& out_plateVec,
     
   }
 
-  if (1 && showDebug) {
+  if (0 /*&& showDebug*/) {
     imshow("result", result);
     waitKey(0);
     destroyWindow("result");

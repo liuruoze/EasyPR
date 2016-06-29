@@ -46,7 +46,8 @@ class CPlateLocate {
   //! 抗扭斜处理
 
   int deskew(const Mat& src, const Mat& src_b,
-             std::vector<RotatedRect>& inRects, std::vector<CPlate>& outPlates);
+             std::vector<RotatedRect>& inRects, std::vector<CPlate>& outPlates,
+             bool useDeteleArea = true);
 
   //! 是否偏斜
   //! 输入二值化图像，输出判断结果
