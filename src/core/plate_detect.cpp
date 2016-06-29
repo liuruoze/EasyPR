@@ -164,7 +164,6 @@ namespace easypr {
       if (result_middle.rows > img_window.rows) {
         float scale = float(img_window.rows) / float(result_middle.rows);
         resize(result_middle, result_resize, Size(), scale, scale, CV_INTER_AREA);
-
       }
       else {
         result_resize = result_middle;
@@ -179,13 +178,13 @@ namespace easypr {
       result_resize.cols, result_resize.rows));
     addWeighted(imageRoi, 0, result_resize, 1, 0, imageRoi);
 
-    if (0) {
+    if (1) {
       imshow("EasyPR", img_window);
       waitKey(1000);
       destroyWindow("EasyPR");
     }
 
-    if (0) {
+    if (1) {
       std::stringstream ss(std::stringstream::in | std::stringstream::out);
       ss << "resources/image/tmp/Result/plate_" << img_index << ".jpg";
       imwrite(ss.str(), img_window);

@@ -1967,3 +1967,18 @@ Recall:62.3538%, Precise:76.3835%, Fscore:68.6593%.
 Recall:68.9754%, Precise:76.1017%, Fscore:72.3635%.
 0-error:0%,  1-error:0%,  Chinese-precise:100%  
 总时间:600秒,  平均执行时间:3秒
+2016-06-29 07:42:11
+总图片数:50,  Plates count:49,  未识出图片:11,  定位率:77.551%  
+Recall:69.3511%, Precise:73.874%, Fscore:71.5411%.
+0-error:0%,  1-error:0%,  Chinese-precise:100%  
+总时间:147秒,  平均执行时间:2.94秒
+2016-06-29 07:45:15
+总图片数:50,  Plates count:49,  未识出图片:11,  定位率:77.551%  
+Recall:69.6306%, Precise:74.1718%, Fscore:71.8295%.
+0-error:0%,  1-error:0%,  Chinese-precise:100%  
+总时间:146秒,  平均执行时间:2.92秒
+2016-06-29 07:59:57
+总图片数:50,  Plates count:49,  未识出图片:15,  定位率:69.3878%  
+Recall:62.8986%, Precise:77.0508%, Fscore:69.2591%.
+0-error:44.1176%,  1-error:52.9412%,  Chinese-precise:55.8824%  
+总时间:200秒,  平均执行时间:4秒

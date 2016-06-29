@@ -1354,7 +1354,7 @@ void removeRightOutliers(std::vector<CCharacter>& charGroup, std::vector<CCharac
     float slope = line_btp[1] / line_btp[0];
     slopeVec.push_back(slope);
 
-    if (1) {
+    if (0) {
       cv::line(result, leftChar.getCenterPoint(), rightChar.getCenterPoint(), Scalar(0, 0, 255));
     }
   }
@@ -1365,13 +1365,13 @@ void removeRightOutliers(std::vector<CCharacter>& charGroup, std::vector<CCharac
     float slope_1 = slopeVec.at(slopeVec_i);
     float slope_2 = slopeVec.at(slopeVec_i+1);
     float slope_diff = abs(slope_1 - slope_2);
-    if (1) {
+    if (0) {
       std::cout << "slope_diff:" << slope_diff << std::endl;
     }  
     if (slope_diff <= thresh1) {
       uniformity_count++;
     }
-    if (1) {
+    if (0) {
       std::cout << "slope_1:" << slope_1 << std::endl;
       std::cout << "slope_2:" << slope_2 << std::endl;
     }
@@ -1382,7 +1382,7 @@ void removeRightOutliers(std::vector<CCharacter>& charGroup, std::vector<CCharac
       }
     }
   }
-  if (1) {
+  if (0) {
     std::cout << "uniformity_count:" << uniformity_count << std::endl;
     std::cout << "outlier_index:" << outlier_index << std::endl;
   }
@@ -1394,7 +1394,7 @@ void removeRightOutliers(std::vector<CCharacter>& charGroup, std::vector<CCharac
     }
   }
 
-  if (1) {
+  if (0) {
     std::cout << "end:" << std::endl;
   }
 }
@@ -1556,6 +1556,7 @@ Mat mserCharMatch(const Mat &src, Mat &match, std::vector<CPlate>& out_plateVec,
     std::vector<CCharacter> roCharGroup;
 
     removeRightOutliers(charGroup, roCharGroup, 0.2, 0.5, result);
+    //roCharGroup = charGroup;
 
     for (auto character : roCharGroup) {
       Rect charRect = character.getCharacterPos();
@@ -1712,18 +1713,11 @@ Mat mserCharMatch(const Mat &src, Mat &match, std::vector<CPlate>& out_plateVec,
         cv::rectangle(result, seed.getCharacterPos(), Scalar(255, 0, 0), 1);
         mserCharacter.push_back(seed);
       }
+
+      // add mserCharacter size judge
     }
       
     if (mserCharacter.size() < 7) {
-      slideWindowSearch(image, slideRightWindow, line, rightPoint, dist, ostu_level, maxrect, plateResult, CharSearchDirection::RIGHT, false, result);      
-      if (1 && showDebug) {
-        std::cout << "slideRightWindow:" << slideRightWindow.size() << std::endl;
-      }
-      for (auto seed : slideRightWindow) {
-        cv::rectangle(result, seed.getCharacterPos(), Scalar(0, 0, 255), 1);
-        mserCharacter.push_back(seed);
-      }
-
       if (1 && showDebug) {
         std::cout << "search chinese:" << std::endl;
         std::cout << "judege the left is chinese:" << std::endl;
@@ -1780,7 +1774,19 @@ Mat mserCharMatch(const Mat &src, Mat &match, std::vector<CPlate>& out_plateVec,
         }
       }
     }
-   
+
+    if (mserCharacter.size() < 7) {
+      // change ostu_level
+      slideWindowSearch(image, slideRightWindow, line, rightPoint, dist, plate.getOstuLevel(), maxrect, plateResult, CharSearchDirection::RIGHT, false, result);
+      if (1 && showDebug) {
+        std::cout << "slideRightWindow:" << slideRightWindow.size() << std::endl;
+      }
+      for (auto seed : slideRightWindow) {
+        cv::rectangle(result, seed.getCharacterPos(), Scalar(0, 0, 255), 1);
+        mserCharacter.push_back(seed);
+      }
+    }
+ 
     float angle = atan(k) * 180 / (float)CV_PI;
     if (1 && showDebug) {
       std::cout << "k:" << k << std::endl;

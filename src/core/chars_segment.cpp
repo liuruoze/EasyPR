@@ -83,7 +83,7 @@ int CCharsSegment::charsSegment(Mat input, vector<Mat>& resultVec, Color color) 
   Mat input_grey;
   cvtColor(input, input_grey, CV_BGR2GRAY);
 
-  if (1) {
+  if (0) {
     imshow("plate", input_grey);
     waitKey(0);
     destroyWindow("plate");
