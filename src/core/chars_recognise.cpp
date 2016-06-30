@@ -25,10 +25,18 @@ int CCharsRecognise::charsRecognise(Mat plate, std::string& plateLicense) {
     {
       Mat charMat = matChars.at(j);
       bool isChinses = false;
-      if (j == 0)
+      float maxVal = 0;
+      if (j == 0) {
+        bool judge = true;
         isChinses = true;
-      auto character = CharsIdentify::instance()->identify(charMat, isChinses);
-      plateLicense.append(character.second);
+        auto character = CharsIdentify::instance()->identifyChinese(charMat, maxVal, judge);
+        plateLicense.append(character.second);
+      } 
+      else {
+        isChinses = false;
+        auto character = CharsIdentify::instance()->identify(charMat, isChinses);
+        plateLicense.append(character.second);
+      }
     }
 
   }
@@ -67,11 +75,24 @@ int CCharsRecognise::charsRecognise(CPlate& plate, std::string& plateLicense) {
     for (int j = 0; j < num; j++)
     {
       Mat charMat = matChars.at(j);
-      bool isChinses = false;
-      if (j == 0)
+      bool isChinses = false;   
+      //if (j == 0)
+      //  isChinses = true;
+      //auto character = CharsIdentify::instance()->identify(charMat, isChinses);
+      //plateLicense.append(character.second);
+      std::pair<std::string, std::string> character;
+      float maxVal;
+      if (j == 0) {
         isChinses = true;
-      auto character = CharsIdentify::instance()->identify(charMat, isChinses);
-      plateLicense.append(character.second);
+        bool judge = true;
+        character = CharsIdentify::instance()->identifyChinese(charMat, maxVal, judge);
+        plateLicense.append(character.second);
+      }
+      else {
+        isChinses = false;
+        character = CharsIdentify::instance()->identify(charMat, isChinses);
+        plateLicense.append(character.second);
+      }
 
       CCharacter charResult;
       charResult.setCharacterMat(charMat);

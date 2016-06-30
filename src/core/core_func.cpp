@@ -1254,7 +1254,13 @@ void slideWindowSearch(const Mat &image, std::vector<CCharacter>& slideCharacter
     charCandidateVec.push_back(charCandidate);
   }
 
-  CharsIdentify::instance()->classify(charCandidateVec);
+  if (isChinese) {
+    CharsIdentify::instance()->classifyChinese(charCandidateVec);
+  }
+  else {
+    CharsIdentify::instance()->classify(charCandidateVec);
+  }
+
   double overlapThresh = 0.1;
   NMStoCharacter(charCandidateVec, overlapThresh);
 
@@ -1884,7 +1890,7 @@ Mat mserCharMatch(const Mat &src, Mat &match, std::vector<CPlate>& out_plateVec,
         //plate.setOstuLevel(ostu_level);
 
         Mat charInput = preprocessChar(binary_region, 20);
-        if (0 && showDebug) {
+        if (0 /*&& showDebug*/) {
           imshow("charInput", charInput);
           waitKey(0);
           destroyWindow("charInput");
@@ -1893,7 +1899,9 @@ Mat mserCharMatch(const Mat &src, Mat &match, std::vector<CPlate>& out_plateVec,
         std::string label = "";
         float maxVal = -2.f;
         leftIsChinese = CharsIdentify::instance()->isCharacter(charInput, label, maxVal, true);
-        if (1 && showDebug) {
+        //auto character = CharsIdentify::instance()->identifyChinese(charInput, maxVal, leftIsChinese);
+        //label = character.second;
+        if (0 /* && showDebug*/) {
           std::cout << "isChinese:" << leftIsChinese << std::endl;
           std::cout << "chinese:" << label;
           std::cout << "__score:" << maxVal << std::endl;

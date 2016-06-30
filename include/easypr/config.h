@@ -18,6 +18,7 @@ namespace easypr {
 
 static const char* kDefaultSvmPath = "resources/model/svm.xml";
 static const char* kDefaultAnnPath = "resources/model/ann.xml";
+static const char* kChineseAnnPath = "resources/model/ann_chinese.xml";
 
 typedef enum {
   kForward = 1, // correspond to "has plate"

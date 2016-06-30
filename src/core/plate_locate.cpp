@@ -160,10 +160,10 @@ int CPlateLocate::mserSearch(const Mat &src, const Color color, Mat &out,
       }
     }
 
-    for (auto plate : plateVec){
-      RotatedRect rrect = plate.getPlatePos();
-      rotatedRectangle(match_grey, rrect, Scalar(255));
-    }
+    //for (auto plate : plateVec){
+    //  RotatedRect rrect = plate.getPlatePos();
+    //  rotatedRectangle(match_grey, rrect, Scalar(255));
+    //}
 
     if (0) {
       imshow("match", match_grey);
@@ -683,7 +683,7 @@ int CPlateLocate::sobelOper(const Mat &in, Mat &out, int blurSize, int morphW,
   return 0;
 }
 
-void DeleteNotArea(Mat &inmat) {
+void deleteNotArea(Mat &inmat, Color color = UNKNOWN) {
   Mat input_grey;
   cvtColor(inmat, input_grey, CV_BGR2GRAY);
 
@@ -693,9 +693,16 @@ void DeleteNotArea(Mat &inmat) {
   Mat tmpMat = inmat(Rect_<double>(w * 0.15, h * 0.1, w * 0.7, h * 0.7));
 
   //判断车牌颜色以此确认threshold方法
+  Color plateType;
+  if (UNKNOWN == color) {
+    plateType = getPlateType(tmpMat, true);
+  }
+  else {
+    plateType = color;
+  }
 
-  Color plateType = getPlateType(tmpMat, true);
   Mat img_threshold;
+  // Remain
   if (BLUE == plateType) {
     img_threshold = input_grey.clone();
     Mat tmp = input_grey(Rect_<double>(w * 0.15, h * 0.15, w * 0.7, h * 0.7));
@@ -723,14 +730,29 @@ void DeleteNotArea(Mat &inmat) {
     threshold(input_grey, img_threshold, 10, 255,
               CV_THRESH_OTSU + CV_THRESH_BINARY);
 
+  //img_threshold = input_grey.clone();
+  //spatial_ostu(img_threshold, 8, 2, plateType);
+
   int posLeft = 0;
   int posRight = 0;
 
   int top = 0;
   int bottom = img_threshold.rows - 1;
   clearLiuDing(img_threshold, top, bottom);
+
+  if (0) {
+    imshow("inmat", inmat);
+    waitKey(0);
+    destroyWindow("inmat");
+  }
+
   if (bFindLeftRightBound1(img_threshold, posLeft, posRight)) {
     inmat = inmat(Rect(posLeft, top, w - posLeft, bottom - top));
+    if (0) {
+      imshow("inmat", inmat);
+      waitKey(0);
+      destroyWindow("inmat");
+    }
   }
 }
 
@@ -738,7 +760,7 @@ void DeleteNotArea(Mat &inmat) {
 
 int CPlateLocate::deskew(const Mat &src, const Mat &src_b,
                          vector<RotatedRect> &inRects,
-                         vector<CPlate> &outPlates, bool useDeteleArea) {
+                         vector<CPlate> &outPlates, bool useDeteleArea, Color color) {
   Mat mat_debug;
   src.copyTo(mat_debug);
 
@@ -775,10 +797,18 @@ int CPlateLocate::deskew(const Mat &src, const Mat &src_b,
       Mat bound_mat = src(safeBoundRect);
       Mat bound_mat_b = src_b(safeBoundRect);
 
+      if (0) {
+        imshow("bound_mat_b", bound_mat_b);
+        waitKey(0);
+        destroyWindow("bound_mat_b");
+      }
+
+      //std::cout << "roi_angle:" << roi_angle << std::endl;
+
       Point2f roi_ref_center = roi_rect.center - safeBoundRect.tl();
 
       Mat deskew_mat;
-      if ((roi_angle - 3 < 0 && roi_angle + 3 > 0) || 90.0 == roi_angle ||
+      if ((roi_angle - 5 < 0 && roi_angle + 5 > 0) || 90.0 == roi_angle ||
           -90.0 == roi_angle) {
         deskew_mat = bound_mat;
       } else {
@@ -807,12 +837,13 @@ int CPlateLocate::deskew(const Mat &src, const Mat &src_b,
           deskew_mat = rotated_mat;
       }
 
+
       Mat plate_mat;
       plate_mat.create(HEIGHT, WIDTH, TYPE);
 
       // haitungaga添加，删除非区域，这个函数影响了25%的完整定位率
       if (useDeteleArea)
-        DeleteNotArea(deskew_mat);
+        deleteNotArea(deskew_mat, color);
 
       // 这里对deskew_mat进行了一个筛选
       // 使用了经验数值：2.3和6
@@ -830,13 +861,7 @@ int CPlateLocate::deskew(const Mat &src, const Mat &src_b,
         CPlate plate;
         plate.setPlatePos(roi_rect);
         plate.setPlateMat(plate_mat);
-
-        if (0) {
-          imshow("plate_mat", plate_mat);
-          waitKey(0);
-          destroyWindow("plate_mat");
-        }
-
+     
         outPlates.push_back(plate);
       }
     }
@@ -849,6 +874,12 @@ int CPlateLocate::deskew(const Mat &src, const Mat &src_b,
 
 bool CPlateLocate::rotation(Mat &in, Mat &out, const Size rect_size,
                             const Point2f center, const double angle) {
+  if (0) {
+    imshow("in", in);
+    waitKey(0);
+    destroyWindow("in");
+  }
+
   Mat in_large;
   in_large.create(int(in.rows * 1.5), int(in.cols * 1.5), in.type());
 
@@ -887,6 +918,12 @@ bool CPlateLocate::rotation(Mat &in, Mat &out, const Size rect_size,
 
   out = img_crop;
 
+  if (0) {
+    imshow("out", out);
+    waitKey(0);
+    destroyWindow("out");
+  }
+
   /*imshow("img_crop", img_crop);
   waitKey(0);*/
 
@@ -899,6 +936,12 @@ bool CPlateLocate::rotation(Mat &in, Mat &out, const Size rect_size,
 bool CPlateLocate::isdeflection(const Mat &in, const double angle,
                                 double &slope) { /*imshow("in",in);
                                                 waitKey(0);*/
+  if (0) {
+    imshow("in", in);
+    waitKey(0);
+    destroyWindow("in");
+  }
+  
   int nRows = in.rows;
   int nCols = in.cols;
 
@@ -1111,7 +1154,7 @@ int CPlateLocate::plateMserLocate(Mat src, vector<CPlate> &candPlates, int img_i
 
     Mat resize_src_b;
     resize(src_b, resize_src_b, Size(channelImage.cols, channelImage.rows));
-    deskew(src, resize_src_b, rects_mser, deskewPlate, false);
+    deskew(src, resize_src_b, rects_mser, deskewPlate, false, color);
 
     for (auto dplate : deskewPlate) {
       RotatedRect drect = dplate.getPlatePos();
@@ -1128,7 +1171,7 @@ int CPlateLocate::plateMserLocate(Mat src, vector<CPlate> &candPlates, int img_i
         Rect urect = safe_dRect | safe_sRect;
 
         float iou = (float)inter.area() / (float)urect.area();
-        std::cout << "iou" << iou << std::endl;
+        //std::cout << "iou" << iou << std::endl;
 
         if (iou > 0.95) {       
           splate.setPlateMat(dmat);

@@ -17,6 +17,7 @@ namespace easypr {
 
   CharsIdentify::CharsIdentify() {
     ann_ = ml::ANN_MLP::load<ml::ANN_MLP>(kDefaultAnnPath);
+    annChinese_ = ml::ANN_MLP::load<ml::ANN_MLP>(kChineseAnnPath);
     kv_ = std::shared_ptr<Kv>(new Kv);
     kv_->load("etc/province_mapping");
   }
@@ -125,6 +126,61 @@ namespace easypr {
     }
   }
 
+
+  void CharsIdentify::classifyChinese(std::vector<CCharacter>& charVec){
+    size_t charVecSize = charVec.size();
+
+    if (charVecSize == 0)
+      return;
+
+    Mat featureRows;
+    for (size_t index = 0; index < charVecSize; index++) {
+      Mat charInput = charVec[index].getCharacterMat();
+      Mat feature = charFeatures(charInput, kChineseSize);
+      featureRows.push_back(feature);
+    }
+
+    cv::Mat output(charVecSize, kChineseNumber, CV_32FC1);
+    annChinese_->predict(featureRows, output);
+
+    for (size_t output_index = 0; output_index < charVecSize; output_index++) {
+      CCharacter& character = charVec[output_index];
+      Mat output_row = output.row(output_index);
+      bool isChinese = true;
+
+      float maxVal = -2;
+      int result = -1;
+
+      for (int j = 0; j < kChineseNumber; j++) {
+        float val = output_row.at<float>(j);
+        //std::cout << "j:" << j << "val:" << val << std::endl;
+        if (val > maxVal) {
+          maxVal = val;
+          result = j;
+        }
+      }
+
+      // no match
+      if (-1 == result) {
+        result = 0;
+        maxVal = 0;
+        isChinese = false;
+      }
+
+      auto index = result + kCharsTotalNumber - kChineseNumber;
+      const char* key = kChars[index];
+      std::string s = key;
+      std::string province = kv_->get(s);
+
+      /*std::cout << "result:" << result << std::endl;
+      std::cout << "maxVal:" << maxVal << std::endl;*/
+
+      character.setCharacterScore(maxVal);
+      character.setCharacterStr(province);
+      character.setIsChinese(isChinese);
+    }
+  }
+
   int CharsIdentify::classify(cv::Mat f, float& maxVal, bool isChinses){
     int result = -1;
 
@@ -205,28 +261,40 @@ namespace easypr {
       return false;
   }*/
 
-  std::pair<std::string, std::string> CharsIdentify::identifyChinese(cv::Mat input) {
-    cv::Mat feature = charFeatures(input, kPredictSize);
+  std::pair<std::string, std::string> CharsIdentify::identifyChinese(cv::Mat input, float& out, bool& isChinese) {
+    cv::Mat feature = charFeatures(input, kChineseSize);
     float maxVal = -2;
 
     int result = -1;
 
     cv::Mat output(1, kChineseNumber, CV_32FC1);
-    ann_->predict(feature, output);
+    annChinese_->predict(feature, output);
 
     for (int j = 0; j < kChineseNumber; j++) {
       float val = output.at<float>(j);
-      // std::cout << "j:" << j << "val:" << val << std::endl;
+      //std::cout << "j:" << j << "val:" << val << std::endl;
       if (val > maxVal) {
         maxVal = val;
         result = j;
       }
     }
 
+    // no match
+    if (-1 == result) {
+      result = 0;
+      maxVal = 0;
+      isChinese = false;
+    }
+    else if (maxVal > 0.9){
+      isChinese = true;
+    }
+
     auto index = result + kCharsTotalNumber - kChineseNumber;
     const char* key = kChars[index];
     std::string s = key;
     std::string province = kv_->get(s);
+
+    out = maxVal;
 
     return std::make_pair(s, province);
   }
