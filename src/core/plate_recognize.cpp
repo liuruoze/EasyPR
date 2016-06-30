@@ -350,6 +350,9 @@ int CPlateRecognize::plateRecognize(Mat src, std::vector<CPlate> &licenseVec, in
         licenseVec.push_back(item);
       }
       else {
+        std::string license = plateColor;
+        item.setPlateStr(license);
+        licenseVec.push_back(item);
         if (1) {
           std::cout << "resultCR:" << resultCR << std::endl;
         }

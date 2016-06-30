@@ -78,7 +78,10 @@ Mat scaleImage(const Mat& image, const Size& maxSize, double& scale_ratio);
 RotatedRect scaleBackRRect(const RotatedRect& rr, const float scale_ratio);
 
 //! use verify size to first generate char candidates
-Mat mserCharMatch(const Mat &src, Mat &match, std::vector<CPlate>& plateVec, Color color, int index = 0, bool showDebug = false);
+Mat mserCharMatch(const Mat &src, Mat &match, std::vector<CPlate>& plateVec, Color color, 
+  bool usePlateMser, std::vector<RotatedRect>& out_plateRRect, int index = 0, bool showDebug = false);
+
+bool computeIOU(RotatedRect rrect1, RotatedRect rrect2, const Mat& img, float thresh);
 
 /** @brief convert form mser point to image.
 

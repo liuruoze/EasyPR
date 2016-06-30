@@ -81,12 +81,18 @@ bool CPlateLocate::verifySizes(RotatedRect mr) {
 
 //! mser search method
 int CPlateLocate::mserSearch(const Mat &src, const Color color, Mat &out,
-  vector<CPlate>& out_plateVec, int img_index, bool showDebug) {
+  vector<CPlate>& out_plateVec, bool usePlateMser, vector<RotatedRect>& out_plateRRect, 
+  int img_index, bool showDebug) {
   Mat match_grey;
 
   vector<CPlate> plateVec;
   //mserMatch(src, match_grey, r, plateRects, charRects);
-  mserCharMatch(src, match_grey, plateVec, color, img_index, showDebug);
+  vector<RotatedRect> plateRRect;
+  mserCharMatch(src, match_grey, plateVec, color, usePlateMser, plateRRect, img_index, showDebug);
+
+  for (auto rrect : plateRRect) {
+    out_plateRRect.push_back(rrect);
+  }
 
   //calculet avg dist
   /*float sumdist = 0, avgdist = 0;
@@ -861,7 +867,8 @@ int CPlateLocate::deskew(const Mat &src, const Mat &src_b,
         CPlate plate;
         plate.setPlatePos(roi_rect);
         plate.setPlateMat(plate_mat);
-     
+        if (color != UNKNOWN) plate.setPlateColor(color);
+
         outPlates.push_back(plate);
       }
     }
@@ -1105,6 +1112,15 @@ int CPlateLocate::plateMserLocate(Mat src, vector<CPlate> &candPlates, int img_i
   std::vector<Mat> channelImages;
   std::vector<Color> flags;
 
+  std::vector<RotatedRect> all_plateRRect;
+  vector<CPlate> all_plates;
+
+  vector<Mat> src_b_vec;
+
+  bool usePlateMser = false;
+  int scale_size = 1024;
+  double scale_ratio = 1;
+
   // only conside blue plate
   if (1) {
     Mat grayImage;
@@ -1121,9 +1137,6 @@ int CPlateLocate::plateMserLocate(Mat src, vector<CPlate> &candPlates, int img_i
     flags.push_back(YELLOW);
   }
 
-  int scale_size = 1024;
-  double scale_ratio = 1;
-
   for (size_t i = 0; i < channelImages.size(); ++i) {
     vector<RotatedRect> rects_mser;
     vector<CPlate> plates;
@@ -1134,7 +1147,9 @@ int CPlateLocate::plateMserLocate(Mat src, vector<CPlate> &candPlates, int img_i
     Mat image = scaleImage(channelImage, Size(scale_size, scale_size), scale_ratio);
 
     // vector<RotatedRect> rects;
-    mserSearch(image, color, src_b, plates, img_index, false);
+    mserSearch(image, color, src_b, plates, usePlateMser, all_plateRRect, img_index, false);
+
+    //std::copy(plateRRect.begin(), plateRRect.end(), all_plateRRect.end());
 
     std::vector<CPlate> deskewPlate;
     std::vector<CPlate> mserPlate;
@@ -1148,39 +1163,94 @@ int CPlateLocate::plateMserLocate(Mat src, vector<CPlate> &candPlates, int img_i
       RotatedRect scaleRect = scaleBackRRect(rrect, (float)scale_ratio);
       plate.setPlatePos(scaleRect);
       plate.setPlateColor(color);
+
       rects_mser.push_back(scaleRect);
       mserPlate.push_back(plate);
+      all_plates.push_back(plate);
     }
 
     Mat resize_src_b;
     resize(src_b, resize_src_b, Size(channelImage.cols, channelImage.rows));
+    src_b_vec.push_back(resize_src_b);
+
     deskew(src, resize_src_b, rects_mser, deskewPlate, false, color);
 
     for (auto dplate : deskewPlate) {
       RotatedRect drect = dplate.getPlatePos();
       Mat dmat = dplate.getPlateMat();
-      Rect_<float> safe_dRect;
-      calcSafeRect(drect, src, safe_dRect);
+      //Rect_<float> safe_dRect;
+      //calcSafeRect(drect, src, safe_dRect);
 
       for (auto splate : mserPlate) {
         RotatedRect srect = splate.getPlatePos();
-        Rect_<float> safe_sRect;
-        calcSafeRect(srect, src, safe_sRect);
-
-        Rect inter = safe_dRect & safe_sRect;
-        Rect urect = safe_dRect | safe_sRect;
-
-        float iou = (float)inter.area() / (float)urect.area();
-        //std::cout << "iou" << iou << std::endl;
-
-        if (iou > 0.95) {       
+        bool isSimilar = computeIOU(drect, srect, src, 0.95f);
+        if (isSimilar) {
           splate.setPlateMat(dmat);
           candPlates.push_back(splate);
           break;
         }
+
+        //Rect_<float> safe_sRect;
+        //calcSafeRect(srect, src, safe_sRect);
+
+        //Rect inter = safe_dRect & safe_sRect;
+        //Rect urect = safe_dRect | safe_sRect;
+
+        //float iou = (float)inter.area() / (float)urect.area();
+        ////std::cout << "iou" << iou << std::endl;
+
+        //if (iou > 0.95) {       
+        //  splate.setPlateMat(dmat);
+        //  candPlates.push_back(splate);
+        //  break;
+        //}
       }
     }
   }
+
+  if (usePlateMser) {
+    std::vector<RotatedRect> plateRRect_B;
+    std::vector<RotatedRect> plateRRect_Y;
+
+    for (auto rrect : all_plateRRect) {
+      RotatedRect theRect = scaleBackRRect(rrect, (float)scale_ratio);
+      //rotatedRectangle(src, theRect, Scalar(255, 0, 0));
+      for (auto plate : all_plates) {
+        RotatedRect plateRect = plate.getPlatePos();
+        //rotatedRectangle(src, plateRect, Scalar(0, 255, 0));
+        bool isSimilar = computeIOU(theRect, plateRect, src, 0.8f);
+        if (isSimilar) {
+          //rotatedRectangle(src, theRect, Scalar(0, 0, 255));
+          Color color = plate.getPlateColor();
+          if (color == BLUE) plateRRect_B.push_back(theRect);
+          if (color == YELLOW) plateRRect_Y.push_back(theRect);
+        }
+      }
+    }
+
+    for (size_t i = 0; i < channelImages.size(); ++i) {
+      Color color = flags.at(i);
+      Mat resize_src_b = src_b_vec.at(i);
+
+      std::vector<CPlate> deskewMserPlate;
+      if (color == BLUE)
+        deskew(src, resize_src_b, plateRRect_B, deskewMserPlate, false, color);
+      if (color == YELLOW)
+        deskew(src, resize_src_b, plateRRect_Y, deskewMserPlate, false, color);
+
+      for (auto plate : deskewMserPlate) {
+        candPlates.push_back(plate);
+      }
+    }
+  }
+
+  
+  if (0) {
+    imshow("src", src);
+    waitKey(0);
+    destroyWindow("src");
+  }
+
   return 0;
 }
 
