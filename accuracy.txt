@@ -2062,3 +2062,8 @@ Recall:70.293%, Precise:81.8988%, Fscore:75.6534%.
 Recall:62.3397%, Precise:77.1824%, Fscore:68.9715%.
 0-error:61.1111%,  1-error:72.2222%,  Chinese-precise:75%  
 总时间:174秒,  平均执行时间:3.48秒
+2016-06-30 09:32:23
+总图片数:50,  Plates count:52,  未识出图片:16,  定位率:69.2308%  
+Recall:62.3397%, Precise:77.1824%, Fscore:68.9715%.
+0-error:61.1111%,  1-error:72.2222%,  Chinese-precise:75%  
+总时间:172秒,  平均执行时间:3.44秒
