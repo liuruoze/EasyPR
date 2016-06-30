@@ -3,6 +3,7 @@
 
 #include <opencv2/opencv.hpp>
 #include "easypr/core/plate.hpp"
+#include "easypr/core/character.hpp"
 
 using namespace cv;
 
@@ -62,6 +63,10 @@ Rect GetChineseRect(const Rect rectSpe);
 bool verifyCharSizes(Rect r);
 bool verifyPlateSize(Rect mr);
 bool verifyRotatedPlateSizes(RotatedRect mr, bool showDebug = false);
+
+//! 非极大值抑制
+void NMStoCharacter(std::vector<CCharacter> &inVec, double overlap);
+
 
 // draw rotatedRectangle
 void rotatedRectangle(InputOutputArray img, RotatedRect rect,
