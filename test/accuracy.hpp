@@ -86,7 +86,7 @@ namespace easypr {
       CPlateRecognize pr;
 
       // 设置Debug模式
-      pr.setResultShow(true);
+      pr.setResultShow(false);
       pr.setLifemode(true);
       // 设置要处理的一张图片中最多有多少车牌
       pr.setMaxPlates(4);
@@ -118,10 +118,10 @@ namespace easypr {
 
       // 未识别的图片数量
 
-      int count_norecogin = 0;
+      int count_nodetect = 0;
+      int count_norecogn = 0;
 
       std::list<std::string> not_recognized_files;
-
 
       // all the ground-truth plates
       float all_plate_count = 0;
@@ -225,7 +225,7 @@ namespace easypr {
 
           all_plate_count++;
 
-          if (matchPlate) {
+          if (matchPlate && bestmatch > 0.5f) {
             string matchPlateLicense = matchPlate->getPlateStr();
             vector<string> spilt_plate = Utils::splitString(matchPlateLicense, ':');
 
@@ -263,13 +263,14 @@ namespace easypr {
             } 
             else {
               cout << "No string" << " (d)" << endl;
+              count_norecogn++;
             }
           }
           else {
             cout << kv->get("empty_plate") << endl;
             if (license != kv->get("empty_plate")) {
               not_recognized_files.push_back(license);
-              count_norecogin++;
+              count_nodetect++;
             }
           }
 
@@ -360,9 +361,11 @@ namespace easypr {
 
       xMainNode.writeToFile(path_result.c_str());
 
-      float count_recogin = float(all_plate_count - count_norecogin);
-      float count_rate = count_recogin / all_plate_count;
+      float count_detect = float(all_plate_count - count_nodetect);
+      float count_rate = count_detect / all_plate_count;
       cout << kv->get("locate_rate") << ":" << count_rate * 100 << "%  " << endl;
+
+      float count_recogin = float(count_detect - count_norecogn);
 
       if (count_recogin > 0) {
         non_error_rate = non_error_count / count_recogin;
@@ -424,7 +427,7 @@ namespace easypr {
        
         myfile << kv->get("sum_pictures") << ":" << count_all << ",  ";
         myfile << "Plates count" << ":" << all_plate_count << ",  ";
-        myfile << kv->get("unrecognized") << ":" << count_norecogin << ",  ";
+        myfile << kv->get("unrecognized") << ":" << count_nodetect << ",  ";
         myfile << kv->get("locate_rate") << ":" << count_rate * 100 << "%  "
           << endl;
 

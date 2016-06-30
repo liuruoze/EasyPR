@@ -1313,6 +1313,27 @@ bool judegMDOratio2(const Mat& image, const Rect& rect, std::vector<Point>& cont
   return true;
 }
 
+bool computeIOU(RotatedRect rrect1, RotatedRect rrect2, const Mat& img, float thresh) {
+  Rect_<float> safe_rect1;
+  calcSafeRect(rrect1, img, safe_rect1);
+
+  Rect_<float> safe_rect2;
+  calcSafeRect(rrect2, img, safe_rect2);
+
+  Rect inter = safe_rect1 & safe_rect2;
+  Rect urect = safe_rect1 | safe_rect2;
+
+  float iou = (float)inter.area() / (float)urect.area();
+  //std::cout << "iou" << iou << std::endl;
+
+  if (iou > thresh) {
+    return true;
+  }
+
+  return false;
+}
+
+
 bool judegMDOratio(const Mat& image, const Rect& rect, std::vector<Point>& contour, Mat& result){
   
   Rect normalRect = adaptive_charrect_from_rect(rect, image.cols, image.rows);
@@ -1571,7 +1592,8 @@ void removeOutliers(std::vector<CCharacter>& charGroup, double thresh, Mat resul
 }
 
 //! use verify size to first generate char candidates
-Mat mserCharMatch(const Mat &src, Mat &match, std::vector<CPlate>& out_plateVec, Color color, int img_index, 
+Mat mserCharMatch(const Mat &src, Mat &match, std::vector<CPlate>& out_plateVec, Color color, 
+  bool usePlateMser, std::vector<RotatedRect>& out_plateRRect, int img_index,
   bool showDebug) {
   Mat image = src;
 
@@ -1605,7 +1627,14 @@ Mat mserCharMatch(const Mat &src, Mat &match, std::vector<CPlate>& out_plateVec,
   for (size_t index = 0; index < size; index++) {
     Rect rect = all_boxes[index];
     std::vector<Point> contour = all_contours[index];
+    RotatedRect rrect = minAreaRect(Mat(contour));
 
+    if (usePlateMser && verifyRotatedPlateSizes(rrect)) {
+      //rotatedRectangle(result, rrect, Scalar(255, 0, 0), 2);
+      out_plateRRect.push_back(rrect);
+    }
+
+    // find character
     if (verifyCharSizes(rect)) {
       Mat mserMat = adaptive_image_from_points(contour, rect, Size(char_size, char_size));
       Mat charInput = preprocessChar(mserMat, char_size);
@@ -1832,7 +1861,7 @@ Mat mserCharMatch(const Mat &src, Mat &match, std::vector<CPlate>& out_plateVec,
     }
      
     if (mserCharacter.size() < 7) {
-      double thresh1 = 0.1;
+      double thresh1 = 0.15;
       double thresh2 = 2.0;
       searchWeakSeed(searchCandidate, searchRightWeakSeed, thresh1, thresh2, line, rightPoint,
         maxrect, plateResult, result, CharSearchDirection::RIGHT);

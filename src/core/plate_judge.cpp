@@ -135,6 +135,8 @@ namespace easypr {
 
           int resultCascade = plateSetScore(plate);
 
+          //plate.setPlateMat(inMat);
+
           if (resultCascade == 0) {
             if (0) {
               imshow("inMat", inMat);

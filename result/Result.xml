@@ -27,7 +27,7 @@
 	<image>
 		<imageName>¥®A561WP</imageName>
 		<taggedRectangles>
-			<taggedRectangle x="512" y="180" width="126" height="33" rotation="0" locateType="2">¿∂≈∆:¥®A561WP</taggedRectangle>
+			<taggedRectangle x="513" y="180" width="124" height="33" rotation="0" locateType="2">¿∂≈∆:¥®A561WP</taggedRectangle>
 		</taggedRectangles>
 	</image>
 	<image>
@@ -69,17 +69,19 @@
 	<image>
 		<imageName>¥®AKQ291</imageName>
 		<taggedRectangles>
-			<taggedRectangle x="400" y="156" width="100" height="27" rotation="0" locateType="2">¿∂≈∆:¥®AKQ291</taggedRectangle>
+			<taggedRectangle x="404" y="156" width="92" height="27" rotation="0" locateType="2">¿∂≈∆:¥®AKQ291</taggedRectangle>
 		</taggedRectangles>
 	</image>
 	<image>
 		<imageName>¥®AM1186</imageName>
-		<taggedRectangles/>
+		<taggedRectangles>
+			<taggedRectangle x="485" y="218" width="88" height="23" rotation="-1" locateType="2">¿∂≈∆</taggedRectangle>
+		</taggedRectangles>
 	</image>
 	<image>
 		<imageName>¥®AN4E10</imageName>
 		<taggedRectangles>
-			<taggedRectangle x="452" y="186" width="139" height="35" rotation="1" locateType="2">¿∂≈∆:«‡AN4E1M</taggedRectangle>
+			<taggedRectangle x="456" y="186" width="131" height="35" rotation="1" locateType="2">¿∂≈∆:¥®AW4E10</taggedRectangle>
 		</taggedRectangles>
 	</image>
 	<image>
@@ -90,7 +92,9 @@
 	</image>
 	<image>
 		<imageName>¥®AS9V79</imageName>
-		<taggedRectangles/>
+		<taggedRectangles>
+			<taggedRectangle x="203" y="39" width="74" height="16" rotation="0" locateType="2">¿∂≈∆</taggedRectangle>
+		</taggedRectangles>
 	</image>
 	<image>
 		<imageName>¥®AUU093</imageName>
@@ -116,7 +120,9 @@
 	</image>
 	<image>
 		<imageName>πATK071</imageName>
-		<taggedRectangles/>
+		<taggedRectangles>
+			<taggedRectangle x="1139" y="370" width="71" height="25" rotation="1" locateType="2">¿∂≈∆</taggedRectangle>
+		</taggedRectangles>
 	</image>
 	<image>
 		<imageName>ª¶ALB022</imageName>
@@ -172,7 +178,10 @@
 	</image>
 	<image>
 		<imageName>”ÂBE7773</imageName>
-		<taggedRectangles/>
+		<taggedRectangles>
+			<taggedRectangle x="841" y="362" width="209" height="65" rotation="13" locateType="2">¿∂≈∆:–¬6E7743</taggedRectangle>
+			<taggedRectangle x="695" y="26" width="113" height="25" rotation="-14" locateType="2">¿∂≈∆</taggedRectangle>
+		</taggedRectangles>
 	</image>
 	<image>
 		<imageName>‘¡A2HQ34</imageName>
@@ -208,12 +217,14 @@
 	</image>
 	<image>
 		<imageName>‘¡BA103N</imageName>
-		<taggedRectangles/>
+		<taggedRectangles>
+			<taggedRectangle x="313" y="177" width="105" height="32" rotation="7" locateType="2">¿∂≈∆</taggedRectangle>
+		</taggedRectangles>
 	</image>
 	<image>
 		<imageName>‘¡BDB720</imageName>
 		<taggedRectangles>
-			<taggedRectangle x="920" y="657" width="125" height="30" rotation="0" locateType="2">¿∂≈∆:‘¡BDB720</taggedRectangle>
+			<taggedRectangle x="918" y="657" width="120" height="30" rotation="0" locateType="2">¿∂≈∆:‘¡BDB720</taggedRectangle>
 		</taggedRectangles>
 	</image>
 	<image>
@@ -231,11 +242,14 @@
 		<imageName>‘¡X30479</imageName>
 		<taggedRectangles>
 			<taggedRectangle x="1692" y="895" width="226" height="49" rotation="0" locateType="2">¿∂≈∆:–¬QF5224</taggedRectangle>
+			<taggedRectangle x="1095" y="793" width="196" height="53" rotation="-3" locateType="2">ª∆≈∆</taggedRectangle>
 		</taggedRectangles>
 	</image>
 	<image>
 		<imageName>À’A20Q03</imageName>
-		<taggedRectangles/>
+		<taggedRectangles>
+			<taggedRectangle x="483" y="351" width="257" height="60" rotation="-2" locateType="2">¿∂≈∆</taggedRectangle>
+		</taggedRectangles>
 	</image>
 	<image>
 		<imageName>À’A36E80</imageName>
@@ -267,13 +281,18 @@
 	</image>
 	<image>
 		<imageName>À’AVW997</imageName>
-		<taggedRectangles/>
+		<taggedRectangles>
+			<taggedRectangle x="365" y="414" width="85" height="32" rotation="-15" locateType="2">¿∂≈∆</taggedRectangle>
+			<taggedRectangle x="317" y="428" width="57" height="21" rotation="-26" locateType="2">¿∂≈∆</taggedRectangle>
+		</taggedRectangles>
 	</image>
 	<image>
 		<imageName>‘•U00000</imageName>
 		<taggedRectangles>
 			<taggedRectangle x="888" y="650" width="112" height="28" rotation="0" locateType="2">¿∂≈∆:‘•1DQPQU</taggedRectangle>
+			<taggedRectangle x="1278" y="84" width="297" height="51" rotation="15" locateType="2">ª∆≈∆:”Â1QXT11</taggedRectangle>
 			<taggedRectangle x="211" y="28" width="125" height="28" rotation="0" locateType="2">¿∂≈∆:¡…0T507</taggedRectangle>
+			<taggedRectangle x="208" y="104" width="94" height="28" rotation="0" locateType="2">¿∂≈∆</taggedRectangle>
 		</taggedRectangles>
 	</image>
 	<image>

@@ -180,7 +180,7 @@ namespace easypr {
 
     if (1) {
       imshow("EasyPR", img_window);
-      waitKey(500);
+      waitKey(0);
       destroyWindow("EasyPR");
     }
 
