@@ -16,13 +16,13 @@ class CharsIdentify {
   void classify(cv::Mat featureRows, std::vector<int>& out_maxIndexs,
     std::vector<float>& out_maxVals, std::vector<bool> isChineseVec);
   void classify(std::vector<CCharacter>& charVec);
-
+  void classifyChinese(std::vector<CCharacter>& charVec);
 
   std::pair<std::string, std::string> identify(cv::Mat input, bool isChinese = false);
   int identify(std::vector<cv::Mat> inputs, std::vector<std::pair<std::string, std::string>>& outputs,
     std::vector<bool> isChineseVec);
 
-  std::pair<std::string, std::string> identifyChinese(cv::Mat input);
+  std::pair<std::string, std::string> identifyChinese(cv::Mat input, float& result, bool& isChinese);
 
   bool isCharacter(cv::Mat input, std::string& label, float& maxVal, bool isChinese = false);
 
@@ -32,6 +32,7 @@ class CharsIdentify {
 
   static CharsIdentify* instance_;
   cv::Ptr<cv::ml::ANN_MLP> ann_;
+  cv::Ptr<cv::ml::ANN_MLP> annChinese_;
   std::shared_ptr<Kv> kv_;
 };
 }

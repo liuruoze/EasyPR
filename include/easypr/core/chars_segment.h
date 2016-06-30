@@ -17,6 +17,9 @@ class CCharsSegment {
 
   bool verifyCharSizes(Mat r);
 
+  // find the best chinese binaranzation method
+  void judgeChinese(Mat in, Mat& out, Color plateType);
+
   //! 字符预处理
 
   Mat preprocessChar(Mat in);

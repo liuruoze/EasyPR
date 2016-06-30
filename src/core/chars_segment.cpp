@@ -1,4 +1,5 @@
 #include "easypr/core/chars_segment.h"
+#include "easypr/core/chars_identify.h"
 #include "easypr/config.h"
 
 using namespace std;
@@ -75,8 +76,66 @@ Mat CCharsSegment::preprocessChar(Mat in) {
   return out;
 }
 
-//! 字符分割与排序
 
+//! choose the bese threshold method for chinese
+void CCharsSegment::judgeChinese(Mat in, Mat& out, Color plateType) {
+  
+  Mat auxRoi = in;
+  float valOstu = -1.f, valAdap = -1.f;
+  Mat roiOstu, roiAdap;
+  bool isChinese = true;
+  if (1) {
+    if (BLUE == plateType) {
+      threshold(auxRoi, roiOstu, 0, 255, CV_THRESH_BINARY + CV_THRESH_OTSU);
+    }
+    else if (YELLOW == plateType) {
+      threshold(auxRoi, roiOstu, 0, 255, CV_THRESH_BINARY_INV + CV_THRESH_OTSU);
+    }
+    else if (WHITE == plateType) {
+      threshold(auxRoi, roiOstu, 0, 255, CV_THRESH_BINARY_INV + CV_THRESH_OTSU);
+    }
+    else {
+      threshold(auxRoi, roiOstu, 0, 255, CV_THRESH_OTSU + CV_THRESH_BINARY);
+    }
+    roiOstu = preprocessChar(roiOstu);
+    if (0) {
+      imshow("roiOstu", roiOstu);
+      waitKey(0);
+      destroyWindow("roiOstu");
+    }
+    auto character = CharsIdentify::instance()->identifyChinese(roiOstu, valOstu, isChinese);
+  }
+  if (1) {
+    if (BLUE == plateType) {
+      adaptiveThreshold(auxRoi, roiAdap, 255, ADAPTIVE_THRESH_MEAN_C, THRESH_BINARY, 3, 0);
+    }
+    else if (YELLOW == plateType) {
+      adaptiveThreshold(auxRoi, roiAdap, 255, ADAPTIVE_THRESH_MEAN_C, THRESH_BINARY_INV, 3, 0);
+    }
+    else if (WHITE == plateType) {
+      adaptiveThreshold(auxRoi, roiAdap, 255, ADAPTIVE_THRESH_MEAN_C, THRESH_BINARY_INV, 3, 0);
+    }
+    else {
+      adaptiveThreshold(auxRoi, roiAdap, 255, ADAPTIVE_THRESH_MEAN_C, THRESH_BINARY, 3, 0);
+    }
+    roiAdap = preprocessChar(roiAdap);
+    auto character = CharsIdentify::instance()->identifyChinese(roiAdap, valAdap, isChinese);
+  }
+
+  std::cout << "valOstu: " << valOstu << std::endl;
+  std::cout << "valAdap: " << valAdap << std::endl;
+
+  if (valOstu >= valAdap) {
+    out = roiOstu;
+  }
+  else {
+    out = roiAdap;
+  }
+
+}
+
+
+//! 字符分割与排序
 int CCharsSegment::charsSegment(Mat input, vector<Mat>& resultVec, Color color) {
   if (!input.data) return 0x01;
 
@@ -227,26 +286,35 @@ int CCharsSegment::charsSegment(Mat input, vector<Mat>& resultVec, Color color) 
     Mat auxRoi(input_grey, mr);
     Mat newRoi;
 
-    if (BLUE == plateType) {
-      //newRoi = auxRoi.clone();
-      //spatial_ostu(newRoi, 5, 5, plateType);
-      if (i != 0) 
-        threshold(auxRoi, newRoi, 0, 255, CV_THRESH_BINARY + CV_THRESH_OTSU);
-      else
-        adaptiveThreshold(auxRoi, newRoi, 255, ADAPTIVE_THRESH_MEAN_C, THRESH_BINARY, 3, 0);
-      
-    } else if (YELLOW == plateType) {
-      threshold(auxRoi, newRoi, 0, 255, CV_THRESH_BINARY_INV + CV_THRESH_OTSU);
-
-    } else if (WHITE == plateType) {
-      threshold(auxRoi, newRoi, 0, 255, CV_THRESH_OTSU + CV_THRESH_BINARY_INV);
-    } else {
-      threshold(auxRoi, newRoi, 0, 255, CV_THRESH_OTSU + CV_THRESH_BINARY);
+    if (i == 0) {
+      judgeChinese(auxRoi, newRoi, plateType);
     }
+    else {
+      if (BLUE == plateType) {
+        //newRoi = auxRoi.clone();
+        //spatial_ostu(newRoi, 5, 5, plateType);
+        if (i != 0) {
+          threshold(auxRoi, newRoi, 0, 255, CV_THRESH_BINARY + CV_THRESH_OTSU);
+        }
+        else {
+          adaptiveThreshold(auxRoi, newRoi, 255, ADAPTIVE_THRESH_MEAN_C, THRESH_BINARY, 3, 0);
+        }
+      }
+      else if (YELLOW == plateType) {
+        threshold(auxRoi, newRoi, 0, 255, CV_THRESH_BINARY_INV + CV_THRESH_OTSU);
 
-    // 归一化大小
-    newRoi = preprocessChar(newRoi);
+      }
+      else if (WHITE == plateType) {
+        threshold(auxRoi, newRoi, 0, 255, CV_THRESH_OTSU + CV_THRESH_BINARY_INV);
+      }
+      else {
+        threshold(auxRoi, newRoi, 0, 255, CV_THRESH_OTSU + CV_THRESH_BINARY);
+      }
 
+      // 归一化大小
+      newRoi = preprocessChar(newRoi);
+    }
+     
     if (0) {
       if (i == 0) {
         imshow("chinese", newRoi);
