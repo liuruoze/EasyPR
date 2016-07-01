@@ -10,6 +10,9 @@
 #include "easypr/core/core_func.h"
 #include "easypr/util/util.h"
 #include "thirdparty/xmlParser/xmlParser.h"
+#include "easypr/core/params.h"
+#include "config.hpp"
+#include "result.hpp"
 
 using namespace std;
 
@@ -61,7 +64,7 @@ namespace easypr {
       return 0;
     }
 
-    int accuracyTest(const char* test_path) {
+    int accuracyTest(const char* test_path, Result& result = Result(), bool useParams = false) {
       std::shared_ptr<easypr::Kv> kv(new easypr::Kv);
       kv->load("etc/chinese_mapping");
 
@@ -351,6 +354,9 @@ namespace easypr {
       }
       time(&end);
 
+      // the xml detection result 
+      xMainNode.writeToFile(path_result.c_str());
+
       cout << "------------------" << endl;
       cout << "Easypr accuracy test end!" << endl;
       cout << "------------------" << endl;
@@ -358,8 +364,6 @@ namespace easypr {
       cout << kv->get("summaries") << ":" << endl;
       cout << kv->get("sum_pictures") << ":" << count_all << ",  ";
       cout << "Plates count" << ":" << all_plate_count << ",  ";
-
-      xMainNode.writeToFile(path_result.c_str());
 
       float count_detect = float(all_plate_count - count_nodetect);
       float count_rate = count_detect / all_plate_count;
@@ -414,9 +418,28 @@ namespace easypr {
       }
       cout << endl;
       */
+
+      // set the result.
+      if (useParams) {
+        result.setPicturesCount(count_all);
+        result.setPlatesCount((int)all_plate_count);
+        result.setDetectRate((float)count_rate * 100);
+
+        result.setDetectRecall((float)recall_2003_result * 100);
+        result.setDetectPrecise((float)precise_2003_result * 100);
+        result.setDetectFscore((float)fscore_2003_result * 100);
+
+        result.setZeroError((float)non_error_rate * 100);
+        result.setOneError((float)one_error_rate * 100);
+        result.setChinesePreciese((float)(1 - chinese_error_rate) * 100);
+
+        result.setSeconds((float)seconds);
+        result.setAvgSeconds((float)avgsec);
+      }
+      
       cout << "------------------" << endl;
 
-      ofstream myfile("accuracy.txt", ios::app);
+      ofstream myfile("result/accuracy.txt", ios::app);
       if (myfile.is_open()) {
         time_t t = time(0);  // get time now
         struct tm* now = localtime(&t);
@@ -448,7 +471,69 @@ namespace easypr {
       return 0;
     }
 
+    int gridSearchTest(const char* test_path) {
+
+      std::vector<Result> all_results;
+
+      bool b1[] = {true};
+      int b1_c = 1;
+
+      float f1[] = {0.1f, 0.2f};
+      int f1_c = 2;
+
+      Config config;
+      config.setParam1b(b1, b1_c);
+      config.setParam1f(f1, f1_c);
+
+      for (size_t i1 = 0; i1 < config.getParam1b().size(); i1++) {
+        bool b1 = config.getParam1b().at(i1);
+
+        for (size_t i2 = 0; i2 < config.getParam1f().size(); i2++) {
+          float f1 = config.getParam1f().at(i2);
+
+          CParams::instance()->setParam1b(b1);
+          CParams::instance()->setParam1f(f1);
+
+          Result result;
+          accuracyTest(test_path, result, true);
+
+          result.getParams().setParam1b(b1);
+          result.getParams().setParam1f(f1);
+
+          all_results.push_back(result);
+        }
+      }
+
+      std::sort(all_results.begin(), all_results.end(),
+        [](const Result& r1, const Result& r2) {
+        return r1.getChinesePreciese() > r2.getChinesePreciese();
+      });
+
+      for (auto result : all_results) {
+        std::cout << result << std::endl;
+ 
+        ofstream myfile("result/gridSearch.txt", ios::app);
+        if (myfile.is_open()) {
+          time_t t = time(0);  // get time now
+          struct tm* now = localtime(&t);
+          char buf[80];
+
+          strftime(buf, sizeof(buf), "%Y-%m-%d %X", now);
+          myfile << string(buf) << endl;
+          myfile << result << std::endl;
+          myfile.close();
+        }
+      }
+      
+      return 0;
+    }
+
+
+
   }
+
+
+
 }
 
 #endif  // EASYPR_ACCURACY_HPP

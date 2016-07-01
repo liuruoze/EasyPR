@@ -120,6 +120,9 @@
     <ClCompile Include="..\thirdparty\LBP\lbp.cpp">
       <Filter>源文件\thirdparty</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\core\params.cpp">
+      <Filter>源文件\core</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\easypr\preprocess\deface.h">
@@ -199,6 +202,9 @@
     </ClInclude>
     <ClInclude Include="..\thirdparty\textDetect\erfilter.hpp">
       <Filter>头文件\thirdparty</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\easypr\core\params.h">
+      <Filter>头文件\easypr\core</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

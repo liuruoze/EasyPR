@@ -165,7 +165,9 @@
   <ItemGroup>
     <ClInclude Include="..\test\accuracy.hpp" />
     <ClInclude Include="..\test\chars.hpp" />
+    <ClInclude Include="..\test\config.hpp" />
     <ClInclude Include="..\test\plate.hpp" />
+    <ClInclude Include="..\test\result.hpp" />
     <ClInclude Include="..\thirdparty\xmlParser\xmlParser.h" />
   </ItemGroup>
   <ItemGroup>
