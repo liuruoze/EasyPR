@@ -13,7 +13,8 @@ namespace easypr {
   }
 
   PlateJudge::PlateJudge() { 
-    svm_ = ml::SVM::load<ml::SVM>(kDefaultSvmPath); 
+    //svm_ = ml::SVM::load<ml::SVM>(kDefaultSvmPath); 
+    svm_ = ml::SVM::load<ml::SVM>(kLBPSvmPath);   
     extractFeature = getLBPFeatures;
   }
 
@@ -111,19 +112,22 @@ namespace easypr {
     int num = inVec.size();
     bool outputResult = false;
 
+    bool useCascadeJudge = false;
+    bool useShirkMat = true;
+
     for (int j = 0; j < num; j++) {
       CPlate plate = inVec[j];
       Mat inMat = plate.getPlateMat();
 
-      if (0) {
-        imshow("inMat", inMat);
-        waitKey(0);
-        destroyWindow("inMat");
-      }
-
       int result = plateSetScore(plate);
 
       if (result == 0) {
+        if (0) {
+          imshow("inMat", inMat);
+          waitKey(0);
+          destroyWindow("inMat");
+        }
+
           int w = inMat.cols;
           int h = inMat.rows;
 
@@ -133,18 +137,22 @@ namespace easypr {
 
           plate.setPlateMat(tmpDes);
 
-          int resultCascade = plateSetScore(plate);
+          if (useCascadeJudge) {
+            int resultCascade = plateSetScore(plate);
 
-          //plate.setPlateMat(inMat);
-
-          if (resultCascade == 0) {
-            if (0) {
-              imshow("inMat", inMat);
-              waitKey(0);
-              destroyWindow("inMat");
+            if (resultCascade == 0) {
+              if (0) {
+                imshow("inMat", inMat);
+                waitKey(0);
+                destroyWindow("inMat");
+              }
+              plateVec.push_back(plate);
             }
-            plateVec.push_back(plate);      
           }
+          else {
+            plateVec.push_back(plate);
+          }
+          
       }
 
       //if (result == 0) {

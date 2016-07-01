@@ -374,7 +374,10 @@ int CCharsSegment::charsSegment(Mat input, vector<Mat>& resultVec, Color color) 
 
   // 开始截取每个字符
   bool useSlideWindow = true;
-  bool useAdapThreshold = CParams::instance()->getParam1b();
+
+  bool useAdapThreshold = true;
+  //bool useAdapThreshold = CParams::instance()->getParam1b();
+
   for (size_t i = 0; i < newSortedRect.size(); i++) {
     Rect mr = newSortedRect[i];
 
@@ -387,8 +390,8 @@ int CCharsSegment::charsSegment(Mat input, vector<Mat>& resultVec, Color color) 
 
     if (i == 0) {
       if (useSlideWindow) {
-        //float slideLengthRatio = 0.1f;
-        float slideLengthRatio = CParams::instance()->getParam1f();
+        float slideLengthRatio = 0.1f;
+        //float slideLengthRatio = CParams::instance()->getParam1f();
         if (!slideChineseWindow(input_grey, mr, newRoi, plateType, slideLengthRatio, useAdapThreshold))
           judgeChinese(auxRoi, newRoi, plateType);
       }
