@@ -33,7 +33,7 @@ int accuracyTestMain() {
           accuracyTest("resources/image/native_test");
           break;
         case 3:     
-          gridSearchTest("resources/image/native_test");
+          gridSearchTest("resources/image/general_test");
           break;
         case 4:
           isExit = true;

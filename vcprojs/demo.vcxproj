@@ -176,7 +176,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="..\accuracy.txt" />
+    <Text Include="..\result\accuracy.txt" />
+    <Text Include="..\result\gridSearch.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

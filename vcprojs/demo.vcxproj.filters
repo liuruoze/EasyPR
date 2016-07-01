@@ -43,6 +43,7 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="..\accuracy.txt" />
+    <Text Include="..\result\gridSearch.txt" />
+    <Text Include="..\result\accuracy.txt" />
   </ItemGroup>
 </Project>

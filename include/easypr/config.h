@@ -17,6 +17,7 @@ namespace easypr {
   };
 
 static const char* kDefaultSvmPath = "resources/model/svm.xml";
+static const char* kLBPSvmPath = "resources/model/svm_lbp_final.xml";
 static const char* kDefaultAnnPath = "resources/model/ann.xml";
 static const char* kChineseAnnPath = "resources/model/ann_chinese.xml";
 

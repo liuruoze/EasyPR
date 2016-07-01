@@ -478,8 +478,8 @@ namespace easypr {
       bool b1[] = {true};
       int b1_c = 1;
 
-      float f1[] = {0.1f, 0.2f};
-      int f1_c = 2;
+      float f1[] = {0.1f, 0.2f, 0.3f};
+      int f1_c = 3;
 
       Config config;
       config.setParam1b(b1, b1_c);

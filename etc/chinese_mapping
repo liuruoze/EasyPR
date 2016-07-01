@@ -8,7 +8,7 @@ char             字符
 error_code       错误码
 summaries        统计参数
 sum_pictures     总图片数
-unrecognized     未识出图片
+unrecognized     未定位车牌
 locate_rate      定位率
 diff_average     平均字符差距
 full_match       完全匹配数
