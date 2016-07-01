@@ -133,7 +133,6 @@ namespace easypr {
     PlateJudge::instance()->LoadModel(path);
   }
 
-
   int CPlateDetect::showResult(const Mat &result, int img_index) {
     namedWindow("EasyPR", CV_WINDOW_AUTOSIZE);
 
