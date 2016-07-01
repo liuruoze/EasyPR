@@ -129,6 +129,10 @@ namespace easypr {
     return result;
   }
 
+  void CPlateDetect::LoadSVM(std::string path) {
+    PlateJudge::instance()->LoadModel(path);
+  }
+
   int CPlateDetect::showResult(const Mat &result, int img_index) {
     namedWindow("EasyPR", CV_WINDOW_AUTOSIZE);
 

@@ -19,9 +19,12 @@ namespace easypr {
   }
 
   void PlateJudge::LoadModel(std::string path) {
-    if (path.c_str() != kDefaultSvmPath) {
-      svm_->clear();
-      svm_->ml::SVM::load<ml::SVM>(path);
+    if (path != std::string(kDefaultSvmPath)) {
+
+      if (!svm_->empty())
+        svm_->clear();
+
+      svm_ = ml::SVM::load<ml::SVM>(path);
     }
   }
 

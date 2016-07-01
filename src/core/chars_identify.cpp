@@ -3,6 +3,7 @@
 #include "easypr/config.h"
 #include "easypr/core/core_func.h"
 #include "easypr/core/feature.h"
+#include "easypr/core/params.h"
 
 namespace easypr {
 
@@ -23,16 +24,22 @@ namespace easypr {
   }
 
   void CharsIdentify::LoadModel(std::string path) {
-    if (path.c_str() != kDefaultAnnPath) {
-      ann_->clear();
-      ann_->ml::ANN_MLP::load<ml::ANN_MLP>(path);
+    if (path != std::string(kDefaultAnnPath)) {
+
+      if (!ann_->empty())
+        ann_->clear();
+
+      ann_ = ml::ANN_MLP::load<ml::ANN_MLP>(path);
     }
   }
 
   void CharsIdentify::LoadChineseModel(std::string path) {
-    if (path.c_str() != kChineseAnnPath) {
-      annChinese_->clear();
-      annChinese_->ml::ANN_MLP::load<ml::ANN_MLP>(path);
+    if (path != std::string(kChineseAnnPath)) {
+
+      if (!annChinese_->empty())
+        annChinese_->clear();
+
+      annChinese_ = ml::ANN_MLP::load<ml::ANN_MLP>(path);
     }
   }
 
@@ -231,7 +238,11 @@ namespace easypr {
       //std::cout << "maxVal:" << maxVal << std::endl;
     }
 
-    if (maxVal >= 0.9 || (isChinese && maxVal >= 0.25)) {
+
+    float chineseMaxThresh = 0.25;
+    //float chineseMaxThresh = CParams::instance()->getParam2f();
+
+    if (maxVal >= 0.9 || (isChinese && maxVal >= chineseMaxThresh)) {
       if (index < kCharactersNumber) {
         label = std::make_pair(kChars[index], kChars[index]).second;
       }
