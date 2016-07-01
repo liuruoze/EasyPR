@@ -108,9 +108,6 @@
     <ClCompile Include="..\src\util\kv.cpp">
       <Filter>源文件\util</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\core\better_mser.cpp">
-      <Filter>源文件\core</Filter>
-    </ClCompile>
     <ClCompile Include="..\thirdparty\textDetect\erfilter.cpp">
       <Filter>源文件\thirdparty</Filter>
     </ClCompile>
@@ -122,6 +119,9 @@
     </ClCompile>
     <ClCompile Include="..\src\core\params.cpp">
       <Filter>源文件\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\thirdparty\mser\mser2.cpp">
+      <Filter>源文件\thirdparty</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -205,6 +205,9 @@
     </ClInclude>
     <ClInclude Include="..\include\easypr\core\params.h">
       <Filter>头文件\easypr\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\thirdparty\mser\mser2.hpp">
+      <Filter>头文件\thirdparty</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

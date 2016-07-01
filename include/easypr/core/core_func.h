@@ -19,8 +19,8 @@ namespace easypr {
 Mat colorMatch(const Mat& src, Mat& match, const Color r,
                const bool adaptive_minsv);
 
-Mat mserMatch(const Mat& src, Mat& match, const Color r,
-  std::vector<RotatedRect>& plateRect, std::vector<Rect>& out_charRect);
+//Mat mserMatch(const Mat& src, Mat& match, const Color r,
+//  std::vector<RotatedRect>& plateRect, std::vector<Rect>& out_charRect);
 
 //! 判断一个车牌的颜色
 //! 输入车牌mat与颜色模板
@@ -83,8 +83,8 @@ Mat scaleImage(const Mat& image, const Size& maxSize, double& scale_ratio);
 RotatedRect scaleBackRRect(const RotatedRect& rr, const float scale_ratio);
 
 //! use verify size to first generate char candidates
-Mat mserCharMatch(const Mat &src, Mat &match, std::vector<CPlate>& plateVec, Color color, 
-  bool usePlateMser, std::vector<RotatedRect>& out_plateRRect, int index = 0, bool showDebug = false);
+void mserCharMatch(const Mat &src, std::vector<Mat> &match, std::vector<CPlate>& out_plateVec_blue, std::vector<CPlate>& out_plateVec_yellow,
+  bool usePlateMser, std::vector<RotatedRect>& out_plateRRect_blue, std::vector<RotatedRect>& out_plateRRect_yellow, int index = 0, bool showDebug = false);
 
 bool computeIOU(RotatedRect rrect1, RotatedRect rrect2, const Mat& img, float thresh);
 

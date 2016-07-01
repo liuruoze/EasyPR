@@ -6,6 +6,7 @@
 #include "easypr/core/plate.hpp"
 #include "easypr/core/chars_identify.h"
 #include "easypr/config.h"
+#include "thirdparty/mser/mser2.hpp"
 
 using namespace cv;
 
@@ -1592,551 +1593,498 @@ void removeOutliers(std::vector<CCharacter>& charGroup, double thresh, Mat resul
 }
 
 //! use verify size to first generate char candidates
-Mat mserCharMatch(const Mat &src, Mat &match, std::vector<CPlate>& out_plateVec, Color color, 
-  bool usePlateMser, std::vector<RotatedRect>& out_plateRRect, int img_index,
+void mserCharMatch(const Mat &src, std::vector<Mat> &match, std::vector<CPlate>& out_plateVec_blue, std::vector<CPlate>& out_plateVec_yellow,
+  bool usePlateMser, std::vector<RotatedRect>& out_plateRRect_blue, std::vector<RotatedRect>& out_plateRRect_yellow, int img_index,
   bool showDebug) {
   Mat image = src;
 
-  std::vector<std::vector<Point>> all_contours;
-  std::vector<Rect> all_boxes;
+  std::vector<std::vector<std::vector<Point>>> all_contours;
+  std::vector<std::vector<Rect>> all_boxes;
+  all_contours.resize(2);
+  all_boxes.resize(2);
+  match.resize(2);
 
-  Ptr<MSER> mser;
-  std::vector<CCharacter> charVec;
-
-  match = Mat::zeros(image.rows, image.cols, image.type());
-
-  Mat result = image.clone();
-  cvtColor(result, result, COLOR_GRAY2BGR);
+  std::vector<Color> flags;
+  flags.push_back(BLUE);
+  flags.push_back(YELLOW);
 
   const int imageArea = image.rows * image.cols;
   const int delta = 1;
   const int minArea = 30;
   const double maxAreaRatio = 0.05;
 
-  mser = MSER::create(delta, minArea, int(maxAreaRatio * imageArea));
+  Ptr<MSER2> mser;
+  mser = MSER2::create(delta, minArea, int(maxAreaRatio * imageArea));
+  mser->detectRegions(image, all_contours.at(0), all_boxes.at(0), all_contours.at(1), all_boxes.at(1));
+
+  // mser detect 
+  // color_index = 0 : mser-, detect white characters, which is in blue plate.
+  // color_index = 1 : mser+, detect dark characters, which is in yellow plate.
+  for (size_t color_index = 0; color_index < 2; color_index++) {
+    Color the_color = flags.at(color_index);
 
-  mser->setPass2Only(true);
-  mser->detectRegions(image, all_contours, all_boxes);
-
-  size_t size = all_contours.size();
-
-  int char_index = 0;
-  int char_size = 20;
-
-  // verify char size and output to rects;
-  for (size_t index = 0; index < size; index++) {
-    Rect rect = all_boxes[index];
-    std::vector<Point> contour = all_contours[index];
-    RotatedRect rrect = minAreaRect(Mat(contour));
-
-    if (usePlateMser && verifyRotatedPlateSizes(rrect)) {
-      //rotatedRectangle(result, rrect, Scalar(255, 0, 0), 2);
-      out_plateRRect.push_back(rrect);
-    }
-
-    // find character
-    if (verifyCharSizes(rect)) {
-      Mat mserMat = adaptive_image_from_points(contour, rect, Size(char_size, char_size));
-      Mat charInput = preprocessChar(mserMat, char_size);
-      Rect charRect = rect;
-
-      Point center(charRect.tl().x + charRect.width / 2, charRect.tl().y + charRect.height / 2);
-      Mat tmpMat;
-      double ostu_level = threshold(image(charRect), tmpMat, 0, 255, CV_THRESH_BINARY | CV_THRESH_OTSU);
-
-      //cv::circle(result, center, 3, Scalar(0, 0, 255), 2);
-      
-      // remove the small lines in character like "zh-cuan"
-      if (judegMDOratio2(image, rect, contour, result)) {
-        CCharacter charCandidate;
-        charCandidate.setCharacterPos(charRect);
-        charCandidate.setCharacterMat(charInput);
-        charCandidate.setOstuLevel(ostu_level);
-        charCandidate.setCenterPoint(center);
-        charCandidate.setIsChinese(false);
-        charVec.push_back(charCandidate);
-      }     
-    }
-  }
-
-  CharsIdentify::instance()->classify(charVec);
-
-  double overlapThresh = 0.5;
-  NMStoCharacter(charVec, overlapThresh);
-
-  std::vector<CCharacter> strongSeedVec;
-  std::vector<CCharacter> weakSeedVec;
-  std::vector<CCharacter> littleSeedVec;
-
-  //size_t charCan_size = charVec.size();
-  for (auto charCandidate : charVec) {
-    //CCharacter& charCandidate = charVec[char_index];
-    Rect rect = charCandidate.getCharacterPos();
-    double score = charCandidate.getCharacterScore();
-    if (charCandidate.getIsStrong()) {
-      strongSeedVec.push_back(charCandidate);
-    }
-    else if (charCandidate.getIsWeak()) {
-      weakSeedVec.push_back(charCandidate);
-      //cv::rectangle(result, rect, Scalar(255, 0, 255));
-    }
-    else if (charCandidate.getIsLittle()) {
-      littleSeedVec.push_back(charCandidate);
-      //cv::rectangle(result, rect, Scalar(255, 0, 255));
-    }
-  }
-
-  std::vector<CCharacter> searchCandidate = charVec;
-
-  //nms
-  overlapThresh = 0.3;
-  NMStoCharacter(strongSeedVec, overlapThresh);
-
-  //merge chars to group
-  std::vector<std::vector<CCharacter>> charGroupVec;
-  mergeCharToGroup(strongSeedVec, charGroupVec);
-
-  //genenrate the line of the group
-  std::vector<CPlate> plateVec;
-  for (auto charGroup : charGroupVec) {
-    Rect plateResult = charGroup[0].getCharacterPos();
-    std::vector<Point> points;
-    Vec4f line;
-    int maxarea = 0;
-    Rect maxrect;
-    double ostu_level_sum = 0;
-    
-    int leftx = image.cols;
-    Point leftPoint(leftx, 0);
-    int rightx = 0;
-    Point rightPoint(rightx, 0);
-
-    std::vector<CCharacter> mserCharVec;
-
-    // remove outlier CharGroup
-    std::vector<CCharacter> roCharGroup;
-
-    removeRightOutliers(charGroup, roCharGroup, 0.2, 0.5, result);
-    //roCharGroup = charGroup;
-
-    for (auto character : roCharGroup) {
-      Rect charRect = character.getCharacterPos();
-      cv::rectangle(result, charRect, Scalar(0, 255, 0), 1);
-      plateResult |= charRect;
-
-      Point center(charRect.tl().x + charRect.width / 2, charRect.tl().y + charRect.height / 2);
-      points.push_back(center);
-      mserCharVec.push_back(character);
-      //cv::circle(result, center, 3, Scalar(0, 255, 0), 2);
-
-      ostu_level_sum += character.getOstuLevel();
-
-      if (charRect.area() > maxarea) {
-        maxrect = charRect;
-        maxarea = charRect.area();
-      }
-      if (center.x < leftPoint.x) {
-        leftPoint = center;
-      }
-      if (center.x > rightPoint.x) {
-        rightPoint = center;
-      }
-    }
-
-    double ostu_level_avg = ostu_level_sum / (double)roCharGroup.size();
-    if (1 && showDebug) {
-      std::cout << "ostu_level_avg:" << ostu_level_avg << std::endl;
-    }  
-    float ratio_maxrect = (float)maxrect.width / (float)maxrect.height;
-
-    if (points.size() >= 2 && ratio_maxrect >= 0.3) {
-      fitLine(Mat(points), line, CV_DIST_L2, 0, 0.01, 0.01);
-
-      float k = line[1] / line[0];
-      //float angle = atan(k) * 180 / (float)CV_PI;
-      //std::cout << "k:" << k << std::endl;
-      //std::cout << "angle:" << angle << std::endl;
-      //std::cout << "cos:" << 0.3 * cos(k) << std::endl;
-      //std::cout << "ratio_maxrect:" << ratio_maxrect << std::endl;
-
-      std::sort(mserCharVec.begin(), mserCharVec.end(),
-        [](const CCharacter& r1, const CCharacter& r2) {
-        return r1.getCharacterPos().tl().x < r2.getCharacterPos().tl().x;
-      });
-
-      CCharacter midChar = mserCharVec.at(int(mserCharVec.size() / 2.f));
-      Rect midRect = midChar.getCharacterPos();
-      Point midCenter(midRect.tl().x + midRect.width / 2, midRect.tl().y + midRect.height / 2);
-
-      int mindist = 7 * maxrect.width;
-      std::vector<Vec2i> distVecVec;
-      Vec2i mindistVec;
-      Vec2i avgdistVec;
-
-      for (size_t mser_i = 0; mser_i + 1 < mserCharVec.size(); mser_i++) {
-        Rect charRect = mserCharVec.at(mser_i).getCharacterPos();
-        Point center(charRect.tl().x + charRect.width / 2, charRect.tl().y + charRect.height / 2);
-
-        Rect charRectCompare = mserCharVec.at(mser_i + 1).getCharacterPos();
-        Point centerCompare(charRectCompare.tl().x + charRectCompare.width / 2,
-          charRectCompare.tl().y + charRectCompare.height / 2);
-
-        int dist = charRectCompare.x - charRect.x;
-        Vec2i distVec(charRectCompare.x - charRect.x, charRectCompare.y - charRect.y);
-        distVecVec.push_back(distVec);
-
-        //if (dist < mindist) {
-        //  mindist = dist;
-        //  mindistVec = distVec;
-        //}
-      }
-
-      std::sort(distVecVec.begin(), distVecVec.end(),
-        [](const Vec2i& r1, const Vec2i& r2) {
-        return r1[0] < r2[0];
-      });
-
-      avgdistVec = distVecVec.at(int((distVecVec.size()-1) / 2.f));
-
-      //float step = 10.f * (float)maxrect.width;
-      //float step = (float)mindistVec[0];
-      float step = (float)avgdistVec[0];
-
-      //cv::line(result, Point2f(line[2] - step, line[3] - k*step), Point2f(line[2] + step, k*step + line[3]), Scalar(255, 255, 255));
-      cv::line(result, Point2f(midCenter.x - step, midCenter.y - k*step), Point2f(midCenter.x + step, k*step + midCenter.y), Scalar(255, 255, 255));
-      //cv::circle(result, leftPoint, 3, Scalar(0, 0, 255), 2);
-
-      CPlate plate;
-      plate.setPlateLeftPoint(leftPoint);
-      plate.setPlateRightPoint(rightPoint);
-
-      plate.setPlateLine(line);
-      plate.setPlatDistVec(avgdistVec);
-      plate.setOstuLevel(ostu_level_avg);
-
-      plate.setPlateMergeCharRect(plateResult);
-      plate.setPlateMaxCharRect(maxrect);
-      plate.setMserCharacter(mserCharVec);
-      plateVec.push_back(plate);
-    }
-  }
-
-  for (auto plate : plateVec) {
-    Vec4f line = plate.getPlateLine();
-    Point leftPoint = plate.getPlateLeftPoint();
-    Point rightPoint = plate.getPlateRightPoint();
-
-    Rect plateResult = plate.getPlateMergeCharRect();
-    Rect maxrect = plate.getPlateMaxCharRect();
-    Vec2i dist = plate.getPlateDistVec();
-    double ostu_level = plate.getOstuLevel();
-
-    std::vector<CCharacter> mserCharacter = plate.getCopyOfMserCharacters();
-
-    float k = line[1] / line[0];
-    float x_1 = line[2];
-    float y_1 = line[3];
-
-    std::vector<CCharacter> searchWeakSeedVec;
-
-    std::vector<CCharacter> searchRightWeakSeed;
-    std::vector<CCharacter> searchLeftWeakSeed;
-
-    std::vector<CCharacter> slideRightWindow;
-    std::vector<CCharacter> slideLeftWindow;
-    
-    //draw weak seed and little seed from line;
-    //search for mser rect
-    if (1 && showDebug) {
-      std::cout << "search for mser rect:" << std::endl;
-    }
-    
-    if (0 && showDebug) {
-      std::stringstream ss(std::stringstream::in | std::stringstream::out);
-      ss << "resources/image/tmp/" << img_index << "_1_" << "searcgMserRect.jpg";
-      imwrite(ss.str(), result);
-    }
-    if (1 && showDebug) {
-      std::cout << "mserCharacter:" << mserCharacter.size() << std::endl;
-    }
-     
-    if (mserCharacter.size() < 7) {
-      double thresh1 = 0.15;
-      double thresh2 = 2.0;
-      searchWeakSeed(searchCandidate, searchRightWeakSeed, thresh1, thresh2, line, rightPoint,
-        maxrect, plateResult, result, CharSearchDirection::RIGHT);
-      if (1 && showDebug) {
-        std::cout << "searchRightWeakSeed:" << searchRightWeakSeed.size() << std::endl;
-      }
-      for (auto seed : searchRightWeakSeed) {
-        cv::rectangle(result, seed.getCharacterPos(), Scalar(255, 0, 0), 1);
-        mserCharacter.push_back(seed);
-      }
-
-      searchWeakSeed(searchCandidate, searchLeftWeakSeed, thresh1, thresh2, line, leftPoint,
-        maxrect, plateResult, result, CharSearchDirection::LEFT);
-      if (1 && showDebug) {
-        std::cout << "searchLeftWeakSeed:" << searchLeftWeakSeed.size() << std::endl;
-      }
-      for (auto seed : searchLeftWeakSeed) {
-        cv::rectangle(result, seed.getCharacterPos(), Scalar(255, 0, 0), 1);
-        mserCharacter.push_back(seed);
-      }
-
-      // add mserCharacter size judge
-    }
-
-    float min_thresh = 0.3f;
-    float max_thresh = 2.5f;
-    reFoundAndCombineRect(mserCharacter, min_thresh, max_thresh, dist, maxrect, result);
-   
-    if (mserCharacter.size() < 7) {
-      if (1 && showDebug) {
-        std::cout << "search chinese:" << std::endl;
-        std::cout << "judege the left is chinese:" << std::endl;
-      }
-      bool leftIsChinese = false;
-      if (1) {
-        std::sort(mserCharacter.begin(), mserCharacter.end(),
-          [](const CCharacter& r1, const CCharacter& r2) {
-          return r1.getCharacterPos().tl().x < r2.getCharacterPos().tl().x;
-        });
-
-        CCharacter leftChar = mserCharacter[0];
-
-        //Rect theRect = adaptive_charrect_from_rect(leftChar.getCharacterPos(), image.cols, image.rows);
-        Rect theRect = leftChar.getCharacterPos();
-        //cv::rectangle(result, theRect, Scalar(255, 0, 0), 1);
-
-        Mat region = image(theRect);
-        Mat binary_region;
-
-        ostu_level = threshold(region, binary_region, 0, 255, CV_THRESH_BINARY | CV_THRESH_OTSU);
-        if (1 && showDebug) {
-          std::cout << "left : ostu_level:" << ostu_level << std::endl;
-        }
-        
-        //plate.setOstuLevel(ostu_level);
-
-        Mat charInput = preprocessChar(binary_region, 20);
-        if (0 /*&& showDebug*/) {
-          imshow("charInput", charInput);
-          waitKey(0);
-          destroyWindow("charInput");
-        }
-
-        std::string label = "";
-        float maxVal = -2.f;
-        leftIsChinese = CharsIdentify::instance()->isCharacter(charInput, label, maxVal, true);
-        //auto character = CharsIdentify::instance()->identifyChinese(charInput, maxVal, leftIsChinese);
-        //label = character.second;
-        if (0 /* && showDebug*/) {
-          std::cout << "isChinese:" << leftIsChinese << std::endl;
-          std::cout << "chinese:" << label;
-          std::cout << "__score:" << maxVal << std::endl;
-        }
-      }
-
-      //search for sliding window
-      if (!leftIsChinese) {
-        slideWindowSearch(image, slideLeftWindow, line, leftPoint, dist, ostu_level, maxrect, plateResult, CharSearchDirection::LEFT, true, result);      
-        if (1 && showDebug) {
-          std::cout << "slideLeftWindow:" << slideLeftWindow.size() << std::endl;
-        }
-        for (auto seed : slideLeftWindow) {
-          cv::rectangle(result, seed.getCharacterPos(), Scalar(0, 0, 255), 1);
-          mserCharacter.push_back(seed);
-        }
-      }
-    }
-
-    if (mserCharacter.size() < 7) {
-      // change ostu_level
-      slideWindowSearch(image, slideRightWindow, line, rightPoint, dist, plate.getOstuLevel(), maxrect, plateResult, CharSearchDirection::RIGHT, false, result);
-      if (1 && showDebug) {
-        std::cout << "slideRightWindow:" << slideRightWindow.size() << std::endl;
-      }
-      for (auto seed : slideRightWindow) {
-        cv::rectangle(result, seed.getCharacterPos(), Scalar(0, 0, 255), 1);
-        mserCharacter.push_back(seed);
-      }
-    }
- 
-    float angle = atan(k) * 180 / (float)CV_PI;
-    if (1 && showDebug) {
-      std::cout << "k:" << k << std::endl;
-      std::cout << "angle:" << angle << std::endl;
-    }
-
-    RotatedRect platePos(Point2f((float)plateResult.x + plateResult.width / 2.f, (float)plateResult.y + plateResult.height / 2.f),
-      Size2f(plateResult.width * 1.15f, maxrect.height * 1.25f), angle);
-
-    if (verifyRotatedPlateSizes(platePos)) {
-      rotatedRectangle(result, platePos, Scalar(0, 0, 255), 1);
-
-      plate.setPlatePos(platePos);
-      plate.setPlateColor(color);
-      plate.setPlateLocateType(CMSER);
-      out_plateVec.push_back(plate);
-    }
-
-    //cv::rectangle(result, plateResult, Scalar(0, 0, 255), 1);
-    //match(plateResult) = 255;
-    if (1) {
-      for (auto mserChar : mserCharacter) {
-        Rect rect = mserChar.getCharacterPos();
-        match(rect) = 255;
-      }
-      cv::line(match, rightPoint, leftPoint, Scalar(255));
-    }
-    
-  }
-
-  if (0 /*&& showDebug*/) {
-    imshow("result", result);
-    waitKey(0);
-    destroyWindow("result");
-  }
-
-  if (0) {
-    imshow("match", match);
-    waitKey(0);
-    destroyWindow("match");
-  }
-
-  if (1) {
-    std::stringstream ss(std::stringstream::in | std::stringstream::out);
-    ss << "resources/image/tmp/plateDetect/plate_" << img_index << "_" << color << ".jpg";
-    imwrite(ss.str(), result);
-  }
-
-  return match;
-}
-
-//! use verify size to first generate candidates
-Mat mserMatch(const Mat &src, Mat &match, const Color r,
-  std::vector<RotatedRect>& out_plateRect, std::vector<Rect>& out_charRect) {
-  Mat image = src;
- 
-  std::vector<RotatedRect> plateRects;
-  std::vector<Rect> charRects;
-
-  std::vector<std::vector<Point>> all_contours;
-  std::vector<Rect> all_boxes;
-
-    Ptr<MSER> mser;
     std::vector<CCharacter> charVec;
-  
-    match = Mat::zeros(image.rows, image.cols, image.type());
+
+    match.at(color_index) = Mat::zeros(image.rows, image.cols, image.type());
 
     Mat result = image.clone();
     cvtColor(result, result, COLOR_GRAY2BGR);
 
-    int imageArea = image.rows * image.cols;
-    mser = MSER::create(1, 30, int(0.05 * imageArea));
-    mser->detectRegions(image, all_contours, all_boxes);
-
-    size_t size = all_contours.size();
+    size_t size = all_contours.at(color_index).size();
 
     int char_index = 0;
+    int char_size = 20;
 
+    // Chinese plate has max 7 characters.
+    const int char_max_count = 7;
+
+    // verify char size and output to rects;
     for (size_t index = 0; index < size; index++) {
-      Rect rect = all_boxes[index];
-      std::vector<Point> contour = all_contours[index];
-      RotatedRect rrect = minAreaRect(Mat(contour));
+      Rect rect = all_boxes.at(color_index)[index];
+      std::vector<Point> contour = all_contours.at(color_index)[index];
 
-      if (verifyRotatedPlateSizes(rrect)) {
-        //cv::rectangle(result, rrect.boundingRect(), Scalar(0, 255, 0));
-
-        Point2f rect_points[4];
-        rrect.points(rect_points);
-        for (int j = 0; j < 4; j++)
-          line(result, rect_points[j], rect_points[(j + 1) % 4], Scalar(0, 255, 0), 1, 8);
-
-        plateRects.push_back(rrect);
+      // sometimes a plate could be a mser rect, so we could
+      // also use mser algorithm to find plate
+      if (usePlateMser) {
+        RotatedRect rrect = minAreaRect(Mat(contour));
+        if (verifyRotatedPlateSizes(rrect)) {
+          //rotatedRectangle(result, rrect, Scalar(255, 0, 0), 2);
+          if (the_color == BLUE) out_plateRRect_blue.push_back(rrect);
+          if (the_color == YELLOW) out_plateRRect_yellow.push_back(rrect);
+        }
       }
 
+      // find character
       if (verifyCharSizes(rect)) {
-        //if (0)
-        //{
-        //  std::stringstream ss(std::stringstream::in | std::stringstream::out);
-        //  ss << "resources/image/tmp/character" << char_index++ << ".jpg";
-        //  imwrite(ss.str(), mserMat);
-        //}
+        Mat mserMat = adaptive_image_from_points(contour, rect, Size(char_size, char_size));
+        Mat charInput = preprocessChar(mserMat, char_size);
+        Rect charRect = rect;
 
-        if (1) {
-          //match(rect) = min(max(0, int(maxVal * 255)),255);
-          match(rect) = 255;
+        Point center(charRect.tl().x + charRect.width / 2, charRect.tl().y + charRect.height / 2);
+        Mat tmpMat;
+        double ostu_level = threshold(image(charRect), tmpMat, 0, 255, CV_THRESH_BINARY | CV_THRESH_OTSU);
 
-          cv::rectangle(result, rect, Scalar(255, 0, 0));
-          Point center(rect.tl().x + rect.width / 2, rect.tl().y + rect.height / 2);
+        //cv::circle(result, center, 3, Scalar(0, 0, 255), 2);
 
-          //cv::circle(result, center, 3, Scalar(0, 255, 0), 2);
-
-          charRects.push_back(rect);
-          out_charRect.push_back(rect);
-          //CCharacter character;
-          //character.setCharacterPos(rect);
-          //character.setCharacterMat(binary_region);
-          //character.setCharacterStr(label);
-          //character.setCharacterScore(maxVal);
-          //charVec.push_back(character);
+        // use judegMDOratio2 function to
+        // remove the small lines in character like "zh-cuan"
+        if (judegMDOratio2(image, rect, contour, result)) {
+          CCharacter charCandidate;
+          charCandidate.setCharacterPos(charRect);
+          charCandidate.setCharacterMat(charInput);
+          charCandidate.setOstuLevel(ostu_level);
+          charCandidate.setCenterPoint(center);
+          charCandidate.setIsChinese(false);
+          charVec.push_back(charCandidate);
         }
       }
     }
- 
-    for (auto prect : plateRects) {
-      float areasum = 0.f;
-      int count = 0;
 
-      Rect boundingrect = prect.boundingRect();
-      for (auto crect : charRects) {
-        
-        Rect interRect = boundingrect & crect;
-        if (interRect == crect) {
- 
-          Mat region = image(crect);
+    // improtant, use matrix multiplication to acclerate the 
+    // classification of many samples. use the character 
+    // score, we can use non-maximum superssion (nms) to 
+    // reduce the characters which are not likely to be true
+    // charaters, and use the score to select the strong seed
+    // of which the score is larger than 0.9
+    CharsIdentify::instance()->classify(charVec);
+
+    // use nms to remove the character are not likely to be true.
+    double overlapThresh = 0.5;
+    NMStoCharacter(charVec, overlapThresh);
+
+    std::vector<CCharacter> strongSeedVec;
+    std::vector<CCharacter> weakSeedVec;
+    std::vector<CCharacter> littleSeedVec;
+
+    //size_t charCan_size = charVec.size();
+    for (auto charCandidate : charVec) {
+      //CCharacter& charCandidate = charVec[char_index];
+      Rect rect = charCandidate.getCharacterPos();
+      double score = charCandidate.getCharacterScore();
+      if (charCandidate.getIsStrong()) {
+        strongSeedVec.push_back(charCandidate);
+      }
+      else if (charCandidate.getIsWeak()) {
+        weakSeedVec.push_back(charCandidate);
+        //cv::rectangle(result, rect, Scalar(255, 0, 255));
+      }
+      else if (charCandidate.getIsLittle()) {
+        littleSeedVec.push_back(charCandidate);
+        //cv::rectangle(result, rect, Scalar(255, 0, 255));
+      }
+    }
+
+    std::vector<CCharacter> searchCandidate = charVec;
+
+    // nms to srong seed, only leave the strongest one
+    overlapThresh = 0.3;
+    NMStoCharacter(strongSeedVec, overlapThresh);
+
+    // merge chars to group
+    std::vector<std::vector<CCharacter>> charGroupVec;
+    mergeCharToGroup(strongSeedVec, charGroupVec);
+
+    // genenrate the line of the group
+    // based on the assumptions , the mser rects which are 
+    // given high socre by character classifier could be no doubtly
+    // be the characters in one plate, and we can use these characeters
+    // to fit a line which is the middle line of the plate.
+    std::vector<CPlate> plateVec;
+    for (auto charGroup : charGroupVec) {
+      Rect plateResult = charGroup[0].getCharacterPos();
+      std::vector<Point> points;
+      Vec4f line;
+      int maxarea = 0;
+      Rect maxrect;
+      double ostu_level_sum = 0;
+
+      int leftx = image.cols;
+      Point leftPoint(leftx, 0);
+      int rightx = 0;
+      Point rightPoint(rightx, 0);
+
+      std::vector<CCharacter> mserCharVec;
+
+      // remove outlier CharGroup
+      std::vector<CCharacter> roCharGroup;
+
+      removeRightOutliers(charGroup, roCharGroup, 0.2, 0.5, result);
+      //roCharGroup = charGroup;
+
+      for (auto character : roCharGroup) {
+        Rect charRect = character.getCharacterPos();
+        cv::rectangle(result, charRect, Scalar(0, 255, 0), 1);
+        plateResult |= charRect;
+
+        Point center(charRect.tl().x + charRect.width / 2, charRect.tl().y + charRect.height / 2);
+        points.push_back(center);
+        mserCharVec.push_back(character);
+        //cv::circle(result, center, 3, Scalar(0, 255, 0), 2);
+
+        ostu_level_sum += character.getOstuLevel();
+
+        if (charRect.area() > maxarea) {
+          maxrect = charRect;
+          maxarea = charRect.area();
+        }
+        if (center.x < leftPoint.x) {
+          leftPoint = center;
+        }
+        if (center.x > rightPoint.x) {
+          rightPoint = center;
+        }
+      }
+
+      double ostu_level_avg = ostu_level_sum / (double)roCharGroup.size();
+      if (1 && showDebug) {
+        std::cout << "ostu_level_avg:" << ostu_level_avg << std::endl;
+      }
+      float ratio_maxrect = (float)maxrect.width / (float)maxrect.height;
+
+      if (points.size() >= 2 && ratio_maxrect >= 0.3) {
+        fitLine(Mat(points), line, CV_DIST_L2, 0, 0.01, 0.01);
+
+        float k = line[1] / line[0];
+        //float angle = atan(k) * 180 / (float)CV_PI;
+        //std::cout << "k:" << k << std::endl;
+        //std::cout << "angle:" << angle << std::endl;
+        //std::cout << "cos:" << 0.3 * cos(k) << std::endl;
+        //std::cout << "ratio_maxrect:" << ratio_maxrect << std::endl;
+
+        std::sort(mserCharVec.begin(), mserCharVec.end(),
+          [](const CCharacter& r1, const CCharacter& r2) {
+          return r1.getCharacterPos().tl().x < r2.getCharacterPos().tl().x;
+        });
+
+        CCharacter midChar = mserCharVec.at(int(mserCharVec.size() / 2.f));
+        Rect midRect = midChar.getCharacterPos();
+        Point midCenter(midRect.tl().x + midRect.width / 2, midRect.tl().y + midRect.height / 2);
+
+        int mindist = 7 * maxrect.width;
+        std::vector<Vec2i> distVecVec;
+        Vec2i mindistVec;
+        Vec2i avgdistVec;
+
+        // computer the dist which is the distacne between 
+        // two near characters in the plate, use dist we can
+        // judege how to computer the max search range, and choose the
+        // best location of the sliding window in the next steps.
+        for (size_t mser_i = 0; mser_i + 1 < mserCharVec.size(); mser_i++) {
+          Rect charRect = mserCharVec.at(mser_i).getCharacterPos();
+          Point center(charRect.tl().x + charRect.width / 2, charRect.tl().y + charRect.height / 2);
+
+          Rect charRectCompare = mserCharVec.at(mser_i + 1).getCharacterPos();
+          Point centerCompare(charRectCompare.tl().x + charRectCompare.width / 2,
+            charRectCompare.tl().y + charRectCompare.height / 2);
+
+          int dist = charRectCompare.x - charRect.x;
+          Vec2i distVec(charRectCompare.x - charRect.x, charRectCompare.y - charRect.y);
+          distVecVec.push_back(distVec);
+
+          //if (dist < mindist) {
+          //  mindist = dist;
+          //  mindistVec = distVec;
+          //}
+        }
+
+        std::sort(distVecVec.begin(), distVecVec.end(),
+          [](const Vec2i& r1, const Vec2i& r2) {
+          return r1[0] < r2[0];
+        });
+
+        avgdistVec = distVecVec.at(int((distVecVec.size() - 1) / 2.f));
+
+        //float step = 10.f * (float)maxrect.width;
+        //float step = (float)mindistVec[0];
+        float step = (float)avgdistVec[0];
+
+        //cv::line(result, Point2f(line[2] - step, line[3] - k*step), Point2f(line[2] + step, k*step + line[3]), Scalar(255, 255, 255));
+        cv::line(result, Point2f(midCenter.x - step, midCenter.y - k*step), Point2f(midCenter.x + step, k*step + midCenter.y), Scalar(255, 255, 255));
+        //cv::circle(result, leftPoint, 3, Scalar(0, 0, 255), 2);
+
+        CPlate plate;
+        plate.setPlateLeftPoint(leftPoint);
+        plate.setPlateRightPoint(rightPoint);
+
+        plate.setPlateLine(line);
+        plate.setPlatDistVec(avgdistVec);
+        plate.setOstuLevel(ostu_level_avg);
+
+        plate.setPlateMergeCharRect(plateResult);
+        plate.setPlateMaxCharRect(maxrect);
+        plate.setMserCharacter(mserCharVec);
+        plateVec.push_back(plate);
+      }
+    }
+
+    // use strong seed to construct the first shape of the plate,
+    // then we need to find characters which are the weak seed.
+    // because we use strong seed to build the middle lines of the plate,
+    // we can simply use this to consider weak seeds only lie in the 
+    // near place of the middle line
+    for (auto plate : plateVec) {
+      Vec4f line = plate.getPlateLine();
+      Point leftPoint = plate.getPlateLeftPoint();
+      Point rightPoint = plate.getPlateRightPoint();
+
+      Rect plateResult = plate.getPlateMergeCharRect();
+      Rect maxrect = plate.getPlateMaxCharRect();
+      Vec2i dist = plate.getPlateDistVec();
+      double ostu_level = plate.getOstuLevel();
+
+      std::vector<CCharacter> mserCharacter = plate.getCopyOfMserCharacters();
+
+      float k = line[1] / line[0];
+      float x_1 = line[2];
+      float y_1 = line[3];
+
+      std::vector<CCharacter> searchWeakSeedVec;
+
+      std::vector<CCharacter> searchRightWeakSeed;
+      std::vector<CCharacter> searchLeftWeakSeed;
+
+      std::vector<CCharacter> slideRightWindow;
+      std::vector<CCharacter> slideLeftWindow;
+
+      // draw weak seed and little seed from line;
+      // search for mser rect
+      if (1 && showDebug) {
+        std::cout << "search for mser rect:" << std::endl;
+      }
+
+      if (0 && showDebug) {
+        std::stringstream ss(std::stringstream::in | std::stringstream::out);
+        ss << "resources/image/tmp/" << img_index << "_1_" << "searcgMserRect.jpg";
+        imwrite(ss.str(), result);
+      }
+      if (1 && showDebug) {
+        std::cout << "mserCharacter:" << mserCharacter.size() << std::endl;
+      }
+
+      // if the count of strong seed is larger than max count, we dont need 
+      // all the next steps, if not, we first need to search the weak seed in 
+      // the same line as the strong seed. The judge condition contains the distance 
+      // between strong seed and weak seed , and the rect simily of each other to improve
+      // the roubustnedd of the seed growing algorithm.
+      if (mserCharacter.size() < char_max_count) {
+        double thresh1 = 0.15;
+        double thresh2 = 2.0;
+        searchWeakSeed(searchCandidate, searchRightWeakSeed, thresh1, thresh2, line, rightPoint,
+          maxrect, plateResult, result, CharSearchDirection::RIGHT);
+        if (1 && showDebug) {
+          std::cout << "searchRightWeakSeed:" << searchRightWeakSeed.size() << std::endl;
+        }
+        for (auto seed : searchRightWeakSeed) {
+          cv::rectangle(result, seed.getCharacterPos(), Scalar(255, 0, 0), 1);
+          mserCharacter.push_back(seed);
+        }
+
+        searchWeakSeed(searchCandidate, searchLeftWeakSeed, thresh1, thresh2, line, leftPoint,
+          maxrect, plateResult, result, CharSearchDirection::LEFT);
+        if (1 && showDebug) {
+          std::cout << "searchLeftWeakSeed:" << searchLeftWeakSeed.size() << std::endl;
+        }
+        for (auto seed : searchLeftWeakSeed) {
+          cv::rectangle(result, seed.getCharacterPos(), Scalar(255, 0, 0), 1);
+          mserCharacter.push_back(seed);
+        }
+      }
+
+      // sometimes the weak seed is in the middle of the strong seed.
+      // and sometimes two strong seed are actually the two parts of one character.
+      // because we only consider the weak seed in the left and right direction of strong seed.
+      // now we examine all the strong seed and weak seed. not only to find the seed in the middle,
+      // but also to combine two seed which are parts of one character to one seed.
+      // only by this process, we could use the seed count as the condition to judge if or not to use slide window.
+      float min_thresh = 0.3f;
+      float max_thresh = 2.5f;
+      reFoundAndCombineRect(mserCharacter, min_thresh, max_thresh, dist, maxrect, result);
+
+      // if the characters count is less than max count
+      // this means the mser rect in the lines are not enough.
+      // sometimes there are still some characters could not be captured by mser algorithm,
+      // such as blur, low light ,and some chinese characters like zh-cuan.
+      // to handle this ,we use a simple slide window method to find them.
+      if (mserCharacter.size() < char_max_count) {
+        if (1 && showDebug) {
+          std::cout << "search chinese:" << std::endl;
+          std::cout << "judege the left is chinese:" << std::endl;
+        }
+
+        // if the left most character is chinese, this means
+        // that must be the first character in chinese plate,
+        // and we need not to do a slide window to left. So,
+        // the first thing is to judge the left charcater is 
+        // or not the chinese.
+        bool leftIsChinese = false;
+        if (1) {
+          std::sort(mserCharacter.begin(), mserCharacter.end(),
+            [](const CCharacter& r1, const CCharacter& r2) {
+            return r1.getCharacterPos().tl().x < r2.getCharacterPos().tl().x;
+          });
+
+          CCharacter leftChar = mserCharacter[0];
+
+          //Rect theRect = adaptive_charrect_from_rect(leftChar.getCharacterPos(), image.cols, image.rows);
+          Rect theRect = leftChar.getCharacterPos();
+          //cv::rectangle(result, theRect, Scalar(255, 0, 0), 1);
+
+          Mat region = image(theRect);
           Mat binary_region;
-          threshold(region, binary_region, 0, 255, CV_THRESH_BINARY | CV_THRESH_OTSU);
+
+          ostu_level = threshold(region, binary_region, 0, 255, CV_THRESH_BINARY | CV_THRESH_OTSU);
+          if (1 && showDebug) {
+            std::cout << "left : ostu_level:" << ostu_level << std::endl;
+          }
+          //plate.setOstuLevel(ostu_level);
 
           Mat charInput = preprocessChar(binary_region, 20);
-
-          	if(0)
-          	{ 
-          		std::stringstream ss(std::stringstream::in | std::stringstream::out);
-              ss << "resources/image/tmp/character" << char_index++ << ".jpg";
-              imwrite(ss.str(), charInput);
-          	}
+          if (0 /*&& showDebug*/) {
+            imshow("charInput", charInput);
+            waitKey(0);
+            destroyWindow("charInput");
+          }
 
           std::string label = "";
           float maxVal = -2.f;
-          bool isCharacter = CharsIdentify::instance()->isCharacter(charInput, label, maxVal);
-          if (isCharacter) {
-            areasum += crect.area();
-            count++;
+          leftIsChinese = CharsIdentify::instance()->isCharacter(charInput, label, maxVal, true);
+          //auto character = CharsIdentify::instance()->identifyChinese(charInput, maxVal, leftIsChinese);
+          //label = character.second;
+          if (0 /* && showDebug*/) {
+            std::cout << "isChinese:" << leftIsChinese << std::endl;
+            std::cout << "chinese:" << label;
+            std::cout << "__score:" << maxVal << std::endl;
+          }
+        }
+
+        // if the left most character is not a chinese,
+        // this means we meed to slide a window to find the missed mser rect.
+        // search for sliding window
+        if (!leftIsChinese) {
+          slideWindowSearch(image, slideLeftWindow, line, leftPoint, dist, ostu_level, maxrect, plateResult, CharSearchDirection::LEFT, true, result);
+          if (1 && showDebug) {
+            std::cout << "slideLeftWindow:" << slideLeftWindow.size() << std::endl;
+          }
+          for (auto window : slideLeftWindow) {
+            cv::rectangle(result, window.getCharacterPos(), Scalar(0, 0, 255), 1);
+            mserCharacter.push_back(window);
           }
         }
       }
 
-      float ratio = areasum / (float)boundingrect.area();
-      if (ratio - 0.5f > 0 && count >= 5) {
-        std::cout << "ratio:" << ratio << std::endl;
-        std::cout << "count:" << count << std::endl;
-        //cv::rectangle(result, prect.boundingRect(), Scalar(0, 255, 0));
-        out_plateRect.push_back(prect);
+      // if we still have less than max count characters,
+      // we need to slide a window to right to search for the missed mser rect.
+      if (mserCharacter.size() < char_max_count) {
+        // change ostu_level
+        slideWindowSearch(image, slideRightWindow, line, rightPoint, dist, plate.getOstuLevel(), maxrect, plateResult, CharSearchDirection::RIGHT, false, result);
+        if (1 && showDebug) {
+          std::cout << "slideRightWindow:" << slideRightWindow.size() << std::endl;
+        }
+        for (auto window : slideRightWindow) {
+          cv::rectangle(result, window.getCharacterPos(), Scalar(0, 0, 255), 1);
+          mserCharacter.push_back(window);
+        }
+      }
+
+      // computer the plate angle
+      float angle = atan(k) * 180 / (float)CV_PI;
+      if (1 && showDebug) {
+        std::cout << "k:" << k << std::endl;
+        std::cout << "angle:" << angle << std::endl;
+      }
+
+      // the plateResult rect need to be enlarge to contains all the plate,
+      // not only the character area.
+      float widthEnlargeRatio = 1.15f;
+      float heightEnlargeRatio = 1.25f;
+      RotatedRect platePos(Point2f((float)plateResult.x + plateResult.width / 2.f, (float)plateResult.y + plateResult.height / 2.f),
+        Size2f(plateResult.width * widthEnlargeRatio, maxrect.height * heightEnlargeRatio), angle);
+
+      // justify the size is likely to be a plate size.
+      if (verifyRotatedPlateSizes(platePos)) {
+        rotatedRectangle(result, platePos, Scalar(0, 0, 255), 1);
+
+        plate.setPlatePos(platePos);
+        plate.setPlateColor(the_color);
+        plate.setPlateLocateType(CMSER);
+
+        if (the_color == BLUE) out_plateVec_blue.push_back(plate);
+        if (the_color == YELLOW) out_plateVec_yellow.push_back(plate);
+      }
+
+      // use deskew to rotate the image, so we need the binary image.
+      if (1) {
+        for (auto mserChar : mserCharacter) {
+          Rect rect = mserChar.getCharacterPos();
+          match.at(color_index)(rect) = 255;
+        }
+        cv::line(match.at(color_index), rightPoint, leftPoint, Scalar(255));
       }
     }
 
-    if (1) {
+    if (0 /*&& showDebug*/) {
       imshow("result", result);
       waitKey(0);
+      destroyWindow("result");
     }
 
- 
-  return match;
+    if (0) {
+      imshow("match", match.at(color_index));
+      waitKey(0);
+      destroyWindow("match");
+    }
+
+    if (0) {
+      std::stringstream ss(std::stringstream::in | std::stringstream::out);
+      ss << "resources/image/tmp/plateDetect/plate_" << img_index << "_" << the_color << ".jpg";
+      imwrite(ss.str(), result);
+    }
+  }
 }
 
-
+// this spatial_ostu algorithm are robust to 
+// the plate which has the same light shine, which is that
+// the light in the left of the plate is strong than the right.
 void spatial_ostu(InputArray _src, int grid_x, int grid_y, Color type) {
   Mat src = _src.getMat();
 
@@ -2153,6 +2101,9 @@ void spatial_ostu(InputArray _src, int grid_x, int grid_y, Color type) {
       else if (type == YELLOW) {
         threshold(src_cell, src_cell, 0, 255, CV_THRESH_OTSU + CV_THRESH_BINARY_INV);
       } 
+      else if (type == WHITE) {
+        threshold(src_cell, src_cell, 0, 255, CV_THRESH_OTSU + CV_THRESH_BINARY_INV);
+      }
       else {
         threshold(src_cell, src_cell, 0, 255, CV_THRESH_OTSU + CV_THRESH_BINARY);
       }

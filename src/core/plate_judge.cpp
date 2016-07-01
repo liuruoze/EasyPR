@@ -13,14 +13,16 @@ namespace easypr {
   }
 
   PlateJudge::PlateJudge() { 
-    //svm_ = ml::SVM::load<ml::SVM>(kDefaultSvmPath); 
-    svm_ = ml::SVM::load<ml::SVM>(kLBPSvmPath);   
+    svm_ = ml::SVM::load<ml::SVM>(kDefaultSvmPath); 
+    //svm_ = ml::SVM::load<ml::SVM>(kLBPSvmPath);   
     extractFeature = getLBPFeatures;
   }
 
   void PlateJudge::LoadModel(std::string path) {
-    svm_->clear();
-    svm_->ml::SVM::load<ml::SVM>(path);
+    if (path.c_str() != kDefaultSvmPath) {
+      svm_->clear();
+      svm_->ml::SVM::load<ml::SVM>(path);
+    }
   }
 
   //! 对单幅图像进行SVM判断
@@ -112,7 +114,7 @@ namespace easypr {
     int num = inVec.size();
     bool outputResult = false;
 
-    bool useCascadeJudge = false;
+    bool useCascadeJudge = true;
     bool useShirkMat = true;
 
     for (int j = 0; j < num; j++) {
