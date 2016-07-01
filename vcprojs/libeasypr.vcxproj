@@ -145,7 +145,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\src\core\better_mser.cpp" />
     <ClCompile Include="..\src\core\chars_identify.cpp" />
     <ClCompile Include="..\src\core\chars_recognise.cpp" />
     <ClCompile Include="..\src\core\chars_segment.cpp" />
@@ -167,6 +166,7 @@
     <ClCompile Include="..\src\util\util.cpp" />
     <ClCompile Include="..\thirdparty\LBP\helper.cpp" />
     <ClCompile Include="..\thirdparty\LBP\lbp.cpp" />
+    <ClCompile Include="..\thirdparty\mser\mser2.cpp" />
     <ClCompile Include="..\thirdparty\textDetect\erfilter.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -196,6 +196,7 @@
     <ClInclude Include="..\include\easypr\util\util.h" />
     <ClInclude Include="..\thirdparty\LBP\helper.hpp" />
     <ClInclude Include="..\thirdparty\LBP\lbp.hpp" />
+    <ClInclude Include="..\thirdparty\mser\mser2.hpp" />
     <ClInclude Include="..\thirdparty\textDetect\erfilter.hpp" />
   </ItemGroup>
   <ItemGroup>

@@ -27,6 +27,8 @@ class CharsIdentify {
   bool isCharacter(cv::Mat input, std::string& label, float& maxVal, bool isChinese = false);
 
   void LoadModel(std::string path);
+  void LoadChineseModel(std::string path);
+
  private:
   CharsIdentify();
 

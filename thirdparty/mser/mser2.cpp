@@ -63,15 +63,17 @@ Modifer:liuruoze
 
 #include "opencv2/imgproc/imgproc_c.h"
 #include <limits>
+#include "mser2.hpp"
 
 namespace cv
 {
 
   using std::vector;
-
-  class MSER_Impl : public MSER
+  
+  class MSER_Impl2 : public MSER2
   {
   public:
+
     struct Params
     {
       Params(bool _useOpt = false, bool _subPath = false, bool _realMSER = false, bool _usePrune = false,
@@ -116,9 +118,9 @@ namespace cv
       int edgeBlurSize;
     };
 
-    explicit MSER_Impl(const Params& _params) : params(_params) {}
+    explicit MSER_Impl2(const Params& _params) : params(_params) {}
 
-    virtual ~MSER_Impl() {}
+    virtual ~MSER_Impl2() {}
 
     void setDelta(int delta) { params.delta = delta; }
     int getDelta() const { return params.delta; }
@@ -546,12 +548,8 @@ namespace cv
       Rect rect;
     };
 
-    void detectRegions(InputArray image,
-      std::vector<std::vector<Point> >& msers,
-      std::vector<Rect>& bboxes);
-
-    void detect(InputArray _src, vector<KeyPoint>& keypoints, InputArray _mask);
-
+    void detectRegions(InputArray _src, vector<vector<Point>>& msers_blue, vector<Rect>& bboxes_blue,
+      vector<vector<Point>>& msers_yellow, vector<Rect>& bboxes_yellow);
 
     void preprocess1(const Mat& img, int* level_size)
     {
@@ -747,19 +745,17 @@ namespace cv
     vector<Pixel> pixbuf;
     vector<Pixel*> heapbuf;
     vector<CompHistory> histbuf;
-
+    
     Params params;
+
   };
 
-
-  void MSER_Impl::detectRegions(InputArray _src, vector<vector<Point> >& msers, vector<Rect>& bboxes)
+  void MSER_Impl2::detectRegions(InputArray _src, vector<vector<Point>>& msers_blue, vector<Rect>& bboxes_blue,
+  vector<vector<Point>>& msers_yellow, vector<Rect>& bboxes_yellow)
   {
     Mat src = _src.getMat();
     size_t npix = src.total();
 
-    msers.clear();
-    bboxes.clear();
-   
     if (npix == 0)
       return;
 
@@ -778,57 +774,30 @@ namespace cv
       // dont need when plate is blue
       preprocess1(src, level_size);
       if (!params.pass2Only)
-        pass(src, msers, bboxes, size, level_size, 0);
+        pass(src, msers_yellow, bboxes_yellow, size, level_size, 0);
 
       // brighter to darker (MSER-)
       preprocess2(src, level_size);
-      pass(src, msers, bboxes, size, level_size, 255);
-    }
-    else
-    {
-      CV_Assert(src.type() == CV_8UC3 || src.type() == CV_8UC4);
-      //extractMSER_8uC3(src, msers, bboxes, params);
+      pass(src, msers_blue, bboxes_blue, size, level_size, 255);
     }
   }
 
-  void MSER_Impl::detect(InputArray _image, vector<KeyPoint>& keypoints, InputArray _mask)
-  {
-    vector<Rect> bboxes;
-    vector<vector<Point> > msers;
-    Mat mask = _mask.getMat();
 
-    detectRegions(_image, msers, bboxes);
-    int i, ncomps = (int)msers.size();
-
-    keypoints.clear();
-    for (i = 0; i < ncomps; i++)
-    {
-      Rect r = bboxes[i];
-      // TODO check transformation from MSER region to KeyPoint
-      RotatedRect rect = fitEllipse(Mat(msers[i]));
-      float diam = std::sqrt(rect.size.height*rect.size.width); 
-
-      if (diam > std::numeric_limits<float>::epsilon() && r.contains(rect.center) &&
-        (mask.empty() || mask.at<uchar>(cvRound(rect.center.y), cvRound(rect.center.x)) != 0))
-        keypoints.push_back(KeyPoint(rect.center, diam));
-    }
-  }
-
-  Ptr<MSER> MSER::create(int _delta, int _min_area, int _max_area,
+  Ptr<MSER2> MSER2::create(int _delta, int _min_area, int _max_area,
     double _max_variation, double _min_diversity,
     int _max_evolution, double _area_threshold,
     double _min_margin, int _edge_blur_size)
   {
 
-    printf("better mser \n");
+    //printf("better mser 2 \n");
 
     bool useOpt = true;
     bool subPath = true;
     bool realMSER = true;
     bool usePrune = true;
 
-    return makePtr<MSER_Impl>(
-      MSER_Impl::Params(useOpt, subPath, realMSER, usePrune, _delta, _min_area, _max_area,
+    return makePtr<MSER_Impl2>(
+      MSER_Impl2::Params(useOpt, subPath, realMSER, usePrune, _delta, _min_area, _max_area,
       _max_variation, _min_diversity,
       _max_evolution, _area_threshold,
       _min_margin, _edge_blur_size));

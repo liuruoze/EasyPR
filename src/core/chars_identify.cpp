@@ -23,8 +23,17 @@ namespace easypr {
   }
 
   void CharsIdentify::LoadModel(std::string path) {
-    ann_->clear();
-    ann_->ml::ANN_MLP::load<ml::ANN_MLP>(path);
+    if (path.c_str() != kDefaultAnnPath) {
+      ann_->clear();
+      ann_->ml::ANN_MLP::load<ml::ANN_MLP>(path);
+    }
+  }
+
+  void CharsIdentify::LoadChineseModel(std::string path) {
+    if (path.c_str() != kChineseAnnPath) {
+      annChinese_->clear();
+      annChinese_->ml::ANN_MLP::load<ml::ANN_MLP>(path);
+    }
   }
 
   void CharsIdentify::classify(cv::Mat featureRows, std::vector<int>& out_maxIndexs, 

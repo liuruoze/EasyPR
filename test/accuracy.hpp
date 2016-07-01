@@ -96,11 +96,14 @@ namespace easypr {
       //pr.setDetectType(PR_DETECT_COLOR | PR_DETECT_SOBEL);
       pr.setDetectType(PR_DETECT_CMSER);
 
-      CPlateDetect pd;
-      pd.setDetectType(PR_DETECT_CMSER);
-      //pd.setPDDebug(true);
-      pd.setDetectShow(true);
-      pd.setPDLifemode(true);
+      //CharsIdentify::instance()->LoadModel(kDefaultAnnPath);
+      //PlateJudge::instance()->LoadModel(kDefaultSvmPath);
+
+      //CPlateDetect pd;
+      //pd.setDetectType(PR_DETECT_CMSER);
+      ////pd.setPDDebug(true);
+      //pd.setDetectShow(true);
+      //pd.setPDLifemode(true);
 
       int size = files.size();
 
