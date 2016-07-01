@@ -35,6 +35,12 @@
     <ClInclude Include="..\thirdparty\xmlParser\xmlParser.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="..\test\config.hpp">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\test\result.hpp">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="..\accuracy.txt" />

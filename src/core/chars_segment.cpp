@@ -1,5 +1,6 @@
 #include "easypr/core/chars_segment.h"
 #include "easypr/core/chars_identify.h"
+#include "easypr/core/params.h"
 #include "easypr/config.h"
 
 using namespace std;
@@ -134,7 +135,7 @@ void CCharsSegment::judgeChinese(Mat in, Mat& out, Color plateType) {
 
 }
 
-bool slideChineseWindow(Mat& image, Rect mr, Mat& newRoi, Color plateType, float slideLengthRatio) {
+bool slideChineseWindow(Mat& image, Rect mr, Mat& newRoi, Color plateType, float slideLengthRatio, bool useAdapThreshold) {
   std::vector<CCharacter> charCandidateVec;
   
   Rect maxrect = mr;
@@ -181,8 +182,14 @@ bool slideChineseWindow(Mat& image, Rect mr, Mat& newRoi, Color plateType, float
         threshold(auxRoi, roiOstu, 0, 255, CV_THRESH_OTSU + CV_THRESH_BINARY);
       }
       roiOstu = preprocessChar(roiOstu, kChineseSize);
+
+      CCharacter charCandidateOstu;
+      charCandidateOstu.setCharacterPos(rect);
+      charCandidateOstu.setCharacterMat(roiOstu);
+      charCandidateOstu.setIsChinese(isChinese);
+      charCandidateVec.push_back(charCandidateOstu);
     }
-    if (1) {
+    if (useAdapThreshold) {
       if (BLUE == plateType) {
         adaptiveThreshold(auxRoi, roiAdap, 255, ADAPTIVE_THRESH_MEAN_C, THRESH_BINARY, 3, 0);
       }
@@ -196,19 +203,14 @@ bool slideChineseWindow(Mat& image, Rect mr, Mat& newRoi, Color plateType, float
         adaptiveThreshold(auxRoi, roiAdap, 255, ADAPTIVE_THRESH_MEAN_C, THRESH_BINARY, 3, 0);
       }
       roiAdap = preprocessChar(roiAdap, kChineseSize);
+
+      CCharacter charCandidateAdap;
+      charCandidateAdap.setCharacterPos(rect);
+      charCandidateAdap.setCharacterMat(roiAdap);
+      charCandidateAdap.setIsChinese(isChinese);
+      charCandidateVec.push_back(charCandidateAdap);
     }
 
-    CCharacter charCandidateOstu;
-    charCandidateOstu.setCharacterPos(rect);
-    charCandidateOstu.setCharacterMat(roiOstu);
-    charCandidateOstu.setIsChinese(isChinese);
-    charCandidateVec.push_back(charCandidateOstu);
-
-    CCharacter charCandidateAdap;
-    charCandidateAdap.setCharacterPos(rect);
-    charCandidateAdap.setCharacterMat(roiAdap);
-    charCandidateAdap.setIsChinese(isChinese);
-    charCandidateVec.push_back(charCandidateAdap);
   }
 
   CharsIdentify::instance()->classifyChinese(charCandidateVec);
@@ -372,6 +374,7 @@ int CCharsSegment::charsSegment(Mat input, vector<Mat>& resultVec, Color color) 
 
   // 开始截取每个字符
   bool useSlideWindow = true;
+  bool useAdapThreshold = CParams::instance()->getParam1b();
   for (size_t i = 0; i < newSortedRect.size(); i++) {
     Rect mr = newSortedRect[i];
 
@@ -384,8 +387,9 @@ int CCharsSegment::charsSegment(Mat input, vector<Mat>& resultVec, Color color) 
 
     if (i == 0) {
       if (useSlideWindow) {
-        float slideLengthRatio = 0.1f;
-        if (!slideChineseWindow(input_grey, mr, newRoi, plateType, slideLengthRatio))
+        //float slideLengthRatio = 0.1f;
+        float slideLengthRatio = CParams::instance()->getParam1f();
+        if (!slideChineseWindow(input_grey, mr, newRoi, plateType, slideLengthRatio, useAdapThreshold))
           judgeChinese(auxRoi, newRoi, plateType);
       }
       else

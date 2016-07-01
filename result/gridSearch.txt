@@ -1,0 +1,20 @@
+2016-07-01 10:15:39
+------------------
+m_picturesCount:50,  m_platesCount:52,  m_detectRate:80.7692%. 
+m_detectRecall:72.5576%, m_detectPrecise:70.7495%, m_detectFscore:71.6422%.
+m_0error:62.1622%,  m_1error:72.973%,  m_chinesePrecise:72.973%.  
+m_seconds:169sec,  m_avgSeconds:3.38sec.
+m_param1f:0.1,  
+m_param1b:1,  
+
+
+2016-07-01 10:15:39
+------------------
+m_picturesCount:50,  m_platesCount:52,  m_detectRate:80.7692%. 
+m_detectRecall:72.5576%, m_detectPrecise:70.7495%, m_detectFscore:71.6422%.
+m_0error:56.7568%,  m_1error:70.2703%,  m_chinesePrecise:70.2703%.  
+m_seconds:161sec,  m_avgSeconds:3.22sec.
+m_param1f:0.2,  
+m_param1b:1,  
+
+
