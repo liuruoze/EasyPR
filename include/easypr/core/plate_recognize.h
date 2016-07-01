@@ -42,6 +42,10 @@ namespace easypr {
     inline void setDetectShow(bool param) { CPlateDetect::setDetectShow(param); }
     inline void setDebug(bool param) { setResultShow(param); }
 
+    void LoadSVM(std::string path);
+    void LoadANN(std::string path);
+    void LoadChineseANN(std::string path);
+
   private:
     // show the detect and recognition result image
     bool m_showResult;

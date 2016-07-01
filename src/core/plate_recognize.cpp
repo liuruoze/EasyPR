@@ -158,7 +158,7 @@ int CPlateRecognize::plateRecognize(Mat src, std::vector<CPlate> &licenseVec, in
       }
 
       std::string plateColor = getPlateColor(color);
-      if (1) {
+      if (0) {
         std::cout << "plateColor:" << plateColor << std::endl;
       }
 
@@ -175,7 +175,7 @@ int CPlateRecognize::plateRecognize(Mat src, std::vector<CPlate> &licenseVec, in
         std::string license = plateColor;
         item.setPlateStr(license);
         licenseVec.push_back(item);
-        if (1) {
+        if (0) {
           std::cout << "resultCR:" << resultCR << std::endl;
         }
       }
@@ -221,16 +221,24 @@ int CPlateRecognize::plateRecognize(Mat src, std::vector<CPlate> &licenseVec, in
   return resultPD;
 }
 
+void CPlateRecognize::LoadSVM(std::string path) {
+  PlateJudge::instance()->LoadModel(path);
+}
 
-int CPlateRecognize::plateRecognize(Mat src,
-                                    std::vector<std::string> &licenseVec) {
+void CPlateRecognize::LoadANN(std::string path) {
+  CharsIdentify::instance()->LoadModel(path);
+}
+
+void CPlateRecognize::LoadChineseANN(std::string path) {
+  CharsIdentify::instance()->LoadChineseModel(path);
+}
+
+int CPlateRecognize::plateRecognize(Mat src, std::vector<std::string> &licenseVec) {
 
   // 车牌方块集合
-
   std::vector<CPlate> plateVec;
 
   // 进行深度定位，使用颜色信息与二次Sobel
-
   int resultPD = plateDetect(src, plateVec, 0, kDebug, 0);
 
   if (resultPD == 0) {

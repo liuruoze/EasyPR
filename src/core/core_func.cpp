@@ -6,6 +6,7 @@
 #include "easypr/core/plate.hpp"
 #include "easypr/core/chars_identify.h"
 #include "easypr/config.h"
+#include "easypr/core/params.h"
 #include "thirdparty/mser/mser2.hpp"
 
 using namespace cv;
@@ -1194,13 +1195,13 @@ void searchWeakSeed(const std::vector<CCharacter>& charVec, std::vector<CCharact
 }
 
 void slideWindowSearch(const Mat &image, std::vector<CCharacter>& slideCharacter, const Vec4f& line, 
-  Point& fromPoint, const Vec2i& dist, double ostu_level, const Rect& maxrect, Rect& plateResult, 
+  Point& fromPoint, const Vec2i& dist, double ostu_level, float ratioWindow, float threshIsCharacter, const Rect& maxrect, Rect& plateResult,
   CharSearchDirection searchDirection, bool isChinese, Mat& result) {
   float k = line[1] / line[0];
   float x_1 = line[2];
   float y_1 = line[3];
 
-  int slideLength = int(0.5 * maxrect.width);
+  int slideLength = int(ratioWindow * maxrect.width);
   int slideStep = 1;
   int fromX = 0;
   if (searchDirection == CharSearchDirection::LEFT) {
@@ -1269,7 +1270,7 @@ void slideWindowSearch(const Mat &image, std::vector<CCharacter>& slideCharacter
     Rect rect = character.getCharacterPos();
     Point center(rect.tl().x + rect.width / 2, rect.tl().y + rect.height / 2);
 
-    if (character.getCharacterScore() > 0.8 && character.getCharacterStr() != "1") {
+    if (character.getCharacterScore() > threshIsCharacter && character.getCharacterStr() != "1") {
       //cv::rectangle(result, rect, Scalar(255, 255, 255), 1);
       plateResult |= rect;
       slideCharacter.push_back(character);
@@ -1610,6 +1611,7 @@ void mserCharMatch(const Mat &src, std::vector<Mat> &match, std::vector<CPlate>&
 
   const int imageArea = image.rows * image.cols;
   const int delta = 1;
+  //const int delta = CParams::instance()->getParam2i();;
   const int minArea = 30;
   const double maxAreaRatio = 0.05;
 
@@ -1690,6 +1692,7 @@ void mserCharMatch(const Mat &src, std::vector<Mat> &match, std::vector<CPlate>&
 
     // use nms to remove the character are not likely to be true.
     double overlapThresh = 0.5;
+    //double overlapThresh = CParams::instance()->getParam1f();
     NMStoCharacter(charVec, overlapThresh);
 
     std::vector<CCharacter> strongSeedVec;
@@ -1978,7 +1981,7 @@ void mserCharMatch(const Mat &src, std::vector<Mat> &match, std::vector<CPlate>&
           }
           //plate.setOstuLevel(ostu_level);
 
-          Mat charInput = preprocessChar(binary_region, 20);
+          Mat charInput = preprocessChar(binary_region, char_size);
           if (0 /*&& showDebug*/) {
             imshow("charInput", charInput);
             waitKey(0);
@@ -2000,8 +2003,13 @@ void mserCharMatch(const Mat &src, std::vector<Mat> &match, std::vector<CPlate>&
         // if the left most character is not a chinese,
         // this means we meed to slide a window to find the missed mser rect.
         // search for sliding window
+        float ratioWindow  = 0.5f;
+        //float ratioWindow = CParams::instance()->getParam3f();
+        float threshIsCharacter = 0.8f;
+        //float threshIsCharacter = CParams::instance()->getParam3f();
         if (!leftIsChinese) {
-          slideWindowSearch(image, slideLeftWindow, line, leftPoint, dist, ostu_level, maxrect, plateResult, CharSearchDirection::LEFT, true, result);
+          slideWindowSearch(image, slideLeftWindow, line, leftPoint, dist, ostu_level, ratioWindow, threshIsCharacter,
+            maxrect, plateResult, CharSearchDirection::LEFT, true, result);
           if (1 && showDebug) {
             std::cout << "slideLeftWindow:" << slideLeftWindow.size() << std::endl;
           }
@@ -2016,7 +2024,12 @@ void mserCharMatch(const Mat &src, std::vector<Mat> &match, std::vector<CPlate>&
       // we need to slide a window to right to search for the missed mser rect.
       if (mserCharacter.size() < char_max_count) {
         // change ostu_level
-        slideWindowSearch(image, slideRightWindow, line, rightPoint, dist, plate.getOstuLevel(), maxrect, plateResult, CharSearchDirection::RIGHT, false, result);
+        float ratioWindow  = 0.5f;
+        //float ratioWindow = CParams::instance()->getParam3f();
+        float threshIsCharacter = 0.8f;
+        //float threshIsCharacter = CParams::instance()->getParam3f();
+        slideWindowSearch(image, slideRightWindow, line, rightPoint, dist, plate.getOstuLevel(), ratioWindow, threshIsCharacter,
+          maxrect, plateResult, CharSearchDirection::RIGHT, false, result);
         if (1 && showDebug) {
           std::cout << "slideRightWindow:" << slideRightWindow.size() << std::endl;
         }

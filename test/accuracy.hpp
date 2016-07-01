@@ -87,7 +87,6 @@ namespace easypr {
       std::string path_result = "result/Result.xml";
 
       CPlateRecognize pr;
-
       // 设置Debug模式
       pr.setResultShow(false);
       pr.setLifemode(true);
@@ -95,9 +94,11 @@ namespace easypr {
       pr.setMaxPlates(4);
       //pr.setDetectType(PR_DETECT_COLOR | PR_DETECT_SOBEL);
       pr.setDetectType(PR_DETECT_CMSER);
-
-      //CharsIdentify::instance()->LoadModel(kDefaultAnnPath);
-      //PlateJudge::instance()->LoadModel(kDefaultSvmPath);
+      
+      // load the maching learning model
+      pr.LoadSVM("resources/model/svm.xml");
+      pr.LoadANN("resources/model/ann.xml");
+      pr.LoadChineseANN("resources/model/ann_chinese.xml");
 
       //CPlateDetect pd;
       //pd.setDetectType(PR_DETECT_CMSER);
@@ -478,38 +479,58 @@ namespace easypr {
 
       std::vector<Result> all_results;
 
-      bool b1[] = {true};
-      int b1_c = 1;
+      int i1[] = { 900, 1000, 1100, 1200 };
+      int i1_c = 1;
 
-      float f1[] = {0.1f, 0.2f, 0.3f};
-      int f1_c = 3;
+      float f1[] = { 0.3f, 0.4f, 0.5f, 0.6f };
+      int f1_c = 1;
+
+      float f2[] = { 0.2f, 0.25f, 0.3f, 0.35f };
+      int f2_c = 1;
+
+      float f3[] = { 0.4f, 0.45f, 0.5f, 0.55f };
+      int f3_c = 1;
 
       Config config;
-      config.setParam1b(b1, b1_c);
+      config.setParam1i(i1, i1_c);
       config.setParam1f(f1, f1_c);
+      config.setParam2f(f2, f2_c);
+      config.setParam3f(f3, f3_c);
 
-      for (size_t i1 = 0; i1 < config.getParam1b().size(); i1++) {
-        bool b1 = config.getParam1b().at(i1);
+      for (size_t idx1 = 0; idx1 < config.getParam1f().size(); idx1++) {
+        float f1 = config.getParam1f().at(idx1);
 
-        for (size_t i2 = 0; i2 < config.getParam1f().size(); i2++) {
-          float f1 = config.getParam1f().at(i2);
+        for (size_t idx2 = 0; idx2 < config.getParam2f().size(); idx2++) {
+          float f2 = config.getParam2f().at(idx2);
 
-          CParams::instance()->setParam1b(b1);
-          CParams::instance()->setParam1f(f1);
+          for (size_t idx3 = 0; idx3 < config.getParam3f().size(); idx3++) {
+            float f3 = config.getParam3f().at(idx3);
 
-          Result result;
-          accuracyTest(test_path, result, true);
+            for (size_t idx4 = 0; idx4 < config.getParam1i().size(); idx4++) {
+              int i1 = config.getParam1i().at(idx4);
 
-          result.getParams().setParam1b(b1);
-          result.getParams().setParam1f(f1);
+              CParams::instance()->setParam1i(i1);
+              CParams::instance()->setParam1f(f1);
+              CParams::instance()->setParam2f(f2);
+              CParams::instance()->setParam3f(f3);
 
-          all_results.push_back(result);
+              Result result;
+              accuracyTest(test_path, result, true);
+
+              result.getParams().setParam1i(i1);
+              result.getParams().setParam1f(f1);
+              result.getParams().setParam2f(f2);
+              result.getParams().setParam3f(f3);
+
+              all_results.push_back(result);
+            }
+          }        
         }
       }
 
       std::sort(all_results.begin(), all_results.end(),
         [](const Result& r1, const Result& r2) {
-        return r1.getChinesePreciese() > r2.getChinesePreciese();
+        return r1.getDetectFscore() > r2.getDetectFscore();
       });
 
       for (auto result : all_results) {

@@ -64,19 +64,19 @@ namespace easypr {
         {
           // write obj to stream
           os << "m_param1f" << ":" << obj.m_param1f << ",  ";
-          //os << "m_param2f" << ":" << obj.m_param2f << ",  ";
-          //os << "m_param3f" << ":" << obj.m_param3f << ",  ";
+          os << "m_param2f" << ":" << obj.m_param2f << ",  ";
+          os << "m_param3f" << ":" << obj.m_param3f << ",  ";
           os << std::endl;
 
-          //os << "m_param1i" << ":" << obj.m_param1i << ",  ";
+          os << "m_param1i" << ":" << obj.m_param1i << ",  ";
           //os << "m_param2i" << ":" << obj.m_param2i << ",  ";
           //os << "m_param3i" << ":" << obj.m_param3i << ",  ";
-          //os << std::endl;
+          os << std::endl;
 
-          os << "m_param1b" << ":" << obj.m_param1b << ",  ";
+          //os << "m_param1b" << ":" << obj.m_param1b << ",  ";
           //os << "m_param2b" << ":" << obj.m_param2b << ",  ";
           //os << "m_param3b" << ":" << obj.m_param3b << ",  ";
-          os << std::endl;
+          //os << std::endl;
 
           return os;
         }

@@ -1,5 +1,6 @@
 #include "easypr/core/plate_locate.h"
 #include "easypr/util/util.h"
+#include "easypr/core/params.h"
 
 using namespace std;
 
@@ -823,6 +824,7 @@ int CPlateLocate::plateMserLocate(Mat src, vector<CPlate> &candPlates, int img_i
 
   bool usePlateMser = false;
   int scale_size = 1024;
+  //int scale_size = CParams::instance()->getParam1i();
   double scale_ratio = 1;
 
   // only conside blue plate
