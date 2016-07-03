@@ -177,14 +177,14 @@ public:
     probability is above a global limit pmin and the difference between local maximum and
     local minimum is greater than minProbabilityDiff).
 
-    @param cb ®C Callback with the classifier. Default classifier can be implicitly load with function
+    @param cb ÊØè Callback with the classifier. Default classifier can be implicitly load with function
         loadClassifierNM1(), e.g. from file in samples/cpp/trained_classifierNM1.xml
-    @param thresholdDelta ®C Threshold step in subsequent thresholds when extracting the component tree
-    @param minArea ®C The minimum area (% of image size) allowed for retreived ER°Øs
-    @param maxArea ®C The maximum area (% of image size) allowed for retreived ER°Øs
-    @param minProbability ®C The minimum probability P(er|character) allowed for retreived ER°Øs
-    @param nonMaxSuppression ®C Whenever non-maximum suppression is done over the branch probabilities
-    @param minProbabilityDiff ®C The minimum probability difference between local maxima and local minima ERs
+    @param thresholdDelta ÊØè Threshold step in subsequent thresholds when extracting the component tree
+    @param minArea ÊØè The minimum area (% of image size) allowed for retreived ERÔºäs
+    @param maxArea ÊØè The maximum area (% of image size) allowed for retreived ERÔºäs
+    @param minProbability ÊØè The minimum probability P(er|character) allowed for retreived ERÔºäs
+    @param nonMaxSuppression ÊØè Whenever non-maximum suppression is done over the branch probabilities
+    @param minProbabilityDiff ÊØè The minimum probability difference between local maxima and local minima ERs
 */
 
 /** @brief Create an Extremal Region Filter for the 1st stage classifier of N&M algorithm [Neumann12].

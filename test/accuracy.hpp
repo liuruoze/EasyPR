@@ -480,16 +480,16 @@ namespace easypr {
       std::vector<Result> all_results;
 
       int i1[] = { 900, 1000, 1100, 1200 };
-      int i1_c = 1;
+      int i1_c = 4;
 
       float f1[] = { 0.3f, 0.4f, 0.5f, 0.6f };
-      int f1_c = 1;
+      int f1_c = 4;
 
       float f2[] = { 0.2f, 0.25f, 0.3f, 0.35f };
-      int f2_c = 1;
+      int f2_c = 4;
 
       float f3[] = { 0.4f, 0.45f, 0.5f, 0.55f };
-      int f3_c = 1;
+      int f3_c = 4;
 
       Config config;
       config.setParam1i(i1, i1_c);

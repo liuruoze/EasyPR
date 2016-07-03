@@ -1,6 +1,8 @@
 .idea/
 _build/
 resources/image/tmp/
+resources/image/native_test/*.jpg
+
 *.suo
 *.sdf
 *.opensdf
@@ -32,3 +34,8 @@ obj/
 [Rr]elease*/
 _ReSharper*/
 [Tt]est[Rr]esult*
+
+*.obj
+*.cache
+*.log
+[Bb]in

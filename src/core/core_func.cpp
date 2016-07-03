@@ -1691,7 +1691,7 @@ void mserCharMatch(const Mat &src, std::vector<Mat> &match, std::vector<CPlate>&
     CharsIdentify::instance()->classify(charVec);
 
     // use nms to remove the character are not likely to be true.
-    double overlapThresh = 0.5;
+    double overlapThresh = 0.6;
     //double overlapThresh = CParams::instance()->getParam1f();
     NMStoCharacter(charVec, overlapThresh);
 
@@ -2003,7 +2003,7 @@ void mserCharMatch(const Mat &src, std::vector<Mat> &match, std::vector<CPlate>&
         // if the left most character is not a chinese,
         // this means we meed to slide a window to find the missed mser rect.
         // search for sliding window
-        float ratioWindow  = 0.5f;
+        float ratioWindow  = 0.4f;
         //float ratioWindow = CParams::instance()->getParam3f();
         float threshIsCharacter = 0.8f;
         //float threshIsCharacter = CParams::instance()->getParam3f();
@@ -2024,7 +2024,7 @@ void mserCharMatch(const Mat &src, std::vector<Mat> &match, std::vector<CPlate>&
       // we need to slide a window to right to search for the missed mser rect.
       if (mserCharacter.size() < char_max_count) {
         // change ostu_level
-        float ratioWindow  = 0.5f;
+        float ratioWindow  = 0.4f;
         //float ratioWindow = CParams::instance()->getParam3f();
         float threshIsCharacter = 0.8f;
         //float threshIsCharacter = CParams::instance()->getParam3f();

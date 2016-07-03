@@ -1,0 +1,2560 @@
+2016-07-04 00:20:47
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:83.1034%. 
+m_detectRecall:74.5919%, m_detectPrecise:76.6902%, m_detectFscore:75.6265%.
+m_0error:60.3604%,  m_1error:69.3694%,  m_chinesePrecise:72.973%.  
+m_seconds:672sec,  m_avgSeconds:2.67729sec.
+m_param1f:0.6,  m_param2f:0.2,  m_param3f:0.4,  
+m_param1i:1000,  
+
+
+2016-07-04 00:20:47
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:83.1034%. 
+m_detectRecall:74.5728%, m_detectPrecise:76.6707%, m_detectFscore:75.6072%.
+m_0error:59.9099%,  m_1error:68.9189%,  m_chinesePrecise:72.5225%.  
+m_seconds:660sec,  m_avgSeconds:2.62948sec.
+m_param1f:0.6,  m_param2f:0.25,  m_param3f:0.4,  
+m_param1i:1000,  
+
+
+2016-07-04 00:20:47
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:82.4138%. 
+m_detectRecall:74.1202%, m_detectPrecise:77.1277%, m_detectFscore:75.594%.
+m_0error:60.0917%,  m_1error:68.3486%,  m_chinesePrecise:71.5596%.  
+m_seconds:653sec,  m_avgSeconds:2.60159sec.
+m_param1f:0.3,  m_param2f:0.2,  m_param3f:0.4,  
+m_param1i:1000,  
+
+
+2016-07-04 00:20:47
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:83.1034%. 
+m_detectRecall:74.5405%, m_detectPrecise:76.6377%, m_detectFscore:75.5745%.
+m_0error:60.5381%,  m_1error:69.5067%,  m_chinesePrecise:73.0942%.  
+m_seconds:659sec,  m_avgSeconds:2.6255sec.
+m_param1f:0.6,  m_param2f:0.35,  m_param3f:0.4,  
+m_param1i:1000,  
+
+
+2016-07-04 00:20:47
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:83.1034%. 
+m_detectRecall:74.5292%, m_detectPrecise:76.6262%, m_detectFscore:75.5631%.
+m_0error:60.0897%,  m_1error:69.0583%,  m_chinesePrecise:72.6457%.  
+m_seconds:659sec,  m_avgSeconds:2.6255sec.
+m_param1f:0.6,  m_param2f:0.3,  m_param3f:0.4,  
+m_param1i:1000,  
+
+
+2016-07-04 00:20:47
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:82.4138%. 
+m_detectRecall:74.1162%, m_detectPrecise:76.849%, m_detectFscore:75.4579%.
+m_0error:60.0917%,  m_1error:67.8899%,  m_chinesePrecise:71.1009%.  
+m_seconds:649sec,  m_avgSeconds:2.58566sec.
+m_param1f:0.4,  m_param2f:0.2,  m_param3f:0.4,  
+m_param1i:1000,  
+
+
+2016-07-04 00:20:47
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:82.4138%. 
+m_detectRecall:74.1011%, m_detectPrecise:76.8335%, m_detectFscore:75.4425%.
+m_0error:59.633%,  m_1error:67.8899%,  m_chinesePrecise:71.1009%.  
+m_seconds:651sec,  m_avgSeconds:2.59363sec.
+m_param1f:0.3,  m_param2f:0.25,  m_param3f:0.4,  
+m_param1i:1000,  
+
+
+2016-07-04 00:20:47
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:83.1034%. 
+m_detectRecall:74.5382%, m_detectPrecise:76.3665%, m_detectFscore:75.4413%.
+m_0error:59.276%,  m_1error:68.3258%,  m_chinesePrecise:72.3982%.  
+m_seconds:667sec,  m_avgSeconds:2.65737sec.
+m_param1f:0.6,  m_param2f:0.2,  m_param3f:0.45,  
+m_param1i:1000,  
+
+
+2016-07-04 00:20:47
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:83.1034%. 
+m_detectRecall:74.5191%, m_detectPrecise:76.347%, m_detectFscore:75.422%.
+m_0error:58.8235%,  m_1error:67.8733%,  m_chinesePrecise:71.9457%.  
+m_seconds:660sec,  m_avgSeconds:2.62948sec.
+m_param1f:0.6,  m_param2f:0.25,  m_param3f:0.45,  
+m_param1i:1000,  
+
+
+2016-07-04 00:20:47
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:82.4138%. 
+m_detectRecall:74.0688%, m_detectPrecise:76.8001%, m_detectFscore:75.4097%.
+m_0error:60.274%,  m_1error:68.4931%,  m_chinesePrecise:71.6895%.  
+m_seconds:649sec,  m_avgSeconds:2.58566sec.
+m_param1f:0.3,  m_param2f:0.35,  m_param3f:0.4,  
+m_param1i:1000,  
+
+
+2016-07-04 00:20:47
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:82.4138%. 
+m_detectRecall:74.0575%, m_detectPrecise:76.7885%, m_detectFscore:75.3982%.
+m_0error:59.8173%,  m_1error:68.0365%,  m_chinesePrecise:71.2329%.  
+m_seconds:650sec,  m_avgSeconds:2.58964sec.
+m_param1f:0.3,  m_param2f:0.3,  m_param3f:0.4,  
+m_param1i:1000,  
+
+
+2016-07-04 00:20:47
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:82.4138%. 
+m_detectRecall:74.1376%, m_detectPrecise:76.5986%, m_detectFscore:75.3481%.
+m_0error:59.0909%,  m_1error:67.2727%,  m_chinesePrecise:70.4546%.  
+m_seconds:652sec,  m_avgSeconds:2.59761sec.
+m_param1f:0.5,  m_param2f:0.2,  m_param3f:0.4,  
+m_param1i:1000,  
+
+
+2016-07-04 00:20:47
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:82.4138%. 
+m_detectRecall:74.097%, m_detectPrecise:76.5569%, m_detectFscore:75.3069%.
+m_0error:59.633%,  m_1error:67.4312%,  m_chinesePrecise:70.6422%.  
+m_seconds:650sec,  m_avgSeconds:2.58964sec.
+m_param1f:0.4,  m_param2f:0.25,  m_param3f:0.4,  
+m_param1i:1000,  
+
+
+2016-07-04 00:20:47
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:83.1034%. 
+m_detectRecall:74.5132%, m_detectPrecise:76.0742%, m_detectFscore:75.2856%.
+m_0error:59.009%,  m_1error:68.018%,  m_chinesePrecise:72.0721%.  
+m_seconds:660sec,  m_avgSeconds:2.62948sec.
+m_param1f:0.6,  m_param2f:0.35,  m_param3f:0.45,  
+m_param1i:1000,  
+
+
+2016-07-04 00:20:47
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:82.4138%. 
+m_detectRecall:74.0647%, m_detectPrecise:76.5237%, m_detectFscore:75.2741%.
+m_0error:60.274%,  m_1error:68.0365%,  m_chinesePrecise:71.2329%.  
+m_seconds:652sec,  m_avgSeconds:2.59761sec.
+m_param1f:0.4,  m_param2f:0.35,  m_param3f:0.4,  
+m_param1i:1000,  
+
+
+2016-07-04 00:20:47
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:83.1034%. 
+m_detectRecall:74.4944%, m_detectPrecise:76.055%, m_detectFscore:75.2666%.
+m_0error:59.009%,  m_1error:68.018%,  m_chinesePrecise:72.0721%.  
+m_seconds:661sec,  m_avgSeconds:2.63347sec.
+m_param1f:0.6,  m_param2f:0.3,  m_param3f:0.45,  
+m_param1i:1000,  
+
+
+2016-07-04 00:20:47
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:82.4138%. 
+m_detectRecall:74.0534%, m_detectPrecise:76.512%, m_detectFscore:75.2627%.
+m_0error:59.8173%,  m_1error:67.5799%,  m_chinesePrecise:70.7763%.  
+m_seconds:653sec,  m_avgSeconds:2.60159sec.
+m_param1f:0.4,  m_param2f:0.3,  m_param3f:0.4,  
+m_param1i:1000,  
+
+
+2016-07-04 00:20:47
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:83.4483%. 
+m_detectRecall:75.052%, m_detectPrecise:75.3999%, m_detectFscore:75.2256%.
+m_0error:56.6964%,  m_1error:66.0714%,  m_chinesePrecise:68.3036%.  
+m_seconds:737sec,  m_avgSeconds:2.93625sec.
+m_param1f:0.3,  m_param2f:0.25,  m_param3f:0.4,  
+m_param1i:1100,  
+
+
+2016-07-04 00:20:47
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:83.4483%. 
+m_detectRecall:75.0356%, m_detectPrecise:75.3835%, m_detectFscore:75.2091%.
+m_0error:57.5893%,  m_1error:66.9643%,  m_chinesePrecise:69.1964%.  
+m_seconds:734sec,  m_avgSeconds:2.9243sec.
+m_param1f:0.3,  m_param2f:0.3,  m_param3f:0.4,  
+m_param1i:1100,  
+
+
+2016-07-04 00:20:47
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:83.4483%. 
+m_detectRecall:75.0356%, m_detectPrecise:75.3835%, m_detectFscore:75.2091%.
+m_0error:57.5893%,  m_1error:66.9643%,  m_chinesePrecise:69.1964%.  
+m_seconds:737sec,  m_avgSeconds:2.93625sec.
+m_param1f:0.3,  m_param2f:0.35,  m_param3f:0.4,  
+m_param1i:1100,  
+
+
+2016-07-04 00:20:47
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:82.4138%. 
+m_detectRecall:74.1185%, m_detectPrecise:76.3084%, m_detectFscore:75.1975%.
+m_0error:58.6364%,  m_1error:66.8182%,  m_chinesePrecise:70%.  
+m_seconds:652sec,  m_avgSeconds:2.59761sec.
+m_param1f:0.5,  m_param2f:0.25,  m_param3f:0.4,  
+m_param1i:1000,  
+
+
+2016-07-04 00:20:47
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:82.069%. 
+m_detectRecall:73.7296%, m_detectPrecise:76.7231%, m_detectFscore:75.1965%.
+m_0error:59.2593%,  m_1error:67.5926%,  m_chinesePrecise:71.2963%.  
+m_seconds:649sec,  m_avgSeconds:2.58566sec.
+m_param1f:0.3,  m_param2f:0.2,  m_param3f:0.45,  
+m_param1i:1000,  
+
+
+2016-07-04 00:20:47
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:82.4138%. 
+m_detectRecall:74.0862%, m_detectPrecise:76.2753%, m_detectFscore:75.1648%.
+m_0error:59.276%,  m_1error:67.4208%,  m_chinesePrecise:70.5882%.  
+m_seconds:670sec,  m_avgSeconds:2.66932sec.
+m_param1f:0.5,  m_param2f:0.35,  m_param3f:0.4,  
+m_param1i:1000,  
+
+
+2016-07-04 00:20:47
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:82.4138%. 
+m_detectRecall:74.0749%, m_detectPrecise:76.2637%, m_detectFscore:75.1534%.
+m_0error:58.8235%,  m_1error:66.9683%,  m_chinesePrecise:70.1357%.  
+m_seconds:648sec,  m_avgSeconds:2.58167sec.
+m_param1f:0.5,  m_param2f:0.3,  m_param3f:0.4,  
+m_param1i:1000,  
+
+
+2016-07-04 00:20:48
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:83.1034%. 
+m_detectRecall:74.6811%, m_detectPrecise:75.55%, m_detectFscore:75.113%.
+m_0error:56.9507%,  m_1error:66.3677%,  m_chinesePrecise:69.0583%.  
+m_seconds:734sec,  m_avgSeconds:2.9243sec.
+m_param1f:0.3,  m_param2f:0.3,  m_param3f:0.45,  
+m_param1i:1100,  
+
+
+2016-07-04 00:20:48
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:83.1034%. 
+m_detectRecall:74.6811%, m_detectPrecise:75.55%, m_detectFscore:75.113%.
+m_0error:56.9507%,  m_1error:66.3677%,  m_chinesePrecise:69.0583%.  
+m_seconds:737sec,  m_avgSeconds:2.93625sec.
+m_param1f:0.3,  m_param2f:0.35,  m_param3f:0.45,  
+m_param1i:1100,  
+
+
+2016-07-04 00:20:48
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:83.1034%. 
+m_detectRecall:74.6786%, m_detectPrecise:75.5475%, m_detectFscore:75.1105%.
+m_0error:56.0538%,  m_1error:65.4708%,  m_chinesePrecise:68.1614%.  
+m_seconds:735sec,  m_avgSeconds:2.92829sec.
+m_param1f:0.3,  m_param2f:0.25,  m_param3f:0.45,  
+m_param1i:1100,  
+
+
+2016-07-04 00:20:48
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:83.7931%. 
+m_detectRecall:75.3049%, m_detectPrecise:74.8782%, m_detectFscore:75.091%.
+m_0error:57.1429%,  m_1error:66.0714%,  m_chinesePrecise:68.3036%.  
+m_seconds:736sec,  m_avgSeconds:2.93227sec.
+m_param1f:0.4,  m_param2f:0.25,  m_param3f:0.4,  
+m_param1i:1100,  
+
+
+2016-07-04 00:20:48
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:83.7931%. 
+m_detectRecall:75.2885%, m_detectPrecise:74.862%, m_detectFscore:75.0746%.
+m_0error:58.0357%,  m_1error:66.9643%,  m_chinesePrecise:69.1964%.  
+m_seconds:739sec,  m_avgSeconds:2.94422sec.
+m_param1f:0.4,  m_param2f:0.3,  m_param3f:0.4,  
+m_param1i:1100,  
+
+
+2016-07-04 00:20:48
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:83.7931%. 
+m_detectRecall:75.2885%, m_detectPrecise:74.862%, m_detectFscore:75.0746%.
+m_0error:58.0357%,  m_1error:66.9643%,  m_chinesePrecise:69.1964%.  
+m_seconds:739sec,  m_avgSeconds:2.94422sec.
+m_param1f:0.4,  m_param2f:0.35,  m_param3f:0.4,  
+m_param1i:1100,  
+
+
+2016-07-04 00:20:48
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:82.069%. 
+m_detectRecall:73.7255%, m_detectPrecise:76.4459%, m_detectFscore:75.0611%.
+m_0error:59.2593%,  m_1error:67.1296%,  m_chinesePrecise:70.8333%.  
+m_seconds:650sec,  m_avgSeconds:2.58964sec.
+m_param1f:0.4,  m_param2f:0.2,  m_param3f:0.45,  
+m_param1i:1000,  
+
+
+2016-07-04 00:20:48
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:82.069%. 
+m_detectRecall:73.7104%, m_detectPrecise:76.4303%, m_detectFscore:75.0457%.
+m_0error:58.7963%,  m_1error:67.1296%,  m_chinesePrecise:70.8333%.  
+m_seconds:650sec,  m_avgSeconds:2.58964sec.
+m_param1f:0.3,  m_param2f:0.25,  m_param3f:0.45,  
+m_param1i:1000,  
+
+
+2016-07-04 00:20:48
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:82.7586%. 
+m_detectRecall:74.3408%, m_detectPrecise:75.7333%, m_detectFscore:75.0306%.
+m_0error:56.5611%,  m_1error:66.0633%,  m_chinesePrecise:68.7783%.  
+m_seconds:734sec,  m_avgSeconds:2.9243sec.
+m_param1f:0.3,  m_param2f:0.2,  m_param3f:0.45,  
+m_param1i:1100,  
+
+
+2016-07-04 00:20:48
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:83.4483%. 
+m_detectRecall:74.7376%, m_detectPrecise:75.2797%, m_detectFscore:75.0077%.
+m_0error:56.9507%,  m_1error:66.3677%,  m_chinesePrecise:68.6099%.  
+m_seconds:734sec,  m_avgSeconds:2.9243sec.
+m_param1f:0.3,  m_param2f:0.3,  m_param3f:0.5,  
+m_param1i:1100,  
+
+
+2016-07-04 00:20:48
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:83.4483%. 
+m_detectRecall:74.7376%, m_detectPrecise:75.2797%, m_detectFscore:75.0077%.
+m_0error:56.9507%,  m_1error:66.3677%,  m_chinesePrecise:68.6099%.  
+m_seconds:737sec,  m_avgSeconds:2.93625sec.
+m_param1f:0.3,  m_param2f:0.35,  m_param3f:0.5,  
+m_param1i:1100,  
+
+
+2016-07-04 00:20:48
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:83.4483%. 
+m_detectRecall:74.7352%, m_detectPrecise:75.2772%, m_detectFscore:75.0052%.
+m_0error:56.0538%,  m_1error:65.4708%,  m_chinesePrecise:67.713%.  
+m_seconds:734sec,  m_avgSeconds:2.9243sec.
+m_param1f:0.3,  m_param2f:0.25,  m_param3f:0.5,  
+m_param1i:1100,  
+
+
+2016-07-04 00:20:48
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:82.7586%. 
+m_detectRecall:74.4288%, m_detectPrecise:75.5583%, m_detectFscore:74.9893%.
+m_0error:57.2072%,  m_1error:66.6667%,  m_chinesePrecise:68.9189%.  
+m_seconds:736sec,  m_avgSeconds:2.93227sec.
+m_param1f:0.3,  m_param2f:0.2,  m_param3f:0.4,  
+m_param1i:1100,  
+
+
+2016-07-04 00:20:48
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:83.4483%. 
+m_detectRecall:74.934%, m_detectPrecise:75.0232%, m_detectFscore:74.9786%.
+m_0error:57.3991%,  m_1error:66.3677%,  m_chinesePrecise:69.0583%.  
+m_seconds:740sec,  m_avgSeconds:2.94821sec.
+m_param1f:0.4,  m_param2f:0.3,  m_param3f:0.45,  
+m_param1i:1100,  
+
+
+2016-07-04 00:20:48
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:83.4483%. 
+m_detectRecall:74.934%, m_detectPrecise:75.0232%, m_detectFscore:74.9786%.
+m_0error:57.3991%,  m_1error:66.3677%,  m_chinesePrecise:69.0583%.  
+m_seconds:738sec,  m_avgSeconds:2.94024sec.
+m_param1f:0.4,  m_param2f:0.35,  m_param3f:0.45,  
+m_param1i:1100,  
+
+
+2016-07-04 00:20:48
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:83.4483%. 
+m_detectRecall:74.9315%, m_detectPrecise:75.0207%, m_detectFscore:74.9761%.
+m_0error:56.5022%,  m_1error:65.4708%,  m_chinesePrecise:68.1614%.  
+m_seconds:739sec,  m_avgSeconds:2.94422sec.
+m_param1f:0.4,  m_param2f:0.25,  m_param3f:0.45,  
+m_param1i:1100,  
+
+
+2016-07-04 00:20:48
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:82.7586%. 
+m_detectRecall:74.1815%, m_detectPrecise:75.7687%, m_detectFscore:74.9667%.
+m_0error:59.276%,  m_1error:67.8733%,  m_chinesePrecise:71.4932%.  
+m_seconds:666sec,  m_avgSeconds:2.65339sec.
+m_param1f:0.6,  m_param2f:0.2,  m_param3f:0.5,  
+m_param1i:1000,  
+
+
+2016-07-04 00:20:48
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:83.4483%. 
+m_detectRecall:74.705%, m_detectPrecise:75.2073%, m_detectFscore:74.9553%.
+m_0error:56.6964%,  m_1error:66.0714%,  m_chinesePrecise:68.3036%.  
+m_seconds:734sec,  m_avgSeconds:2.9243sec.
+m_param1f:0.3,  m_param2f:0.3,  m_param3f:0.55,  
+m_param1i:1100,  
+
+
+2016-07-04 00:20:48
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:83.4483%. 
+m_detectRecall:74.705%, m_detectPrecise:75.2073%, m_detectFscore:74.9553%.
+m_0error:56.6964%,  m_1error:66.0714%,  m_chinesePrecise:68.3036%.  
+m_seconds:735sec,  m_avgSeconds:2.92829sec.
+m_param1f:0.3,  m_param2f:0.35,  m_param3f:0.55,  
+m_param1i:1100,  
+
+
+2016-07-04 00:20:48
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:83.4483%. 
+m_detectRecall:74.7025%, m_detectPrecise:75.2048%, m_detectFscore:74.9529%.
+m_0error:55.8036%,  m_1error:65.1786%,  m_chinesePrecise:67.4107%.  
+m_seconds:736sec,  m_avgSeconds:2.93227sec.
+m_param1f:0.3,  m_param2f:0.25,  m_param3f:0.55,  
+m_param1i:1100,  
+
+
+2016-07-04 00:20:48
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:82.069%. 
+m_detectRecall:73.747%, m_detectPrecise:76.1969%, m_detectFscore:74.952%.
+m_0error:58.2569%,  m_1error:66.5138%,  m_chinesePrecise:70.1835%.  
+m_seconds:653sec,  m_avgSeconds:2.60159sec.
+m_param1f:0.5,  m_param2f:0.2,  m_param3f:0.45,  
+m_param1i:1000,  
+
+
+2016-07-04 00:20:48
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:82.7586%. 
+m_detectRecall:74.1624%, m_detectPrecise:75.7493%, m_detectFscore:74.9474%.
+m_0error:58.8235%,  m_1error:67.4208%,  m_chinesePrecise:71.0407%.  
+m_seconds:666sec,  m_avgSeconds:2.65339sec.
+m_param1f:0.6,  m_param2f:0.25,  m_param3f:0.5,  
+m_param1i:1000,  
+
+
+2016-07-04 00:20:48
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:83.1034%. 
+m_detectRecall:74.3974%, m_detectPrecise:75.4599%, m_detectFscore:74.9249%.
+m_0error:56.5611%,  m_1error:66.0633%,  m_chinesePrecise:68.3258%.  
+m_seconds:737sec,  m_avgSeconds:2.93625sec.
+m_param1f:0.3,  m_param2f:0.2,  m_param3f:0.5,  
+m_param1i:1100,  
+
+
+2016-07-04 00:20:48
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:82.069%. 
+m_detectRecall:73.7064%, m_detectPrecise:76.1551%, m_detectFscore:74.9108%.
+m_0error:58.7963%,  m_1error:66.6667%,  m_chinesePrecise:70.3704%.  
+m_seconds:649sec,  m_avgSeconds:2.58566sec.
+m_param1f:0.4,  m_param2f:0.25,  m_param3f:0.45,  
+m_param1i:1000,  
+
+
+2016-07-04 00:20:48
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:82.069%. 
+m_detectRecall:73.7046%, m_detectPrecise:76.1533%, m_detectFscore:74.9089%.
+m_0error:58.9862%,  m_1error:67.2811%,  m_chinesePrecise:70.9677%.  
+m_seconds:650sec,  m_avgSeconds:2.58964sec.
+m_param1f:0.3,  m_param2f:0.35,  m_param3f:0.45,  
+m_param1i:1000,  
+
+
+2016-07-04 00:20:48
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:83.1034%. 
+m_detectRecall:74.5937%, m_detectPrecise:75.201%, m_detectFscore:74.8961%.
+m_0error:57.0136%,  m_1error:66.0633%,  m_chinesePrecise:68.7783%.  
+m_seconds:737sec,  m_avgSeconds:2.93625sec.
+m_param1f:0.4,  m_param2f:0.2,  m_param3f:0.45,  
+m_param1i:1100,  
+
+
+2016-07-04 00:20:48
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:83.7931%. 
+m_detectRecall:75.1517%, m_detectPrecise:74.6339%, m_detectFscore:74.8919%.
+m_0error:56.8889%,  m_1error:67.5555%,  m_chinesePrecise:70.6667%.  
+m_seconds:746sec,  m_avgSeconds:2.97211sec.
+m_param1f:0.6,  m_param2f:0.3,  m_param3f:0.45,  
+m_param1i:1100,  
+
+
+2016-07-04 00:20:48
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:83.7931%. 
+m_detectRecall:75.1517%, m_detectPrecise:74.6339%, m_detectFscore:74.8919%.
+m_0error:56.8889%,  m_1error:67.5555%,  m_chinesePrecise:70.6667%.  
+m_seconds:748sec,  m_avgSeconds:2.98008sec.
+m_param1f:0.6,  m_param2f:0.35,  m_param3f:0.45,  
+m_param1i:1100,  
+
+
+2016-07-04 00:20:48
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:82.069%. 
+m_detectRecall:73.6857%, m_detectPrecise:76.1339%, m_detectFscore:74.8898%.
+m_0error:58.9862%,  m_1error:67.2811%,  m_chinesePrecise:70.9677%.  
+m_seconds:650sec,  m_avgSeconds:2.58964sec.
+m_param1f:0.3,  m_param2f:0.3,  m_param3f:0.45,  
+m_param1i:1000,  
+
+
+2016-07-04 00:20:48
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:83.7931%. 
+m_detectRecall:75.1492%, m_detectPrecise:74.6315%, m_detectFscore:74.8895%.
+m_0error:56%,  m_1error:66.6667%,  m_chinesePrecise:69.7778%.  
+m_seconds:750sec,  m_avgSeconds:2.98805sec.
+m_param1f:0.6,  m_param2f:0.25,  m_param3f:0.45,  
+m_param1i:1100,  
+
+
+2016-07-04 00:20:48
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:83.7931%. 
+m_detectRecall:74.9979%, m_detectPrecise:74.7665%, m_detectFscore:74.882%.
+m_0error:57.3991%,  m_1error:66.3677%,  m_chinesePrecise:68.6099%.  
+m_seconds:739sec,  m_avgSeconds:2.94422sec.
+m_param1f:0.4,  m_param2f:0.35,  m_param3f:0.5,  
+m_param1i:1100,  
+
+
+2016-07-04 00:20:48
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:83.7931%. 
+m_detectRecall:74.9979%, m_detectPrecise:74.7665%, m_detectFscore:74.882%.
+m_0error:57.3991%,  m_1error:66.3677%,  m_chinesePrecise:68.6099%.  
+m_seconds:740sec,  m_avgSeconds:2.94821sec.
+m_param1f:0.4,  m_param2f:0.3,  m_param3f:0.5,  
+m_param1i:1100,  
+
+
+2016-07-04 00:20:48
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:83.7931%. 
+m_detectRecall:74.9954%, m_detectPrecise:74.764%, m_detectFscore:74.8795%.
+m_0error:56.5022%,  m_1error:65.4708%,  m_chinesePrecise:67.713%.  
+m_seconds:740sec,  m_avgSeconds:2.94821sec.
+m_param1f:0.4,  m_param2f:0.25,  m_param3f:0.5,  
+m_param1i:1100,  
+
+
+2016-07-04 00:20:48
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:83.1034%. 
+m_detectRecall:74.3648%, m_detectPrecise:75.387%, m_detectFscore:74.8724%.
+m_0error:56.3063%,  m_1error:65.7658%,  m_chinesePrecise:68.018%.  
+m_seconds:739sec,  m_avgSeconds:2.94422sec.
+m_param1f:0.3,  m_param2f:0.2,  m_param3f:0.55,  
+m_param1i:1100,  
+
+
+2016-07-04 00:20:48
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:83.1034%. 
+m_detectRecall:74.6817%, m_detectPrecise:75.0296%, m_detectFscore:74.8552%.
+m_0error:57.6577%,  m_1error:66.6667%,  m_chinesePrecise:68.9189%.  
+m_seconds:733sec,  m_avgSeconds:2.92032sec.
+m_param1f:0.4,  m_param2f:0.2,  m_param3f:0.4,  
+m_param1i:1100,  
+
+
+2016-07-04 00:20:48
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:82.7586%. 
+m_detectRecall:74.0724%, m_detectPrecise:75.6178%, m_detectFscore:74.8371%.
+m_0error:58.7444%,  m_1error:67.2646%,  m_chinesePrecise:71.3004%.  
+m_seconds:659sec,  m_avgSeconds:2.6255sec.
+m_param1f:0.6,  m_param2f:0.2,  m_param3f:0.55,  
+m_param1i:1000,  
+
+
+2016-07-04 00:20:48
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:83.7931%. 
+m_detectRecall:74.9696%, m_detectPrecise:74.6992%, m_detectFscore:74.8342%.
+m_0error:57.1429%,  m_1error:66.0714%,  m_chinesePrecise:68.3036%.  
+m_seconds:738sec,  m_avgSeconds:2.94024sec.
+m_param1f:0.4,  m_param2f:0.35,  m_param3f:0.55,  
+m_param1i:1100,  
+
+
+2016-07-04 00:20:48
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:83.7931%. 
+m_detectRecall:74.9696%, m_detectPrecise:74.6992%, m_detectFscore:74.8342%.
+m_0error:57.1429%,  m_1error:66.0714%,  m_chinesePrecise:68.3036%.  
+m_seconds:739sec,  m_avgSeconds:2.94422sec.
+m_param1f:0.4,  m_param2f:0.3,  m_param3f:0.55,  
+m_param1i:1100,  
+
+
+2016-07-04 00:20:48
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:83.4483%. 
+m_detectRecall:74.8343%, m_detectPrecise:74.8299%, m_detectFscore:74.8321%.
+m_0error:56.6964%,  m_1error:67.4107%,  m_chinesePrecise:70.5357%.  
+m_seconds:753sec,  m_avgSeconds:3sec.
+m_param1f:0.6,  m_param2f:0.2,  m_param3f:0.45,  
+m_param1i:1100,  
+
+
+2016-07-04 00:20:48
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:83.7931%. 
+m_detectRecall:74.9671%, m_detectPrecise:74.6967%, m_detectFscore:74.8317%.
+m_0error:56.25%,  m_1error:65.1786%,  m_chinesePrecise:67.4107%.  
+m_seconds:739sec,  m_avgSeconds:2.94422sec.
+m_param1f:0.4,  m_param2f:0.25,  m_param3f:0.55,  
+m_param1i:1100,  
+
+
+2016-07-04 00:20:48
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:82.7586%. 
+m_detectRecall:74.0533%, m_detectPrecise:75.5984%, m_detectFscore:74.8179%.
+m_0error:58.296%,  m_1error:66.8161%,  m_chinesePrecise:70.852%.  
+m_seconds:666sec,  m_avgSeconds:2.65339sec.
+m_param1f:0.6,  m_param2f:0.25,  m_param3f:0.55,  
+m_param1i:1000,  
+
+
+2016-07-04 00:20:48
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:83.4483%. 
+m_detectRecall:75.0285%, m_detectPrecise:74.6047%, m_detectFscore:74.816%.
+m_0error:56.6964%,  m_1error:66.0714%,  m_chinesePrecise:68.3036%.  
+m_seconds:740sec,  m_avgSeconds:2.94821sec.
+m_param1f:0.5,  m_param2f:0.25,  m_param3f:0.4,  
+m_param1i:1100,  
+
+
+2016-07-04 00:20:48
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:83.7931%. 
+m_detectRecall:75.2022%, m_detectPrecise:74.4306%, m_detectFscore:74.8144%.
+m_0error:56.4444%,  m_1error:67.1111%,  m_chinesePrecise:69.7778%.  
+m_seconds:754sec,  m_avgSeconds:3.00398sec.
+m_param1f:0.6,  m_param2f:0.25,  m_param3f:0.4,  
+m_param1i:1100,  
+
+
+2016-07-04 00:20:48
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:82.4138%. 
+m_detectRecall:73.6583%, m_detectPrecise:75.995%, m_detectFscore:74.8084%.
+m_0error:57.9909%,  m_1error:65.7534%,  m_chinesePrecise:69.4064%.  
+m_seconds:651sec,  m_avgSeconds:2.59363sec.
+m_param1f:0.3,  m_param2f:0.2,  m_param3f:0.55,  
+m_param1i:1000,  
+
+
+2016-07-04 00:20:48
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:82.069%. 
+m_detectRecall:73.7279%, m_detectPrecise:75.9081%, m_detectFscore:74.8021%.
+m_0error:57.7982%,  m_1error:66.055%,  m_chinesePrecise:69.7248%.  
+m_seconds:652sec,  m_avgSeconds:2.59761sec.
+m_param1f:0.5,  m_param2f:0.25,  m_param3f:0.45,  
+m_param1i:1000,  
+
+
+2016-07-04 00:20:48
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:83.4483%. 
+m_detectRecall:75.0121%, m_detectPrecise:74.5884%, m_detectFscore:74.7997%.
+m_0error:57.5893%,  m_1error:66.9643%,  m_chinesePrecise:69.1964%.  
+m_seconds:768sec,  m_avgSeconds:3.05976sec.
+m_param1f:0.5,  m_param2f:0.35,  m_param3f:0.4,  
+m_param1i:1100,  
+
+
+2016-07-04 00:20:48
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:83.4483%. 
+m_detectRecall:75.0121%, m_detectPrecise:74.5884%, m_detectFscore:74.7997%.
+m_0error:57.5893%,  m_1error:66.9643%,  m_chinesePrecise:69.1964%.  
+m_seconds:733sec,  m_avgSeconds:2.92032sec.
+m_param1f:0.5,  m_param2f:0.3,  m_param3f:0.4,  
+m_param1i:1100,  
+
+
+2016-07-04 00:20:48
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:83.4483%. 
+m_detectRecall:74.6576%, m_detectPrecise:74.9413%, m_detectFscore:74.7992%.
+m_0error:57.0136%,  m_1error:66.0633%,  m_chinesePrecise:68.3258%.  
+m_seconds:734sec,  m_avgSeconds:2.9243sec.
+m_param1f:0.4,  m_param2f:0.2,  m_param3f:0.5,  
+m_param1i:1100,  
+
+
+2016-07-04 00:20:48
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:83.7931%. 
+m_detectRecall:75.1858%, m_detectPrecise:74.4145%, m_detectFscore:74.7981%.
+m_0error:57.3333%,  m_1error:68%,  m_chinesePrecise:70.6667%.  
+m_seconds:748sec,  m_avgSeconds:2.98008sec.
+m_param1f:0.6,  m_param2f:0.35,  m_param3f:0.4,  
+m_param1i:1100,  
+
+
+2016-07-04 00:20:48
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:83.7931%. 
+m_detectRecall:75.1858%, m_detectPrecise:74.4145%, m_detectFscore:74.7981%.
+m_0error:57.3333%,  m_1error:68%,  m_chinesePrecise:70.6667%.  
+m_seconds:749sec,  m_avgSeconds:2.98406sec.
+m_param1f:0.6,  m_param2f:0.3,  m_param3f:0.4,  
+m_param1i:1100,  
+
+
+2016-07-04 00:20:48
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:82.7586%. 
+m_detectRecall:74.1565%, m_detectPrecise:75.4412%, m_detectFscore:74.7934%.
+m_0error:59.009%,  m_1error:67.5676%,  m_chinesePrecise:71.1712%.  
+m_seconds:661sec,  m_avgSeconds:2.63347sec.
+m_param1f:0.6,  m_param2f:0.35,  m_param3f:0.5,  
+m_param1i:1000,  
+
+
+2016-07-04 00:20:48
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:82.7586%. 
+m_detectRecall:74.1377%, m_detectPrecise:75.4222%, m_detectFscore:74.7745%.
+m_0error:59.009%,  m_1error:67.5676%,  m_chinesePrecise:71.1712%.  
+m_seconds:661sec,  m_avgSeconds:2.63347sec.
+m_param1f:0.6,  m_param2f:0.3,  m_param3f:0.5,  
+m_param1i:1000,  
+
+
+2016-07-04 00:20:48
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:82.069%. 
+m_detectRecall:73.7005%, m_detectPrecise:75.88%, m_detectFscore:74.7744%.
+m_0error:58.9862%,  m_1error:66.8203%,  m_chinesePrecise:70.5069%.  
+m_seconds:651sec,  m_avgSeconds:2.59363sec.
+m_param1f:0.4,  m_param2f:0.35,  m_param3f:0.45,  
+m_param1i:1000,  
+
+
+2016-07-04 00:20:48
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:83.1034%. 
+m_detectRecall:74.7136%, m_detectPrecise:74.8036%, m_detectFscore:74.7586%.
+m_0error:57.3991%,  m_1error:66.8161%,  m_chinesePrecise:69.0583%.  
+m_seconds:739sec,  m_avgSeconds:2.94422sec.
+m_param1f:0.5,  m_param2f:0.2,  m_param3f:0.4,  
+m_param1i:1100,  
+
+
+2016-07-04 00:20:48
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:83.4483%. 
+m_detectRecall:74.8873%, m_detectPrecise:74.6269%, m_detectFscore:74.7569%.
+m_0error:57.1429%,  m_1error:67.8571%,  m_chinesePrecise:70.5357%.  
+m_seconds:753sec,  m_avgSeconds:3sec.
+m_param1f:0.6,  m_param2f:0.2,  m_param3f:0.4,  
+m_param1i:1100,  
+
+
+2016-07-04 00:20:48
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:82.069%. 
+m_detectRecall:73.4585%, m_detectPrecise:76.0999%, m_detectFscore:74.7559%.
+m_0error:58.7963%,  m_1error:66.6667%,  m_chinesePrecise:69.9074%.  
+m_seconds:651sec,  m_avgSeconds:2.59363sec.
+m_param1f:0.3,  m_param2f:0.2,  m_param3f:0.5,  
+m_param1i:1000,  
+
+
+2016-07-04 00:20:48
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:82.069%. 
+m_detectRecall:73.6817%, m_detectPrecise:75.8607%, m_detectFscore:74.7553%.
+m_0error:58.9862%,  m_1error:66.8203%,  m_chinesePrecise:70.5069%.  
+m_seconds:652sec,  m_avgSeconds:2.59761sec.
+m_param1f:0.4,  m_param2f:0.3,  m_param3f:0.45,  
+m_param1i:1000,  
+
+
+2016-07-04 00:20:48
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:83.4483%. 
+m_detectRecall:74.6294%, m_detectPrecise:74.8735%, m_detectFscore:74.7512%.
+m_0error:56.7568%,  m_1error:65.7658%,  m_chinesePrecise:68.018%.  
+m_seconds:735sec,  m_avgSeconds:2.92829sec.
+m_param1f:0.4,  m_param2f:0.2,  m_param3f:0.55,  
+m_param1i:1100,  
+
+
+2016-07-04 00:20:48
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:83.7931%. 
+m_detectRecall:75.1188%, m_detectPrecise:74.3785%, m_detectFscore:74.7468%.
+m_0error:56.8889%,  m_1error:67.5555%,  m_chinesePrecise:70.2222%.  
+m_seconds:748sec,  m_avgSeconds:2.98008sec.
+m_param1f:0.6,  m_param2f:0.35,  m_param3f:0.5,  
+m_param1i:1100,  
+
+
+2016-07-04 00:20:48
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:83.7931%. 
+m_detectRecall:75.1188%, m_detectPrecise:74.3785%, m_detectFscore:74.7468%.
+m_0error:56.8889%,  m_1error:67.5555%,  m_chinesePrecise:70.2222%.  
+m_seconds:749sec,  m_avgSeconds:2.98406sec.
+m_param1f:0.6,  m_param2f:0.3,  m_param3f:0.5,  
+m_param1i:1100,  
+
+
+2016-07-04 00:20:48
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:83.7931%. 
+m_detectRecall:75.1163%, m_detectPrecise:74.3761%, m_detectFscore:74.7444%.
+m_0error:56%,  m_1error:66.6667%,  m_chinesePrecise:69.3333%.  
+m_seconds:755sec,  m_avgSeconds:3.00797sec.
+m_param1f:0.6,  m_param2f:0.25,  m_param3f:0.5,  
+m_param1i:1100,  
+
+
+2016-07-04 00:20:48
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:83.1034%. 
+m_detectRecall:74.6634%, m_detectPrecise:74.7536%, m_detectFscore:74.7085%.
+m_0error:57.3991%,  m_1error:66.8161%,  m_chinesePrecise:69.5067%.  
+m_seconds:739sec,  m_avgSeconds:2.94422sec.
+m_param1f:0.5,  m_param2f:0.3,  m_param3f:0.45,  
+m_param1i:1100,  
+
+
+2016-07-04 00:20:48
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:83.1034%. 
+m_detectRecall:74.6634%, m_detectPrecise:74.7536%, m_detectFscore:74.7085%.
+m_0error:57.3991%,  m_1error:66.8161%,  m_chinesePrecise:69.5067%.  
+m_seconds:753sec,  m_avgSeconds:3sec.
+m_param1f:0.5,  m_param2f:0.35,  m_param3f:0.45,  
+m_param1i:1100,  
+
+
+2016-07-04 00:20:48
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:83.1034%. 
+m_detectRecall:74.6609%, m_detectPrecise:74.7511%, m_detectFscore:74.706%.
+m_0error:56.5022%,  m_1error:65.9193%,  m_chinesePrecise:68.6099%.  
+m_seconds:739sec,  m_avgSeconds:2.94422sec.
+m_param1f:0.5,  m_param2f:0.25,  m_param3f:0.45,  
+m_param1i:1100,  
+
+
+2016-07-04 00:20:48
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:83.4483%. 
+m_detectRecall:74.8014%, m_detectPrecise:74.5721%, m_detectFscore:74.6866%.
+m_0error:56.6964%,  m_1error:67.4107%,  m_chinesePrecise:70.0893%.  
+m_seconds:749sec,  m_avgSeconds:2.98406sec.
+m_param1f:0.6,  m_param2f:0.2,  m_param3f:0.5,  
+m_param1i:1100,  
+
+
+2016-07-04 00:20:48
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:82.4138%. 
+m_detectRecall:73.6633%, m_detectPrecise:75.7326%, m_detectFscore:74.6836%.
+m_0error:57.9909%,  m_1error:65.2968%,  m_chinesePrecise:68.9498%.  
+m_seconds:648sec,  m_avgSeconds:2.58167sec.
+m_param1f:0.4,  m_param2f:0.2,  m_param3f:0.55,  
+m_param1i:1000,  
+
+
+2016-07-04 00:20:48
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:82.7586%. 
+m_detectRecall:74.0475%, m_detectPrecise:75.329%, m_detectFscore:74.6827%.
+m_0error:58.4821%,  m_1error:66.9643%,  m_chinesePrecise:70.9821%.  
+m_seconds:659sec,  m_avgSeconds:2.6255sec.
+m_param1f:0.6,  m_param2f:0.35,  m_param3f:0.55,  
+m_param1i:1000,  
+
+
+2016-07-04 00:20:48
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:82.069%. 
+m_detectRecall:73.722%, m_detectPrecise:75.6348%, m_detectFscore:74.6662%.
+m_0error:57.9909%,  m_1error:66.21%,  m_chinesePrecise:69.863%.  
+m_seconds:660sec,  m_avgSeconds:2.62948sec.
+m_param1f:0.5,  m_param2f:0.35,  m_param3f:0.45,  
+m_param1i:1000,  
+
+
+2016-07-04 00:20:48
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:82.7586%. 
+m_detectRecall:74.0286%, m_detectPrecise:75.31%, m_detectFscore:74.6638%.
+m_0error:58.4821%,  m_1error:66.9643%,  m_chinesePrecise:70.9821%.  
+m_seconds:659sec,  m_avgSeconds:2.6255sec.
+m_param1f:0.6,  m_param2f:0.3,  m_param3f:0.55,  
+m_param1i:1000,  
+
+
+2016-07-04 00:20:48
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:82.4138%. 
+m_detectRecall:73.6392%, m_detectPrecise:75.7079%, m_detectFscore:74.6592%.
+m_0error:57.5342%,  m_1error:65.2968%,  m_chinesePrecise:68.9498%.  
+m_seconds:651sec,  m_avgSeconds:2.59363sec.
+m_param1f:0.3,  m_param2f:0.25,  m_param3f:0.55,  
+m_param1i:1000,  
+
+
+2016-07-04 00:20:48
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:82.7586%. 
+m_detectRecall:74.346%, m_detectPrecise:74.9524%, m_detectFscore:74.648%.
+m_0error:57.2072%,  m_1error:66.6667%,  m_chinesePrecise:69.3694%.  
+m_seconds:741sec,  m_avgSeconds:2.95219sec.
+m_param1f:0.5,  m_param2f:0.2,  m_param3f:0.45,  
+m_param1i:1100,  
+
+
+2016-07-04 00:20:48
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:82.069%. 
+m_detectRecall:73.7032%, m_detectPrecise:75.6156%, m_detectFscore:74.6471%.
+m_0error:57.9909%,  m_1error:66.21%,  m_chinesePrecise:69.863%.  
+m_seconds:652sec,  m_avgSeconds:2.59761sec.
+m_param1f:0.5,  m_param2f:0.3,  m_param3f:0.45,  
+m_param1i:1000,  
+
+
+2016-07-04 00:20:48
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:82.069%. 
+m_detectRecall:73.4592%, m_detectPrecise:75.8317%, m_detectFscore:74.6266%.
+m_0error:58.7963%,  m_1error:66.2037%,  m_chinesePrecise:69.4444%.  
+m_seconds:650sec,  m_avgSeconds:2.58964sec.
+m_param1f:0.4,  m_param2f:0.2,  m_param3f:0.5,  
+m_param1i:1000,  
+
+
+2016-07-04 00:20:48
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:82.7586%. 
+m_detectRecall:73.8565%, m_detectPrecise:75.3988%, m_detectFscore:74.6197%.
+m_0error:57.4661%,  m_1error:65.1584%,  m_chinesePrecise:68.7783%.  
+m_seconds:650sec,  m_avgSeconds:2.58964sec.
+m_param1f:0.3,  m_param2f:0.35,  m_param3f:0.55,  
+m_param1i:1000,  
+
+
+2016-07-04 00:20:48
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:83.4483%. 
+m_detectRecall:74.7273%, m_detectPrecise:74.4987%, m_detectFscore:74.6128%.
+m_0error:57.3991%,  m_1error:66.8161%,  m_chinesePrecise:69.0583%.  
+m_seconds:735sec,  m_avgSeconds:2.92829sec.
+m_param1f:0.5,  m_param2f:0.3,  m_param3f:0.5,  
+m_param1i:1100,  
+
+
+2016-07-04 00:20:48
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:83.4483%. 
+m_detectRecall:74.7273%, m_detectPrecise:74.4987%, m_detectFscore:74.6128%.
+m_0error:57.3991%,  m_1error:66.8161%,  m_chinesePrecise:69.0583%.  
+m_seconds:749sec,  m_avgSeconds:2.98406sec.
+m_param1f:0.5,  m_param2f:0.35,  m_param3f:0.5,  
+m_param1i:1100,  
+
+
+2016-07-04 00:20:48
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:83.4483%. 
+m_detectRecall:74.7248%, m_detectPrecise:74.4962%, m_detectFscore:74.6104%.
+m_0error:56.5022%,  m_1error:65.9193%,  m_chinesePrecise:68.1614%.  
+m_seconds:736sec,  m_avgSeconds:2.93227sec.
+m_param1f:0.5,  m_param2f:0.25,  m_param3f:0.5,  
+m_param1i:1100,  
+
+
+2016-07-04 00:20:49
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:82.069%. 
+m_detectRecall:73.4394%, m_detectPrecise:75.8114%, m_detectFscore:74.6066%.
+m_0error:58.3333%,  m_1error:66.2037%,  m_chinesePrecise:69.4444%.  
+m_seconds:650sec,  m_avgSeconds:2.58964sec.
+m_param1f:0.3,  m_param2f:0.25,  m_param3f:0.5,  
+m_param1i:1000,  
+
+
+2016-07-04 00:20:49
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:82.7586%. 
+m_detectRecall:73.8376%, m_detectPrecise:75.3797%, m_detectFscore:74.6007%.
+m_0error:57.4661%,  m_1error:65.1584%,  m_chinesePrecise:68.7783%.  
+m_seconds:648sec,  m_avgSeconds:2.58167sec.
+m_param1f:0.3,  m_param2f:0.3,  m_param3f:0.55,  
+m_param1i:1000,  
+
+
+2016-07-04 00:20:49
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:82.4138%. 
+m_detectRecall:73.6906%, m_detectPrecise:75.4946%, m_detectFscore:74.5817%.
+m_0error:57.0136%,  m_1error:64.7059%,  m_chinesePrecise:68.3258%.  
+m_seconds:652sec,  m_avgSeconds:2.59761sec.
+m_param1f:0.5,  m_param2f:0.2,  m_param3f:0.55,  
+m_param1i:1000,  
+
+
+2016-07-04 00:20:49
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:83.4483%. 
+m_detectRecall:74.7048%, m_detectPrecise:74.4371%, m_detectFscore:74.5707%.
+m_0error:57.1429%,  m_1error:66.5179%,  m_chinesePrecise:68.75%.  
+m_seconds:758sec,  m_avgSeconds:3.01992sec.
+m_param1f:0.5,  m_param2f:0.3,  m_param3f:0.55,  
+m_param1i:1100,  
+
+
+2016-07-04 00:20:49
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:83.4483%. 
+m_detectRecall:74.7048%, m_detectPrecise:74.4371%, m_detectFscore:74.5707%.
+m_0error:57.1429%,  m_1error:66.5179%,  m_chinesePrecise:68.75%.  
+m_seconds:749sec,  m_avgSeconds:2.98406sec.
+m_param1f:0.5,  m_param2f:0.35,  m_param3f:0.55,  
+m_param1i:1100,  
+
+
+2016-07-04 00:20:49
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:83.4483%. 
+m_detectRecall:74.7024%, m_detectPrecise:74.4347%, m_detectFscore:74.5683%.
+m_0error:56.25%,  m_1error:65.625%,  m_chinesePrecise:67.8571%.  
+m_seconds:736sec,  m_avgSeconds:2.93227sec.
+m_param1f:0.5,  m_param2f:0.25,  m_param3f:0.55,  
+m_param1i:1100,  
+
+
+2016-07-04 00:20:49
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:82.4138%. 
+m_detectRecall:73.6557%, m_detectPrecise:75.4995%, m_detectFscore:74.5662%.
+m_0error:58.2569%,  m_1error:66.055%,  m_chinesePrecise:69.2661%.  
+m_seconds:651sec,  m_avgSeconds:2.59363sec.
+m_param1f:0.3,  m_param2f:0.35,  m_param3f:0.5,  
+m_param1i:1000,  
+
+
+2016-07-04 00:20:49
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:83.1034%. 
+m_detectRecall:74.4099%, m_detectPrecise:74.6944%, m_detectFscore:74.5519%.
+m_0error:57.2072%,  m_1error:66.6667%,  m_chinesePrecise:68.9189%.  
+m_seconds:741sec,  m_avgSeconds:2.95219sec.
+m_param1f:0.5,  m_param2f:0.2,  m_param3f:0.5,  
+m_param1i:1100,  
+
+
+2016-07-04 00:20:49
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:82.4138%. 
+m_detectRecall:73.6368%, m_detectPrecise:75.4803%, m_detectFscore:74.5472%.
+m_0error:58.2569%,  m_1error:66.055%,  m_chinesePrecise:69.2661%.  
+m_seconds:651sec,  m_avgSeconds:2.59363sec.
+m_param1f:0.3,  m_param2f:0.3,  m_param3f:0.5,  
+m_param1i:1000,  
+
+
+2016-07-04 00:20:49
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:82.4138%. 
+m_detectRecall:73.6442%, m_detectPrecise:75.4474%, m_detectFscore:74.5349%.
+m_0error:57.5342%,  m_1error:64.8402%,  m_chinesePrecise:68.4931%.  
+m_seconds:653sec,  m_avgSeconds:2.60159sec.
+m_param1f:0.4,  m_param2f:0.25,  m_param3f:0.55,  
+m_param1i:1000,  
+
+
+2016-07-04 00:20:49
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:82.069%. 
+m_detectRecall:73.4807%, m_detectPrecise:75.5866%, m_detectFscore:74.5188%.
+m_0error:57.7982%,  m_1error:65.5963%,  m_chinesePrecise:68.8073%.  
+m_seconds:654sec,  m_avgSeconds:2.60558sec.
+m_param1f:0.5,  m_param2f:0.2,  m_param3f:0.5,  
+m_param1i:1000,  
+
+
+2016-07-04 00:20:49
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:83.4483%. 
+m_detectRecall:74.7773%, m_detectPrecise:74.2554%, m_detectFscore:74.5155%.
+m_0error:56.8889%,  m_1error:67.5555%,  m_chinesePrecise:70.2222%.  
+m_seconds:747sec,  m_avgSeconds:2.9761sec.
+m_param1f:0.6,  m_param2f:0.3,  m_param3f:0.55,  
+m_param1i:1100,  
+
+
+2016-07-04 00:20:49
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:83.4483%. 
+m_detectRecall:74.7773%, m_detectPrecise:74.2554%, m_detectFscore:74.5155%.
+m_0error:56.8889%,  m_1error:67.5555%,  m_chinesePrecise:70.2222%.  
+m_seconds:748sec,  m_avgSeconds:2.98008sec.
+m_param1f:0.6,  m_param2f:0.35,  m_param3f:0.55,  
+m_param1i:1100,  
+
+
+2016-07-04 00:20:49
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:83.4483%. 
+m_detectRecall:74.7748%, m_detectPrecise:74.253%, m_detectFscore:74.513%.
+m_0error:56%,  m_1error:66.6667%,  m_chinesePrecise:69.3333%.  
+m_seconds:755sec,  m_avgSeconds:3.00797sec.
+m_param1f:0.6,  m_param2f:0.25,  m_param3f:0.55,  
+m_param1i:1100,  
+
+
+2016-07-04 00:20:49
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:83.1034%. 
+m_detectRecall:74.3874%, m_detectPrecise:74.6324%, m_detectFscore:74.5097%.
+m_0error:56.9507%,  m_1error:66.3677%,  m_chinesePrecise:68.6099%.  
+m_seconds:738sec,  m_avgSeconds:2.94024sec.
+m_param1f:0.5,  m_param2f:0.2,  m_param3f:0.55,  
+m_param1i:1100,  
+
+
+2016-07-04 00:20:49
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:82.7586%. 
+m_detectRecall:73.8615%, m_detectPrecise:75.1412%, m_detectFscore:74.4958%.
+m_0error:57.4661%,  m_1error:64.7059%,  m_chinesePrecise:68.3258%.  
+m_seconds:653sec,  m_avgSeconds:2.60159sec.
+m_param1f:0.4,  m_param2f:0.35,  m_param3f:0.55,  
+m_param1i:1000,  
+
+
+2016-07-04 00:20:49
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:82.069%. 
+m_detectRecall:73.44%, m_detectPrecise:75.5451%, m_detectFscore:74.4777%.
+m_0error:58.3333%,  m_1error:65.7407%,  m_chinesePrecise:68.9815%.  
+m_seconds:653sec,  m_avgSeconds:2.60159sec.
+m_param1f:0.4,  m_param2f:0.25,  m_param3f:0.5,  
+m_param1i:1000,  
+
+
+2016-07-04 00:20:49
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:82.7586%. 
+m_detectRecall:73.8427%, m_detectPrecise:75.1221%, m_detectFscore:74.4769%.
+m_0error:57.4661%,  m_1error:64.7059%,  m_chinesePrecise:68.3258%.  
+m_seconds:652sec,  m_avgSeconds:2.59761sec.
+m_param1f:0.4,  m_param2f:0.3,  m_param3f:0.55,  
+m_param1i:1000,  
+
+
+2016-07-04 00:20:49
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:83.1034%. 
+m_detectRecall:74.4599%, m_detectPrecise:74.4488%, m_detectFscore:74.4544%.
+m_0error:56.6964%,  m_1error:67.4107%,  m_chinesePrecise:70.0893%.  
+m_seconds:748sec,  m_avgSeconds:2.98008sec.
+m_param1f:0.6,  m_param2f:0.2,  m_param3f:0.55,  
+m_param1i:1100,  
+
+
+2016-07-04 00:20:49
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:82.4138%. 
+m_detectRecall:73.6563%, m_detectPrecise:75.2361%, m_detectFscore:74.4378%.
+m_0error:58.2569%,  m_1error:65.5963%,  m_chinesePrecise:68.8073%.  
+m_seconds:652sec,  m_avgSeconds:2.59761sec.
+m_param1f:0.4,  m_param2f:0.35,  m_param3f:0.5,  
+m_param1i:1000,  
+
+
+2016-07-04 00:20:49
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:82.4138%. 
+m_detectRecall:73.6715%, m_detectPrecise:75.2112%, m_detectFscore:74.4334%.
+m_0error:56.5611%,  m_1error:64.2534%,  m_chinesePrecise:67.8733%.  
+m_seconds:651sec,  m_avgSeconds:2.59363sec.
+m_param1f:0.5,  m_param2f:0.25,  m_param3f:0.55,  
+m_param1i:1000,  
+
+
+2016-07-04 00:20:49
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:82.4138%. 
+m_detectRecall:73.6375%, m_detectPrecise:75.217%, m_detectFscore:74.4188%.
+m_0error:58.2569%,  m_1error:65.5963%,  m_chinesePrecise:68.8073%.  
+m_seconds:653sec,  m_avgSeconds:2.60159sec.
+m_param1f:0.4,  m_param2f:0.3,  m_param3f:0.5,  
+m_param1i:1000,  
+
+
+2016-07-04 00:20:49
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:82.7586%. 
+m_detectRecall:73.8888%, m_detectPrecise:74.9077%, m_detectFscore:74.3948%.
+m_0error:56.5022%,  m_1error:64.1256%,  m_chinesePrecise:67.713%.  
+m_seconds:663sec,  m_avgSeconds:2.64143sec.
+m_param1f:0.5,  m_param2f:0.35,  m_param3f:0.55,  
+m_param1i:1000,  
+
+
+2016-07-04 00:20:49
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:82.7586%. 
+m_detectRecall:73.8699%, m_detectPrecise:74.8887%, m_detectFscore:74.3758%.
+m_0error:56.5022%,  m_1error:64.1256%,  m_chinesePrecise:67.713%.  
+m_seconds:652sec,  m_avgSeconds:2.59761sec.
+m_param1f:0.5,  m_param2f:0.3,  m_param3f:0.55,  
+m_param1i:1000,  
+
+
+2016-07-04 00:20:49
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:82.069%. 
+m_detectRecall:73.4615%, m_detectPrecise:75.3019%, m_detectFscore:74.3703%.
+m_0error:57.3394%,  m_1error:65.1376%,  m_chinesePrecise:68.3486%.  
+m_seconds:652sec,  m_avgSeconds:2.59761sec.
+m_param1f:0.5,  m_param2f:0.25,  m_param3f:0.5,  
+m_param1i:1000,  
+
+
+2016-07-04 00:20:49
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:82.4138%. 
+m_detectRecall:73.6778%, m_detectPrecise:74.9957%, m_detectFscore:74.3309%.
+m_0error:57.2727%,  m_1error:65%,  m_chinesePrecise:68.1818%.  
+m_seconds:663sec,  m_avgSeconds:2.64143sec.
+m_param1f:0.5,  m_param2f:0.35,  m_param3f:0.5,  
+m_param1i:1000,  
+
+
+2016-07-04 00:20:49
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:82.4138%. 
+m_detectRecall:73.6589%, m_detectPrecise:74.9766%, m_detectFscore:74.312%.
+m_0error:57.2727%,  m_1error:65%,  m_chinesePrecise:68.1818%.  
+m_seconds:650sec,  m_avgSeconds:2.58964sec.
+m_param1f:0.5,  m_param2f:0.3,  m_param3f:0.5,  
+m_param1i:1000,  
+
+
+2016-07-04 00:20:49
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:81.7241%. 
+m_detectRecall:73.2935%, m_detectPrecise:74.4111%, m_detectFscore:73.8481%.
+m_0error:61.0092%,  m_1error:71.1009%,  m_chinesePrecise:74.3119%.  
+m_seconds:825sec,  m_avgSeconds:3.28685sec.
+m_param1f:0.3,  m_param2f:0.35,  m_param3f:0.4,  
+m_param1i:1200,  
+
+
+2016-07-04 00:20:49
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:81.7241%. 
+m_detectRecall:73.3483%, m_detectPrecise:74.2326%, m_detectFscore:73.7878%.
+m_0error:61.4679%,  m_1error:71.5596%,  m_chinesePrecise:74.7706%.  
+m_seconds:825sec,  m_avgSeconds:3.28685sec.
+m_param1f:0.3,  m_param2f:0.2,  m_param3f:0.4,  
+m_param1i:1200,  
+
+
+2016-07-04 00:20:49
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:81.7241%. 
+m_detectRecall:73.3292%, m_detectPrecise:74.2133%, m_detectFscore:73.7686%.
+m_0error:61.0092%,  m_1error:71.1009%,  m_chinesePrecise:74.3119%.  
+m_seconds:827sec,  m_avgSeconds:3.29482sec.
+m_param1f:0.3,  m_param2f:0.25,  m_param3f:0.4,  
+m_param1i:1200,  
+
+
+2016-07-04 00:20:49
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:81.7241%. 
+m_detectRecall:73.2935%, m_detectPrecise:74.1774%, m_detectFscore:73.7328%.
+m_0error:61.0092%,  m_1error:71.1009%,  m_chinesePrecise:74.3119%.  
+m_seconds:823sec,  m_avgSeconds:3.27888sec.
+m_param1f:0.3,  m_param2f:0.3,  m_param3f:0.4,  
+m_param1i:1200,  
+
+
+2016-07-04 00:20:49
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:81.7241%. 
+m_detectRecall:73.1766%, m_detectPrecise:73.779%, m_detectFscore:73.4766%.
+m_0error:60.5505%,  m_1error:69.7248%,  m_chinesePrecise:72.9358%.  
+m_seconds:827sec,  m_avgSeconds:3.29482sec.
+m_param1f:0.4,  m_param2f:0.35,  m_param3f:0.4,  
+m_param1i:1200,  
+
+
+2016-07-04 00:20:49
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:82.069%. 
+m_detectRecall:73.4572%, m_detectPrecise:73.4352%, m_detectFscore:73.4462%.
+m_0error:58.4475%,  m_1error:68.0365%,  m_chinesePrecise:71.6895%.  
+m_seconds:839sec,  m_avgSeconds:3.34263sec.
+m_param1f:0.6,  m_param2f:0.35,  m_param3f:0.4,  
+m_param1i:1200,  
+
+
+2016-07-04 00:20:49
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:81.7241%. 
+m_detectRecall:73.2825%, m_detectPrecise:73.6027%, m_detectFscore:73.4423%.
+m_0error:58.7156%,  m_1error:67.8899%,  m_chinesePrecise:71.1009%.  
+m_seconds:841sec,  m_avgSeconds:3.3506sec.
+m_param1f:0.5,  m_param2f:0.35,  m_param3f:0.4,  
+m_param1i:1200,  
+
+
+2016-07-04 00:20:49
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:81.7241%. 
+m_detectRecall:73.2315%, m_detectPrecise:73.6038%, m_detectFscore:73.4172%.
+m_0error:61.0092%,  m_1error:70.1835%,  m_chinesePrecise:73.3945%.  
+m_seconds:827sec,  m_avgSeconds:3.29482sec.
+m_param1f:0.4,  m_param2f:0.2,  m_param3f:0.4,  
+m_param1i:1200,  
+
+
+2016-07-04 00:20:49
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:81.7241%. 
+m_detectRecall:73.2123%, m_detectPrecise:73.5847%, m_detectFscore:73.398%.
+m_0error:60.5505%,  m_1error:69.7248%,  m_chinesePrecise:72.9358%.  
+m_seconds:824sec,  m_avgSeconds:3.28287sec.
+m_param1f:0.4,  m_param2f:0.25,  m_param3f:0.4,  
+m_param1i:1200,  
+
+
+2016-07-04 00:20:49
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:82.069%. 
+m_detectRecall:73.512%, m_detectPrecise:73.2636%, m_detectFscore:73.3876%.
+m_0error:58.9041%,  m_1error:68.4931%,  m_chinesePrecise:72.1461%.  
+m_seconds:845sec,  m_avgSeconds:3.36653sec.
+m_param1f:0.6,  m_param2f:0.2,  m_param3f:0.4,  
+m_param1i:1200,  
+
+
+2016-07-04 00:20:49
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:81.7241%. 
+m_detectRecall:73.3374%, m_detectPrecise:73.4294%, m_detectFscore:73.3833%.
+m_0error:59.1743%,  m_1error:68.3486%,  m_chinesePrecise:71.5596%.  
+m_seconds:830sec,  m_avgSeconds:3.30677sec.
+m_param1f:0.5,  m_param2f:0.2,  m_param3f:0.4,  
+m_param1i:1200,  
+
+
+2016-07-04 00:20:49
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:82.069%. 
+m_detectRecall:73.4929%, m_detectPrecise:73.2447%, m_detectFscore:73.3686%.
+m_0error:58.4475%,  m_1error:68.0365%,  m_chinesePrecise:71.6895%.  
+m_seconds:848sec,  m_avgSeconds:3.37849sec.
+m_param1f:0.6,  m_param2f:0.25,  m_param3f:0.4,  
+m_param1i:1200,  
+
+
+2016-07-04 00:20:49
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:81.7241%. 
+m_detectRecall:73.3183%, m_detectPrecise:73.4104%, m_detectFscore:73.3643%.
+m_0error:58.7156%,  m_1error:67.8899%,  m_chinesePrecise:71.1009%.  
+m_seconds:830sec,  m_avgSeconds:3.30677sec.
+m_param1f:0.5,  m_param2f:0.25,  m_param3f:0.4,  
+m_param1i:1200,  
+
+
+2016-07-04 00:20:49
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:81.7241%. 
+m_detectRecall:73.1766%, m_detectPrecise:73.549%, m_detectFscore:73.3623%.
+m_0error:60.5505%,  m_1error:69.7248%,  m_chinesePrecise:72.9358%.  
+m_seconds:828sec,  m_avgSeconds:3.2988sec.
+m_param1f:0.4,  m_param2f:0.3,  m_param3f:0.4,  
+m_param1i:1200,  
+
+
+2016-07-04 00:20:49
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:81.3793%. 
+m_detectRecall:73.0251%, m_detectPrecise:73.6514%, m_detectFscore:73.3369%.
+m_0error:59.447%,  m_1error:69.5853%,  m_chinesePrecise:73.2719%.  
+m_seconds:823sec,  m_avgSeconds:3.27888sec.
+m_param1f:0.3,  m_param2f:0.2,  m_param3f:0.45,  
+m_param1i:1200,  
+
+
+2016-07-04 00:20:49
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:82.069%. 
+m_detectRecall:73.4572%, m_detectPrecise:73.2095%, m_detectFscore:73.3331%.
+m_0error:58.4475%,  m_1error:68.0365%,  m_chinesePrecise:71.6895%.  
+m_seconds:841sec,  m_avgSeconds:3.3506sec.
+m_param1f:0.6,  m_param2f:0.3,  m_param3f:0.4,  
+m_param1i:1200,  
+
+
+2016-07-04 00:20:49
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:81.7241%. 
+m_detectRecall:73.0496%, m_detectPrecise:73.6161%, m_detectFscore:73.3317%.
+m_0error:58.5253%,  m_1error:68.6636%,  m_chinesePrecise:71.8894%.  
+m_seconds:826sec,  m_avgSeconds:3.29084sec.
+m_param1f:0.3,  m_param2f:0.2,  m_param3f:0.5,  
+m_param1i:1200,  
+
+
+2016-07-04 00:20:49
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:81.7241%. 
+m_detectRecall:73.2825%, m_detectPrecise:73.3749%, m_detectFscore:73.3287%.
+m_0error:58.7156%,  m_1error:67.8899%,  m_chinesePrecise:71.1009%.  
+m_seconds:827sec,  m_avgSeconds:3.29482sec.
+m_param1f:0.5,  m_param2f:0.3,  m_param3f:0.4,  
+m_param1i:1200,  
+
+
+2016-07-04 00:20:49
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:81.3793%. 
+m_detectRecall:73.0059%, m_detectPrecise:73.6322%, m_detectFscore:73.3177%.
+m_0error:58.9862%,  m_1error:69.1244%,  m_chinesePrecise:72.8111%.  
+m_seconds:824sec,  m_avgSeconds:3.28287sec.
+m_param1f:0.3,  m_param2f:0.25,  m_param3f:0.45,  
+m_param1i:1200,  
+
+
+2016-07-04 00:20:49
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:81.7241%. 
+m_detectRecall:73.0305%, m_detectPrecise:73.597%, m_detectFscore:73.3126%.
+m_0error:58.0645%,  m_1error:68.2028%,  m_chinesePrecise:71.4286%.  
+m_seconds:822sec,  m_avgSeconds:3.2749sec.
+m_param1f:0.3,  m_param2f:0.25,  m_param3f:0.5,  
+m_param1i:1200,  
+
+
+2016-07-04 00:20:49
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:81.3793%. 
+m_detectRecall:72.9891%, m_detectPrecise:73.6291%, m_detectFscore:73.3077%.
+m_0error:58.9862%,  m_1error:69.1244%,  m_chinesePrecise:72.8111%.  
+m_seconds:826sec,  m_avgSeconds:3.29084sec.
+m_param1f:0.3,  m_param2f:0.35,  m_param3f:0.45,  
+m_param1i:1200,  
+
+
+2016-07-04 00:20:49
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:81.3793%. 
+m_detectRecall:72.9891%, m_detectPrecise:73.6153%, m_detectFscore:73.3009%.
+m_0error:58.9862%,  m_1error:69.1244%,  m_chinesePrecise:72.8111%.  
+m_seconds:826sec,  m_avgSeconds:3.29084sec.
+m_param1f:0.3,  m_param2f:0.3,  m_param3f:0.45,  
+m_param1i:1200,  
+
+
+2016-07-04 00:20:49
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:81.7241%. 
+m_detectRecall:73.0137%, m_detectPrecise:73.5801%, m_detectFscore:73.2958%.
+m_0error:58.0645%,  m_1error:68.2028%,  m_chinesePrecise:71.4286%.  
+m_seconds:827sec,  m_avgSeconds:3.29482sec.
+m_param1f:0.3,  m_param2f:0.3,  m_param3f:0.5,  
+m_param1i:1200,  
+
+
+2016-07-04 00:20:49
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:81.7241%. 
+m_detectRecall:73.0229%, m_detectPrecise:73.5496%, m_detectFscore:73.2853%.
+m_0error:57.7982%,  m_1error:67.8899%,  m_chinesePrecise:71.1009%.  
+m_seconds:825sec,  m_avgSeconds:3.28685sec.
+m_param1f:0.3,  m_param2f:0.2,  m_param3f:0.55,  
+m_param1i:1200,  
+
+
+2016-07-04 00:20:49
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:81.7241%. 
+m_detectRecall:73.0038%, m_detectPrecise:73.5305%, m_detectFscore:73.2662%.
+m_0error:57.3394%,  m_1error:67.4312%,  m_chinesePrecise:70.6422%.  
+m_seconds:827sec,  m_avgSeconds:3.29482sec.
+m_param1f:0.3,  m_param2f:0.25,  m_param3f:0.55,  
+m_param1i:1200,  
+
+
+2016-07-04 00:20:49
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:81.7241%. 
+m_detectRecall:72.9869%, m_detectPrecise:73.5137%, m_detectFscore:73.2494%.
+m_0error:57.3394%,  m_1error:67.4312%,  m_chinesePrecise:70.6422%.  
+m_seconds:824sec,  m_avgSeconds:3.28287sec.
+m_param1f:0.3,  m_param2f:0.3,  m_param3f:0.55,  
+m_param1i:1200,  
+
+
+2016-07-04 00:20:49
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:81.7241%. 
+m_detectRecall:73.0137%, m_detectPrecise:73.341%, m_detectFscore:73.177%.
+m_0error:58.0645%,  m_1error:68.2028%,  m_chinesePrecise:71.4286%.  
+m_seconds:824sec,  m_avgSeconds:3.28287sec.
+m_param1f:0.3,  m_param2f:0.35,  m_param3f:0.5,  
+m_param1i:1200,  
+
+
+2016-07-04 00:20:49
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:81.7241%. 
+m_detectRecall:72.9869%, m_detectPrecise:73.2748%, m_detectFscore:73.1306%.
+m_0error:57.3394%,  m_1error:67.4312%,  m_chinesePrecise:70.6422%.  
+m_seconds:823sec,  m_avgSeconds:3.27888sec.
+m_param1f:0.3,  m_param2f:0.35,  m_param3f:0.55,  
+m_param1i:1200,  
+
+
+2016-07-04 00:20:49
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:82.069%. 
+m_detectRecall:73.4229%, m_detectPrecise:72.7054%, m_detectFscore:73.0624%.
+m_0error:57.0776%,  m_1error:66.6667%,  m_chinesePrecise:70.7763%.  
+m_seconds:847sec,  m_avgSeconds:3.3745sec.
+m_param1f:0.6,  m_param2f:0.2,  m_param3f:0.45,  
+m_param1i:1200,  
+
+
+2016-07-04 00:20:49
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:82.069%. 
+m_detectRecall:73.4038%, m_detectPrecise:72.6866%, m_detectFscore:73.0434%.
+m_0error:56.621%,  m_1error:66.21%,  m_chinesePrecise:70.3196%.  
+m_seconds:843sec,  m_avgSeconds:3.35857sec.
+m_param1f:0.6,  m_param2f:0.25,  m_param3f:0.45,  
+m_param1i:1200,  
+
+
+2016-07-04 00:20:49
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:82.069%. 
+m_detectRecall:73.3869%, m_detectPrecise:72.6836%, m_detectFscore:73.0336%.
+m_0error:56.621%,  m_1error:66.21%,  m_chinesePrecise:70.3196%.  
+m_seconds:840sec,  m_avgSeconds:3.34661sec.
+m_param1f:0.6,  m_param2f:0.35,  m_param3f:0.45,  
+m_param1i:1200,  
+
+
+2016-07-04 00:20:49
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:82.069%. 
+m_detectRecall:73.3869%, m_detectPrecise:72.6701%, m_detectFscore:73.0267%.
+m_0error:56.621%,  m_1error:66.21%,  m_chinesePrecise:70.3196%.  
+m_seconds:840sec,  m_avgSeconds:3.34661sec.
+m_param1f:0.6,  m_param2f:0.3,  m_param3f:0.45,  
+m_param1i:1200,  
+
+
+2016-07-04 00:20:49
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:81.3793%. 
+m_detectRecall:72.922%, m_detectPrecise:73.0424%, m_detectFscore:72.9822%.
+m_0error:58.9862%,  m_1error:68.2028%,  m_chinesePrecise:71.8894%.  
+m_seconds:825sec,  m_avgSeconds:3.28685sec.
+m_param1f:0.4,  m_param2f:0.2,  m_param3f:0.45,  
+m_param1i:1200,  
+
+
+2016-07-04 00:20:49
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:81.3793%. 
+m_detectRecall:72.9029%, m_detectPrecise:73.0234%, m_detectFscore:72.9631%.
+m_0error:58.5253%,  m_1error:67.7419%,  m_chinesePrecise:71.4286%.  
+m_seconds:838sec,  m_avgSeconds:3.33865sec.
+m_param1f:0.4,  m_param2f:0.25,  m_param3f:0.45,  
+m_param1i:1200,  
+
+
+2016-07-04 00:20:49
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:81.3793%. 
+m_detectRecall:72.886%, m_detectPrecise:73.0203%, m_detectFscore:72.9531%.
+m_0error:58.5253%,  m_1error:67.7419%,  m_chinesePrecise:71.4286%.  
+m_seconds:828sec,  m_avgSeconds:3.2988sec.
+m_param1f:0.4,  m_param2f:0.35,  m_param3f:0.45,  
+m_param1i:1200,  
+
+
+2016-07-04 00:20:49
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:81.3793%. 
+m_detectRecall:72.886%, m_detectPrecise:73.0066%, m_detectFscore:72.9463%.
+m_0error:58.5253%,  m_1error:67.7419%,  m_chinesePrecise:71.4286%.  
+m_seconds:829sec,  m_avgSeconds:3.30279sec.
+m_param1f:0.4,  m_param2f:0.3,  m_param3f:0.45,  
+m_param1i:1200,  
+
+
+2016-07-04 00:20:49
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:82.069%. 
+m_detectRecall:73.3557%, m_detectPrecise:72.4237%, m_detectFscore:72.8867%.
+m_0error:56.621%,  m_1error:66.21%,  m_chinesePrecise:69.863%.  
+m_seconds:839sec,  m_avgSeconds:3.34263sec.
+m_param1f:0.6,  m_param2f:0.2,  m_param3f:0.5,  
+m_param1i:1200,  
+
+
+2016-07-04 00:20:49
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:81.3793%. 
+m_detectRecall:72.9411%, m_detectPrecise:72.8113%, m_detectFscore:72.8761%.
+m_0error:57.1429%,  m_1error:66.3595%,  m_chinesePrecise:70.0461%.  
+m_seconds:831sec,  m_avgSeconds:3.31076sec.
+m_param1f:0.5,  m_param2f:0.2,  m_param3f:0.45,  
+m_param1i:1200,  
+
+
+2016-07-04 00:20:49
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:82.069%. 
+m_detectRecall:73.3365%, m_detectPrecise:72.405%, m_detectFscore:72.8678%.
+m_0error:56.1644%,  m_1error:65.7534%,  m_chinesePrecise:69.4064%.  
+m_seconds:848sec,  m_avgSeconds:3.37849sec.
+m_param1f:0.6,  m_param2f:0.25,  m_param3f:0.5,  
+m_param1i:1200,  
+
+
+2016-07-04 00:20:49
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:81.7241%. 
+m_detectRecall:72.9538%, m_detectPrecise:72.7675%, m_detectFscore:72.8606%.
+m_0error:58.0645%,  m_1error:67.2811%,  m_chinesePrecise:70.5069%.  
+m_seconds:827sec,  m_avgSeconds:3.29482sec.
+m_param1f:0.4,  m_param2f:0.2,  m_param3f:0.5,  
+m_param1i:1200,  
+
+
+2016-07-04 00:20:49
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:81.3793%. 
+m_detectRecall:72.922%, m_detectPrecise:72.7923%, m_detectFscore:72.8571%.
+m_0error:56.682%,  m_1error:65.8986%,  m_chinesePrecise:69.5853%.  
+m_seconds:829sec,  m_avgSeconds:3.30279sec.
+m_param1f:0.5,  m_param2f:0.25,  m_param3f:0.45,  
+m_param1i:1200,  
+
+
+2016-07-04 00:20:49
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:82.069%. 
+m_detectRecall:73.3197%, m_detectPrecise:72.3885%, m_detectFscore:72.8511%.
+m_0error:56.1644%,  m_1error:65.7534%,  m_chinesePrecise:69.4064%.  
+m_seconds:843sec,  m_avgSeconds:3.35857sec.
+m_param1f:0.6,  m_param2f:0.3,  m_param3f:0.5,  
+m_param1i:1200,  
+
+
+2016-07-04 00:20:49
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:81.3793%. 
+m_detectRecall:72.9052%, m_detectPrecise:72.7893%, m_detectFscore:72.8472%.
+m_0error:56.682%,  m_1error:65.8986%,  m_chinesePrecise:69.5853%.  
+m_seconds:842sec,  m_avgSeconds:3.35458sec.
+m_param1f:0.5,  m_param2f:0.35,  m_param3f:0.45,  
+m_param1i:1200,  
+
+
+2016-07-04 00:20:49
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:81.7241%. 
+m_detectRecall:72.9347%, m_detectPrecise:72.7486%, m_detectFscore:72.8415%.
+m_0error:57.6037%,  m_1error:66.8203%,  m_chinesePrecise:70.0461%.  
+m_seconds:830sec,  m_avgSeconds:3.30677sec.
+m_param1f:0.4,  m_param2f:0.25,  m_param3f:0.5,  
+m_param1i:1200,  
+
+
+2016-07-04 00:20:49
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:81.3793%. 
+m_detectRecall:72.9052%, m_detectPrecise:72.7756%, m_detectFscore:72.8403%.
+m_0error:56.682%,  m_1error:65.8986%,  m_chinesePrecise:69.5853%.  
+m_seconds:830sec,  m_avgSeconds:3.30677sec.
+m_param1f:0.5,  m_param2f:0.3,  m_param3f:0.45,  
+m_param1i:1200,  
+
+
+2016-07-04 00:20:49
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:81.7241%. 
+m_detectRecall:72.9179%, m_detectPrecise:72.732%, m_detectFscore:72.8248%.
+m_0error:57.6037%,  m_1error:66.8203%,  m_chinesePrecise:70.0461%.  
+m_seconds:829sec,  m_avgSeconds:3.30279sec.
+m_param1f:0.4,  m_param2f:0.3,  m_param3f:0.5,  
+m_param1i:1200,  
+
+
+2016-07-04 00:20:49
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:81.7241%. 
+m_detectRecall:72.9315%, m_detectPrecise:72.7061%, m_detectFscore:72.8187%.
+m_0error:57.3394%,  m_1error:66.5138%,  m_chinesePrecise:69.7248%.  
+m_seconds:824sec,  m_avgSeconds:3.28287sec.
+m_param1f:0.4,  m_param2f:0.2,  m_param3f:0.55,  
+m_param1i:1200,  
+
+
+2016-07-04 00:20:50
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:81.7241%. 
+m_detectRecall:72.9124%, m_detectPrecise:72.6872%, m_detectFscore:72.7996%.
+m_0error:56.8807%,  m_1error:66.055%,  m_chinesePrecise:69.2661%.  
+m_seconds:829sec,  m_avgSeconds:3.30279sec.
+m_param1f:0.4,  m_param2f:0.25,  m_param3f:0.55,  
+m_param1i:1200,  
+
+
+2016-07-04 00:20:50
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:81.7241%. 
+m_detectRecall:72.8956%, m_detectPrecise:72.6706%, m_detectFscore:72.7829%.
+m_0error:56.8807%,  m_1error:66.055%,  m_chinesePrecise:69.2661%.  
+m_seconds:832sec,  m_avgSeconds:3.31474sec.
+m_param1f:0.4,  m_param2f:0.3,  m_param3f:0.55,  
+m_param1i:1200,  
+
+
+2016-07-04 00:20:50
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:81.7241%. 
+m_detectRecall:72.987%, m_detectPrecise:72.5527%, m_detectFscore:72.7692%.
+m_0error:56.682%,  m_1error:65.8986%,  m_chinesePrecise:69.1244%.  
+m_seconds:831sec,  m_avgSeconds:3.31076sec.
+m_param1f:0.5,  m_param2f:0.2,  m_param3f:0.5,  
+m_param1i:1200,  
+
+
+2016-07-04 00:20:50
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:81.7241%. 
+m_detectRecall:72.9679%, m_detectPrecise:72.5339%, m_detectFscore:72.7502%.
+m_0error:56.2212%,  m_1error:65.4378%,  m_chinesePrecise:68.6636%.  
+m_seconds:826sec,  m_avgSeconds:3.29084sec.
+m_param1f:0.5,  m_param2f:0.25,  m_param3f:0.5,  
+m_param1i:1200,  
+
+
+2016-07-04 00:20:50
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:82.069%. 
+m_detectRecall:73.3197%, m_detectPrecise:72.1582%, m_detectFscore:72.7343%.
+m_0error:56.1644%,  m_1error:65.7534%,  m_chinesePrecise:69.4064%.  
+m_seconds:839sec,  m_avgSeconds:3.34263sec.
+m_param1f:0.6,  m_param2f:0.35,  m_param3f:0.5,  
+m_param1i:1200,  
+
+
+2016-07-04 00:20:50
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:81.7241%. 
+m_detectRecall:72.951%, m_detectPrecise:72.5173%, m_detectFscore:72.7335%.
+m_0error:56.2212%,  m_1error:65.4378%,  m_chinesePrecise:68.6636%.  
+m_seconds:826sec,  m_avgSeconds:3.29084sec.
+m_param1f:0.5,  m_param2f:0.3,  m_param3f:0.5,  
+m_param1i:1200,  
+
+
+2016-07-04 00:20:50
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:81.7241%. 
+m_detectRecall:72.9705%, m_detectPrecise:72.4972%, m_detectFscore:72.7331%.
+m_0error:55.9633%,  m_1error:65.1376%,  m_chinesePrecise:68.3486%.  
+m_seconds:830sec,  m_avgSeconds:3.30677sec.
+m_param1f:0.5,  m_param2f:0.2,  m_param3f:0.55,  
+m_param1i:1200,  
+
+
+2016-07-04 00:20:50
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:81.7241%. 
+m_detectRecall:72.9513%, m_detectPrecise:72.4784%, m_detectFscore:72.7141%.
+m_0error:55.5046%,  m_1error:64.6789%,  m_chinesePrecise:67.8899%.  
+m_seconds:825sec,  m_avgSeconds:3.28685sec.
+m_param1f:0.5,  m_param2f:0.25,  m_param3f:0.55,  
+m_param1i:1200,  
+
+
+2016-07-04 00:20:50
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:81.7241%. 
+m_detectRecall:72.9179%, m_detectPrecise:72.4982%, m_detectFscore:72.7074%.
+m_0error:57.6037%,  m_1error:66.8203%,  m_chinesePrecise:70.0461%.  
+m_seconds:829sec,  m_avgSeconds:3.30279sec.
+m_param1f:0.4,  m_param2f:0.35,  m_param3f:0.5,  
+m_param1i:1200,  
+
+
+2016-07-04 00:20:50
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:78.6207%. 
+m_detectRecall:70.5239%, m_detectPrecise:75.0104%, m_detectFscore:72.698%.
+m_0error:58.6854%,  m_1error:68.0751%,  m_chinesePrecise:69.953%.  
+m_seconds:568sec,  m_avgSeconds:2.26295sec.
+m_param1f:0.3,  m_param2f:0.3,  m_param3f:0.4,  
+m_param1i:900,  
+
+
+2016-07-04 00:20:50
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:78.6207%. 
+m_detectRecall:70.5239%, m_detectPrecise:75.0104%, m_detectFscore:72.698%.
+m_0error:58.6854%,  m_1error:68.0751%,  m_chinesePrecise:69.953%.  
+m_seconds:567sec,  m_avgSeconds:2.25896sec.
+m_param1f:0.3,  m_param2f:0.35,  m_param3f:0.4,  
+m_param1i:900,  
+
+
+2016-07-04 00:20:50
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:81.7241%. 
+m_detectRecall:72.9345%, m_detectPrecise:72.4618%, m_detectFscore:72.6974%.
+m_0error:55.5046%,  m_1error:64.6789%,  m_chinesePrecise:67.8899%.  
+m_seconds:845sec,  m_avgSeconds:3.36653sec.
+m_param1f:0.5,  m_param2f:0.3,  m_param3f:0.55,  
+m_param1i:1200,  
+
+
+2016-07-04 00:20:50
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:81.7241%. 
+m_detectRecall:73.0327%, m_detectPrecise:72.3126%, m_detectFscore:72.6709%.
+m_0error:56.1644%,  m_1error:65.7534%,  m_chinesePrecise:69.4064%.  
+m_seconds:841sec,  m_avgSeconds:3.3506sec.
+m_param1f:0.6,  m_param2f:0.2,  m_param3f:0.55,  
+m_param1i:1200,  
+
+
+2016-07-04 00:20:50
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:81.7241%. 
+m_detectRecall:72.8956%, m_detectPrecise:72.437%, m_detectFscore:72.6656%.
+m_0error:56.8807%,  m_1error:66.055%,  m_chinesePrecise:69.2661%.  
+m_seconds:827sec,  m_avgSeconds:3.29482sec.
+m_param1f:0.4,  m_param2f:0.35,  m_param3f:0.55,  
+m_param1i:1200,  
+
+
+2016-07-04 00:20:50
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:78.6207%. 
+m_detectRecall:70.4837%, m_detectPrecise:74.9678%, m_detectFscore:72.6566%.
+m_0error:57.4766%,  m_1error:66.8224%,  m_chinesePrecise:69.1589%.  
+m_seconds:569sec,  m_avgSeconds:2.26693sec.
+m_param1f:0.3,  m_param2f:0.35,  m_param3f:0.45,  
+m_param1i:900,  
+
+
+2016-07-04 00:20:50
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:78.6207%. 
+m_detectRecall:70.4837%, m_detectPrecise:74.9678%, m_detectFscore:72.6566%.
+m_0error:57.4766%,  m_1error:66.8224%,  m_chinesePrecise:69.1589%.  
+m_seconds:567sec,  m_avgSeconds:2.25896sec.
+m_param1f:0.3,  m_param2f:0.3,  m_param3f:0.45,  
+m_param1i:900,  
+
+
+2016-07-04 00:20:50
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:81.7241%. 
+m_detectRecall:73.0135%, m_detectPrecise:72.2938%, m_detectFscore:72.6519%.
+m_0error:55.7078%,  m_1error:65.2968%,  m_chinesePrecise:68.9498%.  
+m_seconds:846sec,  m_avgSeconds:3.37052sec.
+m_param1f:0.6,  m_param2f:0.25,  m_param3f:0.55,  
+m_param1i:1200,  
+
+
+2016-07-04 00:20:50
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:81.7241%. 
+m_detectRecall:72.9967%, m_detectPrecise:72.2773%, m_detectFscore:72.6352%.
+m_0error:55.7078%,  m_1error:65.2968%,  m_chinesePrecise:68.9498%.  
+m_seconds:840sec,  m_avgSeconds:3.34661sec.
+m_param1f:0.6,  m_param2f:0.3,  m_param3f:0.55,  
+m_param1i:1200,  
+
+
+2016-07-04 00:20:50
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:81.7241%. 
+m_detectRecall:72.951%, m_detectPrecise:72.285%, m_detectFscore:72.6165%.
+m_0error:56.2212%,  m_1error:65.4378%,  m_chinesePrecise:68.6636%.  
+m_seconds:844sec,  m_avgSeconds:3.36255sec.
+m_param1f:0.5,  m_param2f:0.35,  m_param3f:0.5,  
+m_param1i:1200,  
+
+
+2016-07-04 00:20:50
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:81.7241%. 
+m_detectRecall:72.9345%, m_detectPrecise:72.2297%, m_detectFscore:72.5804%.
+m_0error:55.5046%,  m_1error:64.6789%,  m_chinesePrecise:67.8899%.  
+m_seconds:849sec,  m_avgSeconds:3.38247sec.
+m_param1f:0.5,  m_param2f:0.35,  m_param3f:0.55,  
+m_param1i:1200,  
+
+
+2016-07-04 00:20:50
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:78.2759%. 
+m_detectRecall:70.2828%, m_detectPrecise:75.029%, m_detectFscore:72.5784%.
+m_0error:59.434%,  m_1error:68.8679%,  m_chinesePrecise:70.7547%.  
+m_seconds:572sec,  m_avgSeconds:2.27888sec.
+m_param1f:0.3,  m_param2f:0.2,  m_param3f:0.4,  
+m_param1i:900,  
+
+
+2016-07-04 00:20:50
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:78.2759%. 
+m_detectRecall:70.2637%, m_detectPrecise:75.0087%, m_detectFscore:72.5587%.
+m_0error:58.9623%,  m_1error:68.3962%,  m_chinesePrecise:70.283%.  
+m_seconds:570sec,  m_avgSeconds:2.27092sec.
+m_param1f:0.3,  m_param2f:0.25,  m_param3f:0.4,  
+m_param1i:900,  
+
+
+2016-07-04 00:20:50
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:78.6207%. 
+m_detectRecall:70.5064%, m_detectPrecise:74.7191%, m_detectFscore:72.5516%.
+m_0error:58.6854%,  m_1error:67.6056%,  m_chinesePrecise:69.4836%.  
+m_seconds:568sec,  m_avgSeconds:2.26295sec.
+m_param1f:0.4,  m_param2f:0.35,  m_param3f:0.4,  
+m_param1i:900,  
+
+
+2016-07-04 00:20:50
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:78.6207%. 
+m_detectRecall:70.5064%, m_detectPrecise:74.7191%, m_detectFscore:72.5516%.
+m_0error:58.6854%,  m_1error:67.6056%,  m_chinesePrecise:69.4836%.  
+m_seconds:571sec,  m_avgSeconds:2.2749sec.
+m_param1f:0.4,  m_param2f:0.3,  m_param3f:0.4,  
+m_param1i:900,  
+
+
+2016-07-04 00:20:50
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:78.6207%. 
+m_detectRecall:70.3519%, m_detectPrecise:74.8605%, m_detectFscore:72.5362%.
+m_0error:57.0093%,  m_1error:66.3551%,  m_chinesePrecise:68.2243%.  
+m_seconds:568sec,  m_avgSeconds:2.26295sec.
+m_param1f:0.3,  m_param2f:0.3,  m_param3f:0.5,  
+m_param1i:900,  
+
+
+2016-07-04 00:20:50
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:78.6207%. 
+m_detectRecall:70.3519%, m_detectPrecise:74.8605%, m_detectFscore:72.5362%.
+m_0error:57.0093%,  m_1error:66.3551%,  m_chinesePrecise:68.2243%.  
+m_seconds:568sec,  m_avgSeconds:2.26295sec.
+m_param1f:0.3,  m_param2f:0.35,  m_param3f:0.5,  
+m_param1i:900,  
+
+
+2016-07-04 00:20:50
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:81.7241%. 
+m_detectRecall:72.9967%, m_detectPrecise:72.0466%, m_detectFscore:72.5186%.
+m_0error:55.7078%,  m_1error:65.2968%,  m_chinesePrecise:68.9498%.  
+m_seconds:840sec,  m_avgSeconds:3.34661sec.
+m_param1f:0.6,  m_param2f:0.35,  m_param3f:0.55,  
+m_param1i:1200,  
+
+
+2016-07-04 00:20:50
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:78.2759%. 
+m_detectRecall:70.2237%, m_detectPrecise:74.9662%, m_detectFscore:72.5175%.
+m_0error:58.216%,  m_1error:67.6056%,  m_chinesePrecise:69.953%.  
+m_seconds:568sec,  m_avgSeconds:2.26295sec.
+m_param1f:0.3,  m_param2f:0.2,  m_param3f:0.45,  
+m_param1i:900,  
+
+
+2016-07-04 00:20:50
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:78.6207%. 
+m_detectRecall:70.4661%, m_detectPrecise:74.6767%, m_detectFscore:72.5103%.
+m_0error:57.4766%,  m_1error:66.3551%,  m_chinesePrecise:68.6916%.  
+m_seconds:571sec,  m_avgSeconds:2.2749sec.
+m_param1f:0.4,  m_param2f:0.35,  m_param3f:0.45,  
+m_param1i:900,  
+
+
+2016-07-04 00:20:50
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:78.6207%. 
+m_detectRecall:70.4661%, m_detectPrecise:74.6767%, m_detectFscore:72.5103%.
+m_0error:57.4766%,  m_1error:66.3551%,  m_chinesePrecise:68.6916%.  
+m_seconds:571sec,  m_avgSeconds:2.2749sec.
+m_param1f:0.4,  m_param2f:0.3,  m_param3f:0.45,  
+m_param1i:900,  
+
+
+2016-07-04 00:20:50
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:78.2759%. 
+m_detectRecall:70.2045%, m_detectPrecise:74.9458%, m_detectFscore:72.4978%.
+m_0error:57.7465%,  m_1error:67.1362%,  m_chinesePrecise:69.4836%.  
+m_seconds:569sec,  m_avgSeconds:2.26693sec.
+m_param1f:0.3,  m_param2f:0.25,  m_param3f:0.45,  
+m_param1i:900,  
+
+
+2016-07-04 00:20:50
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:78.9655%. 
+m_detectRecall:70.8001%, m_detectPrecise:74.2192%, m_detectFscore:72.4694%.
+m_0error:57.4766%,  m_1error:67.2897%,  m_chinesePrecise:69.1589%.  
+m_seconds:577sec,  m_avgSeconds:2.2988sec.
+m_param1f:0.6,  m_param2f:0.35,  m_param3f:0.4,  
+m_param1i:900,  
+
+
+2016-07-04 00:20:50
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:78.9655%. 
+m_detectRecall:70.8001%, m_detectPrecise:74.2192%, m_detectFscore:72.4694%.
+m_0error:57.4766%,  m_1error:67.2897%,  m_chinesePrecise:69.1589%.  
+m_seconds:577sec,  m_avgSeconds:2.2988sec.
+m_param1f:0.6,  m_param2f:0.3,  m_param3f:0.4,  
+m_param1i:900,  
+
+
+2016-07-04 00:20:50
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:78.9655%. 
+m_detectRecall:70.7916%, m_detectPrecise:74.2103%, m_detectFscore:72.4606%.
+m_0error:56.2791%,  m_1error:66.0465%,  m_chinesePrecise:68.3721%.  
+m_seconds:579sec,  m_avgSeconds:2.30677sec.
+m_param1f:0.6,  m_param2f:0.35,  m_param3f:0.45,  
+m_param1i:900,  
+
+
+2016-07-04 00:20:50
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:78.9655%. 
+m_detectRecall:70.7916%, m_detectPrecise:74.2103%, m_detectFscore:72.4606%.
+m_0error:56.2791%,  m_1error:66.0465%,  m_chinesePrecise:68.3721%.  
+m_seconds:577sec,  m_avgSeconds:2.2988sec.
+m_param1f:0.6,  m_param2f:0.3,  m_param3f:0.45,  
+m_param1i:900,  
+
+
+2016-07-04 00:20:50
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:78.2759%. 
+m_detectRecall:70.2653%, m_detectPrecise:74.7366%, m_detectFscore:72.432%.
+m_0error:59.434%,  m_1error:68.3962%,  m_chinesePrecise:70.283%.  
+m_seconds:569sec,  m_avgSeconds:2.26693sec.
+m_param1f:0.4,  m_param2f:0.2,  m_param3f:0.4,  
+m_param1i:900,  
+
+
+2016-07-04 00:20:50
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:78.2759%. 
+m_detectRecall:70.2461%, m_detectPrecise:74.7163%, m_detectFscore:72.4123%.
+m_0error:58.9623%,  m_1error:67.9245%,  m_chinesePrecise:69.8113%.  
+m_seconds:566sec,  m_avgSeconds:2.25498sec.
+m_param1f:0.4,  m_param2f:0.25,  m_param3f:0.4,  
+m_param1i:900,  
+
+
+2016-07-04 00:20:50
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:78.2759%. 
+m_detectRecall:70.0919%, m_detectPrecise:74.8585%, m_detectFscore:72.3968%.
+m_0error:57.7465%,  m_1error:67.1362%,  m_chinesePrecise:69.0141%.  
+m_seconds:570sec,  m_avgSeconds:2.27092sec.
+m_param1f:0.3,  m_param2f:0.2,  m_param3f:0.5,  
+m_param1i:900,  
+
+
+2016-07-04 00:20:50
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:78.6207%. 
+m_detectRecall:70.3359%, m_detectPrecise:74.5714%, m_detectFscore:72.3918%.
+m_0error:57.0093%,  m_1error:65.8878%,  m_chinesePrecise:67.757%.  
+m_seconds:572sec,  m_avgSeconds:2.27888sec.
+m_param1f:0.4,  m_param2f:0.3,  m_param3f:0.5,  
+m_param1i:900,  
+
+
+2016-07-04 00:20:50
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:78.6207%. 
+m_detectRecall:70.3359%, m_detectPrecise:74.5714%, m_detectFscore:72.3918%.
+m_0error:57.0093%,  m_1error:65.8878%,  m_chinesePrecise:67.757%.  
+m_seconds:569sec,  m_avgSeconds:2.26693sec.
+m_param1f:0.4,  m_param2f:0.35,  m_param3f:0.5,  
+m_param1i:900,  
+
+
+2016-07-04 00:20:50
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:78.9655%. 
+m_detectRecall:70.696%, m_detectPrecise:74.1423%, m_detectFscore:72.3781%.
+m_0error:56.2791%,  m_1error:66.0465%,  m_chinesePrecise:67.907%.  
+m_seconds:577sec,  m_avgSeconds:2.2988sec.
+m_param1f:0.6,  m_param2f:0.3,  m_param3f:0.5,  
+m_param1i:900,  
+
+
+2016-07-04 00:20:50
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:78.9655%. 
+m_detectRecall:70.696%, m_detectPrecise:74.1423%, m_detectFscore:72.3781%.
+m_0error:56.2791%,  m_1error:66.0465%,  m_chinesePrecise:67.907%.  
+m_seconds:577sec,  m_avgSeconds:2.2988sec.
+m_param1f:0.6,  m_param2f:0.35,  m_param3f:0.5,  
+m_param1i:900,  
+
+
+2016-07-04 00:20:50
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:78.2759%. 
+m_detectRecall:70.0727%, m_detectPrecise:74.8382%, m_detectFscore:72.3771%.
+m_0error:57.277%,  m_1error:66.6667%,  m_chinesePrecise:68.5446%.  
+m_seconds:568sec,  m_avgSeconds:2.26295sec.
+m_param1f:0.3,  m_param2f:0.25,  m_param3f:0.5,  
+m_param1i:900,  
+
+
+2016-07-04 00:20:50
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:78.2759%. 
+m_detectRecall:70.2061%, m_detectPrecise:74.674%, m_detectFscore:72.3712%.
+m_0error:58.216%,  m_1error:67.1362%,  m_chinesePrecise:69.4836%.  
+m_seconds:568sec,  m_avgSeconds:2.26295sec.
+m_param1f:0.4,  m_param2f:0.2,  m_param3f:0.45,  
+m_param1i:900,  
+
+
+2016-07-04 00:20:50
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:78.2759%. 
+m_detectRecall:70.187%, m_detectPrecise:74.6537%, m_detectFscore:72.3515%.
+m_0error:57.7465%,  m_1error:66.6667%,  m_chinesePrecise:69.0141%.  
+m_seconds:566sec,  m_avgSeconds:2.25498sec.
+m_param1f:0.4,  m_param2f:0.25,  m_param3f:0.45,  
+m_param1i:900,  
+
+
+2016-07-04 00:20:50
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:78.6207%. 
+m_detectRecall:70.559%, m_detectPrecise:74.2347%, m_detectFscore:72.3502%.
+m_0error:58.216%,  m_1error:68.0751%,  m_chinesePrecise:69.953%.  
+m_seconds:585sec,  m_avgSeconds:2.33068sec.
+m_param1f:0.6,  m_param2f:0.2,  m_param3f:0.4,  
+m_param1i:900,  
+
+
+2016-07-04 00:20:50
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:78.6207%. 
+m_detectRecall:70.5399%, m_detectPrecise:74.2147%, m_detectFscore:72.3306%.
+m_0error:57.7465%,  m_1error:67.6056%,  m_chinesePrecise:69.4836%.  
+m_seconds:576sec,  m_avgSeconds:2.29482sec.
+m_param1f:0.6,  m_param2f:0.25,  m_param3f:0.4,  
+m_param1i:900,  
+
+
+2016-07-04 00:20:50
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:78.6207%. 
+m_detectRecall:70.5316%, m_detectPrecise:74.206%, m_detectFscore:72.3221%.
+m_0error:57.0093%,  m_1error:66.8224%,  m_chinesePrecise:69.1589%.  
+m_seconds:582sec,  m_avgSeconds:2.31873sec.
+m_param1f:0.6,  m_param2f:0.2,  m_param3f:0.45,  
+m_param1i:900,  
+
+
+2016-07-04 00:20:50
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:78.6207%. 
+m_detectRecall:70.5125%, m_detectPrecise:74.186%, m_detectFscore:72.3026%.
+m_0error:56.5421%,  m_1error:66.3551%,  m_chinesePrecise:68.6916%.  
+m_seconds:579sec,  m_avgSeconds:2.30677sec.
+m_param1f:0.6,  m_param2f:0.25,  m_param3f:0.45,  
+m_param1i:900,  
+
+
+2016-07-04 00:20:50
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:78.2759%. 
+m_detectRecall:70.0144%, m_detectPrecise:74.734%, m_detectFscore:72.2973%.
+m_0error:57.4766%,  m_1error:66.3551%,  m_chinesePrecise:67.757%.  
+m_seconds:570sec,  m_avgSeconds:2.27092sec.
+m_param1f:0.3,  m_param2f:0.3,  m_param3f:0.55,  
+m_param1i:900,  
+
+
+2016-07-04 00:20:50
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:78.2759%. 
+m_detectRecall:70.0144%, m_detectPrecise:74.734%, m_detectFscore:72.2973%.
+m_0error:57.4766%,  m_1error:66.3551%,  m_chinesePrecise:67.757%.  
+m_seconds:568sec,  m_avgSeconds:2.26295sec.
+m_param1f:0.3,  m_param2f:0.35,  m_param3f:0.55,  
+m_param1i:900,  
+
+
+2016-07-04 00:20:50
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:78.2759%. 
+m_detectRecall:70.0759%, m_detectPrecise:74.5684%, m_detectFscore:72.2524%.
+m_0error:57.7465%,  m_1error:66.6667%,  m_chinesePrecise:68.5446%.  
+m_seconds:569sec,  m_avgSeconds:2.26693sec.
+m_param1f:0.4,  m_param2f:0.2,  m_param3f:0.5,  
+m_param1i:900,  
+
+
+2016-07-04 00:20:50
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:78.6207%. 
+m_detectRecall:70.4359%, m_detectPrecise:74.1377%, m_detectFscore:72.2394%.
+m_0error:57.0093%,  m_1error:66.8224%,  m_chinesePrecise:68.6916%.  
+m_seconds:582sec,  m_avgSeconds:2.31873sec.
+m_param1f:0.6,  m_param2f:0.2,  m_param3f:0.5,  
+m_param1i:900,  
+
+
+2016-07-04 00:20:50
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:78.6207%. 
+m_detectRecall:70.4496%, m_detectPrecise:74.1201%, m_detectFscore:72.2383%.
+m_0error:57.7465%,  m_1error:67.1362%,  m_chinesePrecise:69.0141%.  
+m_seconds:579sec,  m_avgSeconds:2.30677sec.
+m_param1f:0.5,  m_param2f:0.35,  m_param3f:0.4,  
+m_param1i:900,  
+
+
+2016-07-04 00:20:50
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:78.6207%. 
+m_detectRecall:70.4496%, m_detectPrecise:74.1201%, m_detectFscore:72.2383%.
+m_0error:57.7465%,  m_1error:67.1362%,  m_chinesePrecise:69.0141%.  
+m_seconds:567sec,  m_avgSeconds:2.25896sec.
+m_param1f:0.5,  m_param2f:0.3,  m_param3f:0.4,  
+m_param1i:900,  
+
+
+2016-07-04 00:20:50
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:78.2759%. 
+m_detectRecall:70.0568%, m_detectPrecise:74.5481%, m_detectFscore:72.2327%.
+m_0error:57.277%,  m_1error:66.1972%,  m_chinesePrecise:68.0751%.  
+m_seconds:575sec,  m_avgSeconds:2.29084sec.
+m_param1f:0.4,  m_param2f:0.25,  m_param3f:0.5,  
+m_param1i:900,  
+
+
+2016-07-04 00:20:50
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:78.6207%. 
+m_detectRecall:70.4168%, m_detectPrecise:74.1177%, m_detectFscore:72.2199%.
+m_0error:56.5421%,  m_1error:66.3551%,  m_chinesePrecise:68.2243%.  
+m_seconds:581sec,  m_avgSeconds:2.31474sec.
+m_param1f:0.6,  m_param2f:0.25,  m_param3f:0.5,  
+m_param1i:900,  
+
+
+2016-07-04 00:20:50
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:78.6207%. 
+m_detectRecall:70.4106%, m_detectPrecise:74.0794%, m_detectFscore:72.1984%.
+m_0error:56.5421%,  m_1error:65.8878%,  m_chinesePrecise:68.2243%.  
+m_seconds:570sec,  m_avgSeconds:2.27092sec.
+m_param1f:0.5,  m_param2f:0.3,  m_param3f:0.45,  
+m_param1i:900,  
+
+
+2016-07-04 00:20:50
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:78.6207%. 
+m_detectRecall:70.4106%, m_detectPrecise:74.0794%, m_detectFscore:72.1984%.
+m_0error:56.5421%,  m_1error:65.8878%,  m_chinesePrecise:68.2243%.  
+m_seconds:579sec,  m_avgSeconds:2.30677sec.
+m_param1f:0.5,  m_param2f:0.35,  m_param3f:0.45,  
+m_param1i:900,  
+
+
+2016-07-04 00:20:50
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:77.931%. 
+m_detectRecall:69.7544%, m_detectPrecise:74.7315%, m_detectFscore:72.1572%.
+m_0error:58.216%,  m_1error:67.1362%,  m_chinesePrecise:68.5446%.  
+m_seconds:569sec,  m_avgSeconds:2.26693sec.
+m_param1f:0.3,  m_param2f:0.2,  m_param3f:0.55,  
+m_param1i:900,  
+
+
+2016-07-04 00:20:50
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:78.2759%. 
+m_detectRecall:69.9985%, m_detectPrecise:74.4443%, m_detectFscore:72.153%.
+m_0error:57.4766%,  m_1error:65.8878%,  m_chinesePrecise:67.2897%.  
+m_seconds:571sec,  m_avgSeconds:2.2749sec.
+m_param1f:0.4,  m_param2f:0.35,  m_param3f:0.55,  
+m_param1i:900,  
+
+
+2016-07-04 00:20:50
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:78.2759%. 
+m_detectRecall:69.9985%, m_detectPrecise:74.4443%, m_detectFscore:72.153%.
+m_0error:57.4766%,  m_1error:65.8878%,  m_chinesePrecise:67.2897%.  
+m_seconds:570sec,  m_avgSeconds:2.27092sec.
+m_param1f:0.4,  m_param2f:0.3,  m_param3f:0.55,  
+m_param1i:900,  
+
+
+2016-07-04 00:20:50
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:77.931%. 
+m_detectRecall:69.7353%, m_detectPrecise:74.7111%, m_detectFscore:72.1375%.
+m_0error:57.7465%,  m_1error:66.6667%,  m_chinesePrecise:68.0751%.  
+m_seconds:568sec,  m_avgSeconds:2.26295sec.
+m_param1f:0.3,  m_param2f:0.25,  m_param3f:0.55,  
+m_param1i:900,  
+
+
+2016-07-04 00:20:50
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:78.2759%. 
+m_detectRecall:70.2085%, m_detectPrecise:74.1353%, m_detectFscore:72.1185%.
+m_0error:58.4906%,  m_1error:67.9245%,  m_chinesePrecise:69.8113%.  
+m_seconds:570sec,  m_avgSeconds:2.27092sec.
+m_param1f:0.5,  m_param2f:0.2,  m_param3f:0.4,  
+m_param1i:900,  
+
+
+2016-07-04 00:20:50
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:78.2759%. 
+m_detectRecall:70.1893%, m_detectPrecise:74.1152%, m_detectFscore:72.0989%.
+m_0error:58.0189%,  m_1error:67.4528%,  m_chinesePrecise:69.3396%.  
+m_seconds:571sec,  m_avgSeconds:2.2749sec.
+m_param1f:0.5,  m_param2f:0.25,  m_param3f:0.4,  
+m_param1i:900,  
+
+
+2016-07-04 00:20:50
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:78.6207%. 
+m_detectRecall:70.2804%, m_detectPrecise:73.9749%, m_detectFscore:72.0803%.
+m_0error:56.0748%,  m_1error:65.4206%,  m_chinesePrecise:67.2897%.  
+m_seconds:572sec,  m_avgSeconds:2.27888sec.
+m_param1f:0.5,  m_param2f:0.3,  m_param3f:0.5,  
+m_param1i:900,  
+
+
+2016-07-04 00:20:50
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:78.6207%. 
+m_detectRecall:70.2804%, m_detectPrecise:73.9749%, m_detectFscore:72.0803%.
+m_0error:56.0748%,  m_1error:65.4206%,  m_chinesePrecise:67.2897%.  
+m_seconds:581sec,  m_avgSeconds:2.31474sec.
+m_param1f:0.5,  m_param2f:0.35,  m_param3f:0.5,  
+m_param1i:900,  
+
+
+2016-07-04 00:20:50
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:78.2759%. 
+m_detectRecall:70.1506%, m_detectPrecise:74.0746%, m_detectFscore:72.0592%.
+m_0error:57.277%,  m_1error:66.6667%,  m_chinesePrecise:69.0141%.  
+m_seconds:572sec,  m_avgSeconds:2.27888sec.
+m_param1f:0.5,  m_param2f:0.2,  m_param3f:0.45,  
+m_param1i:900,  
+
+
+2016-07-04 00:20:50
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:78.2759%. 
+m_detectRecall:70.1315%, m_detectPrecise:74.0545%, m_detectFscore:72.0396%.
+m_0error:56.8075%,  m_1error:66.1972%,  m_chinesePrecise:68.5446%.  
+m_seconds:569sec,  m_avgSeconds:2.26693sec.
+m_param1f:0.5,  m_param2f:0.25,  m_param3f:0.45,  
+m_param1i:900,  
+
+
+2016-07-04 00:20:50
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:77.931%. 
+m_detectRecall:69.7384%, m_detectPrecise:74.4408%, m_detectFscore:72.0129%.
+m_0error:58.216%,  m_1error:66.6667%,  m_chinesePrecise:68.0751%.  
+m_seconds:570sec,  m_avgSeconds:2.27092sec.
+m_param1f:0.4,  m_param2f:0.2,  m_param3f:0.55,  
+m_param1i:900,  
+
+
+2016-07-04 00:20:50
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:77.931%. 
+m_detectRecall:69.7193%, m_detectPrecise:74.4205%, m_detectFscore:71.9932%.
+m_0error:57.7465%,  m_1error:66.1972%,  m_chinesePrecise:67.6056%.  
+m_seconds:573sec,  m_avgSeconds:2.28287sec.
+m_param1f:0.4,  m_param2f:0.25,  m_param3f:0.55,  
+m_param1i:900,  
+
+
+2016-07-04 00:20:50
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:78.2759%. 
+m_detectRecall:70.0453%, m_detectPrecise:73.9541%, m_detectFscore:71.9466%.
+m_0error:57.0093%,  m_1error:66.3551%,  m_chinesePrecise:67.757%.  
+m_seconds:576sec,  m_avgSeconds:2.29482sec.
+m_param1f:0.6,  m_param2f:0.35,  m_param3f:0.55,  
+m_param1i:900,  
+
+
+2016-07-04 00:20:50
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:78.2759%. 
+m_detectRecall:70.0453%, m_detectPrecise:73.9541%, m_detectFscore:71.9466%.
+m_0error:57.0093%,  m_1error:66.3551%,  m_chinesePrecise:67.757%.  
+m_seconds:576sec,  m_avgSeconds:2.29482sec.
+m_param1f:0.6,  m_param2f:0.3,  m_param3f:0.55,  
+m_param1i:900,  
+
+
+2016-07-04 00:20:50
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:78.2759%. 
+m_detectRecall:70.0204%, m_detectPrecise:73.9697%, m_detectFscore:71.9409%.
+m_0error:56.8075%,  m_1error:66.1972%,  m_chinesePrecise:68.0751%.  
+m_seconds:572sec,  m_avgSeconds:2.27888sec.
+m_param1f:0.5,  m_param2f:0.2,  m_param3f:0.5,  
+m_param1i:900,  
+
+
+2016-07-04 00:20:50
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:78.2759%. 
+m_detectRecall:70.0013%, m_detectPrecise:73.9496%, m_detectFscore:71.9213%.
+m_0error:56.338%,  m_1error:65.7277%,  m_chinesePrecise:67.6056%.  
+m_seconds:570sec,  m_avgSeconds:2.27092sec.
+m_param1f:0.5,  m_param2f:0.25,  m_param3f:0.5,  
+m_param1i:900,  
+
+
+2016-07-04 00:20:50
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:78.2759%. 
+m_detectRecall:69.9487%, m_detectPrecise:73.8526%, m_detectFscore:71.8477%.
+m_0error:56.5421%,  m_1error:65.4206%,  m_chinesePrecise:66.8224%.  
+m_seconds:570sec,  m_avgSeconds:2.27092sec.
+m_param1f:0.5,  m_param2f:0.3,  m_param3f:0.55,  
+m_param1i:900,  
+
+
+2016-07-04 00:20:50
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:78.2759%. 
+m_detectRecall:69.9487%, m_detectPrecise:73.8526%, m_detectFscore:71.8477%.
+m_0error:56.5421%,  m_1error:65.4206%,  m_chinesePrecise:66.8224%.  
+m_seconds:579sec,  m_avgSeconds:2.30677sec.
+m_param1f:0.5,  m_param2f:0.35,  m_param3f:0.55,  
+m_param1i:900,  
+
+
+2016-07-04 00:20:51
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:77.931%. 
+m_detectRecall:69.7852%, m_detectPrecise:73.9488%, m_detectFscore:71.8067%.
+m_0error:57.7465%,  m_1error:67.1362%,  m_chinesePrecise:68.5446%.  
+m_seconds:578sec,  m_avgSeconds:2.30279sec.
+m_param1f:0.6,  m_param2f:0.2,  m_param3f:0.55,  
+m_param1i:900,  
+
+
+2016-07-04 00:20:51
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:77.931%. 
+m_detectRecall:69.7661%, m_detectPrecise:73.9286%, m_detectFscore:71.7871%.
+m_0error:57.277%,  m_1error:66.6667%,  m_chinesePrecise:68.0751%.  
+m_seconds:579sec,  m_avgSeconds:2.30677sec.
+m_param1f:0.6,  m_param2f:0.25,  m_param3f:0.55,  
+m_param1i:900,  
+
+
+2016-07-04 00:20:51
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:77.931%. 
+m_detectRecall:69.6887%, m_detectPrecise:73.847%, m_detectFscore:71.7076%.
+m_0error:57.277%,  m_1error:66.1972%,  m_chinesePrecise:67.6056%.  
+m_seconds:571sec,  m_avgSeconds:2.2749sec.
+m_param1f:0.5,  m_param2f:0.2,  m_param3f:0.55,  
+m_param1i:900,  
+
+
+2016-07-04 00:20:51
+------------------
+m_picturesCount:251,  m_platesCount:290,  m_detectRate:77.931%. 
+m_detectRecall:69.6696%, m_detectPrecise:73.8268%, m_detectFscore:71.688%.
+m_0error:56.8075%,  m_1error:65.7277%,  m_chinesePrecise:67.1362%.  
+m_seconds:568sec,  m_avgSeconds:2.26295sec.
+m_param1f:0.5,  m_param2f:0.25,  m_param3f:0.55,  
+m_param1i:900,  
+
+

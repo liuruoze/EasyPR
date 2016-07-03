@@ -237,6 +237,8 @@ bool slideChineseWindow(Mat& image, Rect mr, Mat& newRoi, Color plateType, float
 int CCharsSegment::charsSegment(Mat input, vector<Mat>& resultVec, Color color) {
   if (!input.data) return 0x01;
 
+  Color plateType = color;
+
   Mat input_grey;
   cvtColor(input, input_grey, CV_BGR2GRAY);
 
@@ -251,7 +253,6 @@ int CCharsSegment::charsSegment(Mat input, vector<Mat>& resultVec, Color color) 
   // 二值化
   // 根据车牌的不同颜色使用不同的阈值判断方法
   // TODO：使用MSER来提取这些轮廓
-
   //if (BLUE == plateType) {
   //  // cout << "BLUE" << endl;
   //  img_threshold = input_grey.clone();
@@ -284,8 +285,6 @@ int CCharsSegment::charsSegment(Mat input, vector<Mat>& resultVec, Color color) 
   //  threshold(input_grey, img_threshold, 10, 255,
   //            CV_THRESH_OTSU + CV_THRESH_BINARY);
   //}
-
-  Color plateType = color;
 
   img_threshold = input_grey.clone();
   spatial_ostu(img_threshold, 8, 2, plateType);

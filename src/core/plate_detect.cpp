@@ -58,7 +58,7 @@ namespace easypr {
       }
     }
 
-    // 使用非极大值抑制来判断车牌
+    // 浣跨敤闈炴瀬澶у�兼姂鍒舵潵鍒ゆ柇杞︾墝
     PlateJudge::instance()->plateJudgeUsingNMS(all_result_Plates, resultVec, m_maxPlates);
 
     if (showDetectArea || getDetectShow()) {
@@ -93,7 +93,7 @@ namespace easypr {
           line(result, rect_points[j], rect_points[(j + 1) % 4], lineColor, 2, 8);
       }
 
-      //显示定位框的图片
+      //鏄剧ず瀹氫綅妗嗙殑鍥剧墖
       showResult(result, img_index);
     }
 

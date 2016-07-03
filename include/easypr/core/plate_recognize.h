@@ -24,14 +24,14 @@ namespace easypr {
   public:
     CPlateRecognize();
 
-    //! ³µÅÆ¼ì²âÓë×Ö·ûÊ¶±ğ
+    //! è½¦ç‰Œæ£€æµ‹ä¸å­—ç¬¦è¯†åˆ«
     int plateRecognize(Mat src, std::vector<CPlate> &licenseVec, int img_index = 0);
     int plateRecognize(Mat src, std::vector<std::string> &licenseVec);
 
     int plateRecognizeAsText(Mat src, std::vector<CPlate> &licenseVec);
     int plateRecognizeAsTextNM(Mat src, std::vector<CPlate> &licenseVec);
 
-    //! Éú»îÄ£Ê½Óë¹¤ÒµÄ£Ê½ÇĞ»»
+    //! ç”Ÿæ´»æ¨¡å¼ä¸å·¥ä¸šæ¨¡å¼åˆ‡æ¢
 
     inline void setLifemode(bool param) { CPlateDetect::setPDLifemode(param); }
     inline void setDetectType(int param) { CPlateDetect::setDetectType(param); }

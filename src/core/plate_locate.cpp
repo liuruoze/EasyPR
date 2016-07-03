@@ -823,7 +823,7 @@ int CPlateLocate::plateMserLocate(Mat src, vector<CPlate> &candPlates, int img_i
   flags.push_back(YELLOW);
 
   bool usePlateMser = false;
-  int scale_size = 1024;
+  int scale_size = 1000;
   //int scale_size = CParams::instance()->getParam1i();
   double scale_ratio = 1;
 
