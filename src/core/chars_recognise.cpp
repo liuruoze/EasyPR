@@ -52,7 +52,7 @@ int CCharsRecognise::charsRecognise(CPlate& plate, std::string& plateLicense) {
 
   Mat plateMat = plate.getPlateMat();
 
-  // 判断车牌颜色以此确认threshold方法
+  // 鍒ゆ柇杞︾墝棰滆壊浠ユ纭threshold鏂规硶
   Color color;
   if (plate.getPlateLocateType() == CMSER) {
     color = plate.getPlateColor();

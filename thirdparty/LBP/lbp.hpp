@@ -1,4 +1,4 @@
-﻿/*
+/*
 * Copyright (c) 2011. Philipp Wagner <bytefish[at]gmx[dot]de>.
 * Released under terms of the BSD Simplified license.
 *

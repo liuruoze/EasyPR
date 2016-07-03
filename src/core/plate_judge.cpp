@@ -28,7 +28,7 @@ namespace easypr {
     }
   }
 
-  //! ¶Ôµ¥·ùÍ¼Ïñ½øĞĞSVMÅĞ¶Ï
+  //! å¯¹å•å¹…å›¾åƒè¿›è¡ŒSVMåˆ¤æ–­
 
   int PlateJudge::plateJudge(const Mat &inMat, int &result) {
     Mat features;
@@ -40,7 +40,7 @@ namespace easypr {
     return 0;
   }
 
-  //! ¶Ô¶à·ùÍ¼Ïñ½øĞĞSVMÅĞ¶Ï
+  //! å¯¹å¤šå¹…å›¾åƒè¿›è¡ŒSVMåˆ¤æ–­
 
   int PlateJudge::plateJudge(const std::vector<Mat> &inVec,
     std::vector<Mat> &resultVec) {
@@ -56,16 +56,16 @@ namespace easypr {
     return 0;
   }
 
-  //! ÉèÖÃ³µÅÆÍ¼ÏñµÄÖÃĞÅ¶È
-  //! ·µ»ØÖµ£¬0´ú±íÊÇ³µÅÆ£¬ÆäËûÖµ´ú±í²»ÊÇ
+  //! è®¾ç½®è½¦ç‰Œå›¾åƒçš„ç½®ä¿¡åº¦
+  //! è¿”å›å€¼ï¼Œ0ä»£è¡¨æ˜¯è½¦ç‰Œï¼Œå…¶ä»–å€¼ä»£è¡¨ä¸æ˜¯
   int PlateJudge::plateSetScore(CPlate& plate) {
     Mat features;
     extractFeature(plate.getPlateMat(), features);
 
     float score = svm_->predict(features, noArray(), cv::ml::StatModel::Flags::RAW_OUTPUT);
 
-    // scoreÖµ´ú±íÀëmarginµÄ¾àÀë£¬Ğ¡ÓÚ0´ú±íÊÇ³µÅÆ£¬´óÓÚ0´ú±í²»ÊÇ³µÅÆ
-    // µ±Ğ¡ÓÚ0Ê±£¬ÖµÔ½Ğ¡´ú±íÊÇ³µÅÆµÄ¸ÅÂÊÔ½´ó
+    // scoreå€¼ä»£è¡¨ç¦»marginçš„è·ç¦»ï¼Œå°äº0ä»£è¡¨æ˜¯è½¦ç‰Œï¼Œå¤§äº0ä»£è¡¨ä¸æ˜¯è½¦ç‰Œ
+    // å½“å°äº0æ—¶ï¼Œå€¼è¶Šå°ä»£è¡¨æ˜¯è½¦ç‰Œçš„æ¦‚ç‡è¶Šå¤§
     plate.setPlateScore(score);
 
     if (score < 0)
@@ -74,13 +74,13 @@ namespace easypr {
       return -1;
   }
 
-  ////! ±È½Ïº¯Êı
+  ////! æ¯”è¾ƒå‡½æ•°
   //struct PlateScoreCompaer {
   //  bool operator() (const CPlate& i, const CPlate& j) { return (i.getPlateScore() < j.getPlateScore()); }
   //} plateScoreCompaerObject;
 
 
-  //! ·Ç¼«´óÖµÒÖÖÆ
+  //! éæå¤§å€¼æŠ‘åˆ¶
   void NMS(std::vector<CPlate> &inVec, std::vector<CPlate> &resultVec, double overlap) {
 
     std::sort(inVec.begin(), inVec.end());
@@ -111,7 +111,7 @@ namespace easypr {
     resultVec = inVec;
   }
 
-  //! Ê¹ÓÃ·Ç¼«´óÖµÒÖÖÆµÄ³µÅÆÅĞ¶Ï
+  //! ä½¿ç”¨éæå¤§å€¼æŠ‘åˆ¶çš„è½¦ç‰Œåˆ¤æ–­
   int PlateJudge::plateJudgeUsingNMS(const std::vector<CPlate> &inVec, std::vector<CPlate> &resultVec, int maxPlates) {
     std::vector<CPlate> plateVec;
     int num = inVec.size();
@@ -147,9 +147,9 @@ namespace easypr {
 
             if (resultCascade == 0) {
               if (0) {
-                imshow("inMat", inMat);
+                imshow("tmpDes", tmpDes);
                 waitKey(0);
-                destroyWindow("inMat");
+                destroyWindow("tmpDes");
               }
               plateVec.push_back(plate);
             }
@@ -174,7 +174,7 @@ namespace easypr {
       //  int w = inMat.cols;
       //  int h = inMat.rows;
 
-      //  //ÔÙÈ¡ÖĞ¼ä²¿·ÖÅĞ¶ÏÒ»´Î
+      //  //å†å–ä¸­é—´éƒ¨åˆ†åˆ¤æ–­ä¸€æ¬¡
 
       //  Mat tmpmat = inMat(Rect_<double>(w * 0.05, h * 0.1, w * 0.9, h * 0.8));
       //  Mat tmpDes = inMat.clone();
@@ -209,8 +209,8 @@ namespace easypr {
 
     std::vector<CPlate> reDupPlateVec;
 
-    // Ê¹ÓÃ·Ç¼«´óÖµÒÖÖÆÀ´È¥³ıÄÇĞ©ÖØµşµÄ³µÅÆ
-    // overlapãĞÖµÉèÖÃÎª0.5
+    // ä½¿ç”¨éæå¤§å€¼æŠ‘åˆ¶æ¥å»é™¤é‚£äº›é‡å çš„è½¦ç‰Œ
+    // overlapé˜ˆå€¼è®¾ç½®ä¸º0.5
     double overlap = 0.5;
     NMS(plateVec, reDupPlateVec, overlap);
   
@@ -235,7 +235,7 @@ namespace easypr {
   }
 
 
-  //! ¶Ô¶à·ù³µÅÆ½øĞĞSVMÅĞ¶Ï
+  //! å¯¹å¤šå¹…è½¦ç‰Œè¿›è¡ŒSVMåˆ¤æ–­
   int PlateJudge::plateJudge(const std::vector<CPlate> &inVec,
     std::vector<CPlate> &resultVec) {
     int num = inVec.size();
@@ -252,7 +252,7 @@ namespace easypr {
         int w = inMat.cols;
         int h = inMat.rows;
 
-        //ÔÙÈ¡ÖĞ¼ä²¿·ÖÅĞ¶ÏÒ»´Î
+        //å†å–ä¸­é—´éƒ¨åˆ†åˆ¤æ–­ä¸€æ¬¡
 
         Mat tmpmat = inMat(Rect_<double>(w * 0.05, h * 0.1, w * 0.9, h * 0.8));
         Mat tmpDes = inMat.clone();

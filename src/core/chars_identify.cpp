@@ -239,7 +239,7 @@ namespace easypr {
     }
 
 
-    float chineseMaxThresh = 0.25;
+    float chineseMaxThresh = 0.2f;
     //float chineseMaxThresh = CParams::instance()->getParam2f();
 
     if (maxVal >= 0.9 || (isChinese && maxVal >= chineseMaxThresh)) {
