@@ -1,7 +1,6 @@
 .idea/
 _build/
 resources/image/tmp/
-resources/image/native_test/*.jpg
 
 *.suo
 *.sdf
@@ -13,7 +12,7 @@ resources/image/native_test/*.jpg
 *.pdb
 experi
 /tmp
-
+resources/image/native_test/*.jpg
 
 #ignore thumbnails created by windows
 Thumbs.db
