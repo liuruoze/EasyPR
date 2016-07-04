@@ -28,7 +28,6 @@ namespace easypr {
     }
   }
 
-  //! 对单幅图像进行SVM判断
 
   int PlateJudge::plateJudge(const Mat &inMat, int &result) {
     Mat features;
@@ -40,7 +39,6 @@ namespace easypr {
     return 0;
   }
 
-  //! 对多幅图像进行SVM判断
 
   int PlateJudge::plateJudge(const std::vector<Mat> &inVec,
     std::vector<Mat> &resultVec) {
@@ -56,16 +54,16 @@ namespace easypr {
     return 0;
   }
 
-  //! 设置车牌图像的置信度
-  //! 返回值，0代表是车牌，其他值代表不是
+  // set the score of plate
+  // 0 is plate, -1 is not.
   int PlateJudge::plateSetScore(CPlate& plate) {
     Mat features;
     extractFeature(plate.getPlateMat(), features);
 
     float score = svm_->predict(features, noArray(), cv::ml::StatModel::Flags::RAW_OUTPUT);
 
-    // score值代表离margin的距离，小于0代表是车牌，大于0代表不是车牌
-    // 当小于0时，值越小代表是车牌的概率越大
+    // score is the distance of margin，below zero is plate, up is not
+    // when score is below zero, the samll the value, the more possibliy to be a plate.
     plate.setPlateScore(score);
 
     if (score < 0)
@@ -74,13 +72,7 @@ namespace easypr {
       return -1;
   }
 
-  ////! 比较函数
-  //struct PlateScoreCompaer {
-  //  bool operator() (const CPlate& i, const CPlate& j) { return (i.getPlateScore() < j.getPlateScore()); }
-  //} plateScoreCompaerObject;
-
-
-  //! 非极大值抑制
+  // non-maximum suppression
   void NMS(std::vector<CPlate> &inVec, std::vector<CPlate> &resultVec, double overlap) {
 
     std::sort(inVec.begin(), inVec.end());
@@ -111,7 +103,6 @@ namespace easypr {
     resultVec = inVec;
   }
 
-  //! 使用非极大值抑制的车牌判断
   int PlateJudge::plateJudgeUsingNMS(const std::vector<CPlate> &inVec, std::vector<CPlate> &resultVec, int maxPlates) {
     std::vector<CPlate> plateVec;
     int num = inVec.size();
@@ -174,8 +165,6 @@ namespace easypr {
       //  int w = inMat.cols;
       //  int h = inMat.rows;
 
-      //  //再取中间部分判断一次
-
       //  Mat tmpmat = inMat(Rect_<double>(w * 0.05, h * 0.1, w * 0.9, h * 0.8));
       //  Mat tmpDes = inMat.clone();
       //  resize(tmpmat, tmpDes, Size(inMat.size()));
@@ -209,8 +198,6 @@ namespace easypr {
 
     std::vector<CPlate> reDupPlateVec;
 
-    // 使用非极大值抑制来去除那些重叠的车牌
-    // overlap阈值设置为0.5
     double overlap = 0.5;
     NMS(plateVec, reDupPlateVec, overlap);
   
@@ -235,7 +222,6 @@ namespace easypr {
   }
 
 
-  //! 对多幅车牌进行SVM判断
   int PlateJudge::plateJudge(const std::vector<CPlate> &inVec,
     std::vector<CPlate> &resultVec) {
     int num = inVec.size();
@@ -251,8 +237,6 @@ namespace easypr {
       else {
         int w = inMat.cols;
         int h = inMat.rows;
-
-        //再取中间部分判断一次
 
         Mat tmpmat = inMat(Rect_<double>(w * 0.05, h * 0.1, w * 0.9, h * 0.8));
         Mat tmpDes = inMat.clone();

@@ -10,8 +10,7 @@
 #ifndef EASYPR_CORE_CHARACTER_H_
 #define EASYPR_CORE_CHARACTER_H_
 
-#include <opencv2/opencv.hpp>
-
+#include "opencv2/opencv.hpp"
 
 using namespace cv;
 

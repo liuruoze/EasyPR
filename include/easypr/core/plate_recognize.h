@@ -24,14 +24,11 @@ namespace easypr {
   public:
     CPlateRecognize();
 
-    //! 车牌检测与字符识别
     int plateRecognize(Mat src, std::vector<CPlate> &licenseVec, int img_index = 0);
     int plateRecognize(Mat src, std::vector<std::string> &licenseVec);
 
     int plateRecognizeAsText(Mat src, std::vector<CPlate> &licenseVec);
     int plateRecognizeAsTextNM(Mat src, std::vector<CPlate> &licenseVec);
-
-    //! 生活模式与工业模式切换
 
     inline void setLifemode(bool param) { CPlateDetect::setPDLifemode(param); }
     inline void setDetectType(int param) { CPlateDetect::setDetectType(param); }

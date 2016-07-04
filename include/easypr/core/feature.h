@@ -1,7 +1,7 @@
 #ifndef EASYPR_CORE_FEATURE_H_
 #define EASYPR_CORE_FEATURE_H_
 
-#include <opencv2/opencv.hpp>
+#include "opencv2/opencv.hpp"
 
 namespace easypr {
 
@@ -36,8 +36,6 @@ void getLBPFeatures(const cv::Mat& image, cv::Mat& features);
 
 //! get character feature
 cv::Mat charFeatures(cv::Mat in, int sizeData);
-
-//! get character feature
 cv::Mat charFeatures2(cv::Mat in, int sizeData);
 
 //! LBP feature + Histom feature
