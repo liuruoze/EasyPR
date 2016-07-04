@@ -15,8 +15,6 @@ int test_plate_locate() {
 
   cv::Mat src = imread(file);
 
-  // TODO：原plateLocate需要被替换
-
   vector<cv::Mat> resultVec;
   CPlateLocate plate;
   plate.setDebug(1);

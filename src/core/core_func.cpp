@@ -1,7 +1,3 @@
-// 这个文件定义了EasyPR里所有plate判断的通用函数
-// 所属命名空间为easypr
-// 这个部分中的函数轻易不要改动
-
 #include "easypr/core/core_func.h"
 #include "easypr/core/plate.hpp"
 #include "easypr/core/chars_identify.h"
@@ -13,42 +9,36 @@ using namespace cv;
 
 namespace easypr {
 
-//! 根据一幅图像与颜色模板获取对应的二值图
-//! 输入RGB图像, 颜色模板（蓝色、黄色）
-//! 输出灰度图（只有0和255两个值，255代表匹配，0代表不匹配）
 
 Mat colorMatch(const Mat &src, Mat &match, const Color r,
                const bool adaptive_minsv) {
 
-  // S和V的最小值由adaptive_minsv这个bool值判断
-  // 如果为true，则最小值取决于H值，按比例衰减
-  // 如果为false，则不再自适应，使用固定的最小值minabs_sv
-  // 默认为false
+  // if use adaptive_minsv
+  // min value of s and v is adaptive to h
 
   const float max_sv = 255;
   const float minref_sv = 64;
 
   const float minabs_sv = 95;
 
-  // blue的H范围
+  // H range of blue 
 
   const int min_blue = 100;  // 100
   const int max_blue = 140;  // 140
 
-  // yellow的H范围
+  // H range of yellow
 
   const int min_yellow = 15;  // 15
   const int max_yellow = 40;  // 40
 
-  // white的H范围
+  // H range of white
 
   const int min_white = 0;   // 15
   const int max_white = 30;  // 40
 
   Mat src_hsv;
 
-  // 转到HSV空间进行处理，颜色搜索主要使用的是H分量进行蓝色与黄色的匹配工作
-
+  // convert to HSV space
   cvtColor(src, src_hsv, CV_BGR2HSV);
 
   std::vector<cv::Mat> hsvSplit;
@@ -56,7 +46,7 @@ Mat colorMatch(const Mat &src, Mat &match, const Color r,
   equalizeHist(hsvSplit[2], hsvSplit[2]);
   merge(hsvSplit, src_hsv);
 
-  //匹配模板基色,切换以查找想要的基色
+  // match to find the color
 
   int min_h = 0;
   int max_h = 0;
@@ -84,12 +74,8 @@ Mat colorMatch(const Mat &src, Mat &match, const Color r,
   int channels = src_hsv.channels();
   int nRows = src_hsv.rows;
 
-  //图像数据列需要考虑通道数的影响；
-
+  // consider multi channel image
   int nCols = src_hsv.cols * channels;
-
-  //连续存储的数据，按一行处理
-
   if (src_hsv.isContinuous()) {
     nCols *= nRows;
     nRows = 1;
@@ -122,10 +108,6 @@ Mat colorMatch(const Mat &src, Mat &match, const Color r,
 
         float Hdiff_p = float(Hdiff) / diff_h;
 
-        // S和V的最小值由adaptive_minsv这个bool值判断
-        // 如果为true，则最小值取决于H值，按比例衰减
-        // 如果为false，则不再自适应，使用固定的最小值minabs_sv
-
         float min_sv = 0;
         if (true == adaptive_minsv)
           min_sv =
@@ -155,7 +137,7 @@ Mat colorMatch(const Mat &src, Mat &match, const Color r,
   // cout << "avg_s:" << s_all / count << endl;
   // cout << "avg_v:" << v_all / count << endl;
 
-  // 获取颜色匹配后的二值灰度图
+  // get the final binary
 
   Mat src_grey;
   std::vector<cv::Mat> hsvSplit_done;
@@ -169,11 +151,7 @@ Mat colorMatch(const Mat &src, Mat &match, const Color r,
 
 bool bFindLeftRightBound1(Mat &bound_threshold, int &posLeft, int &posRight) {
 
-  //从两边寻找边界
-
   float span = bound_threshold.rows * 0.2f;
-
-  //左边界检测
 
   for (int i = 0; i < bound_threshold.cols - span - 1; i += 3) {
     int whiteCount = 0;
@@ -191,7 +169,6 @@ bool bFindLeftRightBound1(Mat &bound_threshold, int &posLeft, int &posRight) {
   }
   span = bound_threshold.rows * 0.2f;
 
-  //右边界检测
 
   for (int i = bound_threshold.cols - 1; i > span; i -= 2) {
     int whiteCount = 0;
@@ -223,11 +200,8 @@ bool bFindLeftRightBound1(Mat &bound_threshold, int &posLeft, int &posRight) {
 
 bool bFindLeftRightBound(Mat &bound_threshold, int &posLeft, int &posRight) {
 
-  //从两边寻找边界
 
   float span = bound_threshold.rows * 0.2f;
-
-  //左边界检测
 
   for (int i = 0; i < bound_threshold.cols - span - 1; i += 2) {
     int whiteCount = 0;
@@ -245,7 +219,6 @@ bool bFindLeftRightBound(Mat &bound_threshold, int &posLeft, int &posRight) {
   }
   span = bound_threshold.rows * 0.2f;
 
-  //右边界检测
 
   for (int i = bound_threshold.cols - 1; i > span; i -= 2) {
     int whiteCount = 0;
@@ -271,11 +244,7 @@ bool bFindLeftRightBound(Mat &bound_threshold, int &posLeft, int &posRight) {
 
 bool bFindLeftRightBound2(Mat &bound_threshold, int &posLeft, int &posRight) {
 
-  //从两边寻找边界
-
   float span = bound_threshold.rows * 0.2f;
-
-  //左边界检测
 
   for (int i = 0; i < bound_threshold.cols - span - 1; i += 3) {
     int whiteCount = 0;
@@ -293,7 +262,6 @@ bool bFindLeftRightBound2(Mat &bound_threshold, int &posLeft, int &posRight) {
   }
   span = bound_threshold.rows * 0.2f;
 
-  //右边界检测
 
   for (int i = bound_threshold.cols - 1; i > span; i -= 3) {
     int whiteCount = 0;
@@ -317,13 +285,9 @@ bool bFindLeftRightBound2(Mat &bound_threshold, int &posLeft, int &posRight) {
   return false;
 }
 
-//! 判断一个车牌的颜色
-//! 输入车牌mat与颜色模板
-//! 返回true或fasle
 
 bool plateColorJudge(const Mat &src, const Color r, const bool adaptive_minsv,
                      float &percent) {
-  // 判断阈值
 
   const float thresh = 0.45f;
 
@@ -339,8 +303,6 @@ bool plateColorJudge(const Mat &src, const Color r, const bool adaptive_minsv,
   else
     return false;
 }
-
-//判断车牌的类型
 
 Color getPlateType(const Mat &src, const bool adaptive_minsv) {
   float max_percent = 0;
@@ -364,12 +326,9 @@ Color getPlateType(const Mat &src, const bool adaptive_minsv) {
   } else {
     //std::cout << "OTHER" << std::endl;
 
-    // 如果任意一者都不大于阈值，则取值最大者
-
     /*max_percent = blue_percent > yellow_percent ? blue_percent : yellow_percent;
     max_color = blue_percent > yellow_percent ? BLUE : YELLOW;
     max_color = max_percent > white_percent ? max_color : WHITE;*/
-
 
     // always return blue
     return BLUE;
@@ -402,10 +361,6 @@ void clearLiuDingOnly(Mat &img) {
   }
 }
 
-//去除车牌上方的钮钉
-//计算每行元素的阶跃数，如果小于X认为是柳丁，将此行全部填0（涂黑）
-// X的推荐值为，可根据实际调整
-
 bool clearLiuDing(Mat &img) {
   std::vector<float> fJump;
   int whiteCount = 0;
@@ -430,22 +385,15 @@ bool clearLiuDing(Mat &img) {
     fJump.push_back(jump.at<float>(i));
     if (jump.at<float>(i) >= 16 && jump.at<float>(i) <= 45) {
 
-      //车牌字符满足一定跳变条件
-
+      // jump condition
       iCount++;
     }
   }
 
-  ////这样的不是车牌
-
+  // if not is not plate
   if (iCount * 1.0 / img.rows <= 0.40) {
-
-    //满足条件的跳变的行数也要在一定的阈值内
-
     return false;
   }
-
-  //不满足车牌的条件
 
   if (whiteCount * 1.0 / (img.rows * img.cols) < 0.15 ||
       whiteCount * 1.0 / (img.rows * img.cols) > 0.50) {
@@ -485,7 +433,7 @@ void clearLiuDing(Mat mask, int &top, int &bottom) {
     top = 0;
   }
 
-  // ok,找到上下边界
+  // ok, find top and bottom boudnadry
 
   for (int i = mask.rows - 1; i >= mask.rows / 2; i--) {
     int jumpCount = 0;
@@ -554,7 +502,6 @@ int ThresholdOtsu(Mat mat) {
   return thresholdV;
 }
 
-//! 直方图均衡
 
 Mat histeq(Mat in) {
   Mat out(in.size(), in.type());
@@ -583,11 +530,7 @@ Mat CutTheRect(Mat &in, Rect &rect) {
   int x = (int) floor((float) (size - rect.width) / 2.0f);
   int y = (int) floor((float) (size - rect.height) / 2.0f);
 
-  //把rect中的数据 考取到dstMat的中间
-
   for (int i = 0; i < rect.height; ++i) {
-
-    //宽
 
     for (int j = 0; j < rect.width; ++j) {
       dstMat.data[dstMat.step[0] * (i + y) + j + x] =
@@ -605,7 +548,7 @@ Rect GetCenterRect(Mat &in) {
   int top = 0;
   int bottom = in.rows - 1;
 
-  //上下
+  // find the center rect
 
   for (int i = 0; i < in.rows; ++i) {
     bool bFind = false;
@@ -619,8 +562,6 @@ Rect GetCenterRect(Mat &in) {
     if (bFind) {
       break;
     }
-
-    //统计这一行或一列中，非零元素的个数
 
   }
   for (int i = in.rows - 1;
@@ -638,11 +579,8 @@ Rect GetCenterRect(Mat &in) {
       break;
     }
 
-    //统计这一行或一列中，非零元素的个数
-
   }
 
-  //左右
 
   int left = 0;
   int right = in.cols - 1;
@@ -658,8 +596,6 @@ Rect GetCenterRect(Mat &in) {
     if (bFind) {
       break;
     }
-
-    //统计这一行或一列中，非零元素的个数
 
   }
   for (int j = in.cols - 1;
@@ -677,9 +613,6 @@ Rect GetCenterRect(Mat &in) {
     if (bFind) {
       break;
     }
-
-    //统计这一行或一列中，非零元素的个数
-
   }
 
   _rect.x = left;
@@ -711,8 +644,6 @@ float countOfBigValue(Mat &mat, int iValue) {
   }
 }
 
-// ！获取垂直和水平方向直方图
-
 Mat ProjectedHistogram(Mat img, int t) {
   int sz = (t) ? img.rows : img.cols;
   Mat mhist = Mat::zeros(1, sz, CV_32F);
@@ -720,16 +651,12 @@ Mat ProjectedHistogram(Mat img, int t) {
   for (int j = 0; j < sz; j++) {
     Mat data = (t) ? img.row(j) : img.col(j);
 
-    //统计这一行或一列中，非零元素的个数，并保存到mhist中
-
     mhist.at<float>(j) = countOfBigValue(data, 20);
   }
 
   // Normalize histogram
   double min, max;
   minMaxLoc(mhist, &min, &max);
-
-  //用mhist直方图中的最大值，归一化直方图
 
   if (max > 0)
     mhist.convertTo(mhist, -1, 1.0f / max, 0);
@@ -742,8 +669,6 @@ Mat preprocessChar(Mat in, int char_size) {
   int h = in.rows;
   int w = in.cols;
 
-  //统一每个字符的大小
-
   int charSize = char_size;
 
   Mat transformMat = Mat::eye(2, 3, CV_32F);
@@ -754,8 +679,6 @@ Mat preprocessChar(Mat in, int char_size) {
   Mat warpImage(m, m, in.type());
   warpAffine(in, warpImage, transformMat, warpImage.size(), INTER_LINEAR,
     BORDER_CONSTANT, Scalar(0));
-
-  //！ 将所有的字符调整成统一的尺寸
 
   Mat out;
   resize(warpImage, out, Size(charSize, charSize));
@@ -798,7 +721,7 @@ bool verifyCharSizes(Rect r) {
     return false;
 }
 
-// 图像缩放
+
 Mat scaleImage(const Mat& image, const Size& maxSize, double& scale_ratio) {
   Mat ret;
 
@@ -943,7 +866,7 @@ bool verifyRotatedPlateSizes(RotatedRect mr, bool showDebug) {
   return true;
 }
 
-//! 非极大值抑制
+//! non-maximum suppression
 void NMStoCharacter(std::vector<CCharacter> &inVec, double overlap) {
 
   std::sort(inVec.begin(), inVec.end());
@@ -2241,19 +2164,15 @@ Mat rotateImg(Mat source, float angle){
   return dst;
 }
 
-//! 计算一个安全的Rect
-//! 如果不存在，返回false
+//  calc safe Rect
+//  if not exit, return false
 
 bool calcSafeRect(const RotatedRect &roi_rect, const Mat &src,
   Rect_<float> &safeBoundRect) {
   Rect_<float> boudRect = roi_rect.boundingRect();
 
-  // boudRect的左上的x和y有可能小于0
-
   float tl_x = boudRect.x > 0 ? boudRect.x : 0;
   float tl_y = boudRect.y > 0 ? boudRect.y : 0;
-
-  // boudRect的右下的x和y有可能大于src的范围
 
   float br_x = boudRect.x + boudRect.width < src.cols
     ? boudRect.x + boudRect.width - 1
@@ -2267,7 +2186,7 @@ bool calcSafeRect(const RotatedRect &roi_rect, const Mat &src,
 
   if (roi_width <= 0 || roi_height <= 0) return false;
 
-  // 新建一个mat，确保地址不越界，以防mat定位roi时抛异常
+  //  a new rect not out the range of mat
 
   safeBoundRect = Rect_<float>(tl_x, tl_y, roi_width, roi_height);
 

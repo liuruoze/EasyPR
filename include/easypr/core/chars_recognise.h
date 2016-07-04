@@ -14,7 +14,7 @@
 
 #include "easypr/core/chars_segment.h"
 #include "easypr/core/chars_identify.h"
-#include "easypr/core/character.hpp"
+#include "easypr/core/core_func.h"
 #include "easypr/util/util.h"
 #include "easypr/core/plate.hpp"
 #include "easypr/config.h"
@@ -29,8 +29,6 @@ class CCharsRecognise {
 
   int charsRecognise(cv::Mat plate, std::string& plateLicense);
   int charsRecognise(CPlate& plate, std::string& plateLicense);
-
-  //! 获得车牌颜色
 
   inline std::string getPlateColor(cv::Mat input) const {
     std::string color = "未知";
@@ -55,7 +53,6 @@ class CCharsRecognise {
     return color;
   }
 
-  //! 设置变量
   inline void setLiuDingSize(int param) {
     m_charsSegment->setLiuDingSize(param);
   }

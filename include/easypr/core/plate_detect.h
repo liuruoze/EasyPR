@@ -37,28 +37,21 @@ class CPlateDetect {
   */
   int plateDetect(Mat src, std::vector<CPlate> &resultVec, int img_index = 0);
 
-
-  //! 展示中间的结果
   int showResult(const Mat &result, int img_index = 0);
 
-  //! 装载SVM模型
   void LoadSVM(std::string s);
 
-  //! 生活模式与工业模式切换
   inline void setPDLifemode(bool param) { m_plateLocate->setLifemode(param); }
 
-  //! 是否开启调试模式
   inline void setPDDebug(bool param) { 
     m_plateLocate->setDebug(param); 
     setDetectShow(param);
   }
 
-  //! 获取调试模式状态
   inline bool getPDDebug() { return m_plateLocate->getDebug(); }
 
   inline void setDetectType(int param) { m_type = param; }
 
-  //! 设置与读取变量
   inline void setGaussianBlurSize(int param) {
     m_plateLocate->setGaussianBlurSize(param);
   }
@@ -114,11 +107,7 @@ class CPlateDetect {
 
  private:
 
-  //! 设置一幅图中最多有多少车牌
-
   int m_maxPlates;
-
-  //! 车牌定位
 
   CPlateLocate* m_plateLocate;
 
