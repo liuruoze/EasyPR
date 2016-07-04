@@ -1031,7 +1031,12 @@ void searchWeakSeed(const std::vector<CCharacter>& charVec, std::vector<CCharact
       float height_diff = abs(height_1 - height_2);
       double height_diff_ratio = height_diff / min(height_1, height_2);
 
-      if (height_diff_ratio < thresh1) {
+      float width_diff = abs(width_1 - width_2);
+      double width_diff_ratio = width_diff / maxrect.width;
+
+      if (height_diff_ratio < thresh1 && width_diff_ratio < 0.5) {
+        //std::cout << "h" << height_diff_ratio << std::endl;
+        //std::cout << "w" << width_diff_ratio << std::endl;
         searchWeakSeedVec.push_back(weakSeed);
       }
       else {

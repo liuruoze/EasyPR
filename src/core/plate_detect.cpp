@@ -17,45 +17,44 @@ namespace easypr {
   int CPlateDetect::plateDetect(Mat src, std::vector<CPlate> &resultVec, int type,
     bool showDetectArea, int img_index) {
 
-    std::vector<CPlate> color_Plates;
     std::vector<CPlate> sobel_Plates;
+    sobel_Plates.reserve(16);
+    std::vector<CPlate> color_Plates;
+    color_Plates.reserve(16);
     std::vector<CPlate> mser_Plates;
+    mser_Plates.reserve(16);
 
     std::vector<CPlate> all_result_Plates;
-    if ( !type || type & PR_DETECT_SOBEL) {
-      m_plateLocate->plateSobelLocate(src, sobel_Plates, img_index);
-      std::vector<CPlate>& sobel_result_Plates = sobel_Plates;
+    all_result_Plates.reserve(64);
 
-      for (size_t i = 0; i < sobel_result_Plates.size(); i++) {
-        CPlate plate = sobel_result_Plates[i];
-        plate.setPlateLocateType(SOBEL);
 
-        all_result_Plates.push_back(plate);
+        if (!type || type & PR_DETECT_SOBEL) {
+          m_plateLocate->plateSobelLocate(src, sobel_Plates, img_index);
+        }
+      
+
+      if (!type || type & PR_DETECT_COLOR) {
+        m_plateLocate->plateColorLocate(src, color_Plates, img_index);
       }
+
+        if (!type || type & PR_DETECT_CMSER) {
+          m_plateLocate->plateMserLocate(src, mser_Plates, img_index);
+        }
+
+
+    for (auto plate : sobel_Plates) {
+      plate.setPlateLocateType(SOBEL);
+      all_result_Plates.push_back(plate);
     }
 
-    if ( !type || type & PR_DETECT_COLOR) {
-      m_plateLocate->plateColorLocate(src, color_Plates, img_index);
-      std::vector<CPlate>& color_result_Plates = color_Plates;
-
-      for (size_t i = 0; i < color_result_Plates.size(); i++) {
-        CPlate plate = color_result_Plates[i];
-
-        plate.setPlateLocateType(COLOR);
-        all_result_Plates.push_back(plate);
-      }
+    for (auto plate : color_Plates) {
+      plate.setPlateLocateType(COLOR);
+      all_result_Plates.push_back(plate);
     }
 
-    if ( !type || type & PR_DETECT_CMSER) {
-      m_plateLocate->plateMserLocate(src, mser_Plates, img_index);
-      std::vector<CPlate>& mser_result_Plates = mser_Plates;
-
-      for (size_t i = 0; i < mser_result_Plates.size(); i++) {
-        CPlate plate = mser_result_Plates[i];
-
-        plate.setPlateLocateType(CMSER);
-        all_result_Plates.push_back(plate);
-      }
+    for (auto plate : mser_Plates) {
+      plate.setPlateLocateType(CMSER);
+      all_result_Plates.push_back(plate);
     }
 
     // use nms to judge plate

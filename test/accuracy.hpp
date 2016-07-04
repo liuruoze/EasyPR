@@ -157,10 +157,12 @@ namespace easypr {
         string plateLicense = Utils::getFileName(filepath);
         img_ss << kv->get("original_plate") << ":" << plateLicense << endl;
 
-        XMLNode xNode = xMainNode.addChild("image");
-        xNode.addChild("imageName").addText(plateLicense.c_str());
-        XMLNode rectangleNodes = xNode.addChild("taggedRectangles");
-
+        // remain
+        //XMLNode xNode, rectangleNodes;
+        //xNode = xMainNode.addChild("image");
+        //xNode.addChild("imageName").addText(plateLicense.c_str());
+        //rectangleNodes = xNode.addChild("taggedRectangles");
+          
         vector<CPlate> plateVec;
         int result = pr.plateRecognize(src, plateVec, i);
 
@@ -266,18 +268,19 @@ namespace easypr {
           Rect_<float> plateRect_d;
           calcSafeRect(platePos_d, src, plateRect_d);
 
-          XMLNode rectangleNode = rectangleNodes.addChild("taggedRectangle");
-          RotatedRect rr = platePos_d;
-          LocateType locateType = plate_d.getPlateLocateType();
+          // remain
+          //XMLNode rectangleNode = rectangleNodes.addChild("taggedRectangle");
+          //RotatedRect rr = platePos_d;
+          //LocateType locateType = plate_d.getPlateLocateType();
 
-          rectangleNode.addAttribute("x", to_string((int)rr.center.x).c_str());
-          rectangleNode.addAttribute("y", to_string((int)rr.center.y).c_str());
-          rectangleNode.addAttribute("width", to_string((int)rr.size.width).c_str());
-          rectangleNode.addAttribute("height", to_string((int)rr.size.height).c_str());
+          //rectangleNode.addAttribute("x", to_string((int)rr.center.x).c_str());
+          //rectangleNode.addAttribute("y", to_string((int)rr.center.y).c_str());
+          //rectangleNode.addAttribute("width", to_string((int)rr.size.width).c_str());
+          //rectangleNode.addAttribute("height", to_string((int)rr.size.height).c_str());
 
-          rectangleNode.addAttribute("rotation", to_string((int)rr.angle).c_str());
-          rectangleNode.addAttribute("locateType", to_string(locateType).c_str());
-          rectangleNode.addText(plate_d.getPlateStr().c_str());
+          //rectangleNode.addAttribute("rotation", to_string((int)rr.angle).c_str());
+          //rectangleNode.addAttribute("locateType", to_string(locateType).c_str());
+          //rectangleNode.addText(plate_d.getPlateStr().c_str());
 
           for (auto plate_g : plateVecGT) {
             RotatedRect platePos_g = plate_g.getPlatePos();
@@ -345,7 +348,7 @@ namespace easypr {
       time(&end);
 
       // the xml detection result 
-      xMainNode.writeToFile(path_result.c_str());
+      // xMainNode.writeToFile(path_result.c_str());
 
       cout << "------------------" << endl;
       cout << "Easypr accuracy test end!" << endl;
