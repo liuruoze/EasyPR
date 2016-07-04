@@ -83,10 +83,15 @@ int CPlateLocate::mserSearch(const Mat &src,  vector<Mat> &out,
   vector<Mat> match_grey;
 
   vector<CPlate> plateVec_blue;
+  plateVec_blue.reserve(16);
   vector<RotatedRect> plateRRect_blue;
+  plateRRect_blue.reserve(16);
 
   vector<CPlate> plateVec_yellow;
+  plateVec_yellow.reserve(16);
+
   vector<RotatedRect> plateRRect_yellow;
+  plateRRect_yellow.reserve(16);
 
   mserCharMatch(src, match_grey, plateVec_blue, plateVec_yellow, usePlateMser, plateRRect_blue, plateRRect_yellow, img_index, showDebug);
 
@@ -708,25 +713,45 @@ void CPlateLocate::affine(const Mat &in, Mat &out, const double slope) {
 int CPlateLocate::plateColorLocate(Mat src, vector<CPlate> &candPlates,
                                    int index) {
   vector<RotatedRect> rects_color_blue;
+  rects_color_blue.reserve(64);
   vector<RotatedRect> rects_color_yellow;
-  vector<CPlate> plates;
-  Mat src_b;
+  rects_color_yellow.reserve(64);
 
-  colorSearch(src, BLUE, src_b, rects_color_blue, index);
-  deskew(src, src_b, rects_color_blue, plates);
+  vector<CPlate> plates_blue;
+  plates_blue.reserve(64);
+  vector<CPlate> plates_yellow;
+  plates_yellow.reserve(64);
 
-  colorSearch(src, YELLOW, src_b, rects_color_yellow, index);
-  deskew(src, src_b, rects_color_yellow, plates);
-
-  for (size_t i = 0; i < plates.size(); i++) {
-    candPlates.push_back(plates[i]);
+#pragma omp parallel sections
+  {
+#pragma omp section
+    {
+      Mat src_b_blue;
+      colorSearch(src, BLUE, src_b_blue, rects_color_blue, index);
+      deskew(src, src_b_blue, rects_color_blue, plates_blue, true, BLUE);
+    }
+#pragma omp section
+    {
+      Mat src_b_yellow;
+      colorSearch(src, YELLOW, src_b_yellow, rects_color_yellow, index);
+      deskew(src, src_b_yellow, rects_color_yellow, plates_yellow, true, YELLOW);
+    }
   }
+
+  candPlates.insert(candPlates.end(), plates_blue.begin(), plates_blue.end());
+  candPlates.insert(candPlates.end(), plates_yellow.begin(), plates_yellow.end());
+
+  //for (auto plate : plates_blue)
+  //  candPlates.push_back(plate);
+
+  //for (auto plate : plates_yellow)
+  //  candPlates.push_back(plate);
+
   return 0;
 }
 
 
 //! MSER plate locate
-
 int CPlateLocate::plateMserLocate(Mat src, vector<CPlate> &candPlates, int img_index) {
   std::vector<Mat> channelImages;
   std::vector<Color> flags;
@@ -770,8 +795,11 @@ int CPlateLocate::plateMserLocate(Mat src, vector<CPlate> &candPlates, int img_i
       Color color = flags.at(j);
 
       vector<RotatedRect> rects_mser;
+      rects_mser.reserve(64);
       std::vector<CPlate> deskewPlate;
+      deskewPlate.reserve(64);
       std::vector<CPlate> mserPlate;
+      mserPlate.reserve(64);
 
       // deskew for rotation and slope image
       for (auto plate : plates) {
@@ -798,7 +826,8 @@ int CPlateLocate::plateMserLocate(Mat src, vector<CPlate> &candPlates, int img_i
 
         for (auto splate : mserPlate) {
           RotatedRect srect = splate.getPlatePos();
-          bool isSimilar = computeIOU(drect, srect, src, 0.95f);
+          float iou = 0.f;
+          bool isSimilar = computeIOU(drect, srect, src.cols, src.rows, 0.95f, iou);
           if (isSimilar) {
             splate.setPlateMat(dmat);
             candPlates.push_back(splate);
@@ -806,7 +835,8 @@ int CPlateLocate::plateMserLocate(Mat src, vector<CPlate> &candPlates, int img_i
           }
         }
       }
-    }   
+    }
+
   }
 
   //if (usePlateMser) {
@@ -881,7 +911,6 @@ int CPlateLocate::sobelOperT(const Mat &in, Mat &out, int blurSize, int morphW,
   Sobel(mat_gray, grad_x, ddepth, 1, 0, 3, scale, delta, BORDER_DEFAULT);
   convertScaleAbs(grad_x, abs_grad_x);
 
-
   Mat grad;
   addWeighted(abs_grad_x, 1, 0, 0, 0, grad);
 
@@ -905,19 +934,21 @@ int CPlateLocate::sobelOperT(const Mat &in, Mat &out, int blurSize, int morphW,
 
 int CPlateLocate::plateSobelLocate(Mat src, vector<CPlate> &candPlates,
                                    int index) {
-  vector<RotatedRect> rects_sobel;
-  vector<RotatedRect> rects_sobel_sel;
+  vector<RotatedRect> rects_sobel_all;
+  rects_sobel_all.reserve(256);
+
   vector<CPlate> plates;
+  plates.reserve(32);
 
   vector<Rect_<float>> bound_rects;
-
+  bound_rects.reserve(256);
 
   sobelFrtSearch(src, bound_rects);
 
   vector<Rect_<float>> bound_rects_part;
+  bound_rects_part.reserve(256);
 
   // enlarge area 
-
   for (size_t i = 0; i < bound_rects.size(); i++) {
     float fRatio = bound_rects[i].width * 1.0f / bound_rects[i].height;
     if (fRatio < 3.0 && fRatio > 1.0 && bound_rects[i].height < 120) {
@@ -940,8 +971,8 @@ int CPlateLocate::plateSobelLocate(Mat src, vector<CPlate> &candPlates,
   }
 
   // second processing to split one
-
-  for (size_t i = 0; i < bound_rects_part.size(); i++) {
+#pragma omp parallel for
+  for (int i = 0; i < (int)bound_rects_part.size(); i++) {
     Rect_<float> bound_rect = bound_rects_part[i];
     Point2f refpoint(bound_rect.x, bound_rect.y);
 
@@ -956,10 +987,18 @@ int CPlateLocate::plateSobelLocate(Mat src, vector<CPlate> &candPlates,
     Rect_<float> safe_bound_rect(x, y, width, height);
     Mat bound_mat = src(safe_bound_rect);
 
+    vector<RotatedRect> rects_sobel;
+    rects_sobel.reserve(128);
     sobelSecSearchPart(bound_mat, refpoint, rects_sobel);
+
+#pragma omp critical
+    {
+      rects_sobel_all.insert(rects_sobel_all.end(), rects_sobel.begin(), rects_sobel.end());
+    }
   }
 
-  for (size_t i = 0; i < bound_rects.size(); i++) {
+#pragma omp parallel for
+  for (int i = 0; i < (int)bound_rects.size(); i++) {
     Rect_<float> bound_rect = bound_rects[i];
     Point2f refpoint(bound_rect.x, bound_rect.y);
 
@@ -974,16 +1013,25 @@ int CPlateLocate::plateSobelLocate(Mat src, vector<CPlate> &candPlates,
     Rect_<float> safe_bound_rect(x, y, width, height);
     Mat bound_mat = src(safe_bound_rect);
 
+    vector<RotatedRect> rects_sobel;
+    rects_sobel.reserve(128);
     sobelSecSearch(bound_mat, refpoint, rects_sobel);
-    // sobelSecSearchPart(bound_mat, refpoint, rects_sobel);
+
+#pragma omp critical
+    {
+      rects_sobel_all.insert(rects_sobel_all.end(), rects_sobel.begin(), rects_sobel.end());
+    }
   }
 
   Mat src_b;
   sobelOper(src, src_b, 3, 10, 3);
 
-  deskew(src, src_b, rects_sobel, plates);
+  deskew(src, src_b, rects_sobel_all, plates);
 
-  for (size_t i = 0; i < plates.size(); i++) candPlates.push_back(plates[i]);
+  //for (size_t i = 0; i < plates.size(); i++) 
+  //  candPlates.push_back(plates[i]);
+
+  candPlates.insert(candPlates.end(), plates.begin(), plates.end());
 
   return 0;
 }

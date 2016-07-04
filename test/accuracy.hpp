@@ -73,58 +73,35 @@ namespace easypr {
       path = path + "/GroundTruth.xml";
       getGroundTruth(xmlMap, path.c_str());
 
-      //cout << xmlMap.size() << endl;
-      //cout << xmlMap.begin()->first << endl;
-      //vector<CPlate> plateVec = xmlMap.begin()->second;
-      //cout << plateVec[0].getPlateStr() << endl;
-
       XMLNode xMainNode = XMLNode::createXMLTopNode("tagset");
 #ifdef OS_WINDOWS
       XMLNode::setGlobalOptions(XMLNode::char_encoding_GBK);
 #endif
       auto files = Utils::getFiles(test_path);
-
       std::string path_result = "result/Result.xml";
+      int max_plates = 4;
 
       CPlateRecognize pr;
-      // 设置Debug模式
       pr.setResultShow(false);
       pr.setLifemode(true);
-      // 设置要处理的一张图片中最多有多少车牌
-      pr.setMaxPlates(4);
+      pr.setMaxPlates(max_plates);
       //pr.setDetectType(PR_DETECT_COLOR | PR_DETECT_SOBEL);
       pr.setDetectType(PR_DETECT_CMSER);
-      
+     
       // load the maching learning model
       pr.LoadSVM("resources/model/svm.xml");
       pr.LoadANN("resources/model/ann.xml");
       pr.LoadChineseANN("resources/model/ann_chinese.xml");
 
-      //CPlateDetect pd;
-      //pd.setDetectType(PR_DETECT_CMSER);
-      ////pd.setPDDebug(true);
-      //pd.setDetectShow(true);
-      //pd.setPDLifemode(true);
-
       int size = files.size();
-
       if (0 == size) {
         cout << "No File Found in general_test/native_test!" << endl;
         return 0;
       }
-
       cout << "Begin to test the easypr accuracy!" << endl;
 
-      // 总的测试图片数量
-
       int count_all = 0;
-
-      // 错误的图片数量
-
       int count_err = 0;
-
-      // 未识别的图片数量
-
       int count_nodetect = 0;
       int count_norecogn = 0;
 
@@ -148,57 +125,59 @@ namespace easypr {
       // calucate the detect precise and recall
       // use icdar 2003 evalution protoocal
       vector<float> icdar2003_recall_all;
+      icdar2003_recall_all.reserve(size * max_plates);
       vector<float> icdar2003_precise_all;
-
-      // 开始和结束时间
+      icdar2003_precise_all.reserve(size * max_plates);
 
       time_t begin, end;
       time(&begin);
 
+#pragma omp parallel for
       for (int i = 0; i < size; i++) {
         string filepath = files[i].c_str();
-
-        // EasyPR开始判断车牌
-
         Mat src = imread(filepath);
-
-        // 如果是非图像文件，直接过去
-
         if (!src.data) continue;
 
-        cout << "------------------" << endl;
+        // calucate the detect recall
+        // use icdar 2003 evalution protoocal
+        vector<float> icdar2003_recall;
+        icdar2003_recall.reserve(max_plates);
+        vector<float> icdar2003_precise;
+        icdar2003_precise.reserve(max_plates);
 
-        // 获取真实的车牌
+        int all_plate_count_s = 0;
+        int non_error_count_s = 0;
+        int one_error_count_s = 0;
+        int chinese_error_count_s = 0;
+        int count_norecogn_s = 0;
+        int count_nodetect_s = 0;
 
+        std::stringstream img_ss(std::stringstream::in | std::stringstream::out);
+        img_ss << "------------------" << endl;
         string plateLicense = Utils::getFileName(filepath);
-        cout << kv->get("original_plate") << ":" << plateLicense << endl;
+        img_ss << kv->get("original_plate") << ":" << plateLicense << endl;
 
         XMLNode xNode = xMainNode.addChild("image");
         xNode.addChild("imageName").addText(plateLicense.c_str());
-
         XMLNode rectangleNodes = xNode.addChild("taggedRectangles");
 
         vector<CPlate> plateVec;
         int result = pr.plateRecognize(src, plateVec, i);
-        //int result = pd.plateDetect(src, plateVec, i);
 
         // get the ground truth and compare it with the detect list;
-        map<string, vector<CPlate>>::iterator it;
         vector<CPlate> plateVecGT;
-        it = xmlMap.find(plateLicense);
-        if (it != xmlMap.end()) {
-          //cout << it->first << endl;
-          plateVecGT = it->second;        
+#pragma omp critical
+        {
+          map<string, vector<CPlate>>::iterator it;         
+          it = xmlMap.find(plateLicense);
+          if (it != xmlMap.end()) {
+            plateVecGT = it->second;
+          }
+          else {
+            img_ss << "No ground truth found!" << endl;
+          }
         }
-        else {
-          cout << "No ground truth found!" << endl;
-        }
-        
-        // calucate the detect recall
-        // use icdar 2003 evalution protoocal
-        vector<float> icdar2003_recall;
-        vector<float> icdar2003_precise;
-
+       
         for (auto plate_g : plateVecGT) {
           float bestmatch = 0.f;
           CPlate* matchPlate = NULL;
@@ -223,14 +202,13 @@ namespace easypr {
             t++;
           }
 
-          icdar2003_recall_all.push_back(bestmatch);
           icdar2003_recall.push_back(bestmatch);
 
           string plateLicense = plate_g.getPlateStr();
           string license = Utils::splitString(plateLicense, ':').at(1);
-          cout << plate_g.getPlateStr() << " (g)" << endl;
+          img_ss << plate_g.getPlateStr() << " (g)" << endl;
 
-          all_plate_count++;
+          all_plate_count_s++;
 
           if (matchPlate && bestmatch > 0.5f) {
             string matchPlateLicense = matchPlate->getPlateStr();
@@ -240,24 +218,21 @@ namespace easypr {
             if (size == 2 && spilt_plate.at(1) != "") {
               string matchLicense = spilt_plate.at(1);
 
-              cout << matchPlateLicense << " (d)" << endl;
+              img_ss << matchPlateLicense << " (d)" << endl;
              
               int diff = utils::levenshtein_distance(license, matchLicense);
               if (diff == 0) {
-                non_error_count++;
-                one_error_count++;
+                non_error_count_s++;
+                one_error_count_s++;
               }
               else if (diff == 1) {
-                one_error_count++;
+                one_error_count_s++;
               }
-              cout << kv->get("diff") << ":" << diff << kv->get("char");
+              img_ss << kv->get("diff") << ":" << diff << kv->get("char");
+
               bool chineseError = (license.substr(0, 2) != matchLicense.substr(0, 2));
               if (chineseError) {
-                chinese_error_count++;
-                //if (diff == 2) {
-                //  one_error_count++;
-                //}
-                // output chinese errror mat
+                chinese_error_count_s++;
                 vector<CCharacter> charVec = matchPlate->getCopyOfReutCharacters();
                 CCharacter character = charVec.at(0);
                 if (0) {
@@ -266,32 +241,20 @@ namespace easypr {
                   imwrite(ss.str(), character.getCharacterMat());
                 }
               }
-              cout << "  chineseError:" << chineseError << endl;
+              img_ss << "  chineseError:" << chineseError << endl;
             } 
             else {
-              cout << "No string" << " (d)" << endl;
-              count_norecogn++;
+              img_ss << "No string" << " (d)" << endl;
+              count_norecogn_s++;
             }
           }
           else {
-            cout << kv->get("empty_plate") << endl;
+            img_ss << kv->get("empty_plate") << endl;
             if (license != kv->get("empty_plate")) {
               not_recognized_files.push_back(license);
-              count_nodetect++;
+              count_nodetect_s++;
             }
           }
-
-          /* REMAIN
-          if (1)
-          {
-            std::stringstream ss(std::stringstream::in | std::stringstream::out);
-            ss << "resources/image/tmp/plate_" << license << ".jpg";
-            Mat outMat = src(plateRect_g);
-            Mat plate_mat;
-            plate_mat.create(36, 136, 16);
-            resize(outMat, plate_mat, plate_mat.size(), 0, 0, INTER_AREA);
-            imwrite(ss.str(), plate_mat);
-          }*/
         }
 
         // calucate the detect precise
@@ -328,7 +291,6 @@ namespace easypr {
               bestmatch = match;
           }
 
-          icdar2003_precise_all.push_back(bestmatch);     
           icdar2003_precise.push_back(bestmatch);
         }
 
@@ -350,11 +312,35 @@ namespace easypr {
             (recall_result + precise_result);
         }
 
-        cout << "Recall" << ":" << recall_result * 100 << "%" << ", ";
-        cout << "Precise" << ":" << precise_result * 100 << "%" << ", ";
-        cout << "Fscore" << ":" << fscore_result * 100 << "%" << "." << endl;
+        img_ss << "Recall" << ":" << recall_result * 100 << "%" << ", ";
+        img_ss << "Precise" << ":" << precise_result * 100 << "%" << ", ";
+        img_ss << "Fscore" << ":" << fscore_result * 100 << "%" << "." << endl;
 
-        count_all++;
+#pragma omp critical
+        {
+          cout << img_ss.str();
+        }
+
+#pragma omp critical
+        {
+          for (auto recall : icdar2003_recall)
+            icdar2003_recall_all.push_back(recall);
+
+          for (auto precise : icdar2003_precise)
+            icdar2003_precise_all.push_back(precise);
+        }
+
+#pragma omp critical
+        {
+          all_plate_count += all_plate_count_s;
+          non_error_count += non_error_count_s;
+          one_error_count += one_error_count_s;
+          chinese_error_count += chinese_error_count_s;
+          count_norecogn += count_norecogn_s;
+          count_nodetect += count_nodetect_s;
+          count_all++;
+        }
+
       }
       time(&end);
 

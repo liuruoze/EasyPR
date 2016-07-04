@@ -70,6 +70,18 @@ namespace cv
 
   using std::vector;
   
+  Rect mergeRect(const Rect& a, const Rect& b) {
+    Rect c;
+    int x1 = a.x < b.x ? a.x : b.x;
+    int y1 = a.y < b.y ? a.y : b.y;
+    c.width = (a.x + a.width > b.x + b.width ? a.x + a.width : b.x + b.width) - x1;
+    c.height = (a.y + a.height > b.y + b.height ? a.y + a.height : b.y + b.height) - y1;
+    c.x = x1;
+    c.y = y1;
+    return c;
+  }
+
+
   class MSER_Impl2 : public MSER2
   {
   public:
@@ -422,10 +434,15 @@ namespace cv
           int y = pix / step;
           int x = pix - y*step;
 
-          xmin = std::min(xmin, x);
-          xmax = std::max(xmax, x);
-          ymin = std::min(ymin, y);
-          ymax = std::max(ymax, y);
+          // modifier for more fast
+          //xmin = std::min(xmin, x);
+          //xmax = std::max(xmax, x);
+          //ymin = std::min(ymin, y);
+          //ymax = std::max(ymax, y);
+          xmin = xmin < x ? xmin : x;
+          xmax = xmax > x ? xmax : x;
+          ymin = ymin < y ? ymin : y;
+          ymax = ymax > y ? ymax : y;
 
           region[j] = Point(x, y);
         }
@@ -513,7 +530,9 @@ namespace cv
           history = comp1->history;
 
           // add by liuruoze
-          rect = comp1->rect;
+          if (wp.p.useOpt)
+            rect = comp1->rect;
+
           return;
         }
 
@@ -529,7 +548,11 @@ namespace cv
         size = comp1->size + comp2->size;
 
         // add by liuruoze
-        rect = comp1->rect | comp2->rect;
+        if (wp.p.useOpt) {
+          //rect = comp1->rect | comp2->rect;
+          rect = mergeRect(comp1->rect, comp2->rect);
+        }
+          
 
         bool keep_2nd = h2->size > wp.p.minArea;
         growHistory(hptr, wp, -1, false, keep_2nd);
@@ -682,7 +705,11 @@ namespace cv
         if (comptr->tail)
         {
           ptr0[comptr->tail].setNext(ptrofs);
-          comptr->rect |= Rect(x, y, 1, 1);
+          if (params.useOpt) {
+            //comptr->rect |= Rect(x, y, 1, 1);
+            comptr->rect = mergeRect(comptr->rect, Rect(x, y, 1, 1));
+          }
+            
         }
         else
         {
@@ -690,7 +717,8 @@ namespace cv
           // printf("y : %i \n", y);
 
           comptr->head = ptrofs;
-          comptr->rect = Rect(x, y, 1, 1);
+          if (params.useOpt)
+            comptr->rect = Rect(x, y, 1, 1);
         }
 
         comptr->tail = ptrofs;
@@ -803,4 +831,5 @@ namespace cv
       _min_margin, _edge_blur_size));
   }
 
+  
 }
