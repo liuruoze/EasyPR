@@ -13,6 +13,8 @@ resources/image/tmp/
 experi
 /tmp
 resources/image/native_test/*.jpg
+*.vsp
+*.psess
 
 #ignore thumbnails created by windows
 Thumbs.db

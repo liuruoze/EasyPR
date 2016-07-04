@@ -681,7 +681,7 @@ Mat preprocessChar(Mat in, int char_size) {
     BORDER_CONSTANT, Scalar(0));
 
   Mat out;
-  resize(warpImage, out, Size(charSize, charSize));
+  cv::resize(warpImage, out, Size(charSize, charSize));
 
   return out;
 }
@@ -733,7 +733,7 @@ Mat scaleImage(const Mat& image, const Size& maxSize, double& scale_ratio) {
     int newWidth = int(image.cols / m_real_to_scaled_ratio);
     int newHeight = int(image.rows / m_real_to_scaled_ratio);
 
-    resize(image, ret, Size(newWidth, newHeight), 0, 0);
+    cv::resize(image, ret, Size(newWidth, newHeight), 0, 0);
     scale_ratio = m_real_to_scaled_ratio;
   }
   else {
@@ -882,10 +882,13 @@ void NMStoCharacter(std::vector<CCharacter> &inVec, double overlap) {
     for (; itc != inVec.end();) {
       CCharacter charComp = *itc;
       Rect rectComp = charComp.getCharacterPos();
-      Rect rectInter = rectSrc & rectComp;
-      Rect rectUnion = rectSrc | rectComp;
-      double r = double(rectInter.area()) / double(rectUnion.area());
-      if (r > overlap) {
+      //Rect rectInter = rectSrc & rectComp;
+      //Rect rectUnion = rectSrc | rectComp;
+      //double r = double(rectInter.area()) / double(rectUnion.area());
+
+      float iou = computeIOU(rectSrc, rectComp);
+
+      if (iou > overlap) {
         itc = inVec.erase(itc);
       }
       else {
@@ -979,7 +982,7 @@ void rotatedRectangle(InputOutputArray image, RotatedRect rrect, const Scalar& c
   Point2f rect_points[4];
   rrect.points(rect_points);
   for (int j = 0; j < 4; j++) {
-    line(image, rect_points[j], rect_points[(j + 1) % 4], color, thickness, lineType, shift);
+    cv::line(image, rect_points[j], rect_points[(j + 1) % 4], color, thickness, lineType, shift);
   }
 }
 
@@ -992,6 +995,7 @@ void searchWeakSeed(const std::vector<CCharacter>& charVec, std::vector<CCharact
   float y_1 = line[3];
 
   std::vector<CCharacter> searchWeakSeedVec;
+  searchWeakSeedVec.reserve(8);
 
   for (auto weakSeed : charVec) {
     Rect weakRect = weakSeed.getCharacterPos();
@@ -1160,7 +1164,7 @@ void slideWindowSearch(const Mat &image, std::vector<CCharacter>& slideCharacter
     Mat region = image(rect);
     Mat binary_region;
 
-    threshold(region, binary_region, ostu_level, 255, CV_THRESH_BINARY);
+    cv::threshold(region, binary_region, ostu_level, 255, CV_THRESH_BINARY);
     //double ostu_level = threshold(region, binary_region, 0, 255, CV_THRESH_BINARY | CV_THRESH_OTSU);
     //std::cout << "ostu_level:" << ostu_level << std::endl;*/
 
@@ -1212,12 +1216,12 @@ bool judegMDOratio2(const Mat& image, const Rect& rect, std::vector<Point>& cont
 
   Mat mser = image(rect);
   Mat mser_mat;
-  threshold(mser, mser_mat, 0, 255, CV_THRESH_BINARY | CV_THRESH_OTSU);
+  cv::threshold(mser, mser_mat, 0, 255, CV_THRESH_BINARY | CV_THRESH_OTSU);
 
   Rect normalRect = adaptive_charrect_from_rect(rect, image.cols, image.rows);
   Mat region = image(normalRect);
   Mat thresh_mat;
-  threshold(region, thresh_mat, 0, 255, CV_THRESH_BINARY | CV_THRESH_OTSU);
+  cv::threshold(region, thresh_mat, 0, 255, CV_THRESH_BINARY | CV_THRESH_OTSU);
 
   // count mser diff ratio
   int countdiff = countNonZero(thresh_mat) - countNonZero(mser_mat);
@@ -1238,18 +1242,43 @@ bool judegMDOratio2(const Mat& image, const Rect& rect, std::vector<Point>& cont
   return true;
 }
 
-bool computeIOU(RotatedRect rrect1, RotatedRect rrect2, const Mat& img, float thresh) {
+Rect interRect(const Rect& a, const Rect& b) {
+  Rect c;
+  int x1 = a.x > b.x ? a.x : b.x;
+  int y1 = a.y > b.y ? a.y : b.y;
+  c.width = (a.x + a.width < b.x + b.width ? a.x + a.width : b.x + b.width) - x1;
+  c.height = (a.y + a.height < b.y + b.height ? a.y + a.height : b.y + b.height) - y1;
+  c.x = x1;
+  c.y = y1;
+  if (c.width <= 0 || c.height <= 0)
+    c = Rect();
+  return c;
+}
+
+Rect mergeRect(const Rect& a, const Rect& b) {
+  Rect c;
+  int x1 = a.x < b.x ? a.x : b.x;
+  int y1 = a.y < b.y ? a.y : b.y;
+  c.width = (a.x + a.width > b.x + b.width ? a.x + a.width : b.x + b.width) - x1;
+  c.height = (a.y + a.height > b.y + b.height ? a.y + a.height : b.y + b.height) - y1;
+  c.x = x1;
+  c.y = y1;
+  return c;
+}
+
+bool computeIOU(const RotatedRect& rrect1, const RotatedRect& rrect2, const int width, const int height, const float thresh, float& result) {
   Rect_<float> safe_rect1;
-  calcSafeRect(rrect1, img, safe_rect1);
+  calcSafeRect(rrect1, width, height,safe_rect1);
 
   Rect_<float> safe_rect2;
-  calcSafeRect(rrect2, img, safe_rect2);
+  calcSafeRect(rrect2, width, height, safe_rect2);
 
-  Rect inter = safe_rect1 & safe_rect2;
-  Rect urect = safe_rect1 | safe_rect2;
+  Rect inter = interRect(safe_rect1, safe_rect2);
+  Rect urect = mergeRect(safe_rect1, safe_rect2);
 
   float iou = (float)inter.area() / (float)urect.area();
-  //std::cout << "iou" << iou << std::endl;
+
+  result = iou;
 
   if (iou > thresh) {
     return true;
@@ -1258,42 +1287,51 @@ bool computeIOU(RotatedRect rrect1, RotatedRect rrect2, const Mat& img, float th
   return false;
 }
 
+float computeIOU(const RotatedRect& rrect1, const RotatedRect& rrect2, const int width, const int height) {
+  Rect_<float> safe_rect1;
+  calcSafeRect(rrect1, width, height, safe_rect1);
 
-bool judegMDOratio(const Mat& image, const Rect& rect, std::vector<Point>& contour, Mat& result){
-  
-  Rect normalRect = adaptive_charrect_from_rect(rect, image.cols, image.rows);
-  //cv::rectangle(result, normalRect, Scalar(0, 0, 255), 1);
+  Rect_<float> safe_rect2;
+  calcSafeRect(rrect2, width, height, safe_rect2);
 
-  Mat mser_mat = adaptive_image_from_points(contour, normalRect, normalRect.size());
+  Rect inter = interRect(safe_rect1, safe_rect2);
+  Rect urect = mergeRect(safe_rect1, safe_rect2);
 
-  Mat region = image(normalRect);
+  float iou = (float)inter.area() / (float)urect.area();
+  //std::cout << "iou" << iou << std::endl;
 
-  Mat thresh_mat;
-  threshold(region, thresh_mat, 0, 255, CV_THRESH_BINARY | CV_THRESH_OTSU);
-
-  // count mser diff ratio
-  Mat differMat;
-  absdiff(thresh_mat, mser_mat, differMat);
-
-  int countdiff = countNonZero(differMat);
-  float MserDiffOstuRatio = float(countdiff) / float(rect.area());
-
-  if (MserDiffOstuRatio > 1) {
-    std::cout << "MserDiffOstuRatio:" << MserDiffOstuRatio << std::endl;
-    imshow("tmpMat", mser_mat);
-    waitKey(0);
-    imshow("tmpMat", thresh_mat);
-    waitKey(0);
-    imshow("tmpMat", differMat);
-    waitKey(0);
-    
-    cv::rectangle(result, rect, Scalar(0, 0, 0), 2);
-    return false;
-  }
-
-  return true;
+  return iou;
 }
 
+bool computeIOU(const Rect& rect1, const Rect& rect2, const float thresh, float& result) {
+
+  Rect inter = interRect(rect1, rect2);
+  Rect urect = mergeRect(rect1, rect2);
+
+  float iou = (float)inter.area() / (float)urect.area();
+  result = iou;
+
+  if (iou > thresh) {
+    return true;
+  }
+
+  return false;
+}
+
+float computeIOU(const Rect& rect1, const Rect& rect2) {
+
+  Rect inter = interRect(rect1, rect2);
+  Rect urect = mergeRect(rect1, rect2);
+
+  float iou = (float)inter.area() / (float)urect.area();
+ 
+  return iou;
+}
+
+
+// the slope are nealy the same along the line
+// if one slope is much different others, it should be outliers
+// this function to remove it
 void removeRightOutliers(std::vector<CCharacter>& charGroup, std::vector<CCharacter>& out_charGroup, double thresh1, double thresh2, Mat result) {
   std::sort(charGroup.begin(), charGroup.end(),
     [](const CCharacter& r1, const CCharacter& r2) {
@@ -1525,7 +1563,12 @@ void mserCharMatch(const Mat &src, std::vector<Mat> &match, std::vector<CPlate>&
   std::vector<std::vector<std::vector<Point>>> all_contours;
   std::vector<std::vector<Rect>> all_boxes;
   all_contours.resize(2);
+  all_contours.at(0).reserve(1024);
+  all_contours.at(1).reserve(1024);
   all_boxes.resize(2);
+  all_boxes.at(0).reserve(1024);
+  all_boxes.at(1).reserve(1024);
+
   match.resize(2);
 
   std::vector<Color> flags;
@@ -1545,10 +1588,13 @@ void mserCharMatch(const Mat &src, std::vector<Mat> &match, std::vector<CPlate>&
   // mser detect 
   // color_index = 0 : mser-, detect white characters, which is in blue plate.
   // color_index = 1 : mser+, detect dark characters, which is in yellow plate.
-  for (size_t color_index = 0; color_index < 2; color_index++) {
+
+#pragma omp parallel for
+  for (int color_index = 0; color_index < 2; color_index++) {
     Color the_color = flags.at(color_index);
 
     std::vector<CCharacter> charVec;
+    charVec.reserve(128);
 
     match.at(color_index) = Mat::zeros(image.rows, image.cols, image.type());
 
@@ -1566,7 +1612,7 @@ void mserCharMatch(const Mat &src, std::vector<Mat> &match, std::vector<CPlate>&
     // verify char size and output to rects;
     for (size_t index = 0; index < size; index++) {
       Rect rect = all_boxes.at(color_index)[index];
-      std::vector<Point> contour = all_contours.at(color_index)[index];
+      std::vector<Point>& contour = all_contours.at(color_index)[index];
 
       // sometimes a plate could be a mser rect, so we could
       // also use mser algorithm to find plate
@@ -1587,7 +1633,7 @@ void mserCharMatch(const Mat &src, std::vector<Mat> &match, std::vector<CPlate>&
 
         Point center(charRect.tl().x + charRect.width / 2, charRect.tl().y + charRect.height / 2);
         Mat tmpMat;
-        double ostu_level = threshold(image(charRect), tmpMat, 0, 255, CV_THRESH_BINARY | CV_THRESH_OTSU);
+        double ostu_level = cv::threshold(image(charRect), tmpMat, 0, 255, CV_THRESH_BINARY | CV_THRESH_OTSU);
 
         //cv::circle(result, center, 3, Scalar(0, 0, 255), 2);
 
@@ -1617,10 +1663,14 @@ void mserCharMatch(const Mat &src, std::vector<Mat> &match, std::vector<CPlate>&
     double overlapThresh = 0.6;
     //double overlapThresh = CParams::instance()->getParam1f();
     NMStoCharacter(charVec, overlapThresh);
+    charVec.shrink_to_fit();
 
     std::vector<CCharacter> strongSeedVec;
+    strongSeedVec.reserve(64);
     std::vector<CCharacter> weakSeedVec;
+    weakSeedVec.reserve(64);
     std::vector<CCharacter> littleSeedVec;
+    littleSeedVec.reserve(64);
 
     //size_t charCan_size = charVec.size();
     for (auto charCandidate : charVec) {
@@ -1648,6 +1698,7 @@ void mserCharMatch(const Mat &src, std::vector<Mat> &match, std::vector<CPlate>&
 
     // merge chars to group
     std::vector<std::vector<CCharacter>> charGroupVec;
+    charGroupVec.reserve(64);
     mergeCharToGroup(strongSeedVec, charGroupVec);
 
     // genenrate the line of the group
@@ -1656,9 +1707,12 @@ void mserCharMatch(const Mat &src, std::vector<Mat> &match, std::vector<CPlate>&
     // be the characters in one plate, and we can use these characeters
     // to fit a line which is the middle line of the plate.
     std::vector<CPlate> plateVec;
+    plateVec.reserve(16);
     for (auto charGroup : charGroupVec) {
       Rect plateResult = charGroup[0].getCharacterPos();
       std::vector<Point> points;
+      points.reserve(32);
+
       Vec4f line;
       int maxarea = 0;
       Rect maxrect;
@@ -1670,9 +1724,11 @@ void mserCharMatch(const Mat &src, std::vector<Mat> &match, std::vector<CPlate>&
       Point rightPoint(rightx, 0);
 
       std::vector<CCharacter> mserCharVec;
+      mserCharVec.reserve(32);
 
       // remove outlier CharGroup
       std::vector<CCharacter> roCharGroup;
+      roCharGroup.reserve(32);
 
       removeRightOutliers(charGroup, roCharGroup, 0.2, 0.5, result);
       //roCharGroup = charGroup;
@@ -1728,6 +1784,8 @@ void mserCharMatch(const Mat &src, std::vector<Mat> &match, std::vector<CPlate>&
 
         int mindist = 7 * maxrect.width;
         std::vector<Vec2i> distVecVec;
+        distVecVec.reserve(32);
+
         Vec2i mindistVec;
         Vec2i avgdistVec;
 
@@ -1799,18 +1857,24 @@ void mserCharMatch(const Mat &src, std::vector<Mat> &match, std::vector<CPlate>&
       double ostu_level = plate.getOstuLevel();
 
       std::vector<CCharacter> mserCharacter = plate.getCopyOfMserCharacters();
+      mserCharacter.reserve(16);
 
       float k = line[1] / line[0];
       float x_1 = line[2];
       float y_1 = line[3];
 
       std::vector<CCharacter> searchWeakSeedVec;
+      searchWeakSeedVec.reserve(16);
 
       std::vector<CCharacter> searchRightWeakSeed;
+      searchRightWeakSeed.reserve(8);
       std::vector<CCharacter> searchLeftWeakSeed;
+      searchLeftWeakSeed.reserve(8);
 
       std::vector<CCharacter> slideRightWindow;
+      slideRightWindow.reserve(8);
       std::vector<CCharacter> slideLeftWindow;
+      slideLeftWindow.reserve(8);
 
       // draw weak seed and little seed from line;
       // search for mser rect
@@ -1898,7 +1962,7 @@ void mserCharMatch(const Mat &src, std::vector<Mat> &match, std::vector<CPlate>&
           Mat region = image(theRect);
           Mat binary_region;
 
-          ostu_level = threshold(region, binary_region, 0, 255, CV_THRESH_BINARY | CV_THRESH_OTSU);
+          ostu_level = cv::threshold(region, binary_region, 0, 255, CV_THRESH_BINARY | CV_THRESH_OTSU);
           if (1 && showDebug) {
             std::cout << "left : ostu_level:" << ostu_level << std::endl;
           }
@@ -2016,6 +2080,8 @@ void mserCharMatch(const Mat &src, std::vector<Mat> &match, std::vector<CPlate>&
       imwrite(ss.str(), result);
     }
   }
+
+
 }
 
 // this spatial_ostu algorithm are robust to 
@@ -2032,16 +2098,16 @@ void spatial_ostu(InputArray _src, int grid_x, int grid_y, Color type) {
     for (int j = 0; j < grid_x; j++) {
       Mat src_cell = Mat(src, Range(i*height, (i + 1)*height), Range(j*width, (j + 1)*width));
       if (type == BLUE) {
-        threshold(src_cell, src_cell, 0, 255, CV_THRESH_OTSU + CV_THRESH_BINARY);
+        cv::threshold(src_cell, src_cell, 0, 255, CV_THRESH_OTSU + CV_THRESH_BINARY);
       }
       else if (type == YELLOW) {
-        threshold(src_cell, src_cell, 0, 255, CV_THRESH_OTSU + CV_THRESH_BINARY_INV);
+        cv::threshold(src_cell, src_cell, 0, 255, CV_THRESH_OTSU + CV_THRESH_BINARY_INV);
       } 
       else if (type == WHITE) {
-        threshold(src_cell, src_cell, 0, 255, CV_THRESH_OTSU + CV_THRESH_BINARY_INV);
+        cv::threshold(src_cell, src_cell, 0, 255, CV_THRESH_OTSU + CV_THRESH_BINARY_INV);
       }
       else {
-        threshold(src_cell, src_cell, 0, 255, CV_THRESH_OTSU + CV_THRESH_BINARY);
+        cv::threshold(src_cell, src_cell, 0, 255, CV_THRESH_OTSU + CV_THRESH_BINARY);
       }
     }
   }
@@ -2142,7 +2208,7 @@ Mat adaptive_image_from_points(const std::vector<Point>& points,
   }
 
   Mat result;
-  resize(image, result, size, 0, 0, INTER_NEAREST);
+  cv::resize(image, result, size, 0, 0, INTER_NEAREST);
 
   return result;
 }
@@ -2180,6 +2246,32 @@ bool calcSafeRect(const RotatedRect &roi_rect, const Mat &src,
   float br_y = boudRect.y + boudRect.height < src.rows
     ? boudRect.y + boudRect.height - 1
     : src.rows - 1;
+
+  float roi_width = br_x - tl_x;
+  float roi_height = br_y - tl_y;
+
+  if (roi_width <= 0 || roi_height <= 0) return false;
+
+  //  a new rect not out the range of mat
+
+  safeBoundRect = Rect_<float>(tl_x, tl_y, roi_width, roi_height);
+
+  return true;
+}
+
+bool calcSafeRect(const RotatedRect &roi_rect, const int width, const int height,
+  Rect_<float> &safeBoundRect) {
+  Rect_<float> boudRect = roi_rect.boundingRect();
+
+  float tl_x = boudRect.x > 0 ? boudRect.x : 0;
+  float tl_y = boudRect.y > 0 ? boudRect.y : 0;
+
+  float br_x = boudRect.x + boudRect.width < width
+    ? boudRect.x + boudRect.width - 1
+    : width - 1;
+  float br_y = boudRect.y + boudRect.height < height
+    ? boudRect.y + boudRect.height - 1
+    : height - 1;
 
   float roi_width = br_x - tl_x;
   float roi_height = br_y - tl_y;

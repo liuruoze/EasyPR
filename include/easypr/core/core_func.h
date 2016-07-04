@@ -54,7 +54,6 @@ bool verifyRotatedPlateSizes(RotatedRect mr, bool showDebug = false);
 // non-maximum suppression
 void NMStoCharacter(std::vector<CCharacter> &inVec, double overlap);
 
-
 // draw rotatedRectangle
 void rotatedRectangle(InputOutputArray img, RotatedRect rect,
   const Scalar& color, int thickness = 1,
@@ -73,7 +72,12 @@ RotatedRect scaleBackRRect(const RotatedRect& rr, const float scale_ratio);
 void mserCharMatch(const Mat &src, std::vector<Mat> &match, std::vector<CPlate>& out_plateVec_blue, std::vector<CPlate>& out_plateVec_yellow,
   bool usePlateMser, std::vector<RotatedRect>& out_plateRRect_blue, std::vector<RotatedRect>& out_plateRRect_yellow, int index = 0, bool showDebug = false);
 
-bool computeIOU(RotatedRect rrect1, RotatedRect rrect2, const Mat& img, float thresh);
+// computer the insert over union about two rrect
+bool computeIOU(const RotatedRect& rrect1, const RotatedRect& rrect2, const int width, const int height, const float thresh, float& result);
+float computeIOU(const RotatedRect& rrect1, const RotatedRect& rrect2, const int width, const int height);
+
+bool computeIOU(const Rect& rect1, const Rect& rect2, const float thresh, float& result);
+float computeIOU(const Rect& rect1, const Rect& rect2);
 
 /** @brief convert form mser point to image.
 
@@ -92,6 +96,8 @@ Rect adaptive_charrect_from_rect(const Rect& rect, int maxwidth, int maxheight);
 // calc safe rect
 bool calcSafeRect(const RotatedRect& roi_rect, const Mat& src,
   Rect_<float>& safeBoundRect);
+bool calcSafeRect(const RotatedRect &roi_rect, const int width, const int height,
+  Rect_<float> &safeBoundRect);
 
 // shift an image
 Mat translateImg(Mat img, int offsetx, int offsety);

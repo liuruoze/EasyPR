@@ -1,5 +1,6 @@
 #include "easypr/core/plate_judge.h"
 #include "easypr/config.h"
+#include "easypr/core/core_func.h"
 
 namespace easypr {
 
@@ -88,10 +89,12 @@ namespace easypr {
       for (; itc != inVec.end();) {
         CPlate plateComp = *itc;
         Rect rectComp = plateComp.getPlatePos().boundingRect();
-        Rect rectInter = rectSrc & rectComp;
-        Rect rectUnion = rectSrc | rectComp;
-        double r = double(rectInter.area()) / double(rectUnion.area());
-        if (r > overlap) {
+        //Rect rectInter = rectSrc & rectComp;
+        //Rect rectUnion = rectSrc | rectComp;
+        //double r = double(rectInter.area()) / double(rectUnion.area());
+        float iou = computeIOU(rectSrc, rectComp);
+
+        if (iou > overlap) {
           itc = inVec.erase(itc);
         }
         else {
@@ -135,6 +138,9 @@ namespace easypr {
 
           if (useCascadeJudge) {
             int resultCascade = plateSetScore(plate);
+
+            if (plate.getPlateLocateType() != CMSER)
+              plate.setPlateMat(inMat);
 
             if (resultCascade == 0) {
               if (0) {
