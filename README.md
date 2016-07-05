@@ -22,7 +22,11 @@ EasyPR是一个开源的中文车牌识别系统，其目标是成为一个简�
 
 ![高分辨率的图像](resources/doc/res/big_1.jpg)
 
-2.更加合理的评价协议，结合GroundTruth与ICDAR2003的协议，使得整体评价指标更为合理。通用数据集里同时增加了近50张新图片。文字定位方法在面对这些复杂图片时比先前的SOBEL+COLOR的方法定位率提升了27个百分点。
+2.更加合理的评价协议。结合新增的GroundTruth文件与ICDAR2003的协议，使得整体评价指标更为合理。通用数据集里同时增加了近50张新图片。文字定位方法在面对这些复杂图片时比先前的SOBEL+COLOR的方法定位率提升了27个百分点。
+
+实际运行时，使用了文字定位与颜色定位的结合，最终对256张的测试图片的测试结果如下：
+
+![v1.5版运行结果](resources/doc/res/v1.5_result.jpg)
 
 3.使用了非极大值抑制算法去除相邻的车牌，使得最终输出变的合理。即便使用多个定位方法，最终也只会输出一个车牌，而且是可能性最大的车牌。
 
@@ -38,11 +42,11 @@ EasyPR是一个开源的中文车牌识别系统，其目标是成为一个简�
 
 6.增加了Grid Search方法，可以进行自动调参。
 
-7.首次增加了多线程支持，基于OpenMP的文字定位方法，在最终的识别效率上，比原先的单线程方法的速度提高了接近2倍。
+7.首次增加了多线程支持，基于OpenMP的文字定位方法，在最终的识别速度上，比原先的单线程方法提高了接近2倍。
 
-8.替换了一部分中文注释，使得windows下的visual studio在面对全部以LF结尾的文件时，也能成功通过编译。目前的程序只要opencv配置正确，gitosc上通过zip下载下来可以直接通过编译并运行。
+8.替换了一部分中文注释，使得windows下的visual studio在面对全部以LF结尾的文件时，也能成功通过编译。目前的程序只要opencv配置正确，gitosc上通过zip下载下来的程序可以直接通过编译并运行。
 
-其他还有不少改动，具体可以在代码中发现。
+关于本次改动的具体内容可以看博客中的介绍。
 
 ### 跨平台
 
@@ -87,7 +91,7 @@ EasyPR的调用非常简单，下面是一段示例代码:
 	int result = pr.plateRecognize(src, plateVec);
 ```
 
-首先创建了一个CPlateRecognize对象pr，接着我们设置pr的属性。
+我们首先创建一个CPlateRecognize的对象pr，接着设置pr的属性。
 
 ```c++
 	pr.setResultShow(false);
@@ -107,15 +111,13 @@ EasyPR的调用非常简单，下面是一段示例代码:
 	pr.setDetectType(PR_DETECT_COLOR | PR_DETECT_SOBEL);
 ```
 
-每个方法有其不同的特性，新版本推荐使用文字定位方法（CMSER）。
-
 除此之外，还可以有一些其他的属性值设置：
 
 ```c++
 	pr.setLifemode(true);
 ```
 
-设置开启生活模式，这个属性在定位方法为SOBEL时可以发挥作用，能增大搜索范围，提高鲁棒性。
+这句话设置开启生活模式，这个属性在定位方法为SOBEL时可以发挥作用，能增大搜索范围，提高鲁棒性。
 
 ```c++
 	pr.setMaxPlates(4);
@@ -123,7 +125,7 @@ EasyPR的调用非常简单，下面是一段示例代码:
 
 这句话设置EasyPR最多查找多少个车牌。当一副图中有大于n个车牌时，EasyPR最终只会输出可能性最高的n个。
 
-pr的主要方法为plateRecognize()，这个方法有两个参数，第一个代表输入图像，第二个代表输出的车牌CPlate集合。
+下面来看pr的方法。plateRecognize()这个方法有两个参数，第一个代表输入图像，第二个代表输出的车牌CPlate集合。
 
 ```c++
 	vector<CPlate> plateVec;
@@ -133,9 +135,10 @@ pr的主要方法为plateRecognize()，这个方法有两个参数，第一个�
 
 当返回结果result为0时，代表识别成功，否则失败。
 
-CPlate类包含了车牌的各种信息，重要的如下：
+CPlate类包含了车牌的各种信息，其中重要的如下：
 
 ```c++
+	CPlate plate = plateVec.at(i);
 	Mat plateMat = plate.getPlateMat();
 	RotatedRect rrect = plate.getPlatePos();
 	string license = plate.getPlateStr();
