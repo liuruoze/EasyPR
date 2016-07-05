@@ -178,8 +178,7 @@ namespace easypr {
         }
 
         vector<CPlate> plateVec;
-        Mat output;
-        int result = pr.plateRecognize(src, plateVec, i, output, plateVecGT);
+        int result = pr.plateRecognize(src, plateVec, i);
        
         for (auto plate_g : plateVecGT) {
           float bestmatch = 0.f;
