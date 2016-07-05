@@ -108,7 +108,7 @@ int CPlateLocate::mserSearch(const Mat &src,  vector<Mat> &out,
 
 
 int CPlateLocate::colorSearch(const Mat &src, const Color r, Mat &out,
-                              vector<RotatedRect> &outRects, int index) {
+                              vector<RotatedRect> &outRects) {
   Mat match_grey;
 
   // width is important to the final results;
@@ -118,9 +118,9 @@ int CPlateLocate::colorSearch(const Mat &src, const Color r, Mat &out,
 
   colorMatch(src, match_grey, r, false);
 
-  if (m_debug) {
-    utils::imwrite("resources/image/tmp/match_grey.jpg", match_grey);
-  }
+  //if (m_debug) {
+  //  utils::imwrite("resources/image/tmp/match_grey.jpg", match_grey);
+  //}
 
   Mat src_threshold;
   threshold(match_grey, src_threshold, 0, 255,
@@ -130,9 +130,9 @@ int CPlateLocate::colorSearch(const Mat &src, const Color r, Mat &out,
       MORPH_RECT, Size(color_morph_width, color_morph_height));
   morphologyEx(src_threshold, src_threshold, MORPH_CLOSE, element);
 
-  if (m_debug) {
-    utils::imwrite("resources/image/tmp/color.jpg", src_threshold);
-  }
+  //if (m_debug) {
+  //  utils::imwrite("resources/image/tmp/color.jpg", src_threshold);
+  //}
 
   src_threshold.copyTo(out);
 
@@ -722,19 +722,21 @@ int CPlateLocate::plateColorLocate(Mat src, vector<CPlate> &candPlates,
   vector<CPlate> plates_yellow;
   plates_yellow.reserve(64);
 
+  Mat src_clone = src.clone();
+
+  Mat src_b_blue;
+  Mat src_b_yellow;
 #pragma omp parallel sections
   {
 #pragma omp section
     {
-      Mat src_b_blue;
-      colorSearch(src, BLUE, src_b_blue, rects_color_blue, index);
+      colorSearch(src, BLUE, src_b_blue, rects_color_blue);
       deskew(src, src_b_blue, rects_color_blue, plates_blue, true, BLUE);
     }
 #pragma omp section
     {
-      Mat src_b_yellow;
-      colorSearch(src, YELLOW, src_b_yellow, rects_color_yellow, index);
-      deskew(src, src_b_yellow, rects_color_yellow, plates_yellow, true, YELLOW);
+      colorSearch(src_clone, YELLOW, src_b_yellow, rects_color_yellow);
+      deskew(src_clone, src_b_yellow, rects_color_yellow, plates_yellow, true, YELLOW);
     }
   }
 

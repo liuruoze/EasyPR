@@ -17,8 +17,8 @@ int test_plate_locate() {
 
   vector<cv::Mat> resultVec;
   CPlateLocate plate;
-  plate.setDebug(1);
-  plate.setLifemode(true);
+  //plate.setDebug(0);
+  //plate.setLifemode(true);
 
   int result = plate.plateLocate(src, resultVec);
   if (result == 0) {

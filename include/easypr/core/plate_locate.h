@@ -56,7 +56,7 @@ class CPlateLocate {
 
 
   int colorSearch(const Mat& src, const Color r, Mat& out,
-                  std::vector<RotatedRect>& outRects, int index = 0);
+                  std::vector<RotatedRect>& outRects);
 
   int mserSearch(const Mat &src, vector<Mat>& out,
     vector<vector<CPlate>>& out_plateVec, bool usePlateMser, vector<vector<RotatedRect>>& out_plateRRect,
