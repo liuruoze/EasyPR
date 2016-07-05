@@ -13,6 +13,7 @@ set(SOURCE_FILES
         textDetect/erfilter.cpp
         LBP/helper.cpp
         LBP/lbp.cpp
+        mser/mser2.cpp
         )
 
 # pack objects to static library
