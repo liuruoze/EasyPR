@@ -64,7 +64,7 @@ namespace easypr {
       return 0;
     }
 
-    int accuracyTest(const char* test_path, Result& result = Result(), bool useParams = false) {
+    int accuracyTest(const char* test_path, Result& result, bool useParams = false) {
       std::shared_ptr<easypr::Kv> kv(new easypr::Kv);
       kv->load("etc/chinese_mapping");
 
