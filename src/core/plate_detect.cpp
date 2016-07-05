@@ -1,5 +1,6 @@
 #include "easypr/core/plate_detect.h"
 #include "easypr/util/util.h"
+#include "easypr/config.h"
 
 namespace easypr {
 
@@ -122,6 +123,7 @@ namespace easypr {
     return 0;
   }
 
+
   int CPlateDetect::plateDetect(Mat src, std::vector<CPlate> &resultVec, int img_index) {
     int result = plateDetect(src, resultVec, m_type, false, img_index);
     return result;
@@ -131,11 +133,12 @@ namespace easypr {
     PlateJudge::instance()->LoadModel(path);
   }
 
-  int CPlateDetect::showResult(const Mat &result, int img_index) {
+
+  Mat CPlateDetect::showResult(const Mat &result, int img_index) {
     namedWindow("EasyPR", CV_WINDOW_AUTOSIZE);
 
-    const int RESULTWIDTH = 640;   // 640 930
-    const int RESULTHEIGHT = 540;  // 540 710
+    const int RESULTWIDTH = kShowWindowWidth;   // 640 930
+    const int RESULTHEIGHT = kShowWindowHeight;  // 540 710
 
     Mat img_window;
     img_window.create(RESULTHEIGHT, RESULTWIDTH, CV_8UC3);
@@ -192,6 +195,6 @@ namespace easypr {
       imwrite(ss.str(), img_window);
     }
 
-    return 0;
+    return img_window;
   }
 }

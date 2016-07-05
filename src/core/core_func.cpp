@@ -2079,7 +2079,7 @@ void mserCharMatch(const Mat &src, std::vector<Mat> &match, std::vector<CPlate>&
       destroyWindow("match");
     }
 
-    if (0) {
+    if (1) {
       std::stringstream ss(std::stringstream::in | std::stringstream::out);
       ss << "resources/image/tmp/plateDetect/plate_" << img_index << "_" << the_color << ".jpg";
       imwrite(ss.str(), result);

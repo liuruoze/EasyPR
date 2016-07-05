@@ -26,6 +26,12 @@ typedef enum {
   kInverse = 0  // correspond to "no plate"
 } SvmLabel;
 
+static const int   kPlateResizeWidth = 136;
+static const int   kPlateResizeHeight = 36;
+
+static const int   kShowWindowWidth = 800;
+static const int   kShowWindowHeight = 600;
+
 static const float kSvmPercentage   = 0.7f;
 
 static const int   kCharacterInput  = 120;

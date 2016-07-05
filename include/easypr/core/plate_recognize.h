@@ -24,8 +24,9 @@ namespace easypr {
   public:
     CPlateRecognize();
 
-    int plateRecognize(Mat src, std::vector<CPlate> &licenseVec, int img_index = 0);
+    int plateRecognize(Mat src, std::vector<CPlate> &plateVec, int img_index = 0);
     int plateRecognize(Mat src, std::vector<std::string> &licenseVec);
+    int plateRecognize(Mat src, std::vector<CPlate> &plateVec, int img_index, Mat& output, const vector<CPlate>& plateVecGT);
 
     int plateRecognizeAsText(Mat src, std::vector<CPlate> &licenseVec);
     int plateRecognizeAsTextNM(Mat src, std::vector<CPlate> &licenseVec);

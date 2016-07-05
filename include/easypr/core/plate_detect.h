@@ -37,7 +37,7 @@ class CPlateDetect {
   */
   int plateDetect(Mat src, std::vector<CPlate> &resultVec, int img_index = 0);
 
-  int showResult(const Mat &result, int img_index = 0);
+  Mat showResult(const Mat &result, int img_index = 0);
 
   void LoadSVM(std::string s);
 

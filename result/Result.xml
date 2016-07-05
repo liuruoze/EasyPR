@@ -3,13 +3,13 @@
 	<image>
 		<imageName>æ©A88731</imageName>
 		<taggedRectangles>
-			<taggedRectangle x="170" y="184" width="96" height="27" rotation="-1" locateType="1">¿∂≈∆:æ©A88711</taggedRectangle>
+			<taggedRectangle x="169" y="185" width="101" height="26" rotation="-3" locateType="2">¿∂≈∆:æ©A88731</taggedRectangle>
 		</taggedRectangles>
 	</image>
 	<image>
 		<imageName>‘¡BR75Y3</imageName>
 		<taggedRectangles>
-			<taggedRectangle x="162" y="353" width="107" height="32" rotation="0" locateType="1">¿∂≈∆:‘¡BR75Y3</taggedRectangle>
+			<taggedRectangle x="162" y="352" width="119" height="28" rotation="0" locateType="2">¿∂≈∆:‘¡BR75Y3</taggedRectangle>
 		</taggedRectangles>
 	</image>
 	<image>
@@ -17,65 +17,180 @@
 		<taggedRectangles/>
 	</image>
 	<image>
-		<imageName>‘¡AA0825</imageName>
+		<imageName>‘¡A961F3</imageName>
 		<taggedRectangles>
-			<taggedRectangle x="341" y="173" width="65" height="193" rotation="-88" locateType="1">ª∆≈∆:∂ıPA085</taggedRectangle>
+			<taggedRectangle x="1176" y="684" width="131" height="31" rotation="1" locateType="2">¿∂≈∆:‘¡A961F3</taggedRectangle>
 		</taggedRectangles>
-	</image>
-	<image>
-		<imageName>ÕÓAK169H</imageName>
-		<taggedRectangles>
-			<taggedRectangle x="235" y="570" width="136" height="39" rotation="-1" locateType="1">¿∂≈∆:ÕÓAK169H</taggedRectangle>
-		</taggedRectangles>
-	</image>
-	<image>
-		<imageName>’„A26M71</imageName>
-		<taggedRectangles/>
 	</image>
 	<image>
 		<imageName>œÊA31Y83</imageName>
 		<taggedRectangles>
-			<taggedRectangle x="131" y="842" width="198" height="64" rotation="-1" locateType="1">¿∂≈∆:œÊA3LY83</taggedRectangle>
-			<taggedRectangle x="908" y="668" width="127" height="39" rotation="0" locateType="1">¿∂≈∆:œÊA11R55</taggedRectangle>
+			<taggedRectangle x="906" y="667" width="138" height="35" rotation="-1" locateType="2">¿∂≈∆:œÊA11R55</taggedRectangle>
+			<taggedRectangle x="133" y="841" width="207" height="55" rotation="-1" locateType="2">¿∂≈∆:œÊA31Y83</taggedRectangle>
+		</taggedRectangles>
+	</image>
+	<image>
+		<imageName>ÕÓAH8331</imageName>
+		<taggedRectangles>
+			<taggedRectangle x="351" y="636" width="188" height="42" rotation="0" locateType="2">¿∂≈∆:ª¶AH8331</taggedRectangle>
 		</taggedRectangles>
 	</image>
 	<image>
 		<imageName>À’BGG522</imageName>
-		<taggedRectangles/>
+		<taggedRectangles>
+			<taggedRectangle x="1272" y="629" width="152" height="33" rotation="1" locateType="2">¿∂≈∆:À’BGG522</taggedRectangle>
+		</taggedRectangles>
 	</image>
 	<image>
-		<imageName>πATK071</imageName>
+		<imageName>’„A26M71</imageName>
 		<taggedRectangles>
-			<taggedRectangle x="360" y="317" width="30" height="26" rotation="-33" locateType="1">¿∂≈∆</taggedRectangle>
-			<taggedRectangle x="711" y="340" width="47" height="13" rotation="-5" locateType="1">ª∆≈∆</taggedRectangle>
+			<taggedRectangle x="1019" y="689" width="123" height="29" rotation="0" locateType="2">¿∂≈∆:…¬A26M71</taggedRectangle>
 		</taggedRectangles>
 	</image>
 	<image>
 		<imageName>‘¡BTT255</imageName>
 		<taggedRectangles>
-			<taggedRectangle x="156" y="337" width="106" height="22" rotation="-2" locateType="1">¿∂≈∆:‘¡BTT25L</taggedRectangle>
+			<taggedRectangle x="156" y="338" width="121" height="27" rotation="0" locateType="2">¿∂≈∆:‘¡BT125</taggedRectangle>
+		</taggedRectangles>
+	</image>
+	<image>
+		<imageName>æ©CX8888</imageName>
+		<taggedRectangles>
+			<taggedRectangle x="220" y="207" width="101" height="25" rotation="0" locateType="2">¿∂≈∆:æ©CX8888</taggedRectangle>
+		</taggedRectangles>
+	</image>
+	<image>
+		<imageName>πATK071</imageName>
+		<taggedRectangles/>
+	</image>
+	<image>
+		<imageName>‘¡BW44R6</imageName>
+		<taggedRectangles>
+			<taggedRectangle x="143" y="299" width="74" height="18" rotation="0" locateType="2">¿∂≈∆:‘¡BW44R6</taggedRectangle>
+		</taggedRectangles>
+	</image>
+	<image>
+		<imageName>æ©FK5358</imageName>
+		<taggedRectangles>
+			<taggedRectangle x="849" y="276" width="148" height="44" rotation="2" locateType="2">¿∂≈∆</taggedRectangle>
+		</taggedRectangles>
+	</image>
+	<image>
+		<imageName>‘¡AA0825</imageName>
+		<taggedRectangles>
+			<taggedRectangle x="338" y="171" width="209" height="55" rotation="1" locateType="2">ª∆≈∆:‘¡AA0825</taggedRectangle>
+		</taggedRectangles>
+	</image>
+	<image>
+		<imageName>’„A50819</imageName>
+		<taggedRectangles>
+			<taggedRectangle x="350" y="235" width="171" height="41" rotation="3" locateType="2">¿∂≈∆:’„A50879</taggedRectangle>
+		</taggedRectangles>
+	</image>
+	<image>
+		<imageName>À’BU5838</imageName>
+		<taggedRectangles>
+			<taggedRectangle x="875" y="651" width="119" height="36" rotation="0" locateType="2">ª∆≈∆:∂ıBU5838</taggedRectangle>
+		</taggedRectangles>
+	</image>
+	<image>
+		<imageName>‘¡BZ756T</imageName>
+		<taggedRectangles>
+			<taggedRectangle x="144" y="322" width="95" height="23" rotation="3" locateType="2">¿∂≈∆:∏ BZ7563</taggedRectangle>
+		</taggedRectangles>
+	</image>
+	<image>
+		<imageName>ÕÓAJH155</imageName>
+		<taggedRectangles/>
+	</image>
+	<image>
+		<imageName>‘¡BZ89M9</imageName>
+		<taggedRectangles>
+			<taggedRectangle x="150" y="321" width="110" height="27" rotation="0" locateType="2">¿∂≈∆:‘¡BZ89M9</taggedRectangle>
+		</taggedRectangles>
+	</image>
+	<image>
+		<imageName>ÕÓAK169H</imageName>
+		<taggedRectangles>
+			<taggedRectangle x="235" y="570" width="152" height="36" rotation="-1" locateType="2">¿∂≈∆:ÕÓAK169H</taggedRectangle>
+		</taggedRectangles>
+	</image>
+	<image>
+		<imageName>’„A54614</imageName>
+		<taggedRectangles>
+			<taggedRectangle x="317" y="305" width="170" height="38" rotation="5" locateType="2">¿∂≈∆:‘¡A5A61A</taggedRectangle>
+		</taggedRectangles>
+	</image>
+	<image>
+		<imageName>æ©H99999</imageName>
+		<taggedRectangles>
+			<taggedRectangle x="221" y="216" width="121" height="30" rotation="-1" locateType="2">¿∂≈∆:æ©H99999</taggedRectangle>
+		</taggedRectangles>
+	</image>
+	<image>
+		<imageName>‘¡CXE592</imageName>
+		<taggedRectangles/>
+	</image>
+	<image>
+		<imageName>ª¶A51V39</imageName>
+		<taggedRectangles>
+			<taggedRectangle x="957" y="810" width="130" height="31" rotation="0" locateType="2">¿∂≈∆:ª¶A51V39</taggedRectangle>
 		</taggedRectangles>
 	</image>
 	<image>
 		<imageName>‘¡AAA379</imageName>
 		<taggedRectangles>
-			<taggedRectangle x="359" y="329" width="56" height="206" rotation="-86" locateType="1">¿∂≈∆:‘¡AAA39</taggedRectangle>
+			<taggedRectangle x="361" y="326" width="200" height="53" rotation="5" locateType="2">¿∂≈∆:¬≥AAA379</taggedRectangle>
+		</taggedRectangles>
+	</image>
+	<image>
+		<imageName>’„A68952</imageName>
+		<taggedRectangles>
+			<taggedRectangle x="304" y="298" width="175" height="45" rotation="2" locateType="2">¿∂≈∆:’„A689E2</taggedRectangle>
+		</taggedRectangles>
+	</image>
+	<image>
+		<imageName>æ©PC5U22</imageName>
+		<taggedRectangles>
+			<taggedRectangle x="271" y="231" width="149" height="36" rotation="2" locateType="2">¿∂≈∆</taggedRectangle>
+		</taggedRectangles>
+	</image>
+	<image>
+		<imageName>œÊA3685C</imageName>
+		<taggedRectangles>
+			<taggedRectangle x="1123" y="602" width="123" height="31" rotation="-3" locateType="2">¿∂≈∆:œÊA3685C</taggedRectangle>
+			<taggedRectangle x="742" y="523" width="98" height="25" rotation="-2" locateType="2">¿∂≈∆:œÊAD7GB8</taggedRectangle>
+			<taggedRectangle x="62" y="694" width="143" height="37" rotation="-1" locateType="2">¿∂≈∆:∂ıCA9622</taggedRectangle>
+		</taggedRectangles>
+	</image>
+	<image>
+		<imageName>À’CTF181</imageName>
+		<taggedRectangles>
+			<taggedRectangle x="1685" y="1140" width="296" height="73" rotation="-1" locateType="2">¿∂≈∆:À’CTF181</taggedRectangle>
 		</taggedRectangles>
 	</image>
 	<image>
 		<imageName>ÕÓAL025S</imageName>
-		<taggedRectangles/>
-	</image>
-	<image>
-		<imageName>æ©CX8888</imageName>
 		<taggedRectangles>
-			<taggedRectangle x="220" y="207" width="87" height="26" rotation="0" locateType="1">¿∂≈∆:æ©CX8888</taggedRectangle>
+			<taggedRectangle x="127" y="164" width="72" height="16" rotation="-1" locateType="2">¿∂≈∆:º™AL0255</taggedRectangle>
 		</taggedRectangles>
 	</image>
 	<image>
-		<imageName>‘¡BW44R6</imageName>
+		<imageName>‘¡AAB457</imageName>
 		<taggedRectangles>
-			<taggedRectangle x="144" y="301" width="68" height="21" rotation="0" locateType="1">¿∂≈∆:‘¡BW44R6</taggedRectangle>
+			<taggedRectangle x="297" y="273" width="175" height="42" rotation="1" locateType="2">¿∂≈∆:‘¡AAB457</taggedRectangle>
+		</taggedRectangles>
+	</image>
+	<image>
+		<imageName>ª¶AGH092</imageName>
+		<taggedRectangles>
+			<taggedRectangle x="1060" y="654" width="134" height="33" rotation="-1" locateType="2">¿∂≈∆:ª¶AGH092</taggedRectangle>
+		</taggedRectangles>
+	</image>
+	<image>
+		<imageName>ºΩFA3215</imageName>
+		<taggedRectangles>
+			<taggedRectangle x="99" y="686" width="136" height="35" rotation="-1" locateType="2">¿∂≈∆:ºΩFA3215</taggedRectangle>
 		</taggedRectangles>
 	</image>
 	<image>
@@ -83,215 +198,269 @@
 		<taggedRectangles/>
 	</image>
 	<image>
-		<imageName>’„A50819</imageName>
-		<taggedRectangles/>
-	</image>
-	<image>
-		<imageName>æ©FK5358</imageName>
-		<taggedRectangles/>
-	</image>
-	<image>
-		<imageName>‘¡AAB457</imageName>
+		<imageName>’„A72220</imageName>
 		<taggedRectangles>
-			<taggedRectangle x="290" y="276" width="99" height="46" rotation="0" locateType="1">¿∂≈∆</taggedRectangle>
+			<taggedRectangle x="286" y="250" width="169" height="41" rotation="4" locateType="2">¿∂≈∆:’„Q72220</taggedRectangle>
 		</taggedRectangles>
 	</image>
 	<image>
-		<imageName>‘¡BZ756T</imageName>
+		<imageName>‘¡E9R439</imageName>
 		<taggedRectangles>
-			<taggedRectangle x="148" y="323" width="29" height="91" rotation="-87" locateType="1">¿∂≈∆:‘¡BZ756T</taggedRectangle>
+			<taggedRectangle x="1691" y="894" width="225" height="48" rotation="0" locateType="2">¿∂≈∆</taggedRectangle>
+			<taggedRectangle x="971" y="581" width="331" height="81" rotation="-5" locateType="2">¿∂≈∆:‘¡E9R439</taggedRectangle>
 		</taggedRectangles>
 	</image>
 	<image>
 		<imageName>ÕÓAT789S</imageName>
 		<taggedRectangles>
-			<taggedRectangle x="302" y="497" width="155" height="40" rotation="-1" locateType="1">¿∂≈∆:ÕÓAT789S</taggedRectangle>
-		</taggedRectangles>
-	</image>
-	<image>
-		<imageName>’„A54614</imageName>
-		<taggedRectangles/>
-	</image>
-	<image>
-		<imageName>À’BU5838</imageName>
-		<taggedRectangles>
-			<taggedRectangle x="868" y="653" width="126" height="38" rotation="0" locateType="1">ª∆≈∆:À’BU5838</taggedRectangle>
-		</taggedRectangles>
-	</image>
-	<image>
-		<imageName>‘¡BZ89M9</imageName>
-		<taggedRectangles/>
-	</image>
-	<image>
-		<imageName>ª¶A51V39</imageName>
-		<taggedRectangles>
-			<taggedRectangle x="955" y="812" width="96" height="31" rotation="-2" locateType="1">¿∂≈∆</taggedRectangle>
-		</taggedRectangles>
-	</image>
-	<image>
-		<imageName>’„A68952</imageName>
-		<taggedRectangles/>
-	</image>
-	<image>
-		<imageName>ÕÓATH859</imageName>
-		<taggedRectangles>
-			<taggedRectangle x="237" y="717" width="158" height="56" rotation="0" locateType="1">¿∂≈∆:ÕÓATH859</taggedRectangle>
-		</taggedRectangles>
-	</image>
-	<image>
-		<imageName>œÊA3685C</imageName>
-		<taggedRectangles>
-			<taggedRectangle x="742" y="523" width="83" height="28" rotation="-2" locateType="1">¿∂≈∆:œÊQGB86</taggedRectangle>
-			<taggedRectangle x="1123" y="603" width="105" height="31" rotation="-1" locateType="1">¿∂≈∆:œÊA3685C</taggedRectangle>
-			<taggedRectangle x="63" y="695" width="126" height="38" rotation="-1" locateType="1">¿∂≈∆:∂ıCA962P</taggedRectangle>
+			<taggedRectangle x="303" y="499" width="174" height="41" rotation="-1" locateType="2">¿∂≈∆:∏ AT789S</taggedRectangle>
 		</taggedRectangles>
 	</image>
 	<image>
 		<imageName>‘¡AAC044</imageName>
 		<taggedRectangles>
-			<taggedRectangle x="345" y="291" width="61" height="206" rotation="-86" locateType="1">¿∂≈∆:‘¡AAC044</taggedRectangle>
-		</taggedRectangles>
-	</image>
-	<image>
-		<imageName>æ©H99999</imageName>
-		<taggedRectangles>
-			<taggedRectangle x="222" y="214" width="113" height="39" rotation="-1" locateType="1">¿∂≈∆:º™H9999</taggedRectangle>
-		</taggedRectangles>
-	</image>
-	<image>
-		<imageName>’„A72220</imageName>
-		<taggedRectangles/>
-	</image>
-	<image>
-		<imageName>‘¡E9R439</imageName>
-		<taggedRectangles>
-			<taggedRectangle x="970" y="584" width="307" height="90" rotation="-4" locateType="1">¿∂≈∆:Ω˙F9R439</taggedRectangle>
-		</taggedRectangles>
-	</image>
-	<image>
-		<imageName>‘¡AAD348</imageName>
-		<taggedRectangles>
-			<taggedRectangle x="366" y="302" width="56" height="187" rotation="-88" locateType="1">¿∂≈∆:πÛAAD348</taggedRectangle>
-		</taggedRectangles>
-	</image>
-	<image>
-		<imageName>ÕÓAUB816</imageName>
-		<taggedRectangles>
-			<taggedRectangle x="348" y="606" width="159" height="58" rotation="-1" locateType="1">¿∂≈∆:‘¡AUB816</taggedRectangle>
+			<taggedRectangle x="339" y="291" width="218" height="52" rotation="2" locateType="2">¿∂≈∆:∏ AAC044</taggedRectangle>
 		</taggedRectangles>
 	</image>
 	<image>
 		<imageName>’„A88888</imageName>
 		<taggedRectangles>
-			<taggedRectangle x="252" y="283" width="183" height="58" rotation="-4" locateType="1">ª∆≈∆:¥®M88888</taggedRectangle>
+			<taggedRectangle x="252" y="283" width="197" height="47" rotation="-1" locateType="2">¿∂≈∆:’„A88888</taggedRectangle>
 		</taggedRectangles>
 	</image>
 	<image>
-		<imageName>ºΩFA3215</imageName>
+		<imageName>À’DLA031</imageName>
 		<taggedRectangles>
-			<taggedRectangle x="974" y="600" width="115" height="28" rotation="-2" locateType="1">¿∂≈∆</taggedRectangle>
-			<taggedRectangle x="648" y="595" width="95" height="30" rotation="-2" locateType="1">¿∂≈∆:œÊAT1203</taggedRectangle>
-			<taggedRectangle x="99" y="689" width="128" height="39" rotation="-2" locateType="1">¿∂≈∆:ºΩFA3215</taggedRectangle>
+			<taggedRectangle x="1207" y="664" width="150" height="36" rotation="2" locateType="2">ª∆≈∆:À’DLA031</taggedRectangle>
+		</taggedRectangles>
+	</image>
+	<image>
+		<imageName>ª¶ALB022</imageName>
+		<taggedRectangles>
+			<taggedRectangle x="392" y="390" width="126" height="31" rotation="-3" locateType="2">¿∂≈∆:ª¶ALB022</taggedRectangle>
 		</taggedRectangles>
 	</image>
 	<image>
 		<imageName>’„A95044</imageName>
-		<taggedRectangles/>
-	</image>
-	<image>
-		<imageName>‘¡AAF230</imageName>
 		<taggedRectangles>
-			<taggedRectangle x="290" y="274" width="61" height="218" rotation="-87" locateType="1">¿∂≈∆:‘¡AAF20</taggedRectangle>
+			<taggedRectangle x="441" y="269" width="173" height="40" rotation="2" locateType="2">¿∂≈∆:∫⁄Q95044</taggedRectangle>
 		</taggedRectangles>
 	</image>
 	<image>
-		<imageName>ÕÓAX688A</imageName>
+		<imageName>ÕÓATH859</imageName>
 		<taggedRectangles>
-			<taggedRectangle x="336" y="477" width="64" height="227" rotation="-87" locateType="1">¿∂≈∆:∂ıFDAX68</taggedRectangle>
-			<taggedRectangle x="584" y="387" width="16" height="43" rotation="-61" locateType="1">¿∂≈∆</taggedRectangle>
-			<taggedRectangle x="332" y="298" width="31" height="8" rotation="-6" locateType="1">¿∂≈∆</taggedRectangle>
+			<taggedRectangle x="235" y="718" width="159" height="38" rotation="-1" locateType="2">¿∂≈∆:ÕÓATH859</taggedRectangle>
 		</taggedRectangles>
 	</image>
 	<image>
-		<imageName>ª¶AGH092</imageName>
+		<imageName>‘¡AAD348</imageName>
 		<taggedRectangles>
-			<taggedRectangle x="1062" y="654" width="27" height="115" rotation="-90" locateType="1">¿∂≈∆:ª¶AGH092</taggedRectangle>
-		</taggedRectangles>
-	</image>
-	<image>
-		<imageName>’„AA2270</imageName>
-		<taggedRectangles/>
-	</image>
-	<image>
-		<imageName>À’CTF181</imageName>
-		<taggedRectangles>
-			<taggedRectangle x="1695" y="1149" width="280" height="76" rotation="0" locateType="1">¿∂≈∆:À’CTF181</taggedRectangle>
+			<taggedRectangle x="365" y="298" width="207" height="61" rotation="2" locateType="2">¿∂≈∆:‘¡AAD348</taggedRectangle>
+			<taggedRectangle x="351" y="300" width="85" height="26" rotation="13" locateType="2">¿∂≈∆</taggedRectangle>
 		</taggedRectangles>
 	</image>
 	<image>
 		<imageName>‘¡OA2160</imageName>
+		<taggedRectangles>
+			<taggedRectangle x="475" y="290" width="217" height="51" rotation="-6" locateType="2">¿∂≈∆:‘¡UAZ160</taggedRectangle>
+		</taggedRectangles>
+	</image>
+	<image>
+		<imageName>œÊA3MA06</imageName>
+		<taggedRectangles>
+			<taggedRectangle x="889" y="655" width="140" height="37" rotation="-1" locateType="2">¿∂≈∆:œÊA3MA06</taggedRectangle>
+			<taggedRectangle x="1378" y="548" width="98" height="25" rotation="-2" locateType="2">¿∂≈∆</taggedRectangle>
+			<taggedRectangle x="321" y="610" width="127" height="33" rotation="0" locateType="2">ª∆≈∆:œÊAY4936</taggedRectangle>
+		</taggedRectangles>
+	</image>
+	<image>
+		<imageName>’„AA2270</imageName>
+		<taggedRectangles>
+			<taggedRectangle x="399" y="194" width="179" height="41" rotation="3" locateType="2">¿∂≈∆:‘•MAA227</taggedRectangle>
+		</taggedRectangles>
+	</image>
+	<image>
+		<imageName>¥®A019W2</imageName>
 		<taggedRectangles/>
+	</image>
+	<image>
+		<imageName>ª¶AP0910</imageName>
+		<taggedRectangles>
+			<taggedRectangle x="789" y="608" width="154" height="33" rotation="0" locateType="2">ª∆≈∆:∫⁄YAP091</taggedRectangle>
+		</taggedRectangles>
+	</image>
+	<image>
+		<imageName>À’E2Y256</imageName>
+		<taggedRectangles>
+			<taggedRectangle x="582" y="740" width="112" height="31" rotation="1" locateType="2">ª∆≈∆</taggedRectangle>
+		</taggedRectangles>
+	</image>
+	<image>
+		<imageName>ÕÓAUB816</imageName>
+		<taggedRectangles>
+			<taggedRectangle x="348" y="610" width="170" height="41" rotation="-1" locateType="2">¿∂≈∆:‘¡AUB816</taggedRectangle>
+		</taggedRectangles>
+	</image>
+	<image>
+		<imageName>‘¡OA9112</imageName>
+		<taggedRectangles>
+			<taggedRectangle x="319" y="294" width="210" height="53" rotation="1" locateType="2">¿∂≈∆:‘¡0A9112</taggedRectangle>
+		</taggedRectangles>
+	</image>
+	<image>
+		<imageName>‘¡AAF230</imageName>
+		<taggedRectangles>
+			<taggedRectangle x="282" y="272" width="236" height="57" rotation="1" locateType="2">¿∂≈∆:¬≥AAF230</taggedRectangle>
+		</taggedRectangles>
 	</image>
 	<image>
 		<imageName>’„AA4586</imageName>
 		<taggedRectangles/>
 	</image>
 	<image>
-		<imageName>‘¡AB288Y</imageName>
-		<taggedRectangles/>
+		<imageName>¥®A095Q5</imageName>
+		<taggedRectangles>
+			<taggedRectangle x="444" y="222" width="117" height="30" rotation="2" locateType="2">¿∂≈∆:¥®A095Q5</taggedRectangle>
+		</taggedRectangles>
 	</image>
 	<image>
-		<imageName>ÕÓBBC666</imageName>
-		<taggedRectangles/>
+		<imageName>ª¶B683J8</imageName>
+		<taggedRectangles>
+			<taggedRectangle x="367" y="225" width="123" height="36" rotation="5" locateType="2">¿∂≈∆:ΩÚ8683J8</taggedRectangle>
+		</taggedRectangles>
+	</image>
+	<image>
+		<imageName>À’E75614</imageName>
+		<taggedRectangles>
+			<taggedRectangle x="571" y="284" width="186" height="48" rotation="3" locateType="2">¿∂≈∆:¡…E75614</taggedRectangle>
+		</taggedRectangles>
 	</image>
 	<image>
 		<imageName>’„AA5547</imageName>
-		<taggedRectangles/>
-	</image>
-	<image>
-		<imageName>‘¡OA9112</imageName>
 		<taggedRectangles>
-			<taggedRectangle x="289" y="310" width="27" height="80" rotation="-58" locateType="1">¿∂≈∆</taggedRectangle>
-		</taggedRectangles>
-	</image>
-	<image>
-		<imageName>œÊA3MA06</imageName>
-		<taggedRectangles>
-			<taggedRectangle x="888" y="656" width="127" height="38" rotation="-1" locateType="1">¿∂≈∆:œÊA3MA06</taggedRectangle>
-			<taggedRectangle x="1377" y="550" width="88" height="26" rotation="-2" locateType="1">¿∂≈∆</taggedRectangle>
-			<taggedRectangle x="1498" y="48" width="19" height="36" rotation="-70" locateType="1">ª∆≈∆</taggedRectangle>
-		</taggedRectangles>
-	</image>
-	<image>
-		<imageName>ÕÓEZM618</imageName>
-		<taggedRectangles/>
-	</image>
-	<image>
-		<imageName>ª¶ALB022</imageName>
-		<taggedRectangles/>
-	</image>
-	<image>
-		<imageName>¥®A019W2</imageName>
-		<taggedRectangles>
-			<taggedRectangle x="357" y="251" width="118" height="29" rotation="-48" locateType="1">¿∂≈∆:æ©A019J2</taggedRectangle>
-		</taggedRectangles>
-	</image>
-	<image>
-		<imageName>’„AC1847</imageName>
-		<taggedRectangles>
-			<taggedRectangle x="444" y="246" width="54" height="166" rotation="-85" locateType="1">ª∆≈∆:’„AC1847</taggedRectangle>
-		</taggedRectangles>
-	</image>
-	<image>
-		<imageName>ÕÓF71646</imageName>
-		<taggedRectangles>
-			<taggedRectangle x="341" y="258" width="69" height="15" rotation="0" locateType="1">ª∆≈∆:ÕÓFX7164</taggedRectangle>
+			<taggedRectangle x="405" y="220" width="167" height="43" rotation="3" locateType="2">¿∂≈∆:’„AA5547</taggedRectangle>
 		</taggedRectangles>
 	</image>
 	<image>
 		<imageName>‘¡OT9048</imageName>
 		<taggedRectangles>
-			<taggedRectangle x="293" y="310" width="172" height="48" rotation="0" locateType="1">¿∂≈∆:‘¡0T90A8</taggedRectangle>
+			<taggedRectangle x="309" y="308" width="138" height="41" rotation="0" locateType="2">¿∂≈∆:¡…T90481</taggedRectangle>
+		</taggedRectangles>
+	</image>
+	<image>
+		<imageName>ÕÓAX688A</imageName>
+		<taggedRectangles>
+			<taggedRectangle x="377" y="486" width="148" height="36" rotation="0" locateType="2">¿∂≈∆:ÕÓAX688A</taggedRectangle>
+		</taggedRectangles>
+	</image>
+	<image>
+		<imageName>¥®A09X20</imageName>
+		<taggedRectangles>
+			<taggedRectangle x="383" y="297" width="126" height="38" rotation="-9" locateType="2">¿∂≈∆:¥®A09X20</taggedRectangle>
+		</taggedRectangles>
+	</image>
+	<image>
+		<imageName>À’EB68W9</imageName>
+		<taggedRectangles/>
+	</image>
+	<image>
+		<imageName>‘¡AB288Y</imageName>
+		<taggedRectangles>
+			<taggedRectangle x="1428" y="775" width="362" height="64" rotation="0" locateType="2">¿∂≈∆:¡…11B288</taggedRectangle>
+			<taggedRectangle x="393" y="778" width="158" height="50" rotation="2" locateType="2">¿∂≈∆:‘¡A883J9</taggedRectangle>
+			<taggedRectangle x="301" y="891" width="260" height="48" rotation="0" locateType="2">¿∂≈∆:¡…0Q0100</taggedRectangle>
+		</taggedRectangles>
+	</image>
+	<image>
+		<imageName>’„AC1847</imageName>
+		<taggedRectangles>
+			<taggedRectangle x="441" y="246" width="171" height="43" rotation="2" locateType="2">ª∆≈∆:…¬AC1847</taggedRectangle>
+		</taggedRectangles>
+	</image>
+	<image>
+		<imageName>ª¶D71603</imageName>
+		<taggedRectangles>
+			<taggedRectangle x="433" y="418" width="591" height="139" rotation="3" locateType="2">¿∂≈∆:Ω˙DZ1603</taggedRectangle>
+		</taggedRectangles>
+	</image>
+	<image>
+		<imageName>ÕÓBBC666</imageName>
+		<taggedRectangles>
+			<taggedRectangle x="240" y="171" width="72" height="17" rotation="0" locateType="2">¿∂≈∆:ÕÓ8BC666</taggedRectangle>
+		</taggedRectangles>
+	</image>
+	<image>
+		<imageName>¥®A105LR</imageName>
+		<taggedRectangles>
+			<taggedRectangle x="344" y="312" width="135" height="37" rotation="2" locateType="2">¿∂≈∆:¥®A105LR</taggedRectangle>
+		</taggedRectangles>
+	</image>
+	<image>
+		<imageName>œÊA53U19</imageName>
+		<taggedRectangles>
+			<taggedRectangle x="133" y="800" width="183" height="45" rotation="-1" locateType="2">¿∂≈∆:œÊA53U19</taggedRectangle>
+		</taggedRectangles>
+	</image>
+	<image>
+		<imageName>‘¡SD050L</imageName>
+		<taggedRectangles>
+			<taggedRectangle x="1437" y="713" width="205" height="50" rotation="-1" locateType="2">¿∂≈∆:‘¡SD050L</taggedRectangle>
+			<taggedRectangle x="1678" y="895" width="251" height="48" rotation="0" locateType="2">¿∂≈∆:ƒ˛180031</taggedRectangle>
+		</taggedRectangles>
+	</image>
+	<image>
+		<imageName>ÕÓEZM618</imageName>
+		<taggedRectangles>
+			<taggedRectangle x="396" y="190" width="73" height="16" rotation="0" locateType="2">¿∂≈∆:ÕÓEZM618</taggedRectangle>
+		</taggedRectangles>
+	</image>
+	<image>
+		<imageName>‘•K91239</imageName>
+		<taggedRectangles>
+			<taggedRectangle x="1146" y="598" width="145" height="31" rotation="0" locateType="2">¿∂≈∆:‘•K91239</taggedRectangle>
+		</taggedRectangles>
+	</image>
+	<image>
+		<imageName>¥®A113YP</imageName>
+		<taggedRectangles>
+			<taggedRectangle x="346" y="207" width="138" height="33" rotation="0" locateType="2">¿∂≈∆:‘•A113YP</taggedRectangle>
+		</taggedRectangles>
+	</image>
+	<image>
+		<imageName>’„AM690M</imageName>
+		<taggedRectangles>
+			<taggedRectangle x="1772" y="1031" width="285" height="73" rotation="-1" locateType="2">¿∂≈∆:‘¡AM69UT</taggedRectangle>
+		</taggedRectangles>
+	</image>
+	<image>
+		<imageName>ÕÓF71646</imageName>
+		<taggedRectangles/>
+	</image>
+	<image>
+		<imageName>¥®A561WP</imageName>
+		<taggedRectangles>
+			<taggedRectangle x="513" y="180" width="124" height="33" rotation="0" locateType="2">¿∂≈∆:¥®A561WP</taggedRectangle>
+		</taggedRectangles>
+	</image>
+	<image>
+		<imageName>‘¡AB2893</imageName>
+		<taggedRectangles>
+			<taggedRectangle x="301" y="894" width="260" height="48" rotation="0" locateType="2">¿∂≈∆:π000100</taggedRectangle>
+			<taggedRectangle x="1679" y="890" width="253" height="50" rotation="1" locateType="2">¿∂≈∆:ƒ˛182304</taggedRectangle>
+		</taggedRectangles>
+	</image>
+	<image>
+		<imageName>ª¶J32500</imageName>
+		<taggedRectangles>
+			<taggedRectangle x="1141" y="647" width="139" height="33" rotation="-1" locateType="2">¿∂≈∆:ª¶J32500</taggedRectangle>
+		</taggedRectangles>
+	</image>
+	<image>
+		<imageName>‘¡SK903B</imageName>
+		<taggedRectangles>
+			<taggedRectangle x="301" y="894" width="260" height="48" rotation="0" locateType="2">¿∂≈∆:π000100</taggedRectangle>
+			<taggedRectangle x="1679" y="895" width="253" height="48" rotation="0" locateType="2">¿∂≈∆:ª¶175G2Z</taggedRectangle>
+			<taggedRectangle x="1355" y="768" width="242" height="57" rotation="0" locateType="2">¿∂≈∆:‘¡SK903B</taggedRectangle>
 		</taggedRectangles>
 	</image>
 	<image>
@@ -299,85 +468,128 @@
 		<taggedRectangles/>
 	</image>
 	<image>
-		<imageName>ª¶AP0910</imageName>
+		<imageName>‘•S33909</imageName>
 		<taggedRectangles>
-			<taggedRectangle x="798" y="610" width="123" height="35" rotation="0" locateType="1">ª∆≈∆:ª¶AP0910</taggedRectangle>
+			<taggedRectangle x="1327" y="627" width="139" height="33" rotation="-1" locateType="2">ª∆≈∆:‘•S33909</taggedRectangle>
 		</taggedRectangles>
 	</image>
 	<image>
-		<imageName>¥®A095Q5</imageName>
-		<taggedRectangles/>
+		<imageName>¥®A572F4</imageName>
+		<taggedRectangles>
+			<taggedRectangle x="130" y="316" width="182" height="55" rotation="3" locateType="2">¿∂≈∆:¥®A572F4</taggedRectangle>
+		</taggedRectangles>
 	</image>
 	<image>
 		<imageName>ÕÓM69311</imageName>
 		<taggedRectangles>
-			<taggedRectangle x="263" y="187" width="65" height="12" rotation="0" locateType="1">ª∆≈∆:ª¶M69311</taggedRectangle>
+			<taggedRectangle x="260" y="186" width="70" height="16" rotation="0" locateType="2">ª∆≈∆:ÕÓM69311</taggedRectangle>
 		</taggedRectangles>
 	</image>
 	<image>
-		<imageName>‘¡SD050L</imageName>
+		<imageName>œÊA5RM87</imageName>
 		<taggedRectangles>
-			<taggedRectangle x="1434" y="716" width="188" height="59" rotation="-1" locateType="1">¿∂≈∆:‘¡SD050L</taggedRectangle>
+			<taggedRectangle x="218" y="812" width="193" height="49" rotation="0" locateType="2">¿∂≈∆:œÊA5RM87</taggedRectangle>
 		</taggedRectangles>
 	</image>
 	<image>
-		<imageName>¥®A09X20</imageName>
+		<imageName>’„B7C289</imageName>
 		<taggedRectangles>
-			<taggedRectangle x="382" y="295" width="113" height="38" rotation="-9" locateType="1">¿∂≈∆:¥®A09X20</taggedRectangle>
+			<taggedRectangle x="1199" y="782" width="161" height="36" rotation="0" locateType="2">¿∂≈∆:’„B7C289</taggedRectangle>
+		</taggedRectangles>
+	</image>
+	<image>
+		<imageName>¥®A762ZS</imageName>
+		<taggedRectangles>
+			<taggedRectangle x="457" y="175" width="126" height="31" rotation="1" locateType="2">¿∂≈∆:¥®A762ZS</taggedRectangle>
+		</taggedRectangles>
+	</image>
+	<image>
+		<imageName>‘¡AF9C00</imageName>
+		<taggedRectangles>
+			<taggedRectangle x="1380" y="725" width="251" height="60" rotation="1" locateType="2">¿∂≈∆:‘¡AF9C00</taggedRectangle>
+			<taggedRectangle x="1680" y="895" width="251" height="48" rotation="0" locateType="2">¿∂≈∆</taggedRectangle>
 		</taggedRectangles>
 	</image>
 	<image>
 		<imageName>ÕÓP77222</imageName>
 		<taggedRectangles>
-			<taggedRectangle x="1247" y="716" width="129" height="35" rotation="0" locateType="1">¿∂≈∆:ÕÓP77222</taggedRectangle>
+			<taggedRectangle x="1246" y="715" width="141" height="36" rotation="-1" locateType="2">¿∂≈∆:ÕÓP77222</taggedRectangle>
 		</taggedRectangles>
 	</image>
 	<image>
-		<imageName>’„AM690M</imageName>
+		<imageName>ª¶JS6999</imageName>
 		<taggedRectangles>
-			<taggedRectangle x="1781" y="1033" width="282" height="62" rotation="0" locateType="1">¿∂≈∆:∏”AM690M</taggedRectangle>
+			<taggedRectangle x="1787" y="1183" width="341" height="85" rotation="-4" locateType="2">¿∂≈∆:ª¶JS6999</taggedRectangle>
 		</taggedRectangles>
 	</image>
 	<image>
-		<imageName>¥®A105LR</imageName>
-		<taggedRectangles/>
-	</image>
-	<image>
-		<imageName>œÊA53U19</imageName>
+		<imageName>‘•U00000</imageName>
 		<taggedRectangles>
-			<taggedRectangle x="131" y="802" width="172" height="51" rotation="0" locateType="1">¿∂≈∆:œÊA53U19</taggedRectangle>
+			<taggedRectangle x="1297" y="89" width="251" height="48" rotation="16" locateType="2">ª∆≈∆:∂ıQ1LR11</taggedRectangle>
+			<taggedRectangle x="1322" y="160" width="229" height="50" rotation="15" locateType="2">ª∆≈∆</taggedRectangle>
+			<taggedRectangle x="187" y="28" width="94" height="28" rotation="0" locateType="2">¿∂≈∆</taggedRectangle>
 		</taggedRectangles>
 	</image>
 	<image>
-		<imageName>ª¶B683J8</imageName>
-		<taggedRectangles/>
-	</image>
-	<image>
-		<imageName>¥®A113YP</imageName>
+		<imageName>‘¡TD1291</imageName>
 		<taggedRectangles>
-			<taggedRectangle x="345" y="208" width="25" height="89" rotation="-90" locateType="1">¿∂≈∆</taggedRectangle>
+			<taggedRectangle x="323" y="341" width="179" height="43" rotation="0" locateType="2">¿∂≈∆:∂ıTD1291</taggedRectangle>
 		</taggedRectangles>
 	</image>
 	<image>
-		<imageName>‘¡AB2893</imageName>
+		<imageName>¥®A82M83</imageName>
 		<taggedRectangles/>
 	</image>
 	<image>
-		<imageName>¥®A561WP</imageName>
-		<taggedRectangles/>
+		<imageName>’„C01701</imageName>
+		<taggedRectangles>
+			<taggedRectangle x="416" y="638" width="108" height="27" rotation="-1" locateType="2">¿∂≈∆:∫⁄C01701</taggedRectangle>
+		</taggedRectangles>
 	</image>
 	<image>
-		<imageName>ª¶D71603</imageName>
-		<taggedRectangles/>
+		<imageName>¥®A88888</imageName>
+		<taggedRectangles>
+			<taggedRectangle x="198" y="192" width="274" height="66" rotation="0" locateType="2">¿∂≈∆:¥®A88888</taggedRectangle>
+		</taggedRectangles>
 	</image>
 	<image>
 		<imageName>ÕÓQ06417</imageName>
 		<taggedRectangles/>
 	</image>
 	<image>
-		<imageName>‘¡SK903B</imageName>
+		<imageName>‘¡AK9331</imageName>
 		<taggedRectangles>
-			<taggedRectangle x="461" y="1059" width="31" height="15" rotation="-2" locateType="1">ª∆≈∆</taggedRectangle>
+			<taggedRectangle x="301" y="894" width="260" height="48" rotation="0" locateType="2">¿∂≈∆:π000100</taggedRectangle>
+			<taggedRectangle x="1679" y="895" width="253" height="48" rotation="0" locateType="2">¿∂≈∆:¡…175007</taggedRectangle>
+		</taggedRectangles>
+	</image>
+	<image>
+		<imageName>‘¡VS1866</imageName>
+		<taggedRectangles>
+			<taggedRectangle x="230" y="344" width="227" height="56" rotation="0" locateType="2">¿∂≈∆:‘¡VS1866</taggedRectangle>
+		</taggedRectangles>
+	</image>
+	<image>
+		<imageName>∏”A82F36</imageName>
+		<taggedRectangles>
+			<taggedRectangle x="689" y="738" width="169" height="43" rotation="-1" locateType="2">¿∂≈∆:’„A82F36</taggedRectangle>
+			<taggedRectangle x="270" y="633" width="129" height="33" rotation="-3" locateType="2">¿∂≈∆:œÊAB148G</taggedRectangle>
+			<taggedRectangle x="1302" y="542" width="105" height="27" rotation="-2" locateType="2">¿∂≈∆</taggedRectangle>
+		</taggedRectangles>
+	</image>
+	<image>
+		<imageName>¥®AA662F</imageName>
+		<taggedRectangles>
+			<taggedRectangle x="158" y="275" width="98" height="33" rotation="5" locateType="2">¿∂≈∆:ºΩAA662F</taggedRectangle>
+			<taggedRectangle x="295" y="12" width="88" height="25" rotation="3" locateType="2">¿∂≈∆</taggedRectangle>
+		</taggedRectangles>
+	</image>
+	<image>
+		<imageName>œÊA97971</imageName>
+		<taggedRectangles>
+			<taggedRectangle x="1365" y="541" width="105" height="25" rotation="0" locateType="2">¿∂≈∆:¥®A0GT30</taggedRectangle>
+			<taggedRectangle x="757" y="204" width="668" height="223" rotation="-2" locateType="2">ª∆≈∆</taggedRectangle>
+			<taggedRectangle x="87" y="687" width="122" height="35" rotation="-1" locateType="2">ª∆≈∆:œÊA9797</taggedRectangle>
 		</taggedRectangles>
 	</image>
 	<image>
@@ -385,682 +597,560 @@
 		<taggedRectangles/>
 	</image>
 	<image>
-		<imageName>¥®A572F4</imageName>
+		<imageName>’„E6686V</imageName>
 		<taggedRectangles>
-			<taggedRectangle x="155" y="321" width="115" height="55" rotation="0" locateType="1">¿∂≈∆</taggedRectangle>
+			<taggedRectangle x="1633" y="1341" width="461" height="97" rotation="0" locateType="2">¿∂≈∆:’„E6686V</taggedRectangle>
 		</taggedRectangles>
 	</image>
 	<image>
-		<imageName>À’DLA031</imageName>
+		<imageName>ª¶K62933</imageName>
 		<taggedRectangles>
-			<taggedRectangle x="1211" y="665" width="44" height="144" rotation="-87" locateType="1">ª∆≈∆:∂ıDLA031</taggedRectangle>
-			<taggedRectangle x="1216" y="495" width="68" height="447" rotation="-89" locateType="1">¿∂≈∆</taggedRectangle>
-			<taggedRectangle x="918" y="72" width="24" height="18" rotation="0" locateType="1">ª∆≈∆</taggedRectangle>
-			<taggedRectangle x="1188" y="176" width="22" height="118" rotation="-88" locateType="1">¿∂≈∆</taggedRectangle>
+			<taggedRectangle x="1297" y="783" width="154" height="38" rotation="0" locateType="2">¿∂≈∆:ª¶K62933</taggedRectangle>
 		</taggedRectangles>
 	</image>
 	<image>
-		<imageName>œÊA5RM87</imageName>
+		<imageName>‘¡X30479</imageName>
 		<taggedRectangles>
-			<taggedRectangle x="218" y="812" width="178" height="55" rotation="0" locateType="1">¿∂≈∆:œÊA5RM87</taggedRectangle>
+			<taggedRectangle x="1691" y="893" width="225" height="50" rotation="0" locateType="2">¿∂≈∆:–¬7522M6</taggedRectangle>
+			<taggedRectangle x="1080" y="794" width="231" height="55" rotation="-4" locateType="2">ª∆≈∆</taggedRectangle>
 		</taggedRectangles>
 	</image>
 	<image>
 		<imageName>ÕÓQ15538</imageName>
 		<taggedRectangles>
-			<taggedRectangle x="153" y="1431" width="24" height="92" rotation="-86" locateType="1">¿∂≈∆:…¬Q1553F</taggedRectangle>
+			<taggedRectangle x="155" y="1431" width="111" height="27" rotation="3" locateType="2">¿∂≈∆:¡…Q15538</taggedRectangle>
 		</taggedRectangles>
 	</image>
 	<image>
-		<imageName>ª¶J32500</imageName>
+		<imageName>‘¡AL6212</imageName>
 		<taggedRectangles>
-			<taggedRectangle x="1142" y="646" width="112" height="27" rotation="0" locateType="1">¿∂≈∆:ª¶J3250L</taggedRectangle>
-		</taggedRectangles>
-	</image>
-	<image>
-		<imageName>¥®A762ZS</imageName>
-		<taggedRectangles/>
-	</image>
-	<image>
-		<imageName>¥®A82M83</imageName>
-		<taggedRectangles>
-			<taggedRectangle x="474" y="280" width="126" height="36" rotation="-37" locateType="1">¿∂≈∆:¥®A82M83</taggedRectangle>
-		</taggedRectangles>
-	</image>
-	<image>
-		<imageName>ÕÓQ18632</imageName>
-		<taggedRectangles/>
-	</image>
-	<image>
-		<imageName>¥®A88888</imageName>
-		<taggedRectangles>
-			<taggedRectangle x="204" y="196" width="77" height="253" rotation="-88" locateType="1">¿∂≈∆:¥®A88888</taggedRectangle>
-		</taggedRectangles>
-	</image>
-	<image>
-		<imageName>‘¡AF9C00</imageName>
-		<taggedRectangles>
-			<taggedRectangle x="815" y="1014" width="22" height="23" rotation="-54" locateType="1">ª∆≈∆</taggedRectangle>
-			<taggedRectangle x="1381" y="727" width="69" height="225" rotation="-89" locateType="1">¿∂≈∆:‘¡AF9C00</taggedRectangle>
-		</taggedRectangles>
-	</image>
-	<image>
-		<imageName>ÕÓQ19917</imageName>
-		<taggedRectangles/>
-	</image>
-	<image>
-		<imageName>ÕÓQ80197</imageName>
-		<taggedRectangles/>
-	</image>
-	<image>
-		<imageName>¥®AA662F</imageName>
-		<taggedRectangles>
-			<taggedRectangle x="160" y="276" width="32" height="87" rotation="-84" locateType="1">¿∂≈∆:∫⁄AE662F</taggedRectangle>
-		</taggedRectangles>
-	</image>
-	<image>
-		<imageName>œÊA97971</imageName>
-		<taggedRectangles>
-			<taggedRectangle x="1364" y="542" width="90" height="28" rotation="-2" locateType="1">¿∂≈∆</taggedRectangle>
-			<taggedRectangle x="97" y="687" width="135" height="46" rotation="0" locateType="1">ª∆≈∆:œÊA97971</taggedRectangle>
-		</taggedRectangles>
-	</image>
-	<image>
-		<imageName>‘¡TD1291</imageName>
-		<taggedRectangles>
-			<taggedRectangle x="330" y="342" width="171" height="46" rotation="-1" locateType="1">¿∂≈∆:æ©YD1291</taggedRectangle>
-		</taggedRectangles>
-	</image>
-	<image>
-		<imageName>ÕÓQA2825</imageName>
-		<taggedRectangles/>
-	</image>
-	<image>
-		<imageName>À’E2Y256</imageName>
-		<taggedRectangles>
-			<taggedRectangle x="576" y="740" width="117" height="35" rotation="0" locateType="1">ª∆≈∆:À’E2Y256</taggedRectangle>
+			<taggedRectangle x="483" y="261" width="210" height="52" rotation="-4" locateType="2">¿∂≈∆:Ω˙AL621</taggedRectangle>
 		</taggedRectangles>
 	</image>
 	<image>
 		<imageName>¥®AE8H60</imageName>
-		<taggedRectangles/>
-	</image>
-	<image>
-		<imageName>‘¡A2HQ34</imageName>
 		<taggedRectangles>
-			<taggedRectangle x="1481" y="806" width="145" height="67" rotation="0" locateType="1">¿∂≈∆:æ©2HQ34</taggedRectangle>
+			<taggedRectangle x="421" y="334" width="143" height="40" rotation="-2" locateType="2">¿∂≈∆:¥®AE8H6D</taggedRectangle>
 		</taggedRectangles>
-	</image>
-	<image>
-		<imageName>‘¡VS1866</imageName>
-		<taggedRectangles>
-			<taggedRectangle x="203" y="354" width="173" height="43" rotation="-1" locateType="1">¿∂≈∆:ΩÚ1VVM1V</taggedRectangle>
-		</taggedRectangles>
-	</image>
-	<image>
-		<imageName>ª¶JS6999</imageName>
-		<taggedRectangles/>
 	</image>
 	<image>
 		<imageName>¥®AEK882</imageName>
 		<taggedRectangles/>
 	</image>
 	<image>
-		<imageName>’„B7C289</imageName>
-		<taggedRectangles/>
+		<imageName>À’A0CP56</imageName>
+		<taggedRectangles>
+			<taggedRectangle x="939" y="792" width="161" height="33" rotation="0" locateType="2">¿∂≈∆:À’A0CP56</taggedRectangle>
+		</taggedRectangles>
+	</image>
+	<image>
+		<imageName>ª¶KT5583</imageName>
+		<taggedRectangles>
+			<taggedRectangle x="1336" y="1488" width="341" height="81" rotation="0" locateType="2">¿∂≈∆:ª¶KT5583</taggedRectangle>
+		</taggedRectangles>
+	</image>
+	<image>
+		<imageName>ÕÓQ18632</imageName>
+		<taggedRectangles>
+			<taggedRectangle x="73" y="129" width="55" height="12" rotation="-1" locateType="2">¿∂≈∆</taggedRectangle>
+		</taggedRectangles>
+	</image>
+	<image>
+		<imageName>‘¡AV0U41</imageName>
+		<taggedRectangles>
+			<taggedRectangle x="301" y="894" width="260" height="48" rotation="0" locateType="2">¿∂≈∆:π000100</taggedRectangle>
+			<taggedRectangle x="1194" y="701" width="238" height="60" rotation="0" locateType="2">¿∂≈∆:‘¡AV0U41</taggedRectangle>
+			<taggedRectangle x="1679" y="895" width="253" height="48" rotation="0" locateType="2">¿∂≈∆:∂ı75852</taggedRectangle>
+		</taggedRectangles>
 	</image>
 	<image>
 		<imageName>¥®AGU052</imageName>
 		<taggedRectangles>
-			<taggedRectangle x="225" y="278" width="51" height="169" rotation="-89" locateType="1">¿∂≈∆:¡…GU052</taggedRectangle>
-		</taggedRectangles>
-	</image>
-	<image>
-		<imageName>À’E75614</imageName>
-		<taggedRectangles/>
-	</image>
-	<image>
-		<imageName>¥®AGU801</imageName>
-		<taggedRectangles>
-			<taggedRectangle x="424" y="236" width="26" height="64" rotation="-88" locateType="1">¿∂≈∆:∂ıRSU8Q1</taggedRectangle>
-		</taggedRectangles>
-	</image>
-	<image>
-		<imageName>À’EB68W9</imageName>
-		<taggedRectangles>
-			<taggedRectangle x="300" y="306" width="46" height="143" rotation="-75" locateType="1">¿∂≈∆:ƒ˛B68W91</taggedRectangle>
+			<taggedRectangle x="223" y="278" width="194" height="52" rotation="2" locateType="2">¿∂≈∆:¥®AGU052</taggedRectangle>
 		</taggedRectangles>
 	</image>
 	<image>
 		<imageName>œÊA9NU97</imageName>
 		<taggedRectangles>
-			<taggedRectangle x="971" y="642" width="125" height="38" rotation="0" locateType="1">¿∂≈∆:œÊA9NU91</taggedRectangle>
-			<taggedRectangle x="75" y="498" width="29" height="9" rotation="-14" locateType="1">¿∂≈∆</taggedRectangle>
-			<taggedRectangle x="1174" y="15" width="32" height="29" rotation="0" locateType="1">ª∆≈∆</taggedRectangle>
-			<taggedRectangle x="86" y="839" width="170" height="54" rotation="0" locateType="1">¿∂≈∆:¥®B450LJ</taggedRectangle>
+			<taggedRectangle x="970" y="640" width="134" height="35" rotation="-1" locateType="2">¿∂≈∆:œÊA9NU97</taggedRectangle>
+			<taggedRectangle x="90" y="837" width="171" height="49" rotation="0" locateType="2">¿∂≈∆:∏ B450L1</taggedRectangle>
 		</taggedRectangles>
 	</image>
 	<image>
-		<imageName>‘¡AK9331 </imageName>
-		<taggedRectangles>
-			<taggedRectangle x="1012" y="857" width="266" height="128" rotation="0" locateType="1">ª∆≈∆</taggedRectangle>
-		</taggedRectangles>
-	</image>
-	<image>
-		<imageName>¥®AKM065</imageName>
+		<imageName>∏”A88888</imageName>
 		<taggedRectangles/>
 	</image>
 	<image>
-		<imageName>’„C01701</imageName>
+		<imageName>’„F397C0</imageName>
+		<taggedRectangles>
+			<taggedRectangle x="907" y="667" width="130" height="31" rotation="0" locateType="2">¿∂≈∆:’„F397C0</taggedRectangle>
+		</taggedRectangles>
+	</image>
+	<image>
+		<imageName>ÕÓQ19917</imageName>
+		<taggedRectangles>
+			<taggedRectangle x="211" y="139" width="72" height="16" rotation="-1" locateType="2">¿∂≈∆:ÕÓQ19917</taggedRectangle>
+		</taggedRectangles>
+	</image>
+	<image>
+		<imageName>∏”K11978</imageName>
 		<taggedRectangles/>
 	</image>
 	<image>
-		<imageName>‘•K91239</imageName>
+		<imageName>¥®AGU801</imageName>
 		<taggedRectangles>
-			<taggedRectangle x="1150" y="600" width="25" height="89" rotation="-85" locateType="1">¿∂≈∆</taggedRectangle>
-		</taggedRectangles>
-	</image>
-	<image>
-		<imageName>¥®AKQ291</imageName>
-		<taggedRectangles/>
-	</image>
-	<image>
-		<imageName>‘¡A2TS00</imageName>
-		<taggedRectangles>
-			<taggedRectangle x="809" y="929" width="33" height="11" rotation="-18" locateType="1">ª∆≈∆</taggedRectangle>
-			<taggedRectangle x="1193" y="734" width="204" height="59" rotation="0" locateType="1">¿∂≈∆:‘¡A2TS00</taggedRectangle>
-			<taggedRectangle x="147" y="36" width="131" height="70" rotation="0" locateType="1">ª∆≈∆</taggedRectangle>
-		</taggedRectangles>
-	</image>
-	<image>
-		<imageName>¥®AL0Q87</imageName>
-		<taggedRectangles>
-			<taggedRectangle x="172" y="283" width="45" height="139" rotation="-85" locateType="1">¿∂≈∆:¥®AL0Q81</taggedRectangle>
-		</taggedRectangles>
-	</image>
-	<image>
-		<imageName>¥®AM1186</imageName>
-		<taggedRectangles>
-			<taggedRectangle x="491" y="400" width="74" height="16" rotation="0" locateType="1">¿∂≈∆:√ˆZ11VM</taggedRectangle>
-		</taggedRectangles>
-	</image>
-	<image>
-		<imageName>‘¡AL6212</imageName>
-		<taggedRectangles/>
-	</image>
-	<image>
-		<imageName>‘¡X30479</imageName>
-		<taggedRectangles>
-			<taggedRectangle x="248" y="699" width="33" height="8" rotation="-29" locateType="1">ª∆≈∆</taggedRectangle>
-		</taggedRectangles>
-	</image>
-	<image>
-		<imageName>‘•S33909</imageName>
-		<taggedRectangles>
-			<taggedRectangle x="1327" y="628" width="128" height="38" rotation="0" locateType="1">ª∆≈∆:‘•S33909</taggedRectangle>
-		</taggedRectangles>
-	</image>
-	<image>
-		<imageName>¥®AN4E10</imageName>
-		<taggedRectangles/>
-	</image>
-	<image>
-		<imageName>‘¡AV0U41</imageName>
-		<taggedRectangles>
-			<taggedRectangle x="143" y="979" width="19" height="20" rotation="-32" locateType="1">ª∆≈∆</taggedRectangle>
-			<taggedRectangle x="193" y="565" width="25" height="15" rotation="-7" locateType="1">¿∂≈∆</taggedRectangle>
-			<taggedRectangle x="1199" y="704" width="69" height="226" rotation="-89" locateType="1">¿∂≈∆:‘¡AV0U41</taggedRectangle>
-			<taggedRectangle x="1820" y="284" width="18" height="62" rotation="-72" locateType="1">ª∆≈∆</taggedRectangle>
-		</taggedRectangles>
-	</image>
-	<image>
-		<imageName>’„E6686V</imageName>
-		<taggedRectangles>
-			<taggedRectangle x="2810" y="933" width="13" height="48" rotation="-85" locateType="1">¿∂≈∆</taggedRectangle>
-		</taggedRectangles>
-	</image>
-	<image>
-		<imageName>¥®AR9X49</imageName>
-		<taggedRectangles/>
-	</image>
-	<image>
-		<imageName>œÊA9YU86</imageName>
-		<taggedRectangles>
-			<taggedRectangle x="1308" y="529" width="103" height="31" rotation="-1" locateType="1">¿∂≈∆:œÊA0PC37</taggedRectangle>
-			<taggedRectangle x="198" y="883" width="213" height="69" rotation="0" locateType="1">¿∂≈∆:œÊA9YU86</taggedRectangle>
-			<taggedRectangle x="23" y="595" width="45" height="26" rotation="0" locateType="1">¿∂≈∆</taggedRectangle>
-		</taggedRectangles>
-	</image>
-	<image>
-		<imageName>¥®AS9V79</imageName>
-		<taggedRectangles/>
-	</image>
-	<image>
-		<imageName>¥®AUU093</imageName>
-		<taggedRectangles/>
-	</image>
-	<image>
-		<imageName>‘•U00000</imageName>
-		<taggedRectangles>
-			<taggedRectangle x="890" y="652" width="107" height="33" rotation="-1" locateType="1">¿∂≈∆:‘∆U00GQB</taggedRectangle>
-			<taggedRectangle x="1668" y="14" width="17" height="82" rotation="-77" locateType="1">¿∂≈∆:‘¡ZR4PVA</taggedRectangle>
-			<taggedRectangle x="1462" y="63" width="47" height="8" rotation="-4" locateType="1">¿∂≈∆</taggedRectangle>
-		</taggedRectangles>
-	</image>
-	<image>
-		<imageName>¥®AY116F</imageName>
-		<taggedRectangles>
-			<taggedRectangle x="427" y="191" width="37" height="107" rotation="-88" locateType="1">¿∂≈∆:¥®AY116F</taggedRectangle>
-		</taggedRectangles>
-	</image>
-	<image>
-		<imageName>ª¶K62933</imageName>
-		<taggedRectangles>
-			<taggedRectangle x="1297" y="782" width="140" height="34" rotation="0" locateType="1">¿∂≈∆:ª¶K62933</taggedRectangle>
-		</taggedRectangles>
-	</image>
-	<image>
-		<imageName>À’A0CP56</imageName>
-		<taggedRectangles>
-			<taggedRectangle x="941" y="790" width="141" height="33" rotation="0" locateType="1">¿∂≈∆:À’A0CP56</taggedRectangle>
-		</taggedRectangles>
-	</image>
-	<image>
-		<imageName>‘¡A5DP12</imageName>
-		<taggedRectangles>
-			<taggedRectangle x="1129" y="753" width="149" height="44" rotation="-5" locateType="1">¿∂≈∆:∏ QMLP1D</taggedRectangle>
-		</taggedRectangles>
-	</image>
-	<image>
-		<imageName>¥®AZ408T</imageName>
-		<taggedRectangles/>
-	</image>
-	<image>
-		<imageName>¥®C28888</imageName>
-		<taggedRectangles>
-			<taggedRectangle x="236" y="322" width="127" height="34" rotation="-1" locateType="1">¿∂≈∆:¥®C28888</taggedRectangle>
-		</taggedRectangles>
-	</image>
-	<image>
-		<imageName>œÊAA8516</imageName>
-		<taggedRectangles>
-			<taggedRectangle x="207" y="693" width="125" height="37" rotation="-1" locateType="1">¿∂≈∆:œÊAA8516</taggedRectangle>
-			<taggedRectangle x="1277" y="16" width="31" height="57" rotation="-90" locateType="1">ª∆≈∆</taggedRectangle>
+			<taggedRectangle x="422" y="235" width="70" height="25" rotation="2" locateType="2">¿∂≈∆:∂ıDHU801</taggedRectangle>
 		</taggedRectangles>
 	</image>
 	<image>
 		<imageName>À’A20Q03</imageName>
 		<taggedRectangles>
-			<taggedRectangle x="484" y="348" width="232" height="55" rotation="-2" locateType="1">¿∂≈∆</taggedRectangle>
+			<taggedRectangle x="483" y="351" width="257" height="60" rotation="-2" locateType="2">¿∂≈∆</taggedRectangle>
+		</taggedRectangles>
+	</image>
+	<image>
+		<imageName>ÕÓQ80197</imageName>
+		<taggedRectangles>
+			<taggedRectangle x="107" y="164" width="72" height="17" rotation="0" locateType="2">¿∂≈∆:ÕÓQ80197</taggedRectangle>
 		</taggedRectangles>
 	</image>
 	<image>
 		<imageName>‘¡B0K999</imageName>
 		<taggedRectangles>
-			<taggedRectangle x="157" y="161" width="71" height="19" rotation="0" locateType="1">¿∂≈∆:‘¡B0K999</taggedRectangle>
+			<taggedRectangle x="156" y="161" width="82" height="20" rotation="0" locateType="2">¿∂≈∆:‘¡B0K999</taggedRectangle>
+		</taggedRectangles>
+	</image>
+	<image>
+		<imageName>ÕÓQA2825</imageName>
+		<taggedRectangles>
+			<taggedRectangle x="357" y="132" width="74" height="18" rotation="-2" locateType="2">¿∂≈∆:ÕÓ0A2825</taggedRectangle>
 		</taggedRectangles>
 	</image>
 	<image>
 		<imageName>‘¡B2757B</imageName>
-		<taggedRectangles/>
+		<taggedRectangles>
+			<taggedRectangle x="161" y="350" width="88" height="21" rotation="0" locateType="2">¿∂≈∆:‘¡B2757B</taggedRectangle>
+		</taggedRectangles>
+	</image>
+	<image>
+		<imageName>’„F99999</imageName>
+		<taggedRectangles>
+			<taggedRectangle x="274" y="256" width="121" height="32" rotation="-1" locateType="2">¿∂≈∆</taggedRectangle>
+		</taggedRectangles>
+	</image>
+	<image>
+		<imageName>¥®AKM065</imageName>
+		<taggedRectangles>
+			<taggedRectangle x="450" y="191" width="123" height="33" rotation="0" locateType="2">¿∂≈∆:¥®AKM065</taggedRectangle>
+		</taggedRectangles>
+	</image>
+	<image>
+		<imageName>¡…B99999</imageName>
+		<taggedRectangles>
+			<taggedRectangle x="192" y="200" width="74" height="25" rotation="5" locateType="2">ª∆≈∆</taggedRectangle>
+			<taggedRectangle x="220" y="239" width="87" height="20" rotation="-2" locateType="2">¿∂≈∆:¡…699999</taggedRectangle>
+		</taggedRectangles>
+	</image>
+	<image>
+		<imageName>‘¡A2HQ34</imageName>
+		<taggedRectangles>
+			<taggedRectangle x="1442" y="804" width="240" height="60" rotation="0" locateType="2">¿∂≈∆:‘¡A2HQ34</taggedRectangle>
+			<taggedRectangle x="1678" y="895" width="256" height="48" rotation="0" locateType="2">¿∂≈∆:‘∆1QG8M8</taggedRectangle>
+		</taggedRectangles>
+	</image>
+	<image>
+		<imageName>‘¡B2LR57</imageName>
+		<taggedRectangles>
+			<taggedRectangle x="150" y="318" width="94" height="25" rotation="0" locateType="2">¿∂≈∆:‘¡B2LR57</taggedRectangle>
+		</taggedRectangles>
+	</image>
+	<image>
+		<imageName>’„G70000</imageName>
+		<taggedRectangles>
+			<taggedRectangle x="138" y="211" width="82" height="25" rotation="5" locateType="2">¿∂≈∆</taggedRectangle>
+		</taggedRectangles>
+	</image>
+	<image>
+		<imageName>ΩÚAHP676</imageName>
+		<taggedRectangles>
+			<taggedRectangle x="687" y="526" width="146" height="38" rotation="3" locateType="2">¿∂≈∆:ΩÚAHP676</taggedRectangle>
+		</taggedRectangles>
+	</image>
+	<image>
+		<imageName>¥®AKQ291</imageName>
+		<taggedRectangles>
+			<taggedRectangle x="404" y="156" width="92" height="27" rotation="0" locateType="2">¿∂≈∆:¥®AKQ291</taggedRectangle>
+		</taggedRectangles>
+	</image>
+	<image>
+		<imageName>¡…BG0D80</imageName>
+		<taggedRectangles>
+			<taggedRectangle x="418" y="357" width="110" height="32" rotation="-13" locateType="2">¿∂≈∆:∂ıP5QBW6</taggedRectangle>
+		</taggedRectangles>
+	</image>
+	<image>
+		<imageName>‘¡B3RS91</imageName>
+		<taggedRectangles>
+			<taggedRectangle x="155" y="332" width="108" height="27" rotation="0" locateType="2">¿∂≈∆:‘¡B3RS91</taggedRectangle>
+		</taggedRectangles>
+	</image>
+	<image>
+		<imageName>’„GZB388</imageName>
+		<taggedRectangles>
+			<taggedRectangle x="177" y="212" width="118" height="27" rotation="-1" locateType="2">¿∂≈∆:’„GZB388</taggedRectangle>
+		</taggedRectangles>
 	</image>
 	<image>
 		<imageName>À’A36E80</imageName>
 		<taggedRectangles/>
 	</image>
 	<image>
-		<imageName>‘¡B2LR57</imageName>
+		<imageName>‘¡B4051L</imageName>
 		<taggedRectangles>
-			<taggedRectangle x="150" y="318" width="85" height="26" rotation="-1" locateType="1">¿∂≈∆:‘¡B2LR57</taggedRectangle>
+			<taggedRectangle x="141" y="319" width="101" height="21" rotation="0" locateType="2">¿∂≈∆:‘•VB4051</taggedRectangle>
 		</taggedRectangles>
 	</image>
 	<image>
-		<imageName>‘¡B3RS91</imageName>
+		<imageName>¥®AL0Q87</imageName>
 		<taggedRectangles>
-			<taggedRectangle x="158" y="331" width="99" height="26" rotation="0" locateType="1">¿∂≈∆:‘¡B3RS91</taggedRectangle>
-			<taggedRectangle x="12" y="82" width="12" height="23" rotation="-90" locateType="1">ª∆≈∆</taggedRectangle>
+			<taggedRectangle x="175" y="285" width="167" height="51" rotation="3" locateType="2">¿∂≈∆:¥®AL0Q87</taggedRectangle>
 		</taggedRectangles>
 	</image>
 	<image>
-		<imageName>ª¶KT5583</imageName>
+		<imageName>’„GZJ021</imageName>
 		<taggedRectangles>
-			<taggedRectangle x="130" y="958" width="27" height="10" rotation="-17" locateType="1">¿∂≈∆</taggedRectangle>
-			<taggedRectangle x="1466" y="761" width="22" height="144" rotation="-86" locateType="1">¿∂≈∆</taggedRectangle>
+			<taggedRectangle x="240" y="22" width="135" height="52" rotation="0" locateType="2">ª∆≈∆</taggedRectangle>
+			<taggedRectangle x="187" y="207" width="90" height="23" rotation="0" locateType="2">¿∂≈∆:’„GZJ021</taggedRectangle>
 		</taggedRectangles>
 	</image>
 	<image>
-		<imageName>∏”A82F36</imageName>
+		<imageName>¡…BMW005</imageName>
 		<taggedRectangles>
-			<taggedRectangle x="690" y="740" width="156" height="47" rotation="0" locateType="1">¿∂≈∆:∂ıA82F36</taggedRectangle>
-			<taggedRectangle x="272" y="634" width="113" height="35" rotation="-3" locateType="1">¿∂≈∆:œÊAB14B9</taggedRectangle>
+			<taggedRectangle x="147" y="181" width="88" height="22" rotation="1" locateType="2">¿∂≈∆:¡…BMW005</taggedRectangle>
+		</taggedRectangles>
+	</image>
+	<image>
+		<imageName>‘¡B577QK</imageName>
+		<taggedRectangles>
+			<taggedRectangle x="144" y="311" width="105" height="26" rotation="0" locateType="2">¿∂≈∆:‘¡B577QK</taggedRectangle>
+		</taggedRectangles>
+	</image>
+	<image>
+		<imageName>œÊA9YU86</imageName>
+		<taggedRectangles>
+			<taggedRectangle x="1306" y="528" width="111" height="27" rotation="-1" locateType="2">¿∂≈∆:œÊA0PC37</taggedRectangle>
+			<taggedRectangle x="199" y="884" width="222" height="55" rotation="0" locateType="2">¿∂≈∆:œÊA9YU86</taggedRectangle>
+		</taggedRectangles>
+	</image>
+	<image>
+		<imageName>¡…C33333</imageName>
+		<taggedRectangles>
+			<taggedRectangle x="197" y="224" width="96" height="22" rotation="0" locateType="2">¿∂≈∆:ª¶C33333</taggedRectangle>
+		</taggedRectangles>
+	</image>
+	<image>
+		<imageName>’„JP291Q</imageName>
+		<taggedRectangles>
+			<taggedRectangle x="896" y="717" width="264" height="67" rotation="0" locateType="2">¿∂≈∆:’„JP291Q</taggedRectangle>
+		</taggedRectangles>
+	</image>
+	<image>
+		<imageName>‘¡A2TS00</imageName>
+		<taggedRectangles>
+			<taggedRectangle x="1676" y="894" width="264" height="48" rotation="0" locateType="2">¿∂≈∆:¬≥180303</taggedRectangle>
+			<taggedRectangle x="1193" y="734" width="223" height="52" rotation="-1" locateType="2">¿∂≈∆:‘¡A2TS00</taggedRectangle>
+		</taggedRectangles>
+	</image>
+	<image>
+		<imageName>‘¡B5PQ23</imageName>
+		<taggedRectangles>
+			<taggedRectangle x="1142" y="718" width="256" height="60" rotation="0" locateType="2">¿∂≈∆:‘¡B5PQ23</taggedRectangle>
+			<taggedRectangle x="1679" y="895" width="253" height="48" rotation="0" locateType="2">¿∂≈∆:‘•175545</taggedRectangle>
+		</taggedRectangles>
+	</image>
+	<image>
+		<imageName>¥®AM1186</imageName>
+		<taggedRectangles>
+			<taggedRectangle x="485" y="218" width="88" height="23" rotation="-1" locateType="2">¿∂≈∆</taggedRectangle>
+		</taggedRectangles>
+	</image>
+	<image>
+		<imageName>¡…PE9218</imageName>
+		<taggedRectangles>
+			<taggedRectangle x="1112" y="555" width="152" height="36" rotation="0" locateType="2">ª∆≈∆:¡…PE9218</taggedRectangle>
+		</taggedRectangles>
+	</image>
+	<image>
+		<imageName>ΩÚDTG667</imageName>
+		<taggedRectangles>
+			<taggedRectangle x="666" y="705" width="197" height="51" rotation="3" locateType="2">¿∂≈∆:ΩÚUTG667</taggedRectangle>
 		</taggedRectangles>
 	</image>
 	<image>
 		<imageName>À’A66U71</imageName>
 		<taggedRectangles>
-			<taggedRectangle x="573" y="502" width="31" height="17" rotation="0" locateType="1">¿∂≈∆</taggedRectangle>
-			<taggedRectangle x="465" y="478" width="59" height="210" rotation="-85" locateType="1">¿∂≈∆:¡…Q6611</taggedRectangle>
+			<taggedRectangle x="500" y="483" width="282" height="47" rotation="5" locateType="2">¿∂≈∆:À’A66U61</taggedRectangle>
 		</taggedRectangles>
 	</image>
 	<image>
-		<imageName>‘¡A5J512</imageName>
+		<imageName>¥®AN4E10</imageName>
 		<taggedRectangles>
-			<taggedRectangle x="449" y="258" width="57" height="186" rotation="-89" locateType="1">¿∂≈∆:‘¡A5J512</taggedRectangle>
+			<taggedRectangle x="456" y="186" width="131" height="35" rotation="1" locateType="2">¿∂≈∆:¥®AW4E10</taggedRectangle>
 		</taggedRectangles>
 	</image>
 	<image>
-		<imageName>‘¡B4051L</imageName>
+		<imageName>’„L11921</imageName>
 		<taggedRectangles>
-			<taggedRectangle x="150" y="320" width="73" height="22" rotation="0" locateType="1">¿∂≈∆:‘¡B4051L</taggedRectangle>
+			<taggedRectangle x="744" y="1072" width="152" height="40" rotation="-5" locateType="2">ª∆≈∆:’„L11921</taggedRectangle>
 		</taggedRectangles>
 	</image>
 	<image>
-		<imageName>œÊAED855</imageName>
+		<imageName>¥®AR9X49</imageName>
 		<taggedRectangles>
-			<taggedRectangle x="1450" y="541" width="95" height="25" rotation="0" locateType="1">¿∂≈∆</taggedRectangle>
-			<taggedRectangle x="148" y="845" width="199" height="52" rotation="0" locateType="1">¿∂≈∆:œÊAED855</taggedRectangle>
+			<taggedRectangle x="154" y="359" width="188" height="51" rotation="3" locateType="2">¿∂≈∆:¥®AR9D49</taggedRectangle>
 		</taggedRectangles>
 	</image>
 	<image>
-		<imageName>‘¡B577QK</imageName>
-		<taggedRectangles/>
+		<imageName>‘¡B5W601</imageName>
+		<taggedRectangles>
+			<taggedRectangle x="1679" y="895" width="253" height="48" rotation="0" locateType="2">¿∂≈∆:¡…17550R</taggedRectangle>
+			<taggedRectangle x="1438" y="766" width="260" height="62" rotation="-2" locateType="2">¿∂≈∆:ΩÚB5W601</taggedRectangle>
+		</taggedRectangles>
+	</image>
+	<image>
+		<imageName>√ˆCPB592</imageName>
+		<taggedRectangles>
+			<taggedRectangle x="352" y="260" width="141" height="37" rotation="5" locateType="2">¿∂≈∆:ΩÚCPB593</taggedRectangle>
+		</taggedRectangles>
+	</image>
+	<image>
+		<imageName>‘¡A5DP12</imageName>
+		<taggedRectangles>
+			<taggedRectangle x="301" y="894" width="260" height="48" rotation="0" locateType="2">¿∂≈∆:π000100</taggedRectangle>
+			<taggedRectangle x="1679" y="895" width="253" height="48" rotation="0" locateType="2">¿∂≈∆:‘•180003</taggedRectangle>
+			<taggedRectangle x="1120" y="746" width="183" height="48" rotation="-3" locateType="2">¿∂≈∆:¡…A5DP11</taggedRectangle>
+		</taggedRectangles>
 	</image>
 	<image>
 		<imageName>À’A6E176</imageName>
 		<taggedRectangles/>
 	</image>
 	<image>
-		<imageName>‘¡A5PJ05</imageName>
-		<taggedRectangles>
-			<taggedRectangle x="1169" y="798" width="217" height="65" rotation="-2" locateType="1">¿∂≈∆:‘¡A5PJ95</taggedRectangle>
-			<taggedRectangle x="1665" y="935" width="19" height="36" rotation="-82" locateType="1">ª∆≈∆</taggedRectangle>
-			<taggedRectangle x="401" y="147" width="296" height="135" rotation="-31" locateType="1">ª∆≈∆</taggedRectangle>
-		</taggedRectangles>
-	</image>
-	<image>
-		<imageName>‘¡B5PQ23</imageName>
-		<taggedRectangles>
-			<taggedRectangle x="1142" y="719" width="231" height="68" rotation="0" locateType="1">¿∂≈∆:‘¡B5PQ23</taggedRectangle>
-		</taggedRectangles>
-	</image>
-	<image>
-		<imageName>∏”A88888</imageName>
-		<taggedRectangles>
-			<taggedRectangle x="126" y="169" width="15" height="58" rotation="-88" locateType="1">¿∂≈∆:œÊA88888</taggedRectangle>
-		</taggedRectangles>
-	</image>
-	<image>
-		<imageName>∏”K11978</imageName>
-		<taggedRectangles>
-			<taggedRectangle x="1082" y="559" width="108" height="29" rotation="0" locateType="1">ª∆≈∆:∫⁄K1197F</taggedRectangle>
-		</taggedRectangles>
-	</image>
-	<image>
-		<imageName>œÊAL8387</imageName>
-		<taggedRectangles>
-			<taggedRectangle x="194" y="822" width="185" height="53" rotation="0" locateType="1">¿∂≈∆:œÊAL8387</taggedRectangle>
-			<taggedRectangle x="433" y="501" width="128" height="41" rotation="-15" locateType="1">¿∂≈∆</taggedRectangle>
-			<taggedRectangle x="783" y="396" width="48" height="28" rotation="0" locateType="1">¿∂≈∆</taggedRectangle>
-		</taggedRectangles>
-	</image>
-	<image>
-		<imageName>À’A75976</imageName>
-		<taggedRectangles>
-			<taggedRectangle x="401" y="515" width="45" height="161" rotation="-89" locateType="1">¿∂≈∆:”Â759Z6</taggedRectangle>
-		</taggedRectangles>
-	</image>
-	<image>
-		<imageName>’„F397C0</imageName>
-		<taggedRectangles>
-			<taggedRectangle x="907" y="668" width="116" height="32" rotation="0" locateType="1">¿∂≈∆:’„F397C0</taggedRectangle>
-		</taggedRectangles>
-	</image>
-	<image>
-		<imageName>¡…B99999</imageName>
-		<taggedRectangles>
-			<taggedRectangle x="284" y="189" width="125" height="42" rotation="-4" locateType="1">¿∂≈∆</taggedRectangle>
-		</taggedRectangles>
-	</image>
-	<image>
-		<imageName>À’A85Z95</imageName>
-		<taggedRectangles>
-			<taggedRectangle x="520" y="241" width="20" height="88" rotation="-88" locateType="1">¿∂≈∆:À’A85Z95</taggedRectangle>
-		</taggedRectangles>
-	</image>
-	<image>
-		<imageName>¡…BMW005</imageName>
-		<taggedRectangles>
-			<taggedRectangle x="148" y="184" width="20" height="78" rotation="-88" locateType="1">¿∂≈∆:¡…BMW005</taggedRectangle>
-		</taggedRectangles>
-	</image>
-	<image>
-		<imageName>¡…C33333</imageName>
+		<imageName>¥®AS9V79</imageName>
 		<taggedRectangles/>
-	</image>
-	<image>
-		<imageName>À’A9YP07</imageName>
-		<taggedRectangles>
-			<taggedRectangle x="516" y="363" width="37" height="126" rotation="-87" locateType="1">¿∂≈∆:∫⁄49YP07</taggedRectangle>
-		</taggedRectangles>
-	</image>
-	<image>
-		<imageName>‘¡B5W601</imageName>
-		<taggedRectangles>
-			<taggedRectangle x="247" y="981" width="24" height="11" rotation="-32" locateType="1">ª∆≈∆</taggedRectangle>
-			<taggedRectangle x="404" y="1036" width="46" height="10" rotation="-8" locateType="1">ª∆≈∆</taggedRectangle>
-		</taggedRectangles>
-	</image>
-	<image>
-		<imageName>œÊAT1Y68</imageName>
-		<taggedRectangles>
-			<taggedRectangle x="201" y="821" width="189" height="58" rotation="-1" locateType="1">¿∂≈∆:‘¡AT1Y68</taggedRectangle>
-		</taggedRectangles>
-	</image>
-	<image>
-		<imageName>’„F99999</imageName>
-		<taggedRectangles>
-			<taggedRectangle x="266" y="258" width="119" height="32" rotation="-1" locateType="1">¿∂≈∆:’„F99999</taggedRectangle>
-		</taggedRectangles>
-	</image>
-	<image>
-		<imageName>¡…PE9218</imageName>
-		<taggedRectangles>
-			<taggedRectangle x="1112" y="555" width="143" height="41" rotation="0" locateType="1">ª∆≈∆:¡…PE9218</taggedRectangle>
-		</taggedRectangles>
-	</image>
-	<image>
-		<imageName>’„G70000</imageName>
-		<taggedRectangles>
-			<taggedRectangle x="138" y="211" width="23" height="71" rotation="-85" locateType="1">¿∂≈∆</taggedRectangle>
-		</taggedRectangles>
-	</image>
-	<image>
-		<imageName>À’AD6A99</imageName>
-		<taggedRectangles>
-			<taggedRectangle x="939" y="91" width="13" height="39" rotation="-66" locateType="1">ª∆≈∆</taggedRectangle>
-			<taggedRectangle x="489" y="395" width="238" height="66" rotation="-1" locateType="1">¿∂≈∆:∏ AC6A99</taggedRectangle>
-		</taggedRectangles>
-	</image>
-	<image>
-		<imageName>’„GZB388</imageName>
-		<taggedRectangles>
-			<taggedRectangle x="180" y="211" width="99" height="26" rotation="0" locateType="1">¿∂≈∆:’„GZB388</taggedRectangle>
-		</taggedRectangles>
-	</image>
-	<image>
-		<imageName>‘¡A5Q951</imageName>
-		<taggedRectangles/>
-	</image>
-	<image>
-		<imageName>’„GZJ021</imageName>
-		<taggedRectangles>
-			<taggedRectangle x="191" y="207" width="97" height="29" rotation="0" locateType="1">¿∂≈∆:’„GZJ021</taggedRectangle>
-		</taggedRectangles>
-	</image>
-	<image>
-		<imageName>À’ADW072</imageName>
-		<taggedRectangles/>
-	</image>
-	<image>
-		<imageName>‘¡A82349</imageName>
-		<taggedRectangles/>
-	</image>
-	<image>
-		<imageName>ΩÚAHP676</imageName>
-		<taggedRectangles>
-			<taggedRectangle x="1028" y="211" width="65" height="18" rotation="0" locateType="1">¿∂≈∆:–¬GDL171</taggedRectangle>
-			<taggedRectangle x="687" y="526" width="43" height="139" rotation="-86" locateType="1">¿∂≈∆:ΩÚAHP676</taggedRectangle>
-		</taggedRectangles>
-	</image>
-	<image>
-		<imageName>’„JP291Q</imageName>
-		<taggedRectangles>
-			<taggedRectangle x="891" y="715" width="78" height="252" rotation="-88" locateType="1">¿∂≈∆:’„JP291Q</taggedRectangle>
-		</taggedRectangles>
-	</image>
-	<image>
-		<imageName>√ˆCPB593</imageName>
-		<taggedRectangles/>
-	</image>
-	<image>
-		<imageName>œÊAT3597</imageName>
-		<taggedRectangles>
-			<taggedRectangle x="209" y="687" width="126" height="36" rotation="-1" locateType="1">¿∂≈∆:œÊAT3597</taggedRectangle>
-		</taggedRectangles>
-	</image>
-	<image>
-		<imageName>À’AHOG66</imageName>
-		<taggedRectangles>
-			<taggedRectangle x="368" y="457" width="179" height="52" rotation="-1" locateType="1">¿∂≈∆:À’AH0G66</taggedRectangle>
-		</taggedRectangles>
 	</image>
 	<image>
 		<imageName>√ˆHB1508</imageName>
 		<taggedRectangles>
-			<taggedRectangle x="152" y="107" width="59" height="238" rotation="-89" locateType="1">¿∂≈∆:√ˆHB1508</taggedRectangle>
+			<taggedRectangle x="166" y="117" width="115" height="27" rotation="-2" locateType="2">¿∂≈∆:√ˆHB1508</taggedRectangle>
 		</taggedRectangles>
 	</image>
 	<image>
-		<imageName>‘¡A84266</imageName>
+		<imageName>œÊAA8516</imageName>
 		<taggedRectangles>
-			<taggedRectangle x="511" y="310" width="58" height="193" rotation="-87" locateType="1">¿∂≈∆:‘¡A84266</taggedRectangle>
+			<taggedRectangle x="207" y="692" width="134" height="35" rotation="-1" locateType="2">¿∂≈∆:œÊAA8516</taggedRectangle>
 		</taggedRectangles>
 	</image>
 	<image>
 		<imageName>…¬AD2N68</imageName>
 		<taggedRectangles>
-			<taggedRectangle x="465" y="721" width="130" height="43" rotation="-11" locateType="1">¿∂≈∆:…¬A02N68</taggedRectangle>
+			<taggedRectangle x="467" y="720" width="136" height="38" rotation="-10" locateType="2">¿∂≈∆:…¬A02N68</taggedRectangle>
+		</taggedRectangles>
+	</image>
+	<image>
+		<imageName>ΩÚE14579</imageName>
+		<taggedRectangles>
+			<taggedRectangle x="448" y="660" width="180" height="51" rotation="5" locateType="2">¿∂≈∆:ª¶E14579</taggedRectangle>
+		</taggedRectangles>
+	</image>
+	<image>
+		<imageName>¥®AUU093</imageName>
+		<taggedRectangles>
+			<taggedRectangle x="406" y="201" width="120" height="32" rotation="1" locateType="2">¿∂≈∆:¥®AUU093</taggedRectangle>
 		</taggedRectangles>
 	</image>
 	<image>
 		<imageName>‘¡B7VW40</imageName>
-		<taggedRectangles/>
+		<taggedRectangles>
+			<taggedRectangle x="152" y="337" width="120" height="28" rotation="1" locateType="2">¿∂≈∆:‘¡B7VW40</taggedRectangle>
+		</taggedRectangles>
+	</image>
+	<image>
+		<imageName>‘¡A5J512</imageName>
+		<taggedRectangles>
+			<taggedRectangle x="447" y="257" width="210" height="53" rotation="0" locateType="2">¿∂≈∆:‘¡A5J512</taggedRectangle>
+		</taggedRectangles>
+	</image>
+	<image>
+		<imageName>’„L66736</imageName>
+		<taggedRectangles>
+			<taggedRectangle x="346" y="769" width="152" height="36" rotation="0" locateType="2">ª∆≈∆</taggedRectangle>
+		</taggedRectangles>
+	</image>
+	<image>
+		<imageName>¥®AY116F</imageName>
+		<taggedRectangles>
+			<taggedRectangle x="427" y="189" width="117" height="32" rotation="1" locateType="2">¿∂≈∆:¥®AY116F</taggedRectangle>
+		</taggedRectangles>
 	</image>
 	<image>
 		<imageName>‘¡B901BF</imageName>
-		<taggedRectangles/>
-	</image>
-	<image>
-		<imageName>ΩÚDTG667</imageName>
-		<taggedRectangles/>
-	</image>
-	<image>
-		<imageName>‘¡A89311</imageName>
 		<taggedRectangles>
-			<taggedRectangle x="253" y="332" width="66" height="215" rotation="-87" locateType="1">¿∂≈∆:‘¡A8931L</taggedRectangle>
+			<taggedRectangle x="164" y="355" width="119" height="25" rotation="2" locateType="2">¿∂≈∆:‘¡B901BF</taggedRectangle>
+		</taggedRectangles>
+	</image>
+	<image>
+		<imageName>À’A75976</imageName>
+		<taggedRectangles>
+			<taggedRectangle x="387" y="514" width="208" height="41" rotation="0" locateType="2">¿∂≈∆:À’A759Z6</taggedRectangle>
 		</taggedRectangles>
 	</image>
 	<image>
 		<imageName>‘¡B972HL</imageName>
 		<taggedRectangles>
-			<taggedRectangle x="156" y="330" width="102" height="31" rotation="0" locateType="1">¿∂≈∆:‘¡B972HL</taggedRectangle>
+			<taggedRectangle x="155" y="330" width="113" height="27" rotation="0" locateType="2">¿∂≈∆:‘¡B972HL</taggedRectangle>
 		</taggedRectangles>
 	</image>
 	<image>
-		<imageName>œÊAT8781</imageName>
+		<imageName>¥®AZ408T</imageName>
 		<taggedRectangles>
-			<taggedRectangle x="273" y="855" width="193" height="59" rotation="-1" locateType="1">¿∂≈∆:œÊAT8781</taggedRectangle>
+			<taggedRectangle x="298" y="319" width="138" height="40" rotation="-1" locateType="2">¿∂≈∆:…¬MA7408</taggedRectangle>
 		</taggedRectangles>
-	</image>
-	<image>
-		<imageName>’„L11921</imageName>
-		<taggedRectangles/>
 	</image>
 	<image>
 		<imageName>‘¡BA103N</imageName>
-		<taggedRectangles/>
-	</image>
-	<image>
-		<imageName>‘¡A94372</imageName>
 		<taggedRectangles>
-			<taggedRectangle x="366" y="233" width="195" height="56" rotation="0" locateType="1">¿∂≈∆:‘¡A9A372</taggedRectangle>
+			<taggedRectangle x="313" y="177" width="105" height="32" rotation="7" locateType="2">¿∂≈∆</taggedRectangle>
 		</taggedRectangles>
 	</image>
 	<image>
-		<imageName>À’AL926V</imageName>
+		<imageName>‘¡A5PJ05</imageName>
 		<taggedRectangles>
-			<taggedRectangle x="457" y="306" width="57" height="178" rotation="-89" locateType="1">¿∂≈∆:À’AL926V</taggedRectangle>
+			<taggedRectangle x="1168" y="792" width="227" height="55" rotation="-2" locateType="2">¿∂≈∆:‘¡A5PJR5</taggedRectangle>
+			<taggedRectangle x="1679" y="895" width="253" height="48" rotation="0" locateType="2">¿∂≈∆:πÛ17455T</taggedRectangle>
+		</taggedRectangles>
+	</image>
+	<image>
+		<imageName>¥®C28888</imageName>
+		<taggedRectangles>
+			<taggedRectangle x="234" y="321" width="147" height="33" rotation="-1" locateType="2">¿∂≈∆:¥®C28888</taggedRectangle>
+		</taggedRectangles>
+	</image>
+	<image>
+		<imageName>œÊAED855</imageName>
+		<taggedRectangles>
+			<taggedRectangle x="150" y="846" width="222" height="55" rotation="0" locateType="2">¿∂≈∆:œÊAED855</taggedRectangle>
+			<taggedRectangle x="1450" y="540" width="100" height="25" rotation="-2" locateType="2">¿∂≈∆</taggedRectangle>
+		</taggedRectangles>
+	</image>
+	<image>
+		<imageName>ΩÚE22602</imageName>
+		<taggedRectangles>
+			<taggedRectangle x="390" y="749" width="238" height="67" rotation="7" locateType="2">¿∂≈∆:√…E22602</taggedRectangle>
+		</taggedRectangles>
+	</image>
+	<image>
+		<imageName>…¬AE8F80</imageName>
+		<taggedRectangles>
+			<taggedRectangle x="186" y="17" width="180" height="31" rotation="0" locateType="2">¿∂≈∆:ª¶511TAE</taggedRectangle>
+			<taggedRectangle x="881" y="658" width="138" height="33" rotation="-6" locateType="2">¿∂≈∆:…¬AE8F80</taggedRectangle>
+		</taggedRectangles>
+	</image>
+	<image>
+		<imageName>À’A85Z95</imageName>
+		<taggedRectangles>
+			<taggedRectangle x="459" y="22" width="125" height="46" rotation="-5" locateType="2">ª∆≈∆:∏ QF11W</taggedRectangle>
+			<taggedRectangle x="521" y="241" width="103" height="25" rotation="1" locateType="2">¿∂≈∆:À’A85Z95</taggedRectangle>
 		</taggedRectangles>
 	</image>
 	<image>
 		<imageName>‘¡BA9H07</imageName>
 		<taggedRectangles>
-			<taggedRectangle x="140" y="305" width="36" height="100" rotation="-89" locateType="1">¿∂≈∆:‘¡BA9H07</taggedRectangle>
+			<taggedRectangle x="139" y="304" width="105" height="27" rotation="0" locateType="2">¿∂≈∆:‘¡BA9H07</taggedRectangle>
+		</taggedRectangles>
+	</image>
+	<image>
+		<imageName>’„LD1930</imageName>
+		<taggedRectangles>
+			<taggedRectangle x="508" y="990" width="149" height="36" rotation="0" locateType="2">¿∂≈∆:’„LD1930</taggedRectangle>
 		</taggedRectangles>
 	</image>
 	<image>
 		<imageName>‘¡BB867A</imageName>
 		<taggedRectangles>
-			<taggedRectangle x="159" y="341" width="117" height="43" rotation="-2" locateType="1">¿∂≈∆:‘¡BB867A</taggedRectangle>
+			<taggedRectangle x="158" y="339" width="116" height="30" rotation="0" locateType="2">¿∂≈∆:‘¡BB867A</taggedRectangle>
 		</taggedRectangles>
 	</image>
 	<image>
-		<imageName>À’AP0966</imageName>
-		<taggedRectangles/>
-	</image>
-	<image>
-		<imageName>‘¡A961F3</imageName>
-		<taggedRectangles/>
-	</image>
-	<image>
-		<imageName>ΩÚE14579</imageName>
+		<imageName>‘¡A5Q951</imageName>
 		<taggedRectangles>
-			<taggedRectangle x="448" y="661" width="61" height="170" rotation="-84" locateType="1">¿∂≈∆:ΩÚE14579</taggedRectangle>
+			<taggedRectangle x="411" y="322" width="201" height="51" rotation="-1" locateType="2">¿∂≈∆:∂ıA50951</taggedRectangle>
 		</taggedRectangles>
 	</image>
 	<image>
 		<imageName>‘¡BDB720</imageName>
-		<taggedRectangles/>
-	</image>
-	<image>
-		<imageName>…¬AE8F80</imageName>
-		<taggedRectangles/>
-	</image>
-	<image>
-		<imageName>’„L66736</imageName>
 		<taggedRectangles>
-			<taggedRectangle x="345" y="770" width="138" height="44" rotation="0" locateType="1">ª∆≈∆:’„L66736</taggedRectangle>
+			<taggedRectangle x="920" y="657" width="121" height="29" rotation="0" locateType="2">¿∂≈∆:‘¡BDB720</taggedRectangle>
 		</taggedRectangles>
 	</image>
 	<image>
-		<imageName>œÊATL269</imageName>
+		<imageName>¬≥A88888</imageName>
 		<taggedRectangles>
-			<taggedRectangle x="165" y="883" width="201" height="64" rotation="-1" locateType="1">¿∂≈∆:œÊATL269</taggedRectangle>
-			<taggedRectangle x="896" y="651" width="102" height="40" rotation="-2" locateType="1">¿∂≈∆</taggedRectangle>
+			<taggedRectangle x="236" y="166" width="128" height="28" rotation="0" locateType="2">¿∂≈∆:ƒ˛A88888</taggedRectangle>
+		</taggedRectangles>
+	</image>
+	<image>
+		<imageName>À’A9YP07</imageName>
+		<taggedRectangles>
+			<taggedRectangle x="514" y="360" width="139" height="33" rotation="2" locateType="2">¿∂≈∆:À’A9YP07</taggedRectangle>
+		</taggedRectangles>
+	</image>
+	<image>
+		<imageName>¬≥B995EQ</imageName>
+		<taggedRectangles>
+			<taggedRectangle x="122" y="110" width="113" height="26" rotation="1" locateType="2">¿∂≈∆:¬≥B995EQ</taggedRectangle>
+		</taggedRectangles>
+	</image>
+	<image>
+		<imageName>ΩÚE24494</imageName>
+		<taggedRectangles>
+			<taggedRectangle x="872" y="597" width="155" height="38" rotation="5" locateType="2">¿∂≈∆:ΩÚE24494</taggedRectangle>
+		</taggedRectangles>
+	</image>
+	<image>
+		<imageName>¬≥BQG527</imageName>
+		<taggedRectangles>
+			<taggedRectangle x="196" y="175" width="149" height="35" rotation="0" locateType="2">¿∂≈∆</taggedRectangle>
+		</taggedRectangles>
+	</image>
+	<image>
+		<imageName>œÊAL8387</imageName>
+		<taggedRectangles>
+			<taggedRectangle x="194" y="823" width="205" height="53" rotation="-1" locateType="2">¿∂≈∆:œÊAL8387</taggedRectangle>
+		</taggedRectangles>
+	</image>
+	<image>
+		<imageName>‘¡A82349</imageName>
+		<taggedRectangles>
+			<taggedRectangle x="1055" y="564" width="123" height="31" rotation="-2" locateType="2">ª∆≈∆:‘¡A82349</taggedRectangle>
 		</taggedRectangles>
 	</image>
 	<image>
 		<imageName>‘¡BE24Q7</imageName>
 		<taggedRectangles>
-			<taggedRectangle x="156" y="316" width="108" height="32" rotation="0" locateType="1">¿∂≈∆:‘¡BE24Q7</taggedRectangle>
+			<taggedRectangle x="154" y="315" width="118" height="28" rotation="0" locateType="2">¿∂≈∆:‘¡BE24Q7</taggedRectangle>
 		</taggedRectangles>
 	</image>
 	<image>
-		<imageName>À’AQ5B65</imageName>
+		<imageName>”ÂB3587—ß</imageName>
 		<taggedRectangles>
-			<taggedRectangle x="1261" y="524" width="380" height="130" rotation="-2" locateType="1">¿∂≈∆</taggedRectangle>
-			<taggedRectangle x="1923" y="1399" width="125" height="40" rotation="0" locateType="1">¿∂≈∆</taggedRectangle>
-			<taggedRectangle x="1350" y="428" width="43" height="18" rotation="-20" locateType="1">¿∂≈∆</taggedRectangle>
+			<taggedRectangle x="800" y="133" width="248" height="60" rotation="-2" locateType="2">ª∆≈∆:∏”R3587</taggedRectangle>
+		</taggedRectangles>
+	</image>
+	<image>
+		<imageName>¬≥JRW350</imageName>
+		<taggedRectangles>
+			<taggedRectangle x="213" y="246" width="108" height="25" rotation="1" locateType="2">¿∂≈∆:¬≥JRW350</taggedRectangle>
 		</taggedRectangles>
 	</image>
 	<image>
@@ -1068,195 +1158,192 @@
 		<taggedRectangles/>
 	</image>
 	<image>
-		<imageName>¬≥A88888</imageName>
-		<taggedRectangles/>
-	</image>
-	<image>
-		<imageName>ΩÚE22602</imageName>
-		<taggedRectangles>
-			<taggedRectangle x="391" y="750" width="72" height="231" rotation="-82" locateType="1">¿∂≈∆:ΩÚE22602</taggedRectangle>
-		</taggedRectangles>
-	</image>
-	<image>
-		<imageName>¬≥B995EQ</imageName>
-		<taggedRectangles>
-			<taggedRectangle x="122" y="114" width="25" height="105" rotation="-88" locateType="1">¿∂≈∆:¬≥B995EQ</taggedRectangle>
-		</taggedRectangles>
-	</image>
-	<image>
-		<imageName>‘¡BK33E3</imageName>
-		<taggedRectangles>
-			<taggedRectangle x="152" y="325" width="77" height="24" rotation="0" locateType="1">¿∂≈∆:‘¡BK33E3</taggedRectangle>
-		</taggedRectangles>
-	</image>
-	<image>
-		<imageName>’„LD1930</imageName>
-		<taggedRectangles>
-			<taggedRectangle x="508" y="991" width="134" height="37" rotation="0" locateType="1">¿∂≈∆:’„LD1930</taggedRectangle>
-		</taggedRectangles>
-	</image>
-	<image>
-		<imageName>¬≥BQG527</imageName>
-		<taggedRectangles>
-			<taggedRectangle x="198" y="173" width="131" height="32" rotation="0" locateType="1">¿∂≈∆:¬≥BQG527</taggedRectangle>
-		</taggedRectangles>
-	</image>
-	<image>
-		<imageName>‘¡BP3T05</imageName>
-		<taggedRectangles>
-			<taggedRectangle x="163" y="348" width="78" height="23" rotation="0" locateType="1">¿∂≈∆:∫⁄BP3T05</taggedRectangle>
-		</taggedRectangles>
-	</image>
-	<image>
-		<imageName>¬≥JRW350</imageName>
-		<taggedRectangles/>
-	</image>
-	<image>
-		<imageName>œÊAYN355</imageName>
-		<taggedRectangles>
-			<taggedRectangle x="169" y="867" width="190" height="56" rotation="0" locateType="1">¿∂≈∆:œÊAYN355</taggedRectangle>
-		</taggedRectangles>
-	</image>
-	<image>
 		<imageName>¬≥KK5555</imageName>
 		<taggedRectangles>
-			<taggedRectangle x="229" y="219" width="131" height="35" rotation="0" locateType="1">¿∂≈∆:¬≥KK5555</taggedRectangle>
+			<taggedRectangle x="232" y="220" width="138" height="36" rotation="0" locateType="2">¿∂≈∆:–¬KK5555</taggedRectangle>
+		</taggedRectangles>
+	</image>
+	<image>
+		<imageName>‘¡A84266</imageName>
+		<taggedRectangles>
+			<taggedRectangle x="507" y="309" width="212" height="53" rotation="2" locateType="2">¿∂≈∆:‘•A84266</taggedRectangle>
+		</taggedRectangles>
+	</image>
+	<image>
+		<imageName>À’AD6A99</imageName>
+		<taggedRectangles>
+			<taggedRectangle x="487" y="395" width="255" height="51" rotation="-2" locateType="2">¿∂≈∆:À’AD6A99</taggedRectangle>
 		</taggedRectangles>
 	</image>
 	<image>
 		<imageName>¬≥LD9016</imageName>
 		<taggedRectangles>
-			<taggedRectangle x="148" y="153" width="88" height="27" rotation="0" locateType="1">¿∂≈∆:¡…LD9016</taggedRectangle>
-		</taggedRectangles>
-	</image>
-	<image>
-		<imageName>¬≥Y44748</imageName>
-		<taggedRectangles>
-			<taggedRectangle x="144" y="126" width="126" height="37" rotation="0" locateType="1">¿∂≈∆:¬≥Y44748</taggedRectangle>
-		</taggedRectangles>
-	</image>
-	<image>
-		<imageName>ΩÚE24494</imageName>
-		<taggedRectangles>
-			<taggedRectangle x="873" y="598" width="46" height="145" rotation="-84" locateType="1">¿∂≈∆:ΩÚE24494</taggedRectangle>
-		</taggedRectangles>
-	</image>
-	<image>
-		<imageName>∫⁄A16341</imageName>
-		<taggedRectangles>
-			<taggedRectangle x="143" y="104" width="113" height="27" rotation="0" locateType="1">¿∂≈∆:∫⁄AY1634</taggedRectangle>
-		</taggedRectangles>
-	</image>
-	<image>
-		<imageName>”ÂB3587—ß</imageName>
-		<taggedRectangles>
-			<taggedRectangle x="782" y="131" width="268" height="64" rotation="-2" locateType="1">ª∆≈∆:‘∆63587L</taggedRectangle>
-		</taggedRectangles>
-	</image>
-	<image>
-		<imageName>∫⁄A1R272</imageName>
-		<taggedRectangles>
-			<taggedRectangle x="1204" y="602" width="131" height="37" rotation="0" locateType="1">¿∂≈∆:∫⁄A1R272</taggedRectangle>
-		</taggedRectangles>
-	</image>
-	<image>
-		<imageName>œÊF8ZS83</imageName>
-		<taggedRectangles>
-			<taggedRectangle x="636" y="26" width="44" height="6" rotation="-2" locateType="1">ª∆≈∆</taggedRectangle>
-			<taggedRectangle x="1324" y="228" width="28" height="16" rotation="0" locateType="1">ª∆≈∆</taggedRectangle>
-			<taggedRectangle x="825" y="167" width="39" height="24" rotation="-9" locateType="1">ª∆≈∆</taggedRectangle>
-			<taggedRectangle x="877" y="179" width="30" height="9" rotation="-7" locateType="1">ª∆≈∆</taggedRectangle>
+			<taggedRectangle x="146" y="154" width="95" height="23" rotation="-1" locateType="2">¿∂≈∆:‘¡LD9016</taggedRectangle>
 		</taggedRectangles>
 	</image>
 	<image>
 		<imageName>”ÂB777C9</imageName>
+		<taggedRectangles/>
+	</image>
+	<image>
+		<imageName>‘¡BK33E3</imageName>
+		<taggedRectangles/>
+	</image>
+	<image>
+		<imageName>¬≥Y44748</imageName>
 		<taggedRectangles>
-			<taggedRectangle x="565" y="237" width="50" height="95" rotation="-61" locateType="1">¿∂≈∆</taggedRectangle>
+			<taggedRectangle x="139" y="126" width="140" height="31" rotation="0" locateType="2">¿∂≈∆:¬≥Y44748</taggedRectangle>
 		</taggedRectangles>
 	</image>
 	<image>
 		<imageName>ΩÚE28437</imageName>
 		<taggedRectangles>
-			<taggedRectangle x="436" y="478" width="28" height="81" rotation="-85" locateType="1">¿∂≈∆:ΩÚGTL921</taggedRectangle>
-			<taggedRectangle x="748" y="571" width="49" height="137" rotation="-84" locateType="1">¿∂≈∆:ΩÚE28437</taggedRectangle>
+			<taggedRectangle x="748" y="571" width="144" height="40" rotation="6" locateType="2">¿∂≈∆:ΩÚE28437</taggedRectangle>
+			<taggedRectangle x="428" y="474" width="76" height="26" rotation="5" locateType="2">¿∂≈∆:ΩÚG1L92</taggedRectangle>
 		</taggedRectangles>
 	</image>
 	<image>
-		<imageName>∫⁄AB4444</imageName>
-		<taggedRectangles/>
+		<imageName>‘¡BP3T05</imageName>
+		<taggedRectangles>
+			<taggedRectangle x="162" y="348" width="88" height="22" rotation="0" locateType="2">¿∂≈∆:‘¡BP3T05</taggedRectangle>
+		</taggedRectangles>
+	</image>
+	<image>
+		<imageName>∫⁄A16341</imageName>
+		<taggedRectangles>
+			<taggedRectangle x="141" y="100" width="120" height="30" rotation="0" locateType="2">¿∂≈∆:∫⁄A11634</taggedRectangle>
+		</taggedRectangles>
+	</image>
+	<image>
+		<imageName>∫⁄A1R272</imageName>
+		<taggedRectangles>
+			<taggedRectangle x="1203" y="601" width="145" height="33" rotation="1" locateType="2">¿∂≈∆:∫⁄QR272</taggedRectangle>
+		</taggedRectangles>
 	</image>
 	<image>
 		<imageName>”ÂBE7773</imageName>
 		<taggedRectangles>
-			<taggedRectangle x="694" y="26" width="96" height="21" rotation="-14" locateType="1">ª∆≈∆:‘•YXQ3Z7</taggedRectangle>
+			<taggedRectangle x="841" y="362" width="210" height="64" rotation="12" locateType="2">¿∂≈∆:ƒ˛6E77Z3</taggedRectangle>
+			<taggedRectangle x="695" y="26" width="113" height="25" rotation="-11" locateType="2">¿∂≈∆</taggedRectangle>
 		</taggedRectangles>
 	</image>
 	<image>
-		<imageName>œÊA05H22</imageName>
+		<imageName>‘¡A89311</imageName>
 		<taggedRectangles>
-			<taggedRectangle x="1519" y="767" width="124" height="48" rotation="0" locateType="1">¿∂≈∆</taggedRectangle>
-			<taggedRectangle x="299" y="459" width="300" height="71" rotation="-3" locateType="1">¿∂≈∆</taggedRectangle>
+			<taggedRectangle x="247" y="330" width="224" height="61" rotation="2" locateType="2">¿∂≈∆:¬≥A89311</taggedRectangle>
+		</taggedRectangles>
+	</image>
+	<image>
+		<imageName>œÊAT1Y68</imageName>
+		<taggedRectangles>
+			<taggedRectangle x="203" y="821" width="202" height="53" rotation="-1" locateType="2">¿∂≈∆:œÊAT1Y68</taggedRectangle>
+		</taggedRectangles>
+	</image>
+	<image>
+		<imageName>À’ADW072</imageName>
+		<taggedRectangles>
+			<taggedRectangle x="505" y="141" width="121" height="31" rotation="2" locateType="2">¿∂≈∆:À’ADW072</taggedRectangle>
+		</taggedRectangles>
+	</image>
+	<image>
+		<imageName>∫⁄AB4444</imageName>
+		<taggedRectangles>
+			<taggedRectangle x="194" y="228" width="120" height="27" rotation="0" locateType="2">¿∂≈∆:∫⁄AB4444</taggedRectangle>
+			<taggedRectangle x="211" y="229" width="74" height="13" rotation="0" locateType="2">ª∆≈∆</taggedRectangle>
 		</taggedRectangles>
 	</image>
 	<image>
 		<imageName>ΩÚG68991</imageName>
 		<taggedRectangles>
-			<taggedRectangle x="977" y="411" width="36" height="152" rotation="-86" locateType="1">¿∂≈∆:∫⁄G68991</taggedRectangle>
+			<taggedRectangle x="973" y="410" width="174" height="42" rotation="2" locateType="2">¿∂≈∆:ΩÚG68991</taggedRectangle>
+			<taggedRectangle x="346" y="260" width="137" height="36" rotation="2" locateType="2">¿∂≈∆:ΩÚMRW366</taggedRectangle>
 		</taggedRectangles>
 	</image>
 	<image>
-		<imageName>À’AVW997</imageName>
-		<taggedRectangles/>
+		<imageName>‘¡A94372</imageName>
+		<taggedRectangles>
+			<taggedRectangle x="367" y="232" width="209" height="53" rotation="0" locateType="2">¿∂≈∆:‘¡A9A372</taggedRectangle>
+		</taggedRectangles>
+	</image>
+	<image>
+		<imageName>œÊA05H22</imageName>
+		<taggedRectangles>
+			<taggedRectangle x="173" y="677" width="132" height="31" rotation="0" locateType="2">¿∂≈∆:œÊA05H22</taggedRectangle>
+			<taggedRectangle x="1519" y="765" width="134" height="45" rotation="-1" locateType="2">¿∂≈∆</taggedRectangle>
+		</taggedRectangles>
+	</image>
+	<image>
+		<imageName>œÊAT3597</imageName>
+		<taggedRectangles>
+			<taggedRectangle x="206" y="687" width="136" height="35" rotation="-1" locateType="2">¿∂≈∆:œÊAT3597</taggedRectangle>
+			<taggedRectangle x="573" y="354" width="80" height="21" rotation="11" locateType="2">¿∂≈∆</taggedRectangle>
+		</taggedRectangles>
+	</image>
+	<image>
+		<imageName>À’AHOG66</imageName>
+		<taggedRectangles>
+			<taggedRectangle x="369" y="459" width="187" height="42" rotation="-2" locateType="2">¿∂≈∆:À’AH0G66</taggedRectangle>
+		</taggedRectangles>
 	</image>
 	<image>
 		<imageName>ΩÚH65817</imageName>
 		<taggedRectangles>
-			<taggedRectangle x="804" y="650" width="52" height="145" rotation="-79" locateType="1">¿∂≈∆:ΩÚH65817</taggedRectangle>
+			<taggedRectangle x="820" y="651" width="189" height="42" rotation="11" locateType="2">¿∂≈∆:ΩÚ1H6581</taggedRectangle>
 		</taggedRectangles>
 	</image>
 	<image>
 		<imageName>œÊA07G31</imageName>
 		<taggedRectangles>
-			<taggedRectangle x="899" y="651" width="129" height="33" rotation="-2" locateType="1">¿∂≈∆</taggedRectangle>
-			<taggedRectangle x="96" y="885" width="191" height="61" rotation="0" locateType="1">¿∂≈∆:æ©A11R55</taggedRectangle>
+			<taggedRectangle x="896" y="651" width="134" height="33" rotation="-1" locateType="2">¿∂≈∆</taggedRectangle>
+			<taggedRectangle x="93" y="884" width="207" height="53" rotation="-1" locateType="2">¿∂≈∆:¥®1A11R5</taggedRectangle>
 		</taggedRectangles>
 	</image>
 	<image>
-		<imageName>À’B551QV</imageName>
+		<imageName>À’AL926V</imageName>
 		<taggedRectangles>
-			<taggedRectangle x="821" y="710" width="118" height="33" rotation="0" locateType="1">¿∂≈∆:À’B551QV</taggedRectangle>
+			<taggedRectangle x="453" y="299" width="202" height="52" rotation="3" locateType="2">¿∂≈∆:À’AL926V</taggedRectangle>
 		</taggedRectangles>
 	</image>
 	<image>
 		<imageName>ΩÚJZ3999</imageName>
+		<taggedRectangles/>
+	</image>
+	<image>
+		<imageName>œÊAT8781</imageName>
 		<taggedRectangles>
-			<taggedRectangle x="952" y="544" width="42" height="142" rotation="-84" locateType="1">¿∂≈∆:ΩÚE24494</taggedRectangle>
+			<taggedRectangle x="267" y="852" width="207" height="55" rotation="-1" locateType="2">¿∂≈∆:œÊAT8781</taggedRectangle>
 		</taggedRectangles>
 	</image>
 	<image>
-		<imageName>À’B577CU</imageName>
+		<imageName>À’AP0966</imageName>
 		<taggedRectangles>
-			<taggedRectangle x="908" y="678" width="125" height="35" rotation="0" locateType="1">¿∂≈∆:À’B577CU</taggedRectangle>
-		</taggedRectangles>
-	</image>
-	<image>
-		<imageName>œÊA0PC37</imageName>
-		<taggedRectangles>
-			<taggedRectangle x="178" y="793" width="210" height="64" rotation="0" locateType="1">¿∂≈∆:œÊA0PC37</taggedRectangle>
-			<taggedRectangle x="1007" y="639" width="122" height="34" rotation="-1" locateType="1">¿∂≈∆:œÊAJW53</taggedRectangle>
+			<taggedRectangle x="524" y="364" width="278" height="63" rotation="1" locateType="2">¿∂≈∆:À’AP0966</taggedRectangle>
 		</taggedRectangles>
 	</image>
 	<image>
 		<imageName>ΩÚKNG518</imageName>
 		<taggedRectangles>
-			<taggedRectangle x="672" y="590" width="40" height="137" rotation="-81" locateType="1">¿∂≈∆:ΩÚKNG518</taggedRectangle>
-			<taggedRectangle x="1185" y="191" width="23" height="76" rotation="-88" locateType="1">¿∂≈∆:ΩÚAHP676</taggedRectangle>
+			<taggedRectangle x="676" y="592" width="152" height="40" rotation="8" locateType="2">¿∂≈∆:∏ KNG518</taggedRectangle>
 		</taggedRectangles>
 	</image>
 	<image>
-		<imageName>œÊA0PQ76</imageName>
+		<imageName>œÊA0PC37</imageName>
 		<taggedRectangles>
-			<taggedRectangle x="562" y="734" width="139" height="38" rotation="-1" locateType="1">¿∂≈∆</taggedRectangle>
+			<taggedRectangle x="178" y="792" width="222" height="53" rotation="0" locateType="2">¿∂≈∆:œÊA0PC37</taggedRectangle>
+			<taggedRectangle x="997" y="636" width="145" height="39" rotation="0" locateType="2">¿∂≈∆:√…QAJW53</taggedRectangle>
+		</taggedRectangles>
+	</image>
+	<image>
+		<imageName>œÊATL269</imageName>
+		<taggedRectangles>
+			<taggedRectangle x="877" y="650" width="149" height="35" rotation="-1" locateType="2">¿∂≈∆:–¬31Y83</taggedRectangle>
+			<taggedRectangle x="159" y="884" width="227" height="55" rotation="-1" locateType="2">¿∂≈∆:œÊATL269</taggedRectangle>
+		</taggedRectangles>
+	</image>
+	<image>
+		<imageName>À’AQ5B65</imageName>
+		<taggedRectangles>
+			<taggedRectangle x="1532" y="1357" width="461" height="110" rotation="0" locateType="2">¿∂≈∆:‘¡AQ5B65</taggedRectangle>
 		</taggedRectangles>
 	</image>
 	<image>
@@ -1264,135 +1351,192 @@
 		<taggedRectangles/>
 	</image>
 	<image>
-		<imageName>œÊA2991D</imageName>
+		<imageName>œÊA0PQ76</imageName>
 		<taggedRectangles>
-			<taggedRectangle x="553" y="606" width="32" height="101" rotation="-88" locateType="1">¿∂≈∆:œÊA2991D</taggedRectangle>
-			<taggedRectangle x="1508" y="496" width="74" height="20" rotation="-2" locateType="1">¿∂≈∆</taggedRectangle>
+			<taggedRectangle x="544" y="735" width="118" height="39" rotation="0" locateType="2">¿∂≈∆</taggedRectangle>
+			<taggedRectangle x="1199" y="570" width="102" height="27" rotation="-3" locateType="2">¿∂≈∆</taggedRectangle>
+		</taggedRectangles>
+	</image>
+	<image>
+		<imageName>À’AVW997</imageName>
+		<taggedRectangles>
+			<taggedRectangle x="349" y="418" width="105" height="32" rotation="-15" locateType="2">¿∂≈∆:À’ANJ997</taggedRectangle>
+			<taggedRectangle x="317" y="428" width="57" height="21" rotation="-26" locateType="2">¿∂≈∆</taggedRectangle>
+		</taggedRectangles>
+	</image>
+	<image>
+		<imageName>œÊAYN355</imageName>
+		<taggedRectangles>
+			<taggedRectangle x="172" y="867" width="204" height="51" rotation="-1" locateType="2">¿∂≈∆:œÊAYN355</taggedRectangle>
+			<taggedRectangle x="1279" y="586" width="87" height="27" rotation="-3" locateType="2">¿∂≈∆:∂ıKL689</taggedRectangle>
 		</taggedRectangles>
 	</image>
 	<image>
 		<imageName>ΩÚMJY929</imageName>
-		<taggedRectangles/>
+		<taggedRectangles>
+			<taggedRectangle x="442" y="436" width="90" height="24" rotation="7" locateType="2">¿∂≈∆:‘•ZMST61</taggedRectangle>
+			<taggedRectangle x="725" y="559" width="140" height="40" rotation="7" locateType="2">¿∂≈∆:ª¶MJY929</taggedRectangle>
+		</taggedRectangles>
+	</image>
+	<image>
+		<imageName>À’B551QV</imageName>
+		<taggedRectangles>
+			<taggedRectangle x="819" y="708" width="132" height="31" rotation="0" locateType="2">¿∂≈∆:À’B551QV</taggedRectangle>
+		</taggedRectangles>
+	</image>
+	<image>
+		<imageName>œÊF8ZS83</imageName>
+		<taggedRectangles>
+			<taggedRectangle x="1354" y="840" width="381" height="76" rotation="0" locateType="2">¿∂≈∆:ƒ˛8ZS83V</taggedRectangle>
+			<taggedRectangle x="1672" y="895" width="269" height="48" rotation="0" locateType="2">¿∂≈∆:≤ÿ1R8041</taggedRectangle>
+			<taggedRectangle x="232" y="895" width="163" height="48" rotation="0" locateType="2">¿∂≈∆:ƒ˛DDMDD</taggedRectangle>
+			<taggedRectangle x="405" y="895" width="154" height="48" rotation="0" locateType="2">¿∂≈∆</taggedRectangle>
+		</taggedRectangles>
+	</image>
+	<image>
+		<imageName>œÊA2991D</imageName>
+		<taggedRectangles>
+			<taggedRectangle x="1141" y="586" width="122" height="29" rotation="-1" locateType="2">¿∂≈∆:œÊAQK103</taggedRectangle>
+			<taggedRectangle x="553" y="605" width="107" height="27" rotation="-1" locateType="2">¿∂≈∆:œÊA2991D</taggedRectangle>
+		</taggedRectangles>
 	</image>
 	<image>
 		<imageName>ΩÚMN0888</imageName>
 		<taggedRectangles>
-			<taggedRectangle x="387" y="706" width="50" height="152" rotation="-80" locateType="1">¿∂≈∆:–¬MN0888</taggedRectangle>
+			<taggedRectangle x="386" y="708" width="176" height="53" rotation="10" locateType="2">¿∂≈∆:ΩÚMN0888</taggedRectangle>
 		</taggedRectangles>
 	</image>
 	<image>
-		<imageName>ΩÚNRL118</imageName>
+		<imageName>À’B577CU</imageName>
 		<taggedRectangles>
-			<taggedRectangle x="532" y="716" width="57" height="175" rotation="-84" locateType="1">¿∂≈∆:ΩÚNRL118</taggedRectangle>
-			<taggedRectangle x="1611" y="544" width="39" height="7" rotation="-15" locateType="1">¿∂≈∆</taggedRectangle>
+			<taggedRectangle x="907" y="676" width="143" height="31" rotation="0" locateType="2">¿∂≈∆:À’B577CU</taggedRectangle>
 		</taggedRectangles>
 	</image>
 	<image>
 		<imageName>œÊG60009</imageName>
 		<taggedRectangles>
-			<taggedRectangle x="194" y="173" width="105" height="25" rotation="0" locateType="1">¿∂≈∆:’„G60009</taggedRectangle>
+			<taggedRectangle x="186" y="177" width="108" height="30" rotation="0" locateType="2">¿∂≈∆:∏”G6000</taggedRectangle>
 		</taggedRectangles>
 	</image>
 	<image>
 		<imageName>œÊGR0L16</imageName>
 		<taggedRectangles>
-			<taggedRectangle x="128" y="679" width="126" height="34" rotation="0" locateType="1">¿∂≈∆:¥®GR0L16</taggedRectangle>
-			<taggedRectangle x="998" y="347" width="25" height="39" rotation="-80" locateType="1">ª∆≈∆</taggedRectangle>
+			<taggedRectangle x="127" y="680" width="140" height="35" rotation="-1" locateType="2">¿∂≈∆:’„GR0L16</taggedRectangle>
+		</taggedRectangles>
+	</image>
+	<image>
+		<imageName>ΩÚNRL118</imageName>
+		<taggedRectangles>
+			<taggedRectangle x="534" y="716" width="182" height="55" rotation="4" locateType="2">¿∂≈∆:ΩÚNRL118</taggedRectangle>
+		</taggedRectangles>
+	</image>
+	<image>
+		<imageName>ÕÓA00T45</imageName>
+		<taggedRectangles>
+			<taggedRectangle x="418" y="143" width="70" height="16" rotation="-2" locateType="2">¿∂≈∆</taggedRectangle>
 		</taggedRectangles>
 	</image>
 	<image>
 		<imageName>ΩÚRB7992</imageName>
 		<taggedRectangles>
-			<taggedRectangle x="27" y="242" width="31" height="18" rotation="-45" locateType="1">¿∂≈∆</taggedRectangle>
-			<taggedRectangle x="900" y="588" width="109" height="348" rotation="-84" locateType="1">¿∂≈∆:ΩÚRB7992</taggedRectangle>
+			<taggedRectangle x="108" y="266" width="227" height="61" rotation="5" locateType="2">¿∂≈∆:ƒ˛017HYV</taggedRectangle>
+			<taggedRectangle x="904" y="587" width="364" height="97" rotation="5" locateType="2">¿∂≈∆:ΩÚRB7992</taggedRectangle>
 		</taggedRectangles>
 	</image>
 	<image>
-		<imageName>ÕÓA00T45</imageName>
-		<taggedRectangles/>
-	</image>
-	<image>
 		<imageName>ÕÓA09T87</imageName>
-		<taggedRectangles/>
-	</image>
-	<image>
-		<imageName>’„A03168</imageName>
-		<taggedRectangles/>
+		<taggedRectangles>
+			<taggedRectangle x="282" y="174" width="73" height="17" rotation="0" locateType="2">¿∂≈∆:ƒ˛A09T87</taggedRectangle>
+		</taggedRectangles>
 	</image>
 	<image>
 		<imageName>ÕÓA1T235</imageName>
 		<taggedRectangles>
-			<taggedRectangle x="187" y="319" width="33" height="90" rotation="-85" locateType="1">¿∂≈∆:ÕÓA1T235</taggedRectangle>
+			<taggedRectangle x="190" y="318" width="93" height="25" rotation="2" locateType="2">¿∂≈∆</taggedRectangle>
 		</taggedRectangles>
 	</image>
 	<image>
 		<imageName>ÕÓA22T43</imageName>
 		<taggedRectangles>
-			<taggedRectangle x="274" y="492" width="149" height="35" rotation="-3" locateType="1">¿∂≈∆:ÕÓA22143</taggedRectangle>
+			<taggedRectangle x="275" y="493" width="170" height="37" rotation="-3" locateType="2">¿∂≈∆:ÕÓA22143</taggedRectangle>
 		</taggedRectangles>
 	</image>
 	<image>
-		<imageName>’„A12210</imageName>
+		<imageName>’„A03168</imageName>
+		<taggedRectangles>
+			<taggedRectangle x="375" y="152" width="174" height="41" rotation="2" locateType="2">ª∆≈∆:’„A03168</taggedRectangle>
+		</taggedRectangles>
+	</image>
+	<image>
+		<imageName>ÕÓA2F560</imageName>
 		<taggedRectangles/>
 	</image>
 	<image>
-		<imageName>’„A12903</imageName>
-		<taggedRectangles/>
+		<imageName>’„A12210</imageName>
+		<taggedRectangles>
+			<taggedRectangle x="278" y="228" width="218" height="45" rotation="4" locateType="2">ª∆≈∆:¡…3A1221</taggedRectangle>
+		</taggedRectangles>
 	</image>
 	<image>
 		<imageName>ÕÓA30123</imageName>
 		<taggedRectangles>
-			<taggedRectangle x="292" y="1437" width="26" height="98" rotation="-89" locateType="1">¿∂≈∆:ÕÓA30123</taggedRectangle>
+			<taggedRectangle x="292" y="1437" width="112" height="26" rotation="0" locateType="2">¿∂≈∆:‘¡A30123</taggedRectangle>
+		</taggedRectangles>
+	</image>
+	<image>
+		<imageName>’„A12903</imageName>
+		<taggedRectangles>
+			<taggedRectangle x="194" y="146" width="178" height="46" rotation="2" locateType="2">ª∆≈∆:’„A12903</taggedRectangle>
 		</taggedRectangles>
 	</image>
 	<image>
 		<imageName>’„A13840</imageName>
 		<taggedRectangles>
-			<taggedRectangle x="338" y="258" width="101" height="26" rotation="-7" locateType="1">ª∆≈∆:πÛDETV3</taggedRectangle>
+			<taggedRectangle x="295" y="252" width="205" height="45" rotation="2" locateType="2">ª∆≈∆:¥®6A1384</taggedRectangle>
 		</taggedRectangles>
-	</image>
-	<image>
-		<imageName>’„A21027</imageName>
-		<taggedRectangles/>
 	</image>
 	<image>
 		<imageName>ÕÓA45277</imageName>
 		<taggedRectangles/>
 	</image>
 	<image>
+		<imageName>’„A21027</imageName>
+		<taggedRectangles>
+			<taggedRectangle x="410" y="288" width="171" height="43" rotation="4" locateType="2">¿∂≈∆:’„A21097</taggedRectangle>
+		</taggedRectangles>
+	</image>
+	<image>
 		<imageName>ÕÓA80003</imageName>
-		<taggedRectangles/>
+		<taggedRectangles>
+			<taggedRectangle x="212" y="211" width="63" height="17" rotation="0" locateType="2">ª∆≈∆:«‡A80003</taggedRectangle>
+		</taggedRectangles>
 	</image>
 	<image>
 		<imageName>ÕÓA80375</imageName>
-		<taggedRectangles>
-			<taggedRectangle x="421" y="259" width="73" height="21" rotation="-1" locateType="1">ª∆≈∆:ºΩA8037Q</taggedRectangle>
-		</taggedRectangles>
+		<taggedRectangles/>
 	</image>
 	<image>
 		<imageName>ÕÓA85501</imageName>
 		<taggedRectangles>
-			<taggedRectangle x="216" y="342" width="86" height="28" rotation="-2" locateType="1">¿∂≈∆:ÕÓA85501</taggedRectangle>
+			<taggedRectangle x="212" y="342" width="94" height="25" rotation="-1" locateType="2">¿∂≈∆:ÕÓA85501</taggedRectangle>
 		</taggedRectangles>
 	</image>
 	<image>
 		<imageName>ÕÓA85890</imageName>
 		<taggedRectangles>
-			<taggedRectangle x="444" y="658" width="174" height="51" rotation="0" locateType="1">¿∂≈∆:ÕÓA85890</taggedRectangle>
+			<taggedRectangle x="445" y="657" width="193" height="43" rotation="0" locateType="2">¿∂≈∆:ÕÓA85890</taggedRectangle>
 		</taggedRectangles>
 	</image>
 	<image>
 		<imageName>ÕÓA87271</imageName>
 		<taggedRectangles>
-			<taggedRectangle x="317" y="500" width="144" height="44" rotation="0" locateType="1">¿∂≈∆:ÕÓA87271</taggedRectangle>
+			<taggedRectangle x="315" y="498" width="148" height="36" rotation="1" locateType="2">¿∂≈∆:ÕÓA87271</taggedRectangle>
 		</taggedRectangles>
 	</image>
 	<image>
-		<imageName>ÕÓAH8331</imageName>
-		<taggedRectangles/>
-	</image>
-	<image>
-		<imageName>ÕÓAJH155</imageName>
-		<taggedRectangles/>
+		<imageName>ÕÓAA3610</imageName>
+		<taggedRectangles>
+			<taggedRectangle x="279" y="446" width="158" height="37" rotation="0" locateType="2">¿∂≈∆:‘¡AA3610</taggedRectangle>
+		</taggedRectangles>
 	</image>
 </tagset>
