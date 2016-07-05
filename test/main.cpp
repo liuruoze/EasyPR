@@ -22,17 +22,19 @@ int accuracyTestMain() {
 
     int select = -1;
     bool isRepeat = true;
+    Result result;
+
     while (isRepeat) {
       std::cin >> select;
       isRepeat = false;
       switch (select) {
         case 1:
-          accuracyTest("resources/image/general_test");
+          accuracyTest("resources/image/general_test", result);
           break;
         case 2:
-          accuracyTest("resources/image/native_test");
+          accuracyTest("resources/image/native_test", result);
           break;
-        case 3:     
+        case 3:
           gridSearchTest("resources/image/general_test");
           break;
         case 4:
@@ -302,7 +304,8 @@ void command_line_handler(int argc, const char* argv[]) {
                  if (parser->has("batch")) {
                    // batch testing
                    auto folder = parser->get("path")->val();
-                   easypr::demo::accuracyTest(folder.c_str());
+                   easypr::demo::Result result;
+                   easypr::demo::accuracyTest(folder.c_str(), result);
                  } else {
                    // single testing
                    auto image = parser->get("path")->val();
@@ -386,7 +389,7 @@ int main(int argc, const char* argv[]) {
           }
           break;
         case 5:
-          easypr::preprocess::generate_gdts();       
+          easypr::preprocess::generate_gdts();
           break;
         case 6: {
           easypr::Utils::print_file_lines("etc/dev_team");
