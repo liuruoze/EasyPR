@@ -10,11 +10,39 @@ EasyPR是一个开源的中文车牌识别系统，其目标是成为一个简�
 
 ### 更新
 
-当前master分支处于开发状态，要下载稳定版本请选择release：
+本次更新是EasyPR 1.5beta版本，主要改进如下：
 
-opencv3.x系列的请下载1.4标签版本，在tag或者release里选择；
+1.增加了一种新的基于文字定位的定位方法 (MSER), 在面对低对比度，低光照以及大图像上有较强的鲁棒性。
 
-opencv2.x系列的请下载1.3分支，在branch里选择。
+![夜间的车牌图像](resources/doc/res/night_1.jpg)
+
+![对比度非常低的图像](resources/doc/res/contrast_1.jpg)
+
+![近距离的图像](resources/doc/res/near_1.jpg)
+
+![高分辨率的图像](resources/doc/res/big_1.jpg)
+
+2.更加合理的评价协议，结合GroundTruth与ICDAR2003的协议，使得整体评价指标更为合理。通用数据集里同时增加了近50张新图片。文字定位方法在面对这些复杂图片时比先前的SOBEL+COLOR的方法定位率提升了27个百分点。
+
+3.使用了非极大值抑制算法去除相邻的车牌，使得最终输出变的合理。即便使用多个定位方法，最终也只会输出一个车牌，而且是可能性最大的车牌。
+
+4.基于局部空间的大津阈值算法与自适应阈值算法，提升了文字分割与分子识别的准确率。
+
+![车牌图像](resources/doc/res/not_avg_contrast.jpg)
+
+![普通大津阈值结果](resources/doc/res/normal_ostu.jpg)
+
+![空间大津阈值结果](resources/doc/res/spatial_ostu.jpg)
+
+5.新的SVM模型与特征（LBP），提升了车牌判断的鲁棒性，新的中文ANN识别模型，提升了中文识别的整体准确率近15个百分点。
+
+6.增加了Grid Search方法，可以进行自动调参。
+
+7.首次增加了多线程支持，基于OpenMP的文字定位方法，在最终的识别效率上，比原先的单线程方法的速度提高了接近2倍。
+
+8.替换了一部分中文注释，使得windows下的visual studio在面对全部以LF结尾的文件时，也能成功通过编译。目前的程序只要opencv配置正确，gitosc上通过zip下载下来可以直接通过编译并运行。
+
+其他还有不少改动，具体可以在代码中发现。
 
 ### 跨平台
 
@@ -45,6 +73,75 @@ opencv2.x系列的请下载1.3分支，在branch里选择。
 接着，我们对图块进行OCR过程，在EasyPR中，叫做字符识别（CharsRecognize）。我们得到了一个包含车牌颜色与字符的字符串：
 
 “蓝牌：苏EUK722”
+
+### 示例
+
+EasyPR的调用非常简单，下面是一段示例代码:
+```c++
+	CPlateRecognize pr;
+	pr.setResultShow(false);
+	pr.setDetectType(PR_DETECT_CMSER);
+     
+	vector<CPlate> plateVec;
+	Mat src = imread(filepath);
+	int result = pr.plateRecognize(src, plateVec);
+```
+
+首先创建了一个CPlateRecognize对象pr，接着我们设置pr的属性。
+
+```c++
+	pr.setResultShow(false);
+```
+
+这句话设置EasyPR是否打开结果展示窗口，如下图。设置为true就是打开，否则就是关闭。在需要观看定位结果时，建议打开，快速运行时关闭。
+
+![EasyPR 输出窗口](resources/doc/res/window.png)
+
+```c++
+	pr.setDetectType(PR_DETECT_CMSER);
+```
+
+这句话设置EasyPR采用的车牌定位算法。CMER代表文字定位方法，SOBEL和COLOR分别代表边缘和颜色定位方法。可以通过"|"符号结合。
+
+```c++
+	pr.setDetectType(PR_DETECT_COLOR | PR_DETECT_SOBEL);
+```
+
+每个方法有其不同的特性，新版本推荐使用文字定位方法（CMSER）。
+
+除此之外，还可以有一些其他的属性值设置：
+
+```c++
+	pr.setLifemode(true);
+```
+
+设置开启生活模式，这个属性在定位方法为SOBEL时可以发挥作用，能增大搜索范围，提高鲁棒性。
+
+```c++
+	pr.setMaxPlates(4);
+```
+
+这句话设置EasyPR最多查找多少个车牌。当一副图中有大于n个车牌时，EasyPR最终只会输出可能性最高的n个。
+
+pr的主要方法为plateRecognize()，这个方法有两个参数，第一个代表输入图像，第二个代表输出的车牌CPlate集合。
+
+```c++
+	vector<CPlate> plateVec;
+	Mat src = imread(filepath);
+	int result = pr.plateRecognize(src, plateVec);
+```
+
+当返回结果result为0时，代表识别成功，否则失败。
+
+CPlate类包含了车牌的各种信息，重要的如下：
+
+```c++
+	Mat plateMat = plate.getPlateMat();
+	RotatedRect rrect = plate.getPlatePos();
+	string license = plate.getPlateStr();
+```
+
+plateMat代表车牌图像，rrect代表车牌的可旋转矩形位置，license代表车牌字符串，例如“蓝牌：苏EUK722”。
 
 ### 版权
 
