@@ -15,15 +15,19 @@ EasyPR是一个开源的中文车牌识别系统，其目标是成为一个简�
 1.增加了一种新的基于文字定位的定位方法 (MSER), 在面对低对比度，低光照以及大图像上有较强的鲁棒性。
 
 * 夜间的车牌图像
+
 ![夜间的车牌图像](resources/doc/res/night_1.jpg)
 
 * 对比度非常低的图像
+
 ![对比度非常低的图像](resources/doc/res/contrast_1.jpg)
 
 * 近距离的图像
+
 ![近距离的图像](resources/doc/res/near_1.jpg)
 
 * 高分辨率的图像
+
 ![高分辨率的图像](resources/doc/res/big_1.jpg)
 
 2.更加合理的评价协议。结合新增的GroundTruth文件与ICDAR2003的协议，使得整体评价指标更为合理。通用数据集里同时增加了近50张新图片。文字定位方法在面对这些复杂图片时比先前的SOBEL+COLOR的方法定位率提升了27个百分点。
@@ -37,12 +41,15 @@ EasyPR是一个开源的中文车牌识别系统，其目标是成为一个简�
 4.基于局部空间的大津阈值算法与自适应阈值算法，提升了文字分割与分子识别的准确率。
 
 * 车牌图像
+
 ![车牌图像](resources/doc/res/not_avg_contrast.jpg)
 
 * 普通大津阈值结果
+
 ![普通大津阈值结果](resources/doc/res/normal_ostu.jpg)
 
 * 空间大津阈值结果
+
 ![空间大津阈值结果](resources/doc/res/spatial_ostu.jpg)
 
 5.新的SVM模型与特征（LBP），提升了车牌判断的鲁棒性，新的中文ANN识别模型，提升了中文识别的整体准确率近15个百分点。
