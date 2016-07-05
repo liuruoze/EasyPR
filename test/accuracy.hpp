@@ -86,7 +86,7 @@ namespace easypr {
       pr.setLifemode(true);
       pr.setMaxPlates(max_plates);
       //pr.setDetectType(PR_DETECT_COLOR | PR_DETECT_SOBEL);
-      pr.setDetectType(PR_DETECT_CMSER);
+      pr.setDetectType(PR_DETECT_CMSER | PR_DETECT_COLOR);
      
       // load the maching learning model
       pr.LoadSVM("resources/model/svm.xml");
@@ -158,10 +158,10 @@ namespace easypr {
         img_ss << kv->get("original_plate") << ":" << plateLicense << endl;
 
         // remain
-        XMLNode xNode, rectangleNodes;
-        xNode = xMainNode.addChild("image");
-        xNode.addChild("imageName").addText(plateLicense.c_str());
-        rectangleNodes = xNode.addChild("taggedRectangles");
+        //XMLNode xNode, rectangleNodes;
+        //xNode = xMainNode.addChild("image");
+        //xNode.addChild("imageName").addText(plateLicense.c_str());
+        //rectangleNodes = xNode.addChild("taggedRectangles");
           
         // get the ground truth and compare it with the detect list;
         vector<CPlate> plateVecGT;
@@ -269,18 +269,18 @@ namespace easypr {
           calcSafeRect(platePos_d, src, plateRect_d);
 
           // remain
-          XMLNode rectangleNode = rectangleNodes.addChild("taggedRectangle");
-          RotatedRect rr = platePos_d;
-          LocateType locateType = plate_d.getPlateLocateType();
+          //XMLNode rectangleNode = rectangleNodes.addChild("taggedRectangle");
+          //RotatedRect rr = platePos_d;
+          //LocateType locateType = plate_d.getPlateLocateType();
 
-          rectangleNode.addAttribute("x", to_string((int)rr.center.x).c_str());
-          rectangleNode.addAttribute("y", to_string((int)rr.center.y).c_str());
-          rectangleNode.addAttribute("width", to_string((int)rr.size.width).c_str());
-          rectangleNode.addAttribute("height", to_string((int)rr.size.height).c_str());
+          //rectangleNode.addAttribute("x", to_string((int)rr.center.x).c_str());
+          //rectangleNode.addAttribute("y", to_string((int)rr.center.y).c_str());
+          //rectangleNode.addAttribute("width", to_string((int)rr.size.width).c_str());
+          //rectangleNode.addAttribute("height", to_string((int)rr.size.height).c_str());
 
-          rectangleNode.addAttribute("rotation", to_string((int)rr.angle).c_str());
-          rectangleNode.addAttribute("locateType", to_string(locateType).c_str());
-          rectangleNode.addText(plate_d.getPlateStr().c_str());
+          //rectangleNode.addAttribute("rotation", to_string((int)rr.angle).c_str());
+          //rectangleNode.addAttribute("locateType", to_string(locateType).c_str());
+          //rectangleNode.addText(plate_d.getPlateStr().c_str());
 
           for (auto plate_g : plateVecGT) {
             RotatedRect platePos_g = plate_g.getPlatePos();
@@ -348,7 +348,7 @@ namespace easypr {
       time(&end);
 
       // the xml detection result 
-       xMainNode.writeToFile(path_result.c_str());
+      //xMainNode.writeToFile(path_result.c_str());
 
       cout << "------------------" << endl;
       cout << "Easypr accuracy test end!" << endl;
@@ -471,8 +471,8 @@ namespace easypr {
       int i1[] = { 900, 1000, 1100, 1200 };
       int i1_c = 4;
 
-      float f1[] = { 0.3f, 0.4f, 0.5f, 0.6f };
-      int f1_c = 4;
+      float f1[] = { 0.1f, 0.15f, 0.2f, 0.25f, 0.3f, 0.35f, 0.4f, 0.45f, 0.5f, 0.55f, 0.6f, 0.65f, 0.7f };
+      int f1_c = 13;
 
       float f2[] = { 0.2f, 0.25f, 0.3f, 0.35f };
       int f2_c = 4;
@@ -481,6 +481,17 @@ namespace easypr {
       int f3_c = 4;
 
       Config config;
+      config.setParam1f(f1, f1_c);
+      for (size_t idx1 = 0; idx1 < config.getParam1f().size(); idx1++) {
+        float f1 = config.getParam1f().at(idx1);
+        CParams::instance()->setParam1f(f1);
+        Result result;
+        accuracyTest(test_path, result, true);
+        result.getParams().setParam1f(f1);
+        all_results.push_back(result);
+      }
+
+      /*Config config;
       config.setParam1i(i1, i1_c);
       config.setParam1f(f1, f1_c);
       config.setParam2f(f2, f2_c);
@@ -515,7 +526,7 @@ namespace easypr {
             }
           }        
         }
-      }
+      }*/
 
       std::sort(all_results.begin(), all_results.end(),
         [](const Result& r1, const Result& r2) {

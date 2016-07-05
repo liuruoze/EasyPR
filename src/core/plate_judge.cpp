@@ -1,6 +1,7 @@
 #include "easypr/core/plate_judge.h"
 #include "easypr/config.h"
 #include "easypr/core/core_func.h"
+#include "easypr/core/params.h"
 
 namespace easypr {
 
@@ -164,7 +165,8 @@ namespace easypr {
 
     std::vector<CPlate> reDupPlateVec;
 
-    double overlap = 0.5;
+    double overlap = 0.7;
+    //double overlap = CParams::instance()->getParam1f();
     NMS(plateVec, reDupPlateVec, overlap);
   
     std::vector<CPlate>::iterator it = reDupPlateVec.begin();

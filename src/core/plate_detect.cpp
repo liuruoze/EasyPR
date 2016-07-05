@@ -28,20 +28,27 @@ namespace easypr {
     std::vector<CPlate> all_result_Plates;
     all_result_Plates.reserve(64);
 
-
+#pragma omp parallel sections
+    {
+#pragma omp section
+      {
         if (!type || type & PR_DETECT_SOBEL) {
           m_plateLocate->plateSobelLocate(src, sobel_Plates, img_index);
         }
-      
-
-      if (!type || type & PR_DETECT_COLOR) {
-        m_plateLocate->plateColorLocate(src, color_Plates, img_index);
       }
-
+#pragma omp section
+      {
+        if (!type || type & PR_DETECT_COLOR) {
+          m_plateLocate->plateColorLocate(src, color_Plates, img_index);
+        }
+      }
+#pragma omp section
+      {
         if (!type || type & PR_DETECT_CMSER) {
           m_plateLocate->plateMserLocate(src, mser_Plates, img_index);
         }
-
+      }
+    }
 
     for (auto plate : sobel_Plates) {
       plate.setPlateLocateType(SOBEL);
@@ -92,33 +99,8 @@ namespace easypr {
         for (int j = 0; j < 4; j++)
           line(result, rect_points[j], rect_points[(j + 1) % 4], lineColor, 2, 8);
       }
-
       showResult(result, img_index);
     }
-
-
-    /*if (0) {
-      Mat result = src.clone();
-      for (size_t i = 0; i < all_result_Plates.size(); i++) {
-        CPlate plate = all_result_Plates.at(i);
-
-        Rect_<float> outputRect;
-        calcSafeRect(plate.getPlatePos(), src, outputRect);
-        cv::rectangle(result, outputRect, Scalar(0, 0, 255));
-
-        if (0){
-          std::stringstream ss(std::stringstream::in | std::stringstream::out);
-          ss << "resources/image/tmp/plate_" << index << "_" << i << ".jpg";
-          imwrite(ss.str(), src(outputRect));
-        }
-      }
-
-      if (0) {
-        imshow("result", result);
-        waitKey(0);
-        destroyWindow("result");
-      }
-    }*/
 
     return 0;
   }
