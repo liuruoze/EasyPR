@@ -5,6 +5,8 @@
 #include "chars.hpp"
 #include "plate.hpp"
 
+// %OPENCV%\x86\vc12\lib opencv_world300d.lib;
+
 namespace easypr {
 
 namespace demo {
