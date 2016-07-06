@@ -16,6 +16,7 @@
 
 using namespace cv;
 
+
 /*! \namespace easypr
 Namespace where all the C++ EasyPR functionality resides
 */
