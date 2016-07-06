@@ -111,16 +111,16 @@
     <ClCompile Include="..\src\core\params.cpp">
       <Filter>源文件\core</Filter>
     </ClCompile>
-    <ClCompile Include="..\thirdparty\thirdparty\LBP\helper.cpp">
+    <ClCompile Include="..\thirdparty\textDetect\erfilter.cpp">
       <Filter>源文件\thirdparty</Filter>
     </ClCompile>
-    <ClCompile Include="..\thirdparty\thirdparty\LBP\lbp.cpp">
+    <ClCompile Include="..\thirdparty\LBP\helper.cpp">
       <Filter>源文件\thirdparty</Filter>
     </ClCompile>
-    <ClCompile Include="..\thirdparty\thirdparty\mser\mser2.cpp">
+    <ClCompile Include="..\thirdparty\LBP\lbp.cpp">
       <Filter>源文件\thirdparty</Filter>
     </ClCompile>
-    <ClCompile Include="..\thirdparty\thirdparty\textDetect\erfilter.cpp">
+    <ClCompile Include="..\thirdparty\mser\mser2.cpp">
       <Filter>源文件\thirdparty</Filter>
     </ClCompile>
   </ItemGroup>
@@ -197,16 +197,16 @@
     <ClInclude Include="..\include\easypr\core\params.h">
       <Filter>头文件\easypr\core</Filter>
     </ClInclude>
-    <ClInclude Include="..\thirdparty\thirdparty\LBP\helper.hpp">
+    <ClInclude Include="..\thirdparty\LBP\helper.hpp">
       <Filter>头文件\thirdparty</Filter>
     </ClInclude>
-    <ClInclude Include="..\thirdparty\thirdparty\LBP\lbp.hpp">
+    <ClInclude Include="..\thirdparty\LBP\lbp.hpp">
       <Filter>头文件\thirdparty</Filter>
     </ClInclude>
-    <ClInclude Include="..\thirdparty\thirdparty\mser\mser2.hpp">
+    <ClInclude Include="..\thirdparty\mser\mser2.hpp">
       <Filter>头文件\thirdparty</Filter>
     </ClInclude>
-    <ClInclude Include="..\thirdparty\thirdparty\textDetect\erfilter.hpp">
+    <ClInclude Include="..\thirdparty\textDetect\erfilter.hpp">
       <Filter>头文件\thirdparty</Filter>
     </ClInclude>
   </ItemGroup>
