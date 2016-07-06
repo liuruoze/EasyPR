@@ -8,7 +8,6 @@ resources/image/tmp/
 *.exe
 *.dll
 *.ilk
-*.lib
 *.pdb
 experi
 /tmp
