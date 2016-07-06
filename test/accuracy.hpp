@@ -165,6 +165,7 @@ namespace easypr {
           
         // get the ground truth and compare it with the detect list;
         vector<CPlate> plateVecGT;
+        bool hasGroundTruth = true;
 #pragma omp critical
         {
           map<string, vector<CPlate>>::iterator it;         
@@ -173,6 +174,7 @@ namespace easypr {
             plateVecGT = it->second;
           }
           else {
+            hasGroundTruth = false;
             img_ss << "No ground truth found!" << endl;
           }
         }
@@ -268,6 +270,16 @@ namespace easypr {
           Rect_<float> plateRect_d;
           calcSafeRect(platePos_d, src, plateRect_d);
 
+          if (!hasGroundTruth) {
+            string detectPlateLicense = plate_d.getPlateStr();
+            vector<string> spilt_plate = Utils::splitString(detectPlateLicense, ':');
+
+            size_t size = spilt_plate.size();
+            if (size == 2 && spilt_plate.at(1) != "") {
+              img_ss << detectPlateLicense << " (d)" << endl;
+            }
+          }
+        
           // remain
           //XMLNode rectangleNode = rectangleNodes.addChild("taggedRectangle");
           //RotatedRect rr = platePos_d;

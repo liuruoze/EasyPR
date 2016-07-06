@@ -27,7 +27,7 @@ void SvmTrain::train() {
   svm_->setC(1);
   svm_->setNu(0.1);
   svm_->setP(0.1);
-  svm_->setTermCriteria(cvTermCriteria(CV_TERMCRIT_ITER, 100000, 0.00001));
+  svm_->setTermCriteria(cvTermCriteria(CV_TERMCRIT_ITER, 20000, 0.0001));
 
   auto train_data = tdata();
 
@@ -43,6 +43,7 @@ void SvmTrain::train() {
   fprintf(stdout, ">> Training done. Time elapse: %ldms\n", end - start);
   fprintf(stdout, ">> Saving model file...\n");
   svm_->save(svm_xml_);
+
   fprintf(stdout, ">> Your SVM Model was saved to %s\n", svm_xml_);
   fprintf(stdout, ">> Testing...\n");
   this->test();
@@ -72,11 +73,11 @@ void SvmTrain::test() {
       continue;
     }
     cv::Mat feature;
-    getHistogramFeatures(image, feature);
-
-    //std::cout << "predict: " << result << std::endl;
+    getLBPFeatures(image, feature);
 
     auto predict = int(svm_->predict(feature));
+    std::cout << "predict: " << predict << std::endl;
+
     auto real = item.label;
     if (predict == kForward && real == kForward) ptrue_rtrue++;
     if (predict == kForward && real == kInverse) ptrue_rfalse++;
@@ -123,47 +124,37 @@ void SvmTrain::prepare() {
 
   char buffer[260] = {0};
 
-  sprintf(buffer, "%s/has", plates_folder_);
-  auto has_file_list = utils::getFiles(buffer);
-  std::random_shuffle(has_file_list.begin(), has_file_list.end());
+  sprintf(buffer, "%s/has/train", plates_folder_);
+  auto has_file_train_list = utils::getFiles(buffer);
+  std::random_shuffle(has_file_train_list.begin(), has_file_train_list.end());
 
-  sprintf(buffer, "%s/no", plates_folder_);
-  auto no_file_list = utils::getFiles(buffer);
-  std::random_shuffle(no_file_list.begin(), no_file_list.end());
+  sprintf(buffer, "%s/has/test", plates_folder_);
+  auto has_file_test_list = utils::getFiles(buffer);
+  std::random_shuffle(has_file_test_list.begin(), has_file_test_list.end());
 
-  auto has_num = has_file_list.size();
-  auto no_num = no_file_list.size();
+  sprintf(buffer, "%s/no/train", plates_folder_);
+  auto no_file_train_list = utils::getFiles(buffer);
+  std::random_shuffle(no_file_train_list.begin(), no_file_train_list.end());
+
+  sprintf(buffer, "%s/no/test", plates_folder_);
+  auto no_file_test_list = utils::getFiles(buffer);
+  std::random_shuffle(no_file_test_list.begin(), no_file_test_list.end());
 
   fprintf(stdout, ">> Collecting train data...\n");
 
-  auto has_for_train = static_cast<int>(has_num * kSvmPercentage);
-  auto no_for_train = static_cast<int>(no_num * kSvmPercentage);
+  for (auto file : has_file_train_list)
+    train_file_list_.push_back({ file, kForward });
 
-  // copy kSvmPercentage of has_file_list to train_file_list_
-  train_file_list_.reserve(has_for_train + no_for_train);
-  for (auto i = 0; i < has_for_train; i++) {
-    train_file_list_.push_back({has_file_list[i], kForward});
-  }
-  // copy kSvmPercentage of no_file_list to the end of train_file_list_
-  for (auto i = 0; i < no_for_train; i++) {
-    train_file_list_.push_back({no_file_list[i], kInverse});
-  }
+  for (auto file : no_file_train_list)
+    train_file_list_.push_back({ file, kInverse });
 
   fprintf(stdout, ">> Collecting test data...\n");
 
-  auto has_for_test = has_num - has_for_train;
-  auto no_for_test = no_num - no_for_train;
+  for (auto file : has_file_test_list)
+    test_file_list_.push_back({ file, kForward });
 
-  // copy the rest of has_file_list to the test_file_list_
-  test_file_list_.reserve(has_for_test + no_for_test);
-  for (size_t i = has_for_train; i < has_num; i++) {
-    test_file_list_.push_back({has_file_list[i], kForward});
-  }
-
-  // copy the rest of no_file_list to the end of the test_file_list_
-  for (size_t i = no_for_train; i < no_num; i++) {
-    test_file_list_.push_back({no_file_list[i], kInverse});
-  }
+  for (auto file : no_file_test_list)
+    test_file_list_.push_back({ file, kInverse });
 }
 
 cv::Ptr<cv::ml::TrainData> SvmTrain::tdata() {
@@ -179,7 +170,7 @@ cv::Ptr<cv::ml::TrainData> SvmTrain::tdata() {
       continue;
     }
     cv::Mat feature;
-    getHistogramFeatures(image, feature);
+    getLBPFeatures(image, feature);
     feature = feature.reshape(1, 1);
 
     samples.push_back(feature);

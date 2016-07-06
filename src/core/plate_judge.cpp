@@ -36,6 +36,11 @@ namespace easypr {
     extractFeature(inMat, features);
 
     float response = svm_->predict(features);
+    /*std::cout << "response:" << response << std::endl;
+
+    float score = svm_->predict(features, noArray(), cv::ml::StatModel::Flags::RAW_OUTPUT);
+    std::cout << "score:" << score << std::endl;*/
+
     result = (int)response;
 
     return 0;
@@ -63,6 +68,8 @@ namespace easypr {
     extractFeature(plate.getPlateMat(), features);
 
     float score = svm_->predict(features, noArray(), cv::ml::StatModel::Flags::RAW_OUTPUT);
+
+    //std::cout << "score:" << score << std::endl;
 
     // score is the distance of margin，below zero is plate, up is not
     // when score is below zero, the samll the value, the more possibliy to be a plate.
