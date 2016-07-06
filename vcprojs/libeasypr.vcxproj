@@ -87,7 +87,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(SolutionDir)include;$(SolutionDir);</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)include;$(SolutionDir)thirdparty;</AdditionalIncludeDirectories>
       <DisableSpecificWarnings>4819</DisableSpecificWarnings>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MultiProcessorCompilation>false</MultiProcessorCompilation>
@@ -166,10 +166,10 @@
     <ClCompile Include="..\src\util\kv.cpp" />
     <ClCompile Include="..\src\util\program_options.cpp" />
     <ClCompile Include="..\src\util\util.cpp" />
-    <ClCompile Include="..\thirdparty\LBP\helper.cpp" />
-    <ClCompile Include="..\thirdparty\LBP\lbp.cpp" />
-    <ClCompile Include="..\thirdparty\mser\mser2.cpp" />
-    <ClCompile Include="..\thirdparty\textDetect\erfilter.cpp" />
+    <ClCompile Include="..\thirdparty\thirdparty\LBP\helper.cpp" />
+    <ClCompile Include="..\thirdparty\thirdparty\LBP\lbp.cpp" />
+    <ClCompile Include="..\thirdparty\thirdparty\mser\mser2.cpp" />
+    <ClCompile Include="..\thirdparty\thirdparty\textDetect\erfilter.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\easypr.h" />
@@ -196,10 +196,10 @@
     <ClInclude Include="..\include\easypr\util\program_options.h" />
     <ClInclude Include="..\include\easypr\util\switch.hpp" />
     <ClInclude Include="..\include\easypr\util\util.h" />
-    <ClInclude Include="..\thirdparty\LBP\helper.hpp" />
-    <ClInclude Include="..\thirdparty\LBP\lbp.hpp" />
-    <ClInclude Include="..\thirdparty\mser\mser2.hpp" />
-    <ClInclude Include="..\thirdparty\textDetect\erfilter.hpp" />
+    <ClInclude Include="..\thirdparty\thirdparty\LBP\helper.hpp" />
+    <ClInclude Include="..\thirdparty\thirdparty\LBP\lbp.hpp" />
+    <ClInclude Include="..\thirdparty\thirdparty\mser\mser2.hpp" />
+    <ClInclude Include="..\thirdparty\thirdparty\textDetect\erfilter.hpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\LICENSE" />
