@@ -46,7 +46,7 @@ void AnnTrain::train() {
   int first_hidden_neurons = int(std::sqrt((m + 2) * N) + 2 * std::sqrt(N / (m + 2)));
   int second_hidden_neurons = int(m * std::sqrt(N / (m + 2)));
 
-  bool useTLFN = true;
+  bool useTLFN = false;
   if (!useTLFN) {
     layers.create(1, 3, CV_32SC1);
     layers.at<int>(0) = input_number;

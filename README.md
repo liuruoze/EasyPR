@@ -70,10 +70,10 @@ EasyPR是一个开源的中文车牌识别系统，其目标是成为一个简�
 
 |版本 | 开发者 | 版本 | 地址 
 |------|-------|-------|-------
-| android |  goldriver  |  1.3  |  [linuxxx/EasyPR_Android](https://github.com/linuxxx/EasyPR_Android)
-| linux | Micooz  |  1.4  |  已跟EasyPR整合
+| android |  goldriver  |  1.4  |  [linuxxx/EasyPR_Android](https://github.com/linuxxx/EasyPR_Android)
+| linux | Micooz  |  1.5  |  已跟EasyPR整合
 | ios | zhoushiwei |  1.3  |  [zhoushiwei/EasyPR-iOS](https://github.com/zhoushiwei/EasyPR-iOS)
-| mac | zhoushiwei,Micooz |  1.4  | 已跟EasyPR整合
+| mac | zhoushiwei,Micooz |  1.5  | 已跟EasyPR整合
 | java | fan-wenjie |  1.2  | [fan-wenjie/EasyPR-Java](https://github.com/fan-wenjie/EasyPR-Java)
 
 ### 兼容性
@@ -252,7 +252,7 @@ EasyPR讨论QQ群号是：366392603，加前请注明EasyPR学习讨论。
 
 ### Contributors
 
-* liuruoze：1.0-1.2版作者
+* liuruoze：1.0-1.2，1.5版作者
 
 * 海豚嘎嘎(车主之家)：1.3版算法贡献者，提升了车牌定位与字符识别的准确率
 
@@ -265,6 +265,8 @@ EasyPR讨论QQ群号是：366392603，加前请注明EasyPR学习讨论。
 * ahccom：新的plateLocate函数
 
 * 阿水：1.3版整合，数据标注等工作
+
+* fan-wenjie：1.5版opencv整合版提供者
 
 ### 鸣谢
 
