@@ -10,6 +10,14 @@ EasyPR是一个开源的中文车牌识别系统，其目标是成为一个简�
 
 ### 更新
 
+当前master分支下的版本有以下几点更新：
+
+1.支持linux和mac编译，如果碰到问题请在issue里提问。
+
+2.增加一个无需配置opencv的[懒人版](http://git.oschina.net/easypr/EasyPR/attach_files)。
+
+仅仅支持vs2013，也只能在debug和x86下运行，其他情况的话还是得配置opencv。感谢范文捷同学的帮助。页面里的两个文件都要下载，下载后用[7zip](http://www.7-zip.org/)解压。
+
 本次更新是EasyPR 1.5beta版本，主要改进如下：
 
 1.增加了一种新的基于文字定位的定位方法 (MSER), 在面对低对比度，低光照以及大图像上有较强的鲁棒性。
