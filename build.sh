@@ -32,3 +32,5 @@ fi
 if [ -f ${BUILD_BINARY_FULL_PATH} ];then
   cp ${BUILD_BINARY_FULL_PATH} ${BINARY_DIR}
 fi
+
+cp ${BUILD_BINARY_FULL_PATH} demo
