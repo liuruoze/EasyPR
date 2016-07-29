@@ -1,7 +1,5 @@
 .idea/
 _build/
-bin/
-.vscode/
 resources/image/tmp/
 *.lib
 *.suo
@@ -40,5 +38,4 @@ _ReSharper*/
 *.obj
 *.cache
 *.log
-.DS_Store
 [Bb]in
