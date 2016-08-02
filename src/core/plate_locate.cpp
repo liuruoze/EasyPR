@@ -1048,4 +1048,18 @@ int CPlateLocate::plateLocate(Mat src, vector<Mat> &resultVec, int index) {
   return 0;
 }
 
+int CPlateLocate::plateLocate(Mat src, vector<CPlate> &resultVec, int index) {
+  vector<CPlate> all_result_Plates;
+
+  plateColorLocate(src, all_result_Plates, index);
+  plateSobelLocate(src, all_result_Plates, index);
+  plateMserLocate(src, all_result_Plates, index);
+
+  for (size_t i = 0; i < all_result_Plates.size(); i++) {
+    resultVec.push_back(all_result_Plates[i]);
+  }
+
+  return 0;
+}
+
 }

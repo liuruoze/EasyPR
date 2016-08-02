@@ -63,6 +63,7 @@ class CPlateLocate {
     int img_index = 0, bool showDebug = false);
 
   int plateLocate(Mat, std::vector<Mat>&, int = 0);
+  int plateLocate(Mat, std::vector<CPlate>&, int = 0);
 
   bool verifySizes(RotatedRect mr);
 
