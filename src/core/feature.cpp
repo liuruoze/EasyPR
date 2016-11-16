@@ -49,8 +49,23 @@ void getSIFTFeatures(const Mat& image, Mat& features) {
 }
 
 
+//HOG Features
 void getHOGFeatures(const Mat& image, Mat& features) {
+  //HOG descripter
+  HOGDescriptor * hog = new HOGDescriptor(cvSize(128, 64), cvSize(16, 16), cvSize(8, 8), cvSize(8, 8), 3);  //these parameters work well
+	std::vector<float> descriptor;
 
+  // resize input image to (128,64) for compute
+	Size dsize = Size(128,64);
+	Mat trainImg = Mat(dsize, CV_32S);
+	resize(image, trainImg, dsize);
+
+  //compute descripter
+	hog->compute(trainImg, descriptor, Size(8, 8));
+
+  //copy the result
+	Mat mat_featrue(descriptor);
+	mat_featrue.copyTo(features);
 }
 
 
