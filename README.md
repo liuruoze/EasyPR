@@ -10,13 +10,16 @@ EasyPR是一个开源的中文车牌识别系统，其目标是成为一个简�
 
 ### 更新
 
-当前master分支下的版本有以下几点更新：
+本次更新是EasyPR 1.5正式版本，相比beta版本有以下几点更新：
 
-1.支持linux和mac编译，如果碰到问题请在issue里提问。
+1.修正了SVM训练异常的问题！现在1.5版本也可以自由的使用SVM训练了。这个问题确实是opencv的bug，详见[讨论](https://github.com/opencv/opencv/issues/5054)，在此感谢 @tka 同学的告知。
+注意，3.2的opencv也修正了这个问题，如果你用3.2版本的话，也可以。但是不清楚3.2版本是否会引入其他的问题，在目前的EasyPR版本里，即便用3.0或者3.1版本也可以规避训练异常的问题。
 
-2.增加一个无需配置opencv的[懒人版](http://git.oschina.net/easypr/EasyPR/attach_files)。仅仅支持vs2013，也只能在debug和x86下运行，其他情况的话还是得配置opencv。感谢范文捷同学的帮助。页面里的两个文件都要下载，下载后用[7zip](http://www.7-zip.org/)解压。
+2.支持linux和mac编译，如果碰到问题请在issue里提问。
 
-本次更新是EasyPR 1.5beta版本，主要改进如下：
+3.增加一个无需配置opencv的[懒人版](http://git.oschina.net/easypr/EasyPR/attach_files)。仅仅支持vs2013，也只能在debug和x86下运行，其他情况的话还是得配置opencv。感谢范文捷同学的帮助。页面里的两个文件都要下载，下载后用[7zip](http://www.7-zip.org/)解压。
+
+其他的主要改进如下：
 
 1.增加了一种新的基于文字定位的定位方法 (MSER), 在面对低对比度，低光照以及大图像上有较强的鲁棒性。
 
@@ -67,8 +70,6 @@ EasyPR是一个开源的中文车牌识别系统，其目标是成为一个简�
 8.替换了一部分中文注释，使得windows下的visual studio在面对全部以LF结尾的文件时，也能成功通过编译。目前的程序只要opencv配置正确，gitosc上通过zip下载下来的程序可以直接通过编译并运行。
 
 关于本次改动的具体内容可以看博客中的[介绍](http://www.cnblogs.com/subconscious/p/5637735.html)。
-
-注意，目前1.4和1.5版的SVM训练好的文件在使用时会有问题，这个原因可能跟opencv3的实现改变有关。建议要训练SVM的话使用基于opencv2的1.3版。
 
 ### 跨平台
 
