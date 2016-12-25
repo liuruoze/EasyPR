@@ -46,19 +46,20 @@ void SvmTrain::train() {
 
   fprintf(stdout, ">> Your SVM Model was saved to %s\n", svm_xml_);
   fprintf(stdout, ">> Testing...\n");
-  this->test();
 
+  this->test();
+  
 }
 
 void SvmTrain::test() {
   // 1.4 bug fix: old 1.4 ver there is no null judge
-  if (NULL == svm_)
+  // if (NULL == svm_)
     svm_ = cv::ml::SVM::load<cv::ml::SVM>(svm_xml_);
 
   if (test_file_list_.empty()) {
     this->prepare();
   }
-
+ 
   double count_all = test_file_list_.size();
   double ptrue_rtrue = 0;
   double ptrue_rfalse = 0;
@@ -76,7 +77,7 @@ void SvmTrain::test() {
     getLBPFeatures(image, feature);
 
     auto predict = int(svm_->predict(feature));
-    std::cout << "predict: " << predict << std::endl;
+    //std::cout << "predict: " << predict << std::endl;
 
     auto real = item.label;
     if (predict == kForward && real == kForward) ptrue_rtrue++;

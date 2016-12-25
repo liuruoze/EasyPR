@@ -170,6 +170,7 @@
     <ClCompile Include="..\thirdparty\LBP\helper.cpp" />
     <ClCompile Include="..\thirdparty\LBP\lbp.cpp" />
     <ClCompile Include="..\thirdparty\mser\mser2.cpp" />
+    <ClCompile Include="..\thirdparty\svm\corrected_svm.cpp" />
     <ClCompile Include="..\thirdparty\textDetect\erfilter.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -200,6 +201,7 @@
     <ClInclude Include="..\thirdparty\LBP\helper.hpp" />
     <ClInclude Include="..\thirdparty\LBP\lbp.hpp" />
     <ClInclude Include="..\thirdparty\mser\mser2.hpp" />
+    <ClInclude Include="..\thirdparty\svm\precomp.hpp" />
     <ClInclude Include="..\thirdparty\textDetect\erfilter.hpp" />
   </ItemGroup>
   <ItemGroup>
