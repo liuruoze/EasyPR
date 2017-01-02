@@ -1626,206 +1626,408 @@ public:
         return true;
     }
 
+	// changed by liuruoze, correct trainAuto to right
     bool trainAuto( const Ptr<TrainData>& data, int k_fold,
                     ParamGrid C_grid, ParamGrid gamma_grid, ParamGrid p_grid,
                     ParamGrid nu_grid, ParamGrid coef_grid, ParamGrid degree_grid,
                     bool balanced )
     {
-        checkParams();
+		checkParams();
 
-        int svmType = params.svmType;
-        RNG rng((uint64)-1);
+		int svmType = params.svmType;
+		RNG rng((uint64)-1);
 
-        if( svmType == ONE_CLASS )
-            // current implementation of "auto" svm does not support the 1-class case.
-            return train( data, 0 );
+		if (svmType == ONE_CLASS)
+			// current implementation of "auto" svm does not support the 1-class case.
+			return train(data, 0);
 
-        clear();
+		clear();
 
-        CV_Assert( k_fold >= 2 );
+		CV_Assert(k_fold >= 2);
 
-        // All the parameters except, possibly, <coef0> are positive.
-        // <coef0> is nonnegative
-        #define CHECK_GRID(grid, param) \
-        if( grid.logStep <= 1 ) \
-        { \
-            grid.minVal = grid.maxVal = params.param; \
-            grid.logStep = 10; \
-        } \
-        else \
-            checkParamGrid(grid)
+		// All the parameters except, possibly, <coef0> are positive.
+		// <coef0> is nonnegative
+#define CHECK_GRID(grid, param) \
+		if (grid.logStep <= 1) \
+		{ \
+		grid.minVal = grid.maxVal = params.param; \
+		grid.logStep = 10; \
+		} \
+		else \
+		checkParamGrid(grid)
 
-        CHECK_GRID(C_grid, C);
-        CHECK_GRID(gamma_grid, gamma);
-        CHECK_GRID(p_grid, p);
-        CHECK_GRID(nu_grid, nu);
-        CHECK_GRID(coef_grid, coef0);
-        CHECK_GRID(degree_grid, degree);
+		CHECK_GRID(C_grid, C);
+		CHECK_GRID(gamma_grid, gamma);
+		CHECK_GRID(p_grid, p);
+		CHECK_GRID(nu_grid, nu);
+		CHECK_GRID(coef_grid, coef0);
+		CHECK_GRID(degree_grid, degree);
 
-        // these parameters are not used:
-        if( params.kernelType != POLY )
-            degree_grid.minVal = degree_grid.maxVal = params.degree;
-        if( params.kernelType == LINEAR )
-            gamma_grid.minVal = gamma_grid.maxVal = params.gamma;
-        if( params.kernelType != POLY && params.kernelType != SIGMOID )
-            coef_grid.minVal = coef_grid.maxVal = params.coef0;
-        if( svmType == NU_SVC || svmType == ONE_CLASS )
-            C_grid.minVal = C_grid.maxVal = params.C;
-        if( svmType == C_SVC || svmType == EPS_SVR )
-            nu_grid.minVal = nu_grid.maxVal = params.nu;
-        if( svmType != EPS_SVR )
-            p_grid.minVal = p_grid.maxVal = params.p;
+		// these parameters are not used:
+		if (params.kernelType != POLY)
+			degree_grid.minVal = degree_grid.maxVal = params.degree;
+		if (params.kernelType == LINEAR)
+			gamma_grid.minVal = gamma_grid.maxVal = params.gamma;
+		if (params.kernelType != POLY && params.kernelType != SIGMOID)
+			coef_grid.minVal = coef_grid.maxVal = params.coef0;
+		if (svmType == NU_SVC || svmType == ONE_CLASS)
+			C_grid.minVal = C_grid.maxVal = params.C;
+		if (svmType == C_SVC || svmType == EPS_SVR)
+			nu_grid.minVal = nu_grid.maxVal = params.nu;
+		if (svmType != EPS_SVR)
+			p_grid.minVal = p_grid.maxVal = params.p;
 
-        Mat samples = data->getTrainSamples();
-        Mat responses;
-        bool is_classification = false;
-        int class_count = (int)class_labels.total();
+		Mat samples = data->getTrainSamples();
+		Mat responses;
+		bool is_classification = false;
+		Mat class_labels0;
+		int class_count = (int)class_labels.total();
 
-        if( svmType == C_SVC || svmType == NU_SVC )
-        {
-            responses = data->getTrainNormCatResponses();
-            class_labels = data->getClassLabels();
-            class_count = (int)class_labels.total();
-            is_classification = true;
+		if (svmType == C_SVC || svmType == NU_SVC)
+		{
+			responses = data->getTrainNormCatResponses();
+			class_labels = data->getClassLabels();
+			class_count = (int)class_labels.total();
+			is_classification = true;
 
-            vector<int> temp_class_labels;
-            setRangeVector(temp_class_labels, class_count);
+			vector<int> temp_class_labels;
+			setRangeVector(temp_class_labels, class_count);
 
-            // temporarily replace class labels with 0, 1, ..., NCLASSES-1
-            Mat(temp_class_labels).copyTo(class_labels);
-        }
-        else
-            responses = data->getTrainResponses();
+			// temporarily replace class labels with 0, 1, ..., NCLASSES-1
+			class_labels0 = class_labels;
+			class_labels = Mat(temp_class_labels).clone();
+		}
+		else
+			responses = data->getTrainResponses();
 
-        CV_Assert(samples.type() == CV_32F);
+		CV_Assert(samples.type() == CV_32F);
 
-        int sample_count = samples.rows;
-        var_count = samples.cols;
-        size_t sample_size = var_count*samples.elemSize();
+		int sample_count = samples.rows;
+		var_count = samples.cols;
+		size_t sample_size = var_count*samples.elemSize();
 
-        vector<int> sidx;
-        setRangeVector(sidx, sample_count);
+		vector<int> sidx;
+		setRangeVector(sidx, sample_count);
 
-        int i, j, k;
+		int i, j, k;
 
-        // randomly permute training samples
-        for( i = 0; i < sample_count; i++ )
-        {
-            int i1 = rng.uniform(0, sample_count);
-            int i2 = rng.uniform(0, sample_count);
-            std::swap(sidx[i1], sidx[i2]);
-        }
+		// randomly permute training samples
+		for (i = 0; i < sample_count; i++)
+		{
+			int i1 = rng.uniform(0, sample_count);
+			int i2 = rng.uniform(0, sample_count);
+			std::swap(sidx[i1], sidx[i2]);
+		}
 
-        if( is_classification && class_count == 2 && balanced )
-        {
-            // reshuffle the training set in such a way that
-            // instances of each class are divided more or less evenly
-            // between the k_fold parts.
-            vector<int> sidx0, sidx1;
+		if (is_classification && class_count == 2 && balanced)
+		{
+			// reshuffle the training set in such a way that
+			// instances of each class are divided more or less evenly
+			// between the k_fold parts.
+			vector<int> sidx0, sidx1;
 
-            for( i = 0; i < sample_count; i++ )
-            {
-                if( responses.at<int>(sidx[i]) == 0 )
-                    sidx0.push_back(sidx[i]);
-                else
-                    sidx1.push_back(sidx[i]);
-            }
+			for (i = 0; i < sample_count; i++)
+			{
+				if (responses.at<int>(sidx[i]) == 0)
+					sidx0.push_back(sidx[i]);
+				else
+					sidx1.push_back(sidx[i]);
+			}
 
-            int n0 = (int)sidx0.size(), n1 = (int)sidx1.size();
-            int a0 = 0, a1 = 0;
-            sidx.clear();
-            for( k = 0; k < k_fold; k++ )
-            {
-                int b0 = ((k+1)*n0 + k_fold/2)/k_fold, b1 = ((k+1)*n1 + k_fold/2)/k_fold;
-                int a = (int)sidx.size(), b = a + (b0 - a0) + (b1 - a1);
-                for( i = a0; i < b0; i++ )
-                    sidx.push_back(sidx0[i]);
-                for( i = a1; i < b1; i++ )
-                    sidx.push_back(sidx1[i]);
-                for( i = 0; i < (b - a); i++ )
-                {
-                    int i1 = rng.uniform(a, b);
-                    int i2 = rng.uniform(a, b);
-                    std::swap(sidx[i1], sidx[i2]);
-                }
-                a0 = b0; a1 = b1;
-            }
-        }
+			int n0 = (int)sidx0.size(), n1 = (int)sidx1.size();
+			int a0 = 0, a1 = 0;
+			sidx.clear();
+			for (k = 0; k < k_fold; k++)
+			{
+				int b0 = ((k + 1)*n0 + k_fold / 2) / k_fold, b1 = ((k + 1)*n1 + k_fold / 2) / k_fold;
+				int a = (int)sidx.size(), b = a + (b0 - a0) + (b1 - a1);
+				for (i = a0; i < b0; i++)
+					sidx.push_back(sidx0[i]);
+				for (i = a1; i < b1; i++)
+					sidx.push_back(sidx1[i]);
+				for (i = 0; i < (b - a); i++)
+				{
+					int i1 = rng.uniform(a, b);
+					int i2 = rng.uniform(a, b);
+					std::swap(sidx[i1], sidx[i2]);
+				}
+				a0 = b0; a1 = b1;
+			}
+		}
 
-        int test_sample_count = (sample_count + k_fold/2)/k_fold;
-        int train_sample_count = sample_count - test_sample_count;
+		int test_sample_count = (sample_count + k_fold / 2) / k_fold;
+		int train_sample_count = sample_count - test_sample_count;
 
-        SvmParams best_params = params;
-        double min_error = FLT_MAX;
+		SvmParams best_params = params;
+		double min_error = FLT_MAX;
 
-        int rtype = responses.type();
+		int rtype = responses.type();
 
-        Mat temp_train_samples(train_sample_count, var_count, CV_32F);
-        Mat temp_test_samples(test_sample_count, var_count, CV_32F);
-        Mat temp_train_responses(train_sample_count, 1, rtype);
-        Mat temp_test_responses;
+		Mat temp_train_samples(train_sample_count, var_count, CV_32F);
+		Mat temp_test_samples(test_sample_count, var_count, CV_32F);
+		Mat temp_train_responses(train_sample_count, 1, rtype);
+		Mat temp_test_responses;
 
-        // If grid.minVal == grid.maxVal, this will allow one and only one pass through the loop with params.var = grid.minVal.
-        #define FOR_IN_GRID(var, grid) \
-            for( params.var = grid.minVal; params.var == grid.minVal || params.var < grid.maxVal; params.var = (grid.minVal == grid.maxVal) ? grid.maxVal + 1 : params.var * grid.logStep )
+		// If grid.minVal == grid.maxVal, this will allow one and only one pass through the loop with params.var = grid.minVal.
+#define FOR_IN_GRID(var, grid) \
+		for (params.var = grid.minVal; params.var == grid.minVal || params.var < grid.maxVal; params.var = (grid.minVal == grid.maxVal) ? grid.maxVal + 1 : params.var * grid.logStep)
 
-        FOR_IN_GRID(C, C_grid)
-        FOR_IN_GRID(gamma, gamma_grid)
-        FOR_IN_GRID(p, p_grid)
-        FOR_IN_GRID(nu, nu_grid)
-        FOR_IN_GRID(coef0, coef_grid)
-        FOR_IN_GRID(degree, degree_grid)
-        {
-            // make sure we updated the kernel and other parameters
-            setParams(params);
+		FOR_IN_GRID(C, C_grid)
+			FOR_IN_GRID(gamma, gamma_grid)
+			FOR_IN_GRID(p, p_grid)
+			FOR_IN_GRID(nu, nu_grid)
+			FOR_IN_GRID(coef0, coef_grid)
+			FOR_IN_GRID(degree, degree_grid)
+		{
+				// make sure we updated the kernel and other parameters
+				setParams(params);
 
-            double error = 0;
-            for( k = 0; k < k_fold; k++ )
-            {
-                int start = (k*sample_count + k_fold/2)/k_fold;
-                for( i = 0; i < train_sample_count; i++ )
-                {
-                    j = sidx[(i+start)%sample_count];
-                    memcpy(temp_train_samples.ptr(i), samples.ptr(j), sample_size);
-                    if( is_classification )
-                        temp_train_responses.at<int>(i) = responses.at<int>(j);
-                    else if( !responses.empty() )
-                        temp_train_responses.at<float>(i) = responses.at<float>(j);
-                }
+				double error = 0;
+				for (k = 0; k < k_fold; k++)
+				{
+					int start = (k*sample_count + k_fold / 2) / k_fold;
+					for (i = 0; i < train_sample_count; i++)
+					{
+						j = sidx[(i + start) % sample_count];
+						memcpy(temp_train_samples.ptr(i), samples.ptr(j), sample_size);
+						if (is_classification)
+							temp_train_responses.at<int>(i) = responses.at<int>(j);
+						else if (!responses.empty())
+							temp_train_responses.at<float>(i) = responses.at<float>(j);
+					}
 
-                // Train SVM on <train_size> samples
-                if( !do_train( temp_train_samples, temp_train_responses ))
-                    continue;
+					// Train SVM on <train_size> samples
+					if (!do_train(temp_train_samples, temp_train_responses))
+						continue;
 
-                for( i = 0; i < train_sample_count; i++ )
-                {
-                    j = sidx[(i+start+train_sample_count) % sample_count];
-                    memcpy(temp_train_samples.ptr(i), samples.ptr(j), sample_size);
-                }
+					for (i = 0; i < test_sample_count; i++)
+					{
+						j = sidx[(i + start + train_sample_count) % sample_count];
+						memcpy(temp_test_samples.ptr(i), samples.ptr(j), sample_size);
+					}
 
-                predict(temp_test_samples, temp_test_responses, 0);
-                for( i = 0; i < test_sample_count; i++ )
-                {
-                    float val = temp_test_responses.at<float>(i);
-                    j = sidx[(i+start+train_sample_count) % sample_count];
-                    if( is_classification )
-                        error += (float)(val != responses.at<int>(j));
-                    else
-                    {
-                        val -= responses.at<float>(j);
-                        error += val*val;
-                    }
-                }
-            }
-            if( min_error > error )
-            {
-                min_error   = error;
-                best_params = params;
-            }
-        }
+					predict(temp_test_samples, temp_test_responses, 0);
+					for (i = 0; i < test_sample_count; i++)
+					{
+						float val = temp_test_responses.at<float>(i);
+						j = sidx[(i + start + train_sample_count) % sample_count];
+						if (is_classification)
+							error += (float)(val != responses.at<int>(j));
+						else
+						{
+							val -= responses.at<float>(j);
+							error += val*val;
+						}
+					}
+				}
+				if (min_error > error)
+				{
+					min_error = error;
+					best_params = params;
+				}
+			}
 
-        params = best_params;
-        return do_train( samples, responses );
+		class_labels = class_labels0;
+		setParams(best_params);
+		return do_train(samples, responses);
+
+        //checkParams();
+
+        //int svmType = params.svmType;
+        //RNG rng((uint64)-1);
+
+        //if( svmType == ONE_CLASS )
+        //    // current implementation of "auto" svm does not support the 1-class case.
+        //    return train( data, 0 );
+
+        //clear();
+
+        //CV_Assert( k_fold >= 2 );
+
+        //// All the parameters except, possibly, <coef0> are positive.
+        //// <coef0> is nonnegative
+        //#define CHECK_GRID(grid, param) \
+        //if( grid.logStep <= 1 ) \
+        //{ \
+        //    grid.minVal = grid.maxVal = params.param; \
+        //    grid.logStep = 10; \
+        //} \
+        //else \
+        //    checkParamGrid(grid)
+
+        //CHECK_GRID(C_grid, C);
+        //CHECK_GRID(gamma_grid, gamma);
+        //CHECK_GRID(p_grid, p);
+        //CHECK_GRID(nu_grid, nu);
+        //CHECK_GRID(coef_grid, coef0);
+        //CHECK_GRID(degree_grid, degree);
+
+        //// these parameters are not used:
+        //if( params.kernelType != POLY )
+        //    degree_grid.minVal = degree_grid.maxVal = params.degree;
+        //if( params.kernelType == LINEAR )
+        //    gamma_grid.minVal = gamma_grid.maxVal = params.gamma;
+        //if( params.kernelType != POLY && params.kernelType != SIGMOID )
+        //    coef_grid.minVal = coef_grid.maxVal = params.coef0;
+        //if( svmType == NU_SVC || svmType == ONE_CLASS )
+        //    C_grid.minVal = C_grid.maxVal = params.C;
+        //if( svmType == C_SVC || svmType == EPS_SVR )
+        //    nu_grid.minVal = nu_grid.maxVal = params.nu;
+        //if( svmType != EPS_SVR )
+        //    p_grid.minVal = p_grid.maxVal = params.p;
+
+        //Mat samples = data->getTrainSamples();
+        //Mat responses;
+        //bool is_classification = false;
+        //int class_count = (int)class_labels.total();
+
+        //if( svmType == C_SVC || svmType == NU_SVC )
+        //{
+        //    responses = data->getTrainNormCatResponses();
+        //    class_labels = data->getClassLabels();
+        //    class_count = (int)class_labels.total();
+        //    is_classification = true;
+
+        //    vector<int> temp_class_labels;
+        //    setRangeVector(temp_class_labels, class_count);
+
+        //    // temporarily replace class labels with 0, 1, ..., NCLASSES-1
+        //    Mat(temp_class_labels).copyTo(class_labels);
+        //}
+        //else
+        //    responses = data->getTrainResponses();
+
+        //CV_Assert(samples.type() == CV_32F);
+
+        //int sample_count = samples.rows;
+        //var_count = samples.cols;
+        //size_t sample_size = var_count*samples.elemSize();
+
+        //vector<int> sidx;
+        //setRangeVector(sidx, sample_count);
+
+        //int i, j, k;
+
+        //// randomly permute training samples
+        //for( i = 0; i < sample_count; i++ )
+        //{
+        //    int i1 = rng.uniform(0, sample_count);
+        //    int i2 = rng.uniform(0, sample_count);
+        //    std::swap(sidx[i1], sidx[i2]);
+        //}
+
+        //if( is_classification && class_count == 2 && balanced )
+        //{
+        //    // reshuffle the training set in such a way that
+        //    // instances of each class are divided more or less evenly
+        //    // between the k_fold parts.
+        //    vector<int> sidx0, sidx1;
+
+        //    for( i = 0; i < sample_count; i++ )
+        //    {
+        //        if( responses.at<int>(sidx[i]) == 0 )
+        //            sidx0.push_back(sidx[i]);
+        //        else
+        //            sidx1.push_back(sidx[i]);
+        //    }
+
+        //    int n0 = (int)sidx0.size(), n1 = (int)sidx1.size();
+        //    int a0 = 0, a1 = 0;
+        //    sidx.clear();
+        //    for( k = 0; k < k_fold; k++ )
+        //    {
+        //        int b0 = ((k+1)*n0 + k_fold/2)/k_fold, b1 = ((k+1)*n1 + k_fold/2)/k_fold;
+        //        int a = (int)sidx.size(), b = a + (b0 - a0) + (b1 - a1);
+        //        for( i = a0; i < b0; i++ )
+        //            sidx.push_back(sidx0[i]);
+        //        for( i = a1; i < b1; i++ )
+        //            sidx.push_back(sidx1[i]);
+        //        for( i = 0; i < (b - a); i++ )
+        //        {
+        //            int i1 = rng.uniform(a, b);
+        //            int i2 = rng.uniform(a, b);
+        //            std::swap(sidx[i1], sidx[i2]);
+        //        }
+        //        a0 = b0; a1 = b1;
+        //    }
+        //}
+
+        //int test_sample_count = (sample_count + k_fold/2)/k_fold;
+        //int train_sample_count = sample_count - test_sample_count;
+
+        //SvmParams best_params = params;
+        //double min_error = FLT_MAX;
+
+        //int rtype = responses.type();
+
+        //Mat temp_train_samples(train_sample_count, var_count, CV_32F);
+        //Mat temp_test_samples(test_sample_count, var_count, CV_32F);
+        //Mat temp_train_responses(train_sample_count, 1, rtype);
+        //Mat temp_test_responses;
+
+        //// If grid.minVal == grid.maxVal, this will allow one and only one pass through the loop with params.var = grid.minVal.
+        //#define FOR_IN_GRID(var, grid) \
+        //    for( params.var = grid.minVal; params.var == grid.minVal || params.var < grid.maxVal; params.var = (grid.minVal == grid.maxVal) ? grid.maxVal + 1 : params.var * grid.logStep )
+
+        //FOR_IN_GRID(C, C_grid)
+        //FOR_IN_GRID(gamma, gamma_grid)
+        //FOR_IN_GRID(p, p_grid)
+        //FOR_IN_GRID(nu, nu_grid)
+        //FOR_IN_GRID(coef0, coef_grid)
+        //FOR_IN_GRID(degree, degree_grid)
+        //{
+        //    // make sure we updated the kernel and other parameters
+        //    setParams(params);
+
+        //    double error = 0;
+        //    for( k = 0; k < k_fold; k++ )
+        //    {
+        //        int start = (k*sample_count + k_fold/2)/k_fold;
+        //        for( i = 0; i < train_sample_count; i++ )
+        //        {
+        //            j = sidx[(i+start)%sample_count];
+        //            memcpy(temp_train_samples.ptr(i), samples.ptr(j), sample_size);
+        //            if( is_classification )
+        //                temp_train_responses.at<int>(i) = responses.at<int>(j);
+        //            else if( !responses.empty() )
+        //                temp_train_responses.at<float>(i) = responses.at<float>(j);
+        //        }
+
+        //        // Train SVM on <train_size> samples
+        //        if( !do_train( temp_train_samples, temp_train_responses ))
+        //            continue;
+
+        //        for( i = 0; i < train_sample_count; i++ )
+        //        {
+        //            j = sidx[(i+start+train_sample_count) % sample_count];
+        //            memcpy(temp_train_samples.ptr(i), samples.ptr(j), sample_size);
+        //        }
+
+        //        predict(temp_test_samples, temp_test_responses, 0);
+        //        for( i = 0; i < test_sample_count; i++ )
+        //        {
+        //            float val = temp_test_responses.at<float>(i);
+        //            j = sidx[(i+start+train_sample_count) % sample_count];
+        //            if( is_classification )
+        //                error += (float)(val != responses.at<int>(j));
+        //            else
+        //            {
+        //                val -= responses.at<float>(j);
+        //                error += val*val;
+        //            }
+        //        }
+        //    }
+        //    if( min_error > error )
+        //    {
+        //        min_error   = error;
+        //        best_params = params;
+        //    }
+        //}
+
+        //params = best_params;
+        //return do_train( samples, responses );
+
+		
     }
 
     struct PredictBody : ParallelLoopBody
