@@ -10,65 +10,18 @@ EasyPR是一个开源的中文车牌识别系统，其目标是成为一个简�
 
 ### 更新
 
-本次更新是EasyPR 1.5正式版本，相比beta版本有以下几点更新：
+当前master版本修订了两个小问题：
 
-1.修正了SVM训练异常的问题！现在1.5版本也可以自由的使用SVM训练了。这个问题确实是opencv的bug，详见[讨论](https://github.com/opencv/opencv/issues/5054)，在此感谢tka同学的告知。注意，3.2的opencv也修正了这个问题，如果你用3.2版本的话，也可以。但是不清楚3.2版本是否会引入其他的问题，在目前的EasyPR版本里，即便用3.0或者3.1版本也可以规避训练异常的问题。
+1.train_auto异常的问题。
 
-2.支持linux和mac编译，如果碰到问题请在issue里提问。
+2.opencv3.2的编译问题。现在opencv3.2的接口与3.1和3.0略有变动，如果想要用3.2版本需要参照这个[issue](https://github.com/liuruoze/EasyPR/issues/152)里讨论的修改。
 
-3.增加一个无需配置opencv的[懒人版](http://git.oschina.net/easypr/EasyPR/attach_files)。仅仅支持vs2013，也只能在debug和x86下运行，其他情况的话还是得配置opencv。感谢范文捷同学的帮助。页面里的两个文件都要下载，下载后用[7zip](http://www.7-zip.org/)解压。
+下个版本会尝试继续优化整体系统与算法。
 
-下面是beta版本的更新内容：
 
-1.增加了一种新的基于文字定位的定位方法 (MSER), 在面对低对比度，低光照以及大图像上有较强的鲁棒性。
+一个无需配置opencv的[懒人版](http://git.oschina.net/easypr/EasyPR/attach_files)。仅仅支持vs2013，也只能在debug和x86下运行，其他情况的话还是得配置opencv。感谢范文捷同学的帮助。页面里的两个文件都要下载，下载后用[7zip](http://www.7-zip.org/)解压。
 
-* 夜间的车牌图像
-
-![夜间的车牌图像](resources/doc/res/night_1.jpg)
-
-* 对比度非常低的图像
-
-![对比度非常低的图像](resources/doc/res/contrast_1.jpg)
-
-* 近距离的图像
-
-![近距离的图像](resources/doc/res/near_1.jpg)
-
-* 高分辨率的图像
-
-![高分辨率的图像](resources/doc/res/big_1.jpg)
-
-2.更加合理的评价协议。结合新增的GroundTruth文件与ICDAR2003的协议，使得整体评价指标更为合理。通用数据集里同时增加了近50张新图片。文字定位方法在面对这些复杂图片时比先前的SOBEL+COLOR的方法定位率提升了27个百分点。
-
-实际运行时，使用了文字定位与颜色定位的结合，最终对256张的测试图片的测试结果如下：
-
-![v1.5版运行结果](resources/doc/res/v1.5_result.jpg)
-
-3.使用了非极大值抑制算法去除相邻的车牌，使得最终输出变的合理。即便使用多个定位方法，最终也只会输出一个车牌，而且是可能性最大的车牌。
-
-4.基于局部空间的大津阈值算法与自适应阈值算法，提升了文字分割与分子识别的准确率。
-
-* 车牌图像
-
-![车牌图像](resources/doc/res/not_avg_contrast.jpg)
-
-* 普通大津阈值结果
-
-![普通大津阈值结果](resources/doc/res/normal_ostu.jpg)
-
-* 空间大津阈值结果
-
-![空间大津阈值结果](resources/doc/res/spatial_ostu.jpg)
-
-5.新的SVM模型与特征（LBP），提升了车牌判断的鲁棒性，新的中文ANN识别模型，提升了中文识别的整体准确率近15个百分点。
-
-6.增加了Grid Search方法，可以进行自动调参。
-
-7.首次增加了多线程支持，基于OpenMP的文字定位方法，在最终的识别速度上，比原先的单线程方法提高了接近2倍。
-
-8.替换了一部分中文注释，使得windows下的visual studio在面对全部以LF结尾的文件时，也能成功通过编译。目前的程序只要opencv配置正确，gitosc上通过zip下载下来的程序可以直接通过编译并运行。
-
-关于本次改动的具体内容可以看博客中的[介绍](http://www.cnblogs.com/subconscious/p/5637735.html)。
+关于1.5版本改动的具体内容可以看博客中的[介绍](http://www.cnblogs.com/subconscious/p/5637735.html)。
 
 ### 跨平台
 
