@@ -217,9 +217,7 @@ int CPlateRecognize::plateRecognize(Mat src, std::vector<CPlate> &plateVecOut, i
 }
 
 int CPlateRecognize::plateRecognize(Mat src, std::vector<CPlate> &plateVecOut, int img_index) {
-
   std::vector<CPlate> plateVec;
-
   int resultPD = plateDetect(src, plateVec, img_index);
 
   if (resultPD == 0) {
