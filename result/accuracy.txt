@@ -2188,3 +2188,8 @@ Recall:84.2263%, Precise:70.6573%, Fscore:76.8474%.
 Recall:84.2263%, Precise:70.6573%, Fscore:76.8474%.
 0-error:60.4%,  1-error:71.6%,  Chinese-precise:73.2%  
 总时间:172秒,  平均执行时间:0.671875秒
+2017-03-25 10:31:53
+总图片数:256,  Plates count:297,  未定位车牌:29,  定位率:90.2357%  
+Recall:84.2263%, Precise:70.6573%, Fscore:76.8474%.
+0-error:60.4%,  1-error:71.6%,  Chinese-precise:73.2%  
+总时间:180秒,  平均执行时间:0.703125秒

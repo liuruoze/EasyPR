@@ -12,6 +12,7 @@ resources/image/tmp/
 experi
 /tmp
 resources/image/native_test/*.jpg
+resources/image/native_test/cars
 *.vsp
 *.psess
 
