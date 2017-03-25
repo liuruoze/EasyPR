@@ -34,7 +34,6 @@ static void plate_locate(const char* image, const bool life_mode = true) {
   plate.setLifemode(life_mode);
 
   std::vector<cv::Mat> results;
-
   plate.plateLocate(src, results);
 }
 
@@ -43,15 +42,25 @@ static std::vector<std::string> plate_recognize(const char* image,
                                                 const char* model_ann,
                                                 const bool life_mode = true) {
   cv::Mat img = cv::imread(image);
-
   assert(!img.empty());
 
   CPlateRecognize pr;
-  pr.setLifemode(life_mode);
-  pr.setDebug(false);
+  pr.setResultShow(true);
+  pr.setLifemode(true);
+  pr.setMaxPlates(1);
+  pr.setDetectType(PR_DETECT_CMSER | PR_DETECT_COLOR);
+
+  pr.LoadSVM("resources/model/svm.xml");
+  pr.LoadANN("resources/model/ann.xml");
+  pr.LoadChineseANN("resources/model/ann_chinese.xml");
 
   std::vector<std::string> results;
-  pr.plateRecognize(img, results);
+  std::vector<CPlate> plates;
+  pr.plateRecognize(img, plates, 0);
+
+  for (auto plate : plates) {
+    results.push_back(plate.getPlateStr());
+  }
 
   return std::move(results);
 }

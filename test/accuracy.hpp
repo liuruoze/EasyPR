@@ -21,14 +21,12 @@ namespace easypr {
   namespace demo {
 
     int getGroundTruth(map<string, vector<CPlate>>& xmlMap, const char* path) {
-
 #ifdef OS_WINDOWS
       XMLNode::setGlobalOptions(XMLNode::char_encoding_GBK);
 #endif
       XMLNode xMainNode = XMLNode::openFileHelper(path, "tagset");
 
       int n = xMainNode.nChildNode("image");
-
       // this prints the "coefficient" value for all the "NumericPredictor" tags:
       for (int i = 0; i < n; i++) {
         XMLNode imageNode = xMainNode.getChildNode("image", i);
@@ -46,14 +44,12 @@ namespace easypr {
           int angle = atoi(plateNode.getAttribute("rotation"));
 
           string plateStr = plateNode.getText();
-
           if (width < height) {
             std::swap(width, height);
             angle = angle + 90;
           }
 
           RotatedRect rr(Point2f(float(x), float(y)), Size2f(float(width), float(height)), (float)angle);
-
           CPlate plate;
           plate.setPlateStr(plateStr);
           plate.setPlatePos(rr);
@@ -79,10 +75,9 @@ namespace easypr {
 #endif
       auto files = Utils::getFiles(test_path);
       std::string path_result = "result/Result.xml";
-      int max_plates = 4;
-
+      int max_plates = 2;
       CPlateRecognize pr;
-      pr.setResultShow(false);
+      pr.setResultShow(true);
       pr.setLifemode(true);
       pr.setMaxPlates(max_plates);
       //pr.setDetectType(PR_DETECT_COLOR | PR_DETECT_SOBEL);
@@ -156,13 +151,7 @@ namespace easypr {
         img_ss << "------------------" << endl;
         string plateLicense = Utils::getFileName(filepath);
         img_ss << kv->get("original_plate") << ":" << plateLicense << endl;
-
-        // remain
-        //XMLNode xNode, rectangleNodes;
-        //xNode = xMainNode.addChild("image");
-        //xNode.addChild("imageName").addText(plateLicense.c_str());
-        //rectangleNodes = xNode.addChild("taggedRectangles");
-          
+  
         // get the ground truth and compare it with the detect list;
         vector<CPlate> plateVecGT;
         bool hasGroundTruth = true;
@@ -180,8 +169,7 @@ namespace easypr {
         }
 
         vector<CPlate> plateVec;
-        int result = pr.plateRecognize(src, plateVec, i);
-       
+        int result = pr.plateRecognize(src, plateVec, i);      
         for (auto plate_g : plateVecGT) {
           float bestmatch = 0.f;
           CPlate* matchPlate = NULL;
@@ -197,7 +185,6 @@ namespace easypr {
             calcSafeRect(platePos_d, src, plateRect_d);
 
             Rect interRect = plateRect_g & plateRect_d;
-
             float match = 2 * (interRect.area()) / (plateRect_g.area() + plateRect_d.area());
             if (match - bestmatch > 0.1f) {
               bestmatch = match;
@@ -207,11 +194,9 @@ namespace easypr {
           }
 
           icdar2003_recall.push_back(bestmatch);
-
           string plateLicense = plate_g.getPlateStr();
           string license = Utils::splitString(plateLicense, ':').at(1);
           img_ss << plate_g.getPlateStr() << " (g)" << endl;
-
           all_plate_count_s++;
 
           if (matchPlate && bestmatch > 0.5f) {
@@ -221,7 +206,6 @@ namespace easypr {
             size_t size = spilt_plate.size();
             if (size == 2 && spilt_plate.at(1) != "") {
               string matchLicense = spilt_plate.at(1);
-
               img_ss << matchPlateLicense << " (d)" << endl;
              
               int diff = utils::levenshtein_distance(license, matchLicense);
@@ -280,32 +264,16 @@ namespace easypr {
             }
           }
         
-          // remain
-          //XMLNode rectangleNode = rectangleNodes.addChild("taggedRectangle");
-          //RotatedRect rr = platePos_d;
-          //LocateType locateType = plate_d.getPlateLocateType();
-
-          //rectangleNode.addAttribute("x", to_string((int)rr.center.x).c_str());
-          //rectangleNode.addAttribute("y", to_string((int)rr.center.y).c_str());
-          //rectangleNode.addAttribute("width", to_string((int)rr.size.width).c_str());
-          //rectangleNode.addAttribute("height", to_string((int)rr.size.height).c_str());
-
-          //rectangleNode.addAttribute("rotation", to_string((int)rr.angle).c_str());
-          //rectangleNode.addAttribute("locateType", to_string(locateType).c_str());
-          //rectangleNode.addText(plate_d.getPlateStr().c_str());
-
           for (auto plate_g : plateVecGT) {
             RotatedRect platePos_g = plate_g.getPlatePos();
             Rect_<float> plateRect_g;
             calcSafeRect(platePos_g, src, plateRect_g);
 
             Rect interRect = plateRect_g & plateRect_d;
-
             float match = 2 * (interRect.area()) / (plateRect_g.area() + plateRect_d.area());
             if (match > bestmatch)
               bestmatch = match;
           }
-
           icdar2003_precise.push_back(bestmatch);
         }
 
@@ -335,7 +303,6 @@ namespace easypr {
         {
           cout << img_ss.str();
         }
-
 #pragma omp critical
         {
           for (auto recall : icdar2003_recall)
@@ -344,7 +311,6 @@ namespace easypr {
           for (auto precise : icdar2003_precise)
             icdar2003_precise_all.push_back(precise);
         }
-
 #pragma omp critical
         {
           all_plate_count += all_plate_count_s;
@@ -355,12 +321,8 @@ namespace easypr {
           count_nodetect += count_nodetect_s;
           count_all++;
         }
-
       }
       time(&end);
-
-      // the xml detection result 
-      //xMainNode.writeToFile(path_result.c_str());
 
       cout << "------------------" << endl;
       cout << "Easypr accuracy test end!" << endl;
@@ -414,15 +376,6 @@ namespace easypr {
 
       cout << kv->get("seconds") << ":" << seconds << kv->get("sec") << ",  ";
       cout << kv->get("seconds_average") << ":" << avgsec << kv->get("sec") << endl;
-
-      /* REMAIN
-      cout << kv->get("unrecognized") << ":" << endl;
-      for (auto it = not_recognized_files.begin(); it != not_recognized_files.end();
-        ++it) {
-        cout << *it << endl;
-      }
-      cout << endl;
-      */
 
       // set the result.
       if (useParams) {

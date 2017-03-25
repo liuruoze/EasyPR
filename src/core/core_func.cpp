@@ -2290,4 +2290,51 @@ bool calcSafeRect(const RotatedRect &roi_rect, const int width, const int height
   return true;
 }
 
+
+Mat uniformResize(const Mat &result) {
+  const int RESULTWIDTH = kShowWindowWidth;   // 640 930
+  const int RESULTHEIGHT = kShowWindowHeight;  // 540 710
+
+  Mat img_window;
+  img_window.create(RESULTHEIGHT, RESULTWIDTH, CV_8UC3);
+
+  int nRows = result.rows;
+  int nCols = result.cols;
+
+  Mat result_resize;
+  if (nCols <= img_window.cols && nRows <= img_window.rows) {
+    result_resize = result;
+
+  }
+  else if (nCols > img_window.cols && nRows <= img_window.rows) {
+    float scale = float(img_window.cols) / float(nCols);
+    resize(result, result_resize, Size(), scale, scale, CV_INTER_AREA);
+
+  }
+  else if (nCols <= img_window.cols && nRows > img_window.rows) {
+    float scale = float(img_window.rows) / float(nRows);
+    resize(result, result_resize, Size(), scale, scale, CV_INTER_AREA);
+
+  }
+  else if (nCols > img_window.cols && nRows > img_window.rows) {
+    Mat result_middle;
+    float scale = float(img_window.cols) / float(nCols);
+    resize(result, result_middle, Size(), scale, scale, CV_INTER_AREA);
+
+    if (result_middle.rows > img_window.rows) {
+      float scale = float(img_window.rows) / float(result_middle.rows);
+      resize(result_middle, result_resize, Size(), scale, scale, CV_INTER_AREA);
+    }
+    else {
+      result_resize = result_middle;
+    }
+  }
+  else {
+    result_resize = result;
+  }
+
+  return result_resize;
+}
+
+
 }

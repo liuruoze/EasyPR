@@ -105,6 +105,9 @@ Mat translateImg(Mat img, int offsetx, int offsety);
 // rotate an image
 Mat rotateImg(Mat source, float angle);
 
+// uniform resize all the image to same size for the next process
+Mat uniformResize(const Mat &result);
+
 } /*! \namespace easypr*/
 
 #endif  // EASYPR_CORE_COREFUNC_H_
