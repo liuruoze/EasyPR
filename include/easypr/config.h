@@ -9,6 +9,8 @@ namespace easypr {
 
   enum CharSearchDirection { LEFT, RIGHT };
 
+  enum SceneMode { UNCONSTRAINED, CAMERPOHNE, PARKING, HIGHWAY };
+
   enum
   {
     PR_DETECT_SOBEL = 0x01,  /**Sobel detect type, using twice Sobel  */
@@ -16,8 +18,10 @@ namespace easypr {
     PR_DETECT_CMSER = 0x04,  /**Character detect type, using mser  */
   };
 
-static const char* kDefaultSvmPath = "resources/model/svm.xml";
-static const char* kLBPSvmPath = "resources/model/svm_lbp_final.xml";
+static const char* kDefaultSvmPath = "resources/model/svm_hist.xml";
+static const char* kLBPSvmPath = "resources/model/svm_lbp.xml";
+static const char* kHistSvmPath = "resources/model/svm_hist.xml";
+
 static const char* kDefaultAnnPath = "resources/model/ann.xml";
 static const char* kChineseAnnPath = "resources/model/ann_chinese.xml";
 
@@ -29,8 +33,8 @@ typedef enum {
 static const int   kPlateResizeWidth = 136;
 static const int   kPlateResizeHeight = 36;
 
-static const int   kShowWindowWidth = 800;
-static const int   kShowWindowHeight = 600;
+static const int   kShowWindowWidth = 1000;
+static const int   kShowWindowHeight = 800;
 
 static const float kSvmPercentage   = 0.7f;
 

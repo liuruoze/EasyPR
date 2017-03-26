@@ -158,9 +158,6 @@
     <ClCompile Include="..\src\core\plate_judge.cpp" />
     <ClCompile Include="..\src\core\plate_locate.cpp" />
     <ClCompile Include="..\src\core\plate_recognize.cpp" />
-    <ClCompile Include="..\src\preprocess\deface.cpp" />
-    <ClCompile Include="..\src\preprocess\gdts.cpp" />
-    <ClCompile Include="..\src\preprocess\mc_data.cpp" />
     <ClCompile Include="..\src\train\ann_train.cpp" />
     <ClCompile Include="..\src\train\svm_train.cpp" />
     <ClCompile Include="..\src\train\train.cpp" />
@@ -189,9 +186,6 @@
     <ClInclude Include="..\include\easypr\core\plate_judge.h" />
     <ClInclude Include="..\include\easypr\core\plate_locate.h" />
     <ClInclude Include="..\include\easypr\core\plate_recognize.h" />
-    <ClInclude Include="..\include\easypr\preprocess\deface.h" />
-    <ClInclude Include="..\include\easypr\preprocess\gdts.h" />
-    <ClInclude Include="..\include\easypr\preprocess\mc_data.h" />
     <ClInclude Include="..\include\easypr\train\ann_train.h" />
     <ClInclude Include="..\include\easypr\train\svm_train.h" />
     <ClInclude Include="..\include\easypr\train\train.h" />

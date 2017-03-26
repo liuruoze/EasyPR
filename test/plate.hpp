@@ -40,7 +40,6 @@ int test_plate_judge() {
   cv::Mat src = imread("resources/image/plate_judge.jpg");
 
   vector<cv::Mat> matVec;
-
   vector<cv::Mat> resultVec;
 
   CPlateLocate lo;

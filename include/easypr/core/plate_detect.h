@@ -37,8 +37,6 @@ class CPlateDetect {
   */
   int plateDetect(Mat src, std::vector<CPlate> &resultVec, int img_index = 0);
 
-  Mat showResult(const Mat &result, int img_index = 0);
-
   void LoadSVM(std::string s);
 
   inline void setPDLifemode(bool param) { m_plateLocate->setLifemode(param); }
@@ -108,6 +106,8 @@ class CPlateDetect {
  private:
 
   int m_maxPlates;
+
+  SceneMode m_mode;
 
   CPlateLocate* m_plateLocate;
 

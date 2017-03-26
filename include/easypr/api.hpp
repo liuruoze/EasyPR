@@ -15,13 +15,12 @@ namespace api {
 
 static bool plate_judge(const char* image, const char* model) {
   cv::Mat src = cv::imread(image);
-
   assert(!src.empty());
 
   int result;
-  PlateJudge::instance()->plateJudge(src, result);
+  result = PlateJudge::instance()->plateJudge(src);
 
-  return result == 1;
+  return result == 0;
 }
 
 static void plate_locate(const char* image, const bool life_mode = true) {

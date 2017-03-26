@@ -391,7 +391,7 @@ int main(int argc, const char* argv[]) {
           }
           break;
         case 5:
-          easypr::preprocess::generate_gdts();
+          //easypr::preprocess::generate_gdts();
           break;
         case 6: {
           easypr::Utils::print_file_lines("etc/dev_team");

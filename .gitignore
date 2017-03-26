@@ -14,6 +14,7 @@ experi
 resources/image/native_test/*.jpg
 resources/image/native_test/cars
 resources/image/native_test/*.py
+resources/image/phone_test
 *.vsp
 *.psess
 

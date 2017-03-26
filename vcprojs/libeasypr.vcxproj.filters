@@ -16,9 +16,6 @@
     <Filter Include="源文件\core">
       <UniqueIdentifier>{4b8b233e-34fa-4e79-81eb-b22bffb823de}</UniqueIdentifier>
     </Filter>
-    <Filter Include="源文件\preprocess">
-      <UniqueIdentifier>{74160fde-836c-4028-9212-8a84c01da6a1}</UniqueIdentifier>
-    </Filter>
     <Filter Include="源文件\train">
       <UniqueIdentifier>{63a97a7f-1945-48a6-a297-a6e001d44df6}</UniqueIdentifier>
     </Filter>
@@ -27,9 +24,6 @@
     </Filter>
     <Filter Include="头文件\easypr">
       <UniqueIdentifier>{3660aff1-3b62-41a4-a063-a587e1ce5403}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="头文件\easypr\preprocess">
-      <UniqueIdentifier>{15bfd286-ae7b-464b-8af2-07fa832b7ab4}</UniqueIdentifier>
     </Filter>
     <Filter Include="头文件\easypr\core">
       <UniqueIdentifier>{8a24ff44-6230-454d-ba4d-7b2e8843c541}</UniqueIdentifier>
@@ -84,15 +78,6 @@
     <ClCompile Include="..\src\core\plate_recognize.cpp">
       <Filter>源文件\core</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\preprocess\deface.cpp">
-      <Filter>源文件\preprocess</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\preprocess\gdts.cpp">
-      <Filter>源文件\preprocess</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\preprocess\mc_data.cpp">
-      <Filter>源文件\preprocess</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\train\ann_train.cpp">
       <Filter>源文件\train</Filter>
     </ClCompile>
@@ -131,15 +116,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\include\easypr\preprocess\deface.h">
-      <Filter>头文件\easypr\preprocess</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\easypr\preprocess\gdts.h">
-      <Filter>头文件\easypr\preprocess</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\easypr\preprocess\mc_data.h">
-      <Filter>头文件\easypr\preprocess</Filter>
-    </ClInclude>
     <ClInclude Include="..\include\easypr\api.hpp">
       <Filter>头文件\easypr</Filter>
     </ClInclude>

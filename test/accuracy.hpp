@@ -20,13 +20,15 @@ namespace easypr {
 
   namespace demo {
 
+    // get the groundTruth
     int getGroundTruth(map<string, vector<CPlate>>& xmlMap, const char* path) {
 #ifdef OS_WINDOWS
       XMLNode::setGlobalOptions(XMLNode::char_encoding_GBK);
+#else
+      XMLNode::setGlobalOptions(XMLNode::char_encoding_UTF8);
 #endif
       XMLNode xMainNode = XMLNode::openFileHelper(path, "tagset");
-
-      int n = xMainNode.nChildNode("image");
+      const int n = xMainNode.nChildNode("image");
       // this prints the "coefficient" value for all the "NumericPredictor" tags:
       for (int i = 0; i < n; i++) {
         XMLNode imageNode = xMainNode.getChildNode("image", i);
@@ -60,33 +62,66 @@ namespace easypr {
       return 0;
     }
 
+    bool nature_sort_file(const std::string& f1, const std::string& f2) {
+      std::string file1 = Utils::getFileName(f1);
+      std::string file2 = Utils::getFileName(f2);
+
+      std::size_t found1 = file1.find_last_of("_");
+      std::size_t found2 = file2.find_last_of("_");
+
+      int index1 = atoi(file1.substr(found1 + 1).c_str());
+      int index2 = atoi(file2.substr(found2 + 1).c_str());
+      return index1 < index2;
+    }
+
+    // the batch test function
     int accuracyTest(const char* test_path, Result& result, bool useParams = false) {
+      // find the right gt file for the platform
+      string gtfile_postfix = "";
+#ifdef OS_WINDOWS
+      XMLNode::setGlobalOptions(XMLNode::char_encoding_GBK);
+      gtfile_postfix = "_windows";
+#else
+      XMLNode::setGlobalOptions(XMLNode::char_encoding_UTF8);
+      gtfile_postfix = "_others";
+#endif
+      // result xml
+      XMLNode xMainNode = XMLNode::createXMLTopNode("tagset");
+      std::string path_result = "result/Result.xml";
+
+      // find text mapping, for compatiable withe utf-8 and GBK
       std::shared_ptr<easypr::Kv> kv(new easypr::Kv);
       kv->load("etc/chinese_mapping");
 
+      // find groundTruth, for compatiable withe utf-8(Linux/Mac) and GBK(Windows)
       map<string, vector<CPlate>> xmlMap;
-      string path(test_path);
-      path = path + "/GroundTruth.xml";
+      string path(test_path);  
+      path = path + "/GroundTruth" + gtfile_postfix + ".xml";
       getGroundTruth(xmlMap, path.c_str());
 
-      XMLNode xMainNode = XMLNode::createXMLTopNode("tagset");
-#ifdef OS_WINDOWS
-      XMLNode::setGlobalOptions(XMLNode::char_encoding_GBK);
-#endif
-      auto files = Utils::getFiles(test_path);
-      std::string path_result = "result/Result.xml";
-      int max_plates = 2;
+      // parameters
+      const bool filesNatureSort = true;
+      const int max_plates = 1;
+      const int isGenerateGT = 1;
+
+      // set the parameters of CPlateRecognize
       CPlateRecognize pr;
-      pr.setResultShow(true);
+      pr.setResultShow(false);
       pr.setLifemode(true);
       pr.setMaxPlates(max_plates);
       //pr.setDetectType(PR_DETECT_COLOR | PR_DETECT_SOBEL);
-      pr.setDetectType(PR_DETECT_CMSER | PR_DETECT_COLOR);
-     
+      pr.setDetectType( PR_DETECT_COLOR);
+
       // load the maching learning model
-      pr.LoadSVM("resources/model/svm.xml");
+      //pr.LoadSVM("resources/model/svm.xml");
       pr.LoadANN("resources/model/ann.xml");
       pr.LoadChineseANN("resources/model/ann_chinese.xml");
+
+      // find all the test files (images)
+      // then sort them by image index
+      auto files = Utils::getFiles(test_path);
+      if (filesNatureSort)
+        std::sort(files.begin(), files.end(), nature_sort_file);
 
       int size = files.size();
       if (0 == size) {
@@ -127,6 +162,7 @@ namespace easypr {
       time_t begin, end;
       time(&begin);
 
+      // use openmp to paraller process these test images
 #pragma omp parallel for
       for (int i = 0; i < size; i++) {
         string filepath = files[i].c_str();
@@ -149,16 +185,23 @@ namespace easypr {
 
         std::stringstream img_ss(std::stringstream::in | std::stringstream::out);
         img_ss << "------------------" << endl;
-        string plateLicense = Utils::getFileName(filepath);
-        img_ss << kv->get("original_plate") << ":" << plateLicense << endl;
+        string imageName = Utils::getFileName(filepath);
+        img_ss << kv->get("original_image") << ":" << imageName << endl;
   
+        XMLNode xNode, rectangleNodes;
+        if (isGenerateGT) {
+          xNode = xMainNode.addChild("image");
+          xNode.addChild("imageName").addText(imageName.c_str());
+          rectangleNodes = xNode.addChild("taggedRectangles");
+        }
+
         // get the ground truth and compare it with the detect list;
         vector<CPlate> plateVecGT;
         bool hasGroundTruth = true;
 #pragma omp critical
         {
           map<string, vector<CPlate>>::iterator it;         
-          it = xmlMap.find(plateLicense);
+          it = xmlMap.find(imageName);
           if (it != xmlMap.end()) {
             plateVecGT = it->second;
           }
@@ -168,9 +211,29 @@ namespace easypr {
           }
         }
 
+        // core method, detect and recognize the plates
         vector<CPlate> plateVec;
-        int result = pr.plateRecognize(src, plateVec, i);      
+        int result = pr.plateRecognize(src, plateVec, i);   
+
+        // calucate the detect recall
+        // use icdar 2003 evalution protoocal
         for (auto plate_g : plateVecGT) {
+          // if isGenerateG, then writes the text string of plate license 
+          XMLNode rectangleNode = rectangleNodes.addChild("taggedRectangle");
+          if (isGenerateGT) {
+            RotatedRect rr = plate_g.getPlatePos();
+            rectangleNode.addAttribute("x", to_string((int)rr.center.x).c_str());
+            rectangleNode.addAttribute("y", to_string((int)rr.center.y).c_str());
+            rectangleNode.addAttribute("width", to_string((int)rr.size.width).c_str());
+            rectangleNode.addAttribute("height", to_string((int)rr.size.height).c_str());
+            rectangleNode.addAttribute("rotation", to_string((int)rr.angle).c_str());
+            std::string plateDefault = "蓝牌:苏A88888";
+#ifdef OS_WINDOWS
+            plateDefault = utils::utf8_to_gbk(plateDefault.c_str());
+#endif
+            rectangleNode.addText(plateDefault.c_str());
+          }
+
           float bestmatch = 0.f;
           CPlate* matchPlate = NULL;
 
@@ -199,6 +262,7 @@ namespace easypr {
           img_ss << plate_g.getPlateStr() << " (g)" << endl;
           all_plate_count_s++;
 
+          // if bestmatch (IOU) > 0.5f then we consider is detected
           if (matchPlate && bestmatch > 0.5f) {
             string matchPlateLicense = matchPlate->getPlateStr();
             vector<string> spilt_plate = Utils::splitString(matchPlateLicense, ':');
@@ -206,8 +270,14 @@ namespace easypr {
             size_t size = spilt_plate.size();
             if (size == 2 && spilt_plate.at(1) != "") {
               string matchLicense = spilt_plate.at(1);
+              // output the detected and matched plate
               img_ss << matchPlateLicense << " (d)" << endl;
-             
+
+              // if isGenerateG, then writes the text string of plate license 
+              if (isGenerateGT) {
+                rectangleNode.updateText(matchPlate->getPlateStr().c_str());
+              }
+
               int diff = utils::levenshtein_distance(license, matchLicense);
               if (diff == 0) {
                 non_error_count_s++;
@@ -323,6 +393,11 @@ namespace easypr {
         }
       }
       time(&end);
+
+      if (isGenerateGT) {
+        //the xml detection result 
+        xMainNode.writeToFile(path_result.c_str());
+      }
 
       cout << "------------------" << endl;
       cout << "Easypr accuracy test end!" << endl;

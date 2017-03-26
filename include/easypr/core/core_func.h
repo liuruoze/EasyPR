@@ -108,6 +108,11 @@ Mat rotateImg(Mat source, float angle);
 // uniform resize all the image to same size for the next process
 Mat uniformResize(const Mat &result);
 
+// show detect results
+void showDectectResults(const Mat& img, const std::vector<CPlate> &plateVec, size_t num);
+
+// show the results
+Mat showResult(const Mat &result, int img_index = 0);
 } /*! \namespace easypr*/
 
 #endif  // EASYPR_CORE_COREFUNC_H_

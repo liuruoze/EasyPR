@@ -79,20 +79,6 @@ void getLBPFeatures(const Mat& image, Mat& features) {
   Mat grayImage;
   cvtColor(image, grayImage, CV_RGB2GRAY);
 
-  //if (1) {
-  //  imshow("grayImage", grayImage);
-  //  waitKey(0);
-  //  destroyWindow("grayImage");
-  //}
-
-  //spatial_ostu(grayImage, 8, 2);
-
-  //if (1) {
-  //  imshow("grayImage", grayImage);
-  //  waitKey(0);
-  //  destroyWindow("grayImage");
-  //}
-
   Mat lbpimage;
   lbpimage = libfacerec::olbp(grayImage);
   Mat lbp_hist = libfacerec::spatial_histogram(lbpimage, 32, 4, 4);

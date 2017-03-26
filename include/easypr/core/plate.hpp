@@ -120,15 +120,8 @@ namespace easypr {
     inline void addReutCharacter(CCharacter param) { m_reutCharVec.push_back(param); }
     inline std::vector<CCharacter> getCopyOfReutCharacters() { return m_reutCharVec; }
 
-    bool operator < (const CPlate& plate) const
-    {
-      return (m_score < plate.m_score);
-    }
-
-    bool operator < (const CPlate& plate)
-    {
-      return (m_score < plate.m_score);
-    }
+    bool operator < (const CPlate& plate) const { return (m_score < plate.m_score); }
+    bool operator < (const CPlate& plate) { return (m_score < plate.m_score); }
 
   private:
     //! plate mat
