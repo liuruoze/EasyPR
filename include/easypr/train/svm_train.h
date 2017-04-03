@@ -4,6 +4,7 @@
 #include "easypr/train/train.h"
 #include <vector>
 #include "easypr/config.h"
+#include "easypr/core/feature.h"
 
 namespace easypr {
 
@@ -32,6 +33,8 @@ class SvmTrain : public ITrain {
   const char* svm_xml_;
   std::vector<TrainItem> train_file_list_;
   std::vector<TrainItem> test_file_list_;
+
+  svmCallback extractFeature;
 };
 }
 

@@ -84,6 +84,12 @@ static const int kCharsTotalNumber = 65;
 
 static bool kDebug = false;
 
+// Disable the copy and assignment operator for this class.
+#define DISABLE_ASSIGN_AND_COPY(className) \
+private:\
+  className& operator=(const className&); \
+  className(const className&)
+
 }
 
 #endif // EASYPR_CONFIG_H_

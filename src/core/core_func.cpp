@@ -4,18 +4,14 @@
 #include "easypr/config.h"
 #include "easypr/core/params.h"
 #include "thirdparty/mser/mser2.hpp"
-
-using namespace cv;
+#include <ctime>
 
 namespace easypr {
-
-
 Mat colorMatch(const Mat &src, Mat &match, const Color r,
                const bool adaptive_minsv) {
 
   // if use adaptive_minsv
   // min value of s and v is adaptive to h
-
   const float max_sv = 255;
   const float minref_sv = 64;
 
@@ -644,14 +640,14 @@ float countOfBigValue(Mat &mat, int iValue) {
   }
 }
 
-Mat ProjectedHistogram(Mat img, int t) {
+Mat ProjectedHistogram(Mat img, int t, int threshold) {
   int sz = (t) ? img.rows : img.cols;
   Mat mhist = Mat::zeros(1, sz, CV_32F);
 
   for (int j = 0; j < sz; j++) {
     Mat data = (t) ? img.row(j) : img.col(j);
 
-    mhist.at<float>(j) = countOfBigValue(data, 20);
+    mhist.at<float>(j) = countOfBigValue(data, threshold);
   }
 
   // Normalize histogram
@@ -662,6 +658,22 @@ Mat ProjectedHistogram(Mat img, int t) {
     mhist.convertTo(mhist, -1, 1.0f / max, 0);
 
   return mhist;
+}
+
+
+Mat showHistogram(const Mat& hist) {
+  int height = 32;
+  int width = hist.cols;
+  Mat show = Mat::zeros(height, width, CV_8UC1);
+  for (int i = 0; i < width; i++) {
+    int len = int((float)height * hist.at<float>(i));
+    for (int j = height-1; j >= 0; j--) {
+      if (height - j <= len)
+        show.at<char>(j, i) = (char)255;
+    }
+  }
+
+  return show;
 }
 
 Mat preprocessChar(Mat in, int char_size) {
@@ -2291,7 +2303,7 @@ bool calcSafeRect(const RotatedRect &roi_rect, const int width, const int height
 }
 
 
-Mat uniformResize(const Mat &result) {
+Mat uniformResize(const Mat &result, float& scale) {
   const int RESULTWIDTH = kShowWindowWidth;   // 640 930
   const int RESULTHEIGHT = kShowWindowHeight;  // 540 710
 
@@ -2304,25 +2316,24 @@ Mat uniformResize(const Mat &result) {
   Mat result_resize;
   if (nCols <= img_window.cols && nRows <= img_window.rows) {
     result_resize = result;
-
   }
   else if (nCols > img_window.cols && nRows <= img_window.rows) {
-    float scale = float(img_window.cols) / float(nCols);
+    scale = float(img_window.cols) / float(nCols);
     resize(result, result_resize, Size(), scale, scale, CV_INTER_AREA);
 
   }
   else if (nCols <= img_window.cols && nRows > img_window.rows) {
-    float scale = float(img_window.rows) / float(nRows);
+    scale = float(img_window.rows) / float(nRows);
     resize(result, result_resize, Size(), scale, scale, CV_INTER_AREA);
 
   }
   else if (nCols > img_window.cols && nRows > img_window.rows) {
     Mat result_middle;
-    float scale = float(img_window.cols) / float(nCols);
+    scale = float(img_window.cols) / float(nCols);
     resize(result, result_middle, Size(), scale, scale, CV_INTER_AREA);
 
     if (result_middle.rows > img_window.rows) {
-      float scale = float(img_window.rows) / float(result_middle.rows);
+      scale = float(img_window.rows) / float(result_middle.rows);
       resize(result_middle, result_resize, Size(), scale, scale, CV_INTER_AREA);
     }
     else {
@@ -2332,7 +2343,6 @@ Mat uniformResize(const Mat &result) {
   else {
     result_resize = result;
   }
-
   return result_resize;
 }
 
@@ -2432,6 +2442,54 @@ Mat showResult(const Mat &result, int img_index) {
   }
 
   return img_window;
+}
+
+Rect rectEnlarge(const Rect& src,const int mat_width, const int mat_height) {
+  float w = (float)src.width;
+  float h = (float)src.height;
+  // enlarge the rect,
+  // width to 120%
+  // height to 105%
+  float new_w = w * 1.2f;
+  float new_h = h * 1.05f;
+
+  Rect_<float> boudRect;
+  boudRect.x = (float)src.x - w * 0.1f;
+  boudRect.y = (float)src.y - h * 0.025f;
+  boudRect.width = new_w;
+  boudRect.height = new_h;
+
+  float tl_x = boudRect.x > 0 ? boudRect.x : 0;
+  float tl_y = boudRect.y > 0 ? boudRect.y : 0;
+
+  float br_x = boudRect.x + boudRect.width < mat_width
+      ? boudRect.x + boudRect.width - 1
+      : mat_width - 1;
+  float br_y = boudRect.y + boudRect.height < mat_height
+      ? boudRect.y + boudRect.height - 1
+      : mat_height - 1;
+
+  float roi_width = br_x - tl_x;
+  float roi_height = br_y - tl_y;
+
+  Rect dst(0,0,0,0);
+  if (roi_width <= 0 || roi_height <= 0) 
+    return dst;
+
+  //! a new rect not out the range of mat
+  dst = Rect_<float>(tl_x, tl_y, roi_width, roi_height);
+  return dst; 
+
+}
+
+void writeTempImage(const Mat& outImg, const string path) {
+  std::stringstream ss(std::stringstream::in | std::stringstream::out);
+  time_t t = time(0);  // get time now
+  struct tm* now = localtime(&t);
+  char buf[80];
+  strftime(buf, sizeof(buf), "%Y-%m-%d %H_%M_%S", now);
+  ss << "resources/image/tmp/" << path << "_" << std::string(buf) << ".jpg";
+  imwrite(ss.str(), outImg);
 }
 
 }

@@ -466,8 +466,6 @@ int CPlateLocate::deskew(const Mat &src, const Mat &src_b,
         destroyWindow("bound_mat_b");
       }
 
-      //std::cout << "roi_angle:" << roi_angle << std::endl;
-
       Point2f roi_ref_center = roi_rect.center - safeBoundRect.tl();
 
       Mat deskew_mat;
@@ -475,21 +473,16 @@ int CPlateLocate::deskew(const Mat &src, const Mat &src_b,
           -90.0 == roi_angle) {
         deskew_mat = bound_mat;
       } else {
-
-
         Mat rotated_mat;
         Mat rotated_mat_b;
 
-        if (!rotation(bound_mat, rotated_mat, roi_rect_size, roi_ref_center,
-                      roi_angle))
+        if (!rotation(bound_mat, rotated_mat, roi_rect_size, roi_ref_center, roi_angle))
           continue;
 
-        if (!rotation(bound_mat_b, rotated_mat_b, roi_rect_size, roi_ref_center,
-                      roi_angle))
+        if (!rotation(bound_mat_b, rotated_mat_b, roi_rect_size, roi_ref_center, roi_angle))
           continue;
 
         // we need affine for rotatioed image
-
         double roi_slope = 0;
         // imshow("1roated_mat",rotated_mat);
         // imshow("rotated_mat_b",rotated_mat_b);
@@ -499,7 +492,6 @@ int CPlateLocate::deskew(const Mat &src, const Mat &src_b,
           deskew_mat = rotated_mat;
       }
 
-
       Mat plate_mat;
       plate_mat.create(HEIGHT, WIDTH, TYPE);
 
@@ -507,10 +499,7 @@ int CPlateLocate::deskew(const Mat &src, const Mat &src_b,
       if (useDeteleArea)
         deleteNotArea(deskew_mat, color);
 
-
-      if (deskew_mat.cols * 1.0 / deskew_mat.rows > 2.3 &&
-          deskew_mat.cols * 1.0 / deskew_mat.rows < 6) {
-
+      if (deskew_mat.cols * 1.0 / deskew_mat.rows > 2.3 && deskew_mat.cols * 1.0 / deskew_mat.rows < 6) {
         if (deskew_mat.cols >= WIDTH || deskew_mat.rows >= HEIGHT)
           resize(deskew_mat, plate_mat, plate_mat.size(), 0, 0, INTER_AREA);
         else
@@ -520,12 +509,10 @@ int CPlateLocate::deskew(const Mat &src, const Mat &src_b,
         plate.setPlatePos(roi_rect);
         plate.setPlateMat(plate_mat);
         if (color != UNKNOWN) plate.setPlateColor(color);
-
         outPlates.push_back(plate);
       }
     }
   }
-
   return 0;
 }
 
@@ -764,14 +751,6 @@ int CPlateLocate::plateMserLocate(Mat src, vector<CPlate> &candPlates, int img_i
     Mat grayImage;
     cvtColor(src, grayImage, COLOR_BGR2GRAY);
     channelImages.push_back(grayImage);
-
-    //Mat singleChannelImage;
-    //extractChannel(src, singleChannelImage, 2);
-    //channelImages.push_back(singleChannelImage);
-    //flags.push_back(BLUE);
-
-    //channelImages.push_back(255 - grayImage);
-    //flags.push_back(YELLOW);
   }
 
   for (size_t i = 0; i < channelImages.size(); ++i) {
@@ -806,13 +785,10 @@ int CPlateLocate::plateMserLocate(Mat src, vector<CPlate> &candPlates, int img_i
 
         rects_mser.push_back(scaleRect);
         mserPlate.push_back(plate);
-        //all_plates.push_back(plate);
       }
 
       Mat resize_src_b;
       resize(src_b, resize_src_b, Size(channelImage.cols, channelImage.rows));
-
-      //src_b_vec.push_back(resize_src_b);
 
       deskew(src, resize_src_b, rects_mser, deskewPlate, false, color);
 
@@ -832,46 +808,8 @@ int CPlateLocate::plateMserLocate(Mat src, vector<CPlate> &candPlates, int img_i
         }
       }
     }
-
   }
 
-  //if (usePlateMser) {
-  //  std::vector<RotatedRect> plateRRect_B;
-  //  std::vector<RotatedRect> plateRRect_Y;
-
-  //  for (auto rrect : all_plateRRect) {
-  //    RotatedRect theRect = scaleBackRRect(rrect, (float)scale_ratio);
-  //    //rotatedRectangle(src, theRect, Scalar(255, 0, 0));
-  //    for (auto plate : all_plates) {
-  //      RotatedRect plateRect = plate.getPlatePos();
-  //      //rotatedRectangle(src, plateRect, Scalar(0, 255, 0));
-  //      bool isSimilar = computeIOU(theRect, plateRect, src, 0.8f);
-  //      if (isSimilar) {
-  //        //rotatedRectangle(src, theRect, Scalar(0, 0, 255));
-  //        Color color = plate.getPlateColor();
-  //        if (color == BLUE) plateRRect_B.push_back(theRect);
-  //        if (color == YELLOW) plateRRect_Y.push_back(theRect);
-  //      }
-  //    }
-  //  }
-
-  //  for (size_t i = 0; i < channelImages.size(); ++i) {
-  //    Color color = flags.at(i);
-  //    Mat resize_src_b = src_b_vec.at(i);
-
-  //    std::vector<CPlate> deskewMserPlate;
-  //    if (color == BLUE)
-  //      deskew(src, resize_src_b, plateRRect_B, deskewMserPlate, false, color);
-  //    if (color == YELLOW)
-  //      deskew(src, resize_src_b, plateRRect_Y, deskewMserPlate, false, color);
-
-  //    for (auto plate : deskewMserPlate) {
-  //      candPlates.push_back(plate);
-  //    }
-  //  }
-  //}
-
-  
   if (0) {
     imshow("src", src);
     waitKey(0);

@@ -88,6 +88,9 @@ namespace easypr {
     inline void setPlateColor(Color param) { m_plateColor = param; }
     inline Color getPlateColor() const { return m_plateColor; }
 
+    inline void setPlateScale(float param) { m_scale = param; }
+    inline float getPlateScale() const { return m_scale; }
+
     inline void setPlateScore(double param) { m_score = param; }
     inline double getPlateScore() const { return m_score; }
 
@@ -138,6 +141,9 @@ namespace easypr {
 
     //! plate color type
     Color m_plateColor;
+
+    //! scale ratio
+    float m_scale;
 
     //! plate likely
     double m_score;

@@ -38,14 +38,70 @@ void getHistogramFeatures(const Mat& image, Mat& features) {
   //grayImage = histeq(grayImage);
 
   Mat img_threshold;
-  threshold(grayImage, img_threshold, 0, 255,
-            CV_THRESH_OTSU + CV_THRESH_BINARY);
+  threshold(grayImage, img_threshold, 0, 255, CV_THRESH_OTSU + CV_THRESH_BINARY);
+  //Mat img_threshold = grayImage.clone();
+  //spatial_ostu(img_threshold, 8, 2, getPlateType(image, false));
+
   features = getHistogram(img_threshold);
+}
+
+// compute color histom
+void getColorFeatures(const Mat& src, Mat& features) {
+  Mat src_hsv;
+
+  //grayImage = histeq(grayImage);
+  cvtColor(src, src_hsv, CV_BGR2HSV);
+  int channels = src_hsv.channels();
+  int nRows = src_hsv.rows;
+
+  // consider multi channel image
+  int nCols = src_hsv.cols * channels;
+  if (src_hsv.isContinuous()) {
+    nCols *= nRows;
+    nRows = 1;
+  }
+
+  const int sz = 180;
+  int h[sz] = { 0 };
+
+  uchar* p;
+  for (int i = 0; i < nRows; ++i) {
+    p = src_hsv.ptr<uchar>(i);
+    for (int j = 0; j < nCols; j += 3) {
+      int H = int(p[j]);      // 0-180
+      if (H > sz - 1) H = sz - 1;
+      if (H < 0) H = 0;
+      h[H]++;
+    }
+  }
+
+  Mat mhist = Mat::zeros(1, sz, CV_32F);
+  for (int j = 0; j < sz; j++) {
+    mhist.at<float>(j) = (float)h[j];
+  }
+
+  // Normalize histogram
+  double min, max;
+  minMaxLoc(mhist, &min, &max);
+
+  if (max > 0)
+    mhist.convertTo(mhist, -1, 1.0f / max, 0);
+
+  features = mhist;
+}
+
+
+void getHistomPlusColoFeatures(const Mat& image, Mat& features) {
+  // TODO
+  Mat feature1, feature2;
+  getHistogramFeatures(image, feature1);
+  getColorFeatures(image, feature2);
+  hconcat(feature1.reshape(1, 1), feature2.reshape(1, 1), features);
 }
 
 
 void getSIFTFeatures(const Mat& image, Mat& features) {
-
+  // TODO
 }
 
 
@@ -60,10 +116,10 @@ void getHOGFeatures(const Mat& image, Mat& features) {
 	Mat trainImg = Mat(dsize, CV_32S);
 	resize(image, trainImg, dsize);
 
-  //compute descripter
+  // compute descripter
 	hog->compute(trainImg, descriptor, Size(8, 8));
 
-  //copy the result
+  // copy the result
 	Mat mat_featrue(descriptor);
 	mat_featrue.copyTo(features);
 }

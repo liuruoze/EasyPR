@@ -11,8 +11,11 @@ namespace easypr {
 class CCharsSegment {
  public:
   CCharsSegment();
-
+  //! using ostu algotithm the segment chars in plate
   int charsSegment(Mat input, std::vector<Mat>& resultVec, Color color = BLUE);
+
+  //! using project the segment chars in plate
+  int charsSegmentUsingProject(Mat input, std::vector<Mat>& resultVec, std::vector<Mat>& grayChars, Color color = BLUE);
 
   bool verifyCharSizes(Mat r);
 
@@ -30,7 +33,6 @@ class CCharsSegment {
   //! Do two things
   //  1.remove rect in the left of city character
   //  2.from the city rect, to the right, choose 6 rects
-
   int RebuildRect(const std::vector<Rect>& vecRect, std::vector<Rect>& outRect,
                   int specIndex);
 

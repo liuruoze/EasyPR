@@ -42,6 +42,7 @@ namespace easypr {
   private:
     // show the detect and recognition result image
     bool m_showResult;
+    DISABLE_ASSIGN_AND_COPY(CPlateRecognize);
   };
 
 } /* \namespace easypr  */

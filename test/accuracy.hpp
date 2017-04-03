@@ -101,7 +101,7 @@ namespace easypr {
 
       // parameters
       const bool filesNatureSort = true;
-      const int max_plates = 1;
+      const int max_plates = 4;
       const int isGenerateGT = 1;
 
       // set the parameters of CPlateRecognize
@@ -110,7 +110,7 @@ namespace easypr {
       pr.setLifemode(true);
       pr.setMaxPlates(max_plates);
       //pr.setDetectType(PR_DETECT_COLOR | PR_DETECT_SOBEL);
-      pr.setDetectType( PR_DETECT_COLOR);
+      pr.setDetectType(PR_DETECT_COLOR | PR_DETECT_SOBEL | PR_DETECT_CMSER);
 
       // load the maching learning model
       //pr.LoadSVM("resources/model/svm.xml");

@@ -15,7 +15,8 @@ CPlateRecognize::CPlateRecognize() {
 int CPlateRecognize::plateRecognize(const Mat& src, std::vector<CPlate> &plateVecOut, int img_index) {
   // resize to uniform sizes
   // TODO: groungTruth affect
-  Mat img = uniformResize(src);
+  float scale = 1.f;
+  Mat img = uniformResize(src, scale);
 
   if (0) {
     std::stringstream ss(std::stringstream::in | std::stringstream::out);
@@ -37,6 +38,11 @@ int CPlateRecognize::plateRecognize(const Mat& src, std::vector<CPlate> &plateVe
         destroyWindow("plate");
       }
 
+      // scale the rect to src;
+      item.setPlateScale(scale);
+      RotatedRect rect = item.getPlatePos();
+      item.setPlatePos(scaleBackRRect(rect, 1.f / scale));
+
       // get plate color
       Color color = item.getPlateColor();
       if (color == UNKNOWN) {
@@ -57,17 +63,17 @@ int CPlateRecognize::plateRecognize(const Mat& src, std::vector<CPlate> &plateVe
         plateVecOut.push_back(item);
       }
       else {
-        std::string license = plateColor;
+        /*std::string license = plateColor;
         item.setPlateStr(license);
         plateVecOut.push_back(item);
         if (0) {
           std::cout << "resultCR:" << resultCR << std::endl;
-        }
+        }*/
       }
     }
     if (getResultShow()) {
       // param type: 0 detect, 1 recognize;
-      int showType = 0;
+      int showType = 1;
       if (0 == showType)
         showDectectResults(img, plateVec, num);
       else

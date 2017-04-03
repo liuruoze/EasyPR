@@ -242,40 +242,6 @@ int CCharsSegment::charsSegment(Mat input, vector<Mat>& resultVec, Color color) 
 
   Mat img_threshold;
 
-
-  //if (BLUE == plateType) {
-  //  // cout << "BLUE" << endl;
-  //  img_threshold = input_grey.clone();
-
-  //  int w = input_grey.cols;
-  //  int h = input_grey.rows;
-  //  Mat tmp = input_grey(Rect_<double>(w * 0.1, h * 0.1, w * 0.8, h * 0.8));
-  //  int threadHoldV = ThresholdOtsu(tmp);
-  //  threshold(input_grey, img_threshold, threadHoldV, 255, CV_THRESH_BINARY);
-
-  //} else if (YELLOW == plateType) {
-  //  // cout << "YELLOW" << endl;
-  //  img_threshold = input_grey.clone();
-  //  int w = input_grey.cols;
-  //  int h = input_grey.rows;
-  //  Mat tmp = input_grey(Rect_<double>(w * 0.1, h * 0.1, w * 0.8, h * 0.8));
-  //  int threadHoldV = ThresholdOtsu(tmp);
-  //  // utils::imwrite("resources/image/tmp/inputgray2.jpg", input_grey);
-
-  //  threshold(input_grey, img_threshold, threadHoldV, 255,
-  //            CV_THRESH_BINARY_INV);
-
-  //} else if (WHITE == plateType) {
-  //  // cout << "WHITE" << endl;
-
-  //  threshold(input_grey, img_threshold, 10, 255,
-  //            CV_THRESH_OTSU + CV_THRESH_BINARY_INV);
-  //} else {
-  //  // cout << "UNKNOWN" << endl;
-  //  threshold(input_grey, img_threshold, 10, 255,
-  //            CV_THRESH_OTSU + CV_THRESH_BINARY);
-  //}
-
   img_threshold = input_grey.clone();
   spatial_ostu(img_threshold, 8, 2, plateType);
 
@@ -287,10 +253,7 @@ int CCharsSegment::charsSegment(Mat input, vector<Mat>& resultVec, Color color) 
 
   // remove liuding and hor lines
   // also judge weather is plate use jump count
-
   if (!clearLiuDing(img_threshold)) return 0x02;
-  //clearLiuDing(img_threshold);
-
 
   Mat img_contours;
   img_threshold.copyTo(img_contours);
@@ -393,6 +356,158 @@ int CCharsSegment::charsSegment(Mat input, vector<Mat>& resultVec, Color color) 
       }
     }
 
+    resultVec.push_back(newRoi);
+  }
+
+  return 0;
+}
+
+int index_1 = 0;
+int CCharsSegment::charsSegmentUsingProject(Mat input, vector<Mat>& resultVec, vector<Mat>& grayChars, Color color) {
+  if (!input.data) return 0x01;
+
+  Color plateType = color;
+
+  Mat input_grey;
+  cvtColor(input, input_grey, CV_BGR2GRAY);
+
+  if (0) {
+    imshow("plate", input_grey);
+    waitKey(0);
+    destroyWindow("plate");
+  }
+
+  if (1) {
+    std::stringstream ss(std::stringstream::in | std::stringstream::out);
+    ss << "resources/image/tmp/plateMatGray/plate_" << index_1++ << ".jpg";
+    imwrite(ss.str(), input_grey);
+  }
+
+  Mat img_threshold;
+
+  img_threshold = input_grey.clone();
+  spatial_ostu(img_threshold, 8, 2, plateType);
+
+  if (0) {
+    imshow("plate", img_threshold);
+    waitKey(0);
+    destroyWindow("plate");
+  }
+
+  // remove liuding and hor lines
+  // also judge weather is plate use jump count
+  if (!clearLiuDing(img_threshold)) return 0x02;
+
+  //Mat vhist = ProjectedHistogram(img_threshold, VERTICAL, 0);
+  //Mat showHist = showHistogram(vhist);
+  //if (0) {
+  //  imshow("showHist", showHist);
+  //  waitKey(0);
+  //  destroyWindow("showHist");
+  //}
+
+  Mat img_contours;
+  img_threshold.copyTo(img_contours);
+
+  vector<vector<Point> > contours;
+  findContours(img_contours,
+    contours,               // a vector of contours
+    CV_RETR_EXTERNAL,       // retrieve the external contours
+    CV_CHAIN_APPROX_NONE);  // all pixels of each contours
+
+  vector<vector<Point> >::iterator itc = contours.begin();
+  vector<Rect> vecRect;
+
+  while (itc != contours.end()) {
+    Rect mr = boundingRect(Mat(*itc));
+    Mat auxRoi(img_threshold, mr);
+
+    if (verifyCharSizes(auxRoi)) vecRect.push_back(mr);
+    ++itc;
+  }
+
+
+  if (vecRect.size() == 0) return 0x03;
+
+  vector<Rect> sortedRect(vecRect);
+  std::sort(sortedRect.begin(), sortedRect.end(),
+    [](const Rect& r1, const Rect& r2) { return r1.x < r2.x; });
+
+  size_t specIndex = 0;
+
+  specIndex = GetSpecificRect(sortedRect);
+
+  Rect chineseRect;
+  if (specIndex < sortedRect.size())
+    chineseRect = GetChineseRect(sortedRect[specIndex]);
+  else
+    return 0x04;
+
+  if (0) {
+    rectangle(img_threshold, chineseRect, Scalar(255));
+    imshow("plate", img_threshold);
+    waitKey(0);
+    destroyWindow("plate");
+  }
+
+  vector<Rect> newSortedRect;
+  newSortedRect.push_back(chineseRect);
+  RebuildRect(sortedRect, newSortedRect, specIndex);
+
+  if (newSortedRect.size() == 0) return 0x05;
+
+  bool useSlideWindow = true;
+  bool useAdapThreshold = true;
+  //bool useAdapThreshold = CParams::instance()->getParam1b();
+
+  for (size_t i = 0; i < newSortedRect.size(); i++) {
+    Rect mr = newSortedRect[i];
+    Rect large_mr = rectEnlarge(mr, input_grey.cols, input_grey.rows);
+    Mat grayChar(input_grey, large_mr);
+
+    Mat auxRoi(input_grey, mr);
+    Mat newRoi;
+    if (i == 0) {
+      if (useSlideWindow) {
+        float slideLengthRatio = 0.1f;
+        //float slideLengthRatio = CParams::instance()->getParam1f();
+        if (!slideChineseWindow(input_grey, mr, newRoi, plateType, slideLengthRatio, useAdapThreshold))
+          judgeChinese(auxRoi, newRoi, plateType);
+      }
+      else
+        judgeChinese(auxRoi, newRoi, plateType);
+    }
+    else {
+      if (BLUE == plateType) {
+        threshold(auxRoi, newRoi, 0, 255, CV_THRESH_BINARY + CV_THRESH_OTSU);
+      }
+      else if (YELLOW == plateType) {
+        threshold(auxRoi, newRoi, 0, 255, CV_THRESH_BINARY_INV + CV_THRESH_OTSU);
+      }
+      else if (WHITE == plateType) {
+        threshold(auxRoi, newRoi, 0, 255, CV_THRESH_OTSU + CV_THRESH_BINARY_INV);
+      }
+      else {
+        threshold(auxRoi, newRoi, 0, 255, CV_THRESH_OTSU + CV_THRESH_BINARY);
+      }
+
+      newRoi = preprocessChar(newRoi);
+    }
+
+    if (0) {
+      if (i == 0) {
+        imshow("input_grey", input_grey);
+        waitKey(0);
+        destroyWindow("input_grey");
+      }
+      if (i == 0) {
+        imshow("newRoi", newRoi);
+        waitKey(0);
+        destroyWindow("newRoi");
+      }
+    }
+
+    grayChars.push_back(grayChar);
     resultVec.push_back(newRoi);
   }
 

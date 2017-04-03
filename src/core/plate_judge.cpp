@@ -22,7 +22,7 @@ namespace easypr {
     }
     else {
       svm_ = ml::SVM::load<ml::SVM>(kHistSvmPath);
-      extractFeature = getHistogramFeatures;
+      extractFeature = getHistomPlusColoFeatures;
     }
   }
 

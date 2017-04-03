@@ -6,33 +6,33 @@
 namespace easypr {
 
 //! 获得车牌的特征数
-
 cv::Mat getHistogram(cv::Mat in);
 
 //! EasyPR的getFeatures回调函数
 //! 用于从车牌的image生成svm的训练特征features
-
 typedef void (*svmCallback)(const cv::Mat& image, cv::Mat& features);
 
 //!  EasyPR的getFeatures回调函数
 //! 本函数是获取垂直和水平的直方图图值
-
 void getHistogramFeatures(const cv::Mat& image, cv::Mat& features);
 
 //! 本函数是获取SIFT特征子
-
 void getSIFTFeatures(const cv::Mat& image, cv::Mat& features);
 
 //! 本函数是获取HOG特征子
-
 void getHOGFeatures(const cv::Mat& image, cv::Mat& features);
 
 //! 本函数是获取HSV空间量化的直方图特征子
-
 void getHSVHistFeatures(const cv::Mat& image, cv::Mat& features);
 
 //! LBP feature
 void getLBPFeatures(const cv::Mat& image, cv::Mat& features);
+
+//! color feature
+void getColorFeatures(const cv::Mat& src, cv::Mat& features);
+
+//! color feature and histom
+void getHistomPlusColoFeatures(const cv::Mat& image, cv::Mat& features);
 
 //! get character feature
 cv::Mat charFeatures(cv::Mat in, int sizeData);

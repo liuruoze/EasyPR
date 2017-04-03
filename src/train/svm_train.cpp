@@ -1,5 +1,4 @@
 #include "easypr/train/svm_train.h"
-#include "easypr/core/feature.h"
 #include "easypr/util/util.h"
 
 #ifdef OS_WINDOWS
@@ -14,6 +13,8 @@ SvmTrain::SvmTrain(const char* plates_folder, const char* xml)
     : plates_folder_(plates_folder), svm_xml_(xml) {
   assert(plates_folder);
   assert(xml);
+
+  extractFeature = getHistomPlusColoFeatures;
 }
 
 void SvmTrain::train() {
@@ -33,10 +34,10 @@ void SvmTrain::train() {
 
   fprintf(stdout, ">> Training SVM model, please wait...\n");
   long start = utils::getTimestamp();
-  //svm_->trainAuto(train_data, 10, SVM::getDefaultGrid(SVM::C),
-  //                SVM::getDefaultGrid(SVM::GAMMA), SVM::getDefaultGrid(SVM::P),
-  //                SVM::getDefaultGrid(SVM::NU), SVM::getDefaultGrid(SVM::COEF),
-  //                SVM::getDefaultGrid(SVM::DEGREE), true);
+  /*svm_->trainAuto(train_data, 10, SVM::getDefaultGrid(SVM::C),
+                  SVM::getDefaultGrid(SVM::GAMMA), SVM::getDefaultGrid(SVM::P),
+                  SVM::getDefaultGrid(SVM::NU), SVM::getDefaultGrid(SVM::COEF),
+                  SVM::getDefaultGrid(SVM::DEGREE), true);*/
   svm_->train(train_data);
 
   long end = utils::getTimestamp();
@@ -74,7 +75,7 @@ void SvmTrain::test() {
       continue;
     }
     cv::Mat feature;
-    getLBPFeatures(image, feature);
+    extractFeature(image, feature);
 
     auto predict = int(svm_->predict(feature));
     //std::cout << "predict: " << predict << std::endl;
@@ -171,7 +172,7 @@ cv::Ptr<cv::ml::TrainData> SvmTrain::tdata() {
       continue;
     }
     cv::Mat feature;
-    getLBPFeatures(image, feature);
+    extractFeature(image, feature);
     feature = feature.reshape(1, 1);
 
     samples.push_back(feature);

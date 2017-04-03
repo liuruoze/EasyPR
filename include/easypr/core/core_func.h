@@ -6,6 +6,7 @@
 #include "easypr/core/character.hpp"
 
 using namespace cv;
+using namespace std;
 
 /*! \namespace easypr
 Namespace where all the C++ EasyPR functionality resides
@@ -40,8 +41,10 @@ Rect GetCenterRect(Mat& in);
 Mat CutTheRect(Mat& in, Rect& rect);
 int ThresholdOtsu(Mat mat);
 
+// project histogram
+Mat ProjectedHistogram(Mat img, int t, int threshold = 20);
 
-Mat ProjectedHistogram(Mat img, int t);
+Mat showHistogram(const Mat& hist);
 
 Mat preprocessChar(Mat in, int char_size);
 
@@ -106,13 +109,19 @@ Mat translateImg(Mat img, int offsetx, int offsety);
 Mat rotateImg(Mat source, float angle);
 
 // uniform resize all the image to same size for the next process
-Mat uniformResize(const Mat &result);
+Mat uniformResize(const Mat &result, float& scale);
 
 // show detect results
 void showDectectResults(const Mat& img, const std::vector<CPlate> &plateVec, size_t num);
 
 // show the results
 Mat showResult(const Mat &result, int img_index = 0);
+
+// enlarge the char rect
+Rect rectEnlarge(const Rect& src, const int mat_width, const int mat_height);
+
+// write images to temp folder
+void writeTempImage(const Mat& outImg, const string path);
 } /*! \namespace easypr*/
 
 #endif  // EASYPR_CORE_COREFUNC_H_

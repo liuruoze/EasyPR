@@ -2283,3 +2283,253 @@ Recall:74.9658%, Precise:87.1696%, Fscore:80.6084%.
 Recall:74.9658%, Precise:87.1696%, Fscore:80.6084%.
 0-error:60.9756%,  1-error:70.7317%,  Chinese-precise:78.0488%  
 总时间:14秒,  平均执行时间:0.28秒
+2017-04-02 13:29:28
+总图片数:90,  Plates count:0,  未定位车牌:0,  定位率:-1.#IND%  
+Recall:0%, Precise:0%, Fscore:0%.
+0-error:0%,  1-error:0%,  Chinese-precise:100%  
+总时间:426秒,  平均执行时间:4.73333秒
+2017-04-02 13:47:34
+总图片数:90,  Plates count:90,  未定位车牌:10,  定位率:88.8889%  
+Recall:82.3222%, Precise:82.3222%, Fscore:82.3222%.
+0-error:0%,  1-error:0%,  Chinese-precise:65.8228%  
+总时间:368秒,  平均执行时间:4.08889秒
+2017-04-02 14:33:41
+总图片数:90,  Plates count:90,  未定位车牌:10,  定位率:88.8889%  
+Recall:82.3222%, Precise:82.3222%, Fscore:82.3222%.
+0-error:49.3671%,  1-error:62.0253%,  Chinese-precise:68.3544%  
+总时间:392秒,  平均执行时间:4.35556秒
+2017-04-02 18:07:20
+总图片数:90,  Plates count:90,  未定位车牌:10,  定位率:88.8889%  
+Recall:82.3222%, Precise:82.3222%, Fscore:82.3222%.
+0-error:49.3671%,  1-error:62.0253%,  Chinese-precise:68.3544%  
+总时间:380秒,  平均执行时间:4.22222秒
+2017-04-02 18:56:01
+总图片数:90,  Plates count:90,  未定位车牌:8,  定位率:91.1111%  
+Recall:84.3833%, Precise:84.3833%, Fscore:84.3833%.
+0-error:50%,  1-error:62.5%,  Chinese-precise:68.75%  
+总时间:398秒,  平均执行时间:4.42222秒
+2017-04-02 19:12:58
+总图片数:90,  Plates count:90,  未定位车牌:8,  定位率:91.1111%  
+Recall:84.3833%, Precise:84.3833%, Fscore:84.3833%.
+0-error:50%,  1-error:62.5%,  Chinese-precise:68.75%  
+总时间:390秒,  平均执行时间:4.33333秒
+2017-04-02 19:37:35
+总图片数:90,  Plates count:90,  未定位车牌:8,  定位率:91.1111%  
+Recall:84.3833%, Precise:84.3833%, Fscore:84.3833%.
+0-error:50%,  1-error:62.5%,  Chinese-precise:68.75%  
+总时间:388秒,  平均执行时间:4.31111秒
+2017-04-02 22:09:29
+总图片数:90,  Plates count:90,  未定位车牌:4,  定位率:95.5556%  
+Recall:88.2325%, Precise:88.2325%, Fscore:88.2325%.
+0-error:42.1687%,  1-error:49.3976%,  Chinese-precise:56.6265%  
+总时间:389秒,  平均执行时间:4.32222秒
+2017-04-03 09:50:07
+总图片数:90,  Plates count:90,  未定位车牌:4,  定位率:95.5556%  
+Recall:88.2325%, Precise:88.2325%, Fscore:88.2325%.
+0-error:44.5783%,  1-error:54.2169%,  Chinese-precise:63.8554%  
+总时间:396秒,  平均执行时间:4.4秒
+2017-04-03 10:37:18
+总图片数:90,  Plates count:90,  未定位车牌:4,  定位率:95.5556%  
+Recall:88.2325%, Precise:88.2325%, Fscore:88.2325%.
+0-error:44.5783%,  1-error:54.2169%,  Chinese-precise:63.8554%  
+总时间:385秒,  平均执行时间:4.27778秒
+2017-04-03 11:05:49
+总图片数:90,  Plates count:90,  未定位车牌:4,  定位率:95.5556%  
+Recall:88.2325%, Precise:88.2325%, Fscore:88.2325%.
+0-error:12.6984%,  1-error:17.4603%,  Chinese-precise:22.2222%  
+总时间:397秒,  平均执行时间:4.41111秒
+2017-04-03 11:14:10
+总图片数:90,  Plates count:90,  未定位车牌:4,  定位率:95.5556%  
+Recall:88.2325%, Precise:88.2325%, Fscore:88.2325%.
+0-error:44.5783%,  1-error:54.2169%,  Chinese-precise:63.8554%  
+总时间:390秒,  平均执行时间:4.33333秒
+2017-04-03 11:30:30
+总图片数:6,  Plates count:6,  未定位车牌:1,  定位率:83.3333%  
+Recall:71.4612%, Precise:71.4612%, Fscore:71.4612%.
+0-error:60%,  1-error:80%,  Chinese-precise:80%  
+总时间:24秒,  平均执行时间:4秒
+2017-04-03 11:41:16
+总图片数:256,  Plates count:297,  未定位车牌:54,  定位率:81.8182%  
+Recall:74.8916%, Precise:87.9162%, Fscore:80.8829%.
+0-error:60.6335%,  1-error:73.7557%,  Chinese-precise:76.9231%  
+总时间:576秒,  平均执行时间:2.25秒
+2017-04-03 15:30:18
+总图片数:16,  Plates count:0,  未定位车牌:0,  定位率:-1.#IND%  
+Recall:0%, Precise:0%, Fscore:0%.
+0-error:0%,  1-error:0%,  Chinese-precise:100%  
+总时间:22秒,  平均执行时间:1.375秒
+2017-04-03 15:43:58
+总图片数:0,  Plates count:0,  未定位车牌:0,  定位率:-1.#IND%  
+Recall:0%, Precise:0%, Fscore:0%.
+0-error:0%,  1-error:0%,  Chinese-precise:100%  
+总时间:0秒,  平均执行时间:-1.#IND秒
+2017-04-03 15:44:39
+总图片数:16,  Plates count:0,  未定位车牌:0,  定位率:-1.#IND%  
+Recall:0%, Precise:0%, Fscore:0%.
+0-error:0%,  1-error:0%,  Chinese-precise:100%  
+总时间:22秒,  平均执行时间:1.375秒
+2017-04-03 15:47:49
+总图片数:18,  Plates count:0,  未定位车牌:0,  定位率:-1.#IND%  
+Recall:0%, Precise:0%, Fscore:0%.
+0-error:0%,  1-error:0%,  Chinese-precise:100%  
+总时间:28秒,  平均执行时间:1.55556秒
+2017-04-03 15:56:38
+总图片数:20,  Plates count:0,  未定位车牌:0,  定位率:-1.#IND%  
+Recall:0%, Precise:0%, Fscore:0%.
+0-error:0%,  1-error:0%,  Chinese-precise:100%  
+总时间:39秒,  平均执行时间:1.95秒
+2017-04-03 16:33:32
+总图片数:16,  Plates count:0,  未定位车牌:0,  定位率:-1.#IND%  
+Recall:0%, Precise:0%, Fscore:0%.
+0-error:0%,  1-error:0%,  Chinese-precise:100%  
+总时间:26秒,  平均执行时间:1.625秒
+2017-04-03 16:43:39
+总图片数:30,  Plates count:0,  未定位车牌:0,  定位率:-1.#IND%  
+Recall:0%, Precise:0%, Fscore:0%.
+0-error:0%,  1-error:0%,  Chinese-precise:100%  
+总时间:68秒,  平均执行时间:2.26667秒
+2017-04-03 16:45:31
+总图片数:30,  Plates count:0,  未定位车牌:0,  定位率:-1.#IND%  
+Recall:0%, Precise:0%, Fscore:0%.
+0-error:0%,  1-error:0%,  Chinese-precise:100%  
+总时间:69秒,  平均执行时间:2.3秒
+2017-04-03 16:51:36
+总图片数:12,  Plates count:0,  未定位车牌:0,  定位率:-1.#IND%  
+Recall:0%, Precise:0%, Fscore:0%.
+0-error:0%,  1-error:0%,  Chinese-precise:100%  
+总时间:20秒,  平均执行时间:1.66667秒
+2017-04-03 16:56:47
+总图片数:20,  Plates count:0,  未定位车牌:0,  定位率:-1.#IND%  
+Recall:0%, Precise:0%, Fscore:0%.
+0-error:0%,  1-error:0%,  Chinese-precise:100%  
+总时间:38秒,  平均执行时间:1.9秒
+2017-04-03 17:05:04
+总图片数:27,  Plates count:0,  未定位车牌:0,  定位率:-1.#IND%  
+Recall:0%, Precise:0%, Fscore:0%.
+0-error:0%,  1-error:0%,  Chinese-precise:100%  
+总时间:54秒,  平均执行时间:2秒
+2017-04-03 18:06:38
+总图片数:16,  Plates count:0,  未定位车牌:0,  定位率:-1.#IND%  
+Recall:0%, Precise:0%, Fscore:0%.
+0-error:0%,  1-error:0%,  Chinese-precise:100%  
+总时间:28秒,  平均执行时间:1.75秒
+2017-04-03 18:10:04
+总图片数:25,  Plates count:0,  未定位车牌:0,  定位率:-1.#IND%  
+Recall:0%, Precise:0%, Fscore:0%.
+0-error:0%,  1-error:0%,  Chinese-precise:100%  
+总时间:41秒,  平均执行时间:1.64秒
+2017-04-03 18:19:32
+总图片数:30,  Plates count:0,  未定位车牌:0,  定位率:-1.#IND%  
+Recall:0%, Precise:0%, Fscore:0%.
+0-error:0%,  1-error:0%,  Chinese-precise:100%  
+总时间:49秒,  平均执行时间:1.63333秒
+2017-04-03 18:29:38
+总图片数:30,  Plates count:0,  未定位车牌:0,  定位率:-1.#IND%  
+Recall:0%, Precise:0%, Fscore:0%.
+0-error:0%,  1-error:0%,  Chinese-precise:100%  
+总时间:56秒,  平均执行时间:1.86667秒
+2017-04-03 18:32:51
+总图片数:23,  Plates count:0,  未定位车牌:0,  定位率:-1.#IND%  
+Recall:0%, Precise:0%, Fscore:0%.
+0-error:0%,  1-error:0%,  Chinese-precise:100%  
+总时间:32秒,  平均执行时间:1.3913秒
+2017-04-03 18:36:40
+总图片数:23,  Plates count:0,  未定位车牌:0,  定位率:-1.#IND%  
+Recall:0%, Precise:0%, Fscore:0%.
+0-error:0%,  1-error:0%,  Chinese-precise:100%  
+总时间:33秒,  平均执行时间:1.43478秒
+2017-04-03 18:40:13
+总图片数:22,  Plates count:0,  未定位车牌:0,  定位率:-1.#IND%  
+Recall:0%, Precise:0%, Fscore:0%.
+0-error:0%,  1-error:0%,  Chinese-precise:100%  
+总时间:33秒,  平均执行时间:1.5秒
+2017-04-03 19:29:11
+总图片数:27,  Plates count:0,  未定位车牌:0,  定位率:-1.#IND%  
+Recall:0%, Precise:0%, Fscore:0%.
+0-error:0%,  1-error:0%,  Chinese-precise:100%  
+总时间:42秒,  平均执行时间:1.55556秒
+2017-04-03 19:47:39
+总图片数:256,  Plates count:297,  未定位车牌:12,  定位率:95.9596%  
+Recall:88.4615%, Precise:53.4871%, Fscore:66.6657%.
+0-error:60.1626%,  1-error:72.3577%,  Chinese-precise:75.2033%  
+总时间:610秒,  平均执行时间:2.38281秒
+2017-04-03 20:26:10
+总图片数:25,  Plates count:0,  未定位车牌:0,  定位率:-1.#IND%  
+Recall:0%, Precise:0%, Fscore:0%.
+0-error:0%,  1-error:0%,  Chinese-precise:100%  
+总时间:40秒,  平均执行时间:1.6秒
+2017-04-03 20:29:25
+总图片数:33,  Plates count:0,  未定位车牌:0,  定位率:-1.#IND%  
+Recall:0%, Precise:0%, Fscore:0%.
+0-error:0%,  1-error:0%,  Chinese-precise:100%  
+总时间:55秒,  平均执行时间:1.66667秒
+2017-04-03 20:33:36
+总图片数:31,  Plates count:0,  未定位车牌:0,  定位率:-1.#IND%  
+Recall:0%, Precise:0%, Fscore:0%.
+0-error:0%,  1-error:0%,  Chinese-precise:100%  
+总时间:74秒,  平均执行时间:2.3871秒
+2017-04-03 20:35:49
+总图片数:29,  Plates count:0,  未定位车牌:0,  定位率:-1.#IND%  
+Recall:0%, Precise:0%, Fscore:0%.
+0-error:0%,  1-error:0%,  Chinese-precise:100%  
+总时间:57秒,  平均执行时间:1.96552秒
+2017-04-03 20:38:08
+总图片数:25,  Plates count:0,  未定位车牌:0,  定位率:-1.#IND%  
+Recall:0%, Precise:0%, Fscore:0%.
+0-error:0%,  1-error:0%,  Chinese-precise:100%  
+总时间:38秒,  平均执行时间:1.52秒
+2017-04-03 20:40:38
+总图片数:22,  Plates count:0,  未定位车牌:0,  定位率:-1.#IND%  
+Recall:0%, Precise:0%, Fscore:0%.
+0-error:0%,  1-error:0%,  Chinese-precise:100%  
+总时间:37秒,  平均执行时间:1.68182秒
+2017-04-03 20:42:30
+总图片数:25,  Plates count:0,  未定位车牌:0,  定位率:-1.#IND%  
+Recall:0%, Precise:0%, Fscore:0%.
+0-error:0%,  1-error:0%,  Chinese-precise:100%  
+总时间:37秒,  平均执行时间:1.48秒
+2017-04-03 20:43:53
+总图片数:30,  Plates count:0,  未定位车牌:0,  定位率:-1.#IND%  
+Recall:0%, Precise:0%, Fscore:0%.
+0-error:0%,  1-error:0%,  Chinese-precise:100%  
+总时间:62秒,  平均执行时间:2.06667秒
+2017-04-03 20:47:24
+总图片数:15,  Plates count:0,  未定位车牌:0,  定位率:-1.#IND%  
+Recall:0%, Precise:0%, Fscore:0%.
+0-error:0%,  1-error:0%,  Chinese-precise:100%  
+总时间:25秒,  平均执行时间:1.66667秒
+2017-04-03 20:50:17
+总图片数:32,  Plates count:0,  未定位车牌:0,  定位率:-1.#IND%  
+Recall:0%, Precise:0%, Fscore:0%.
+0-error:0%,  1-error:0%,  Chinese-precise:100%  
+总时间:54秒,  平均执行时间:1.6875秒
+2017-04-03 21:13:05
+总图片数:256,  Plates count:297,  未定位车牌:13,  定位率:95.6229%  
+Recall:87.9612%, Precise:65.7749%, Fscore:75.2672%.
+0-error:61.5385%,  1-error:72.4696%,  Chinese-precise:75.3036%  
+总时间:579秒,  平均执行时间:2.26172秒
+2017-04-03 21:17:40
+总图片数:1,  Plates count:1,  未定位车牌:0,  定位率:100%  
+Recall:92.3851%, Precise:46.1925%, Fscore:61.5901%.
+0-error:100%,  1-error:100%,  Chinese-precise:100%  
+总时间:1秒,  平均执行时间:1秒
+2017-04-03 21:18:31
+总图片数:0,  Plates count:0,  未定位车牌:0,  定位率:-1.#IND%  
+Recall:0%, Precise:0%, Fscore:0%.
+0-error:0%,  1-error:0%,  Chinese-precise:100%  
+总时间:0秒,  平均执行时间:-1.#IND秒
+2017-04-03 21:18:45
+总图片数:1,  Plates count:1,  未定位车牌:0,  定位率:100%  
+Recall:92.3851%, Precise:46.1925%, Fscore:61.5901%.
+0-error:100%,  1-error:100%,  Chinese-precise:100%  
+总时间:10秒,  平均执行时间:10秒
+2017-04-03 21:29:31
+总图片数:256,  Plates count:297,  未定位车牌:12,  定位率:95.9596%  
+Recall:88.4615%, Precise:53.4871%, Fscore:66.6657%.
+0-error:60.1626%,  1-error:72.3577%,  Chinese-precise:75.2033%  
+总时间:576秒,  平均执行时间:2.25秒
+2017-04-03 21:48:03
+总图片数:256,  Plates count:297,  未定位车牌:47,  定位率:84.1751%  
+Recall:78.0573%, Precise:83.3587%, Fscore:80.6209%.
+0-error:60.8%,  1-error:71.6%,  Chinese-precise:74.4%  
+总时间:579秒,  平均执行时间:2.26172秒
