@@ -5,6 +5,7 @@
 #include "easypr/config.h"
 
 using namespace cv;
+using namespace std;
 
 namespace easypr {
 
@@ -16,6 +17,9 @@ class CCharsSegment {
 
   //! using project the segment chars in plate
   int charsSegmentUsingProject(Mat input, std::vector<Mat>& resultVec, std::vector<Mat>& grayChars, Color color = BLUE);
+
+  //! using project 
+  int projectSegment(const Mat& input, Color color, vector<int>& out_indexs);
 
   bool verifyCharSizes(Mat r);
 

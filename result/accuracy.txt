@@ -2578,3 +2578,33 @@ Recall:0%, Precise:0%, Fscore:0%.
 Recall:88.4994%, Precise:66.935%, Fscore:76.2213%.
 0-error:59.6%,  1-error:70.4%,  Chinese-precise:72.4%  
 总共时间: 552秒,  平均执行时间:2.15625秒
+2017-04-04 17:48:01
+总图片数:1,  Plates count:1,  未定位车牌:0,  检出率:100%  
+Recall:88.2833%, Precise:88.2833%, Fscore:88.2833%.
+0-error:0%,  1-error:100%,  Chinese-precise:100%  
+总共时间: 11秒,  平均执行时间:11秒
+2017-04-04 17:52:45
+总图片数:1,  Plates count:1,  未定位车牌:0,  检出率:100%  
+Recall:88.2833%, Precise:88.2833%, Fscore:88.2833%.
+0-error:0%,  1-error:100%,  Chinese-precise:100%  
+总共时间: 25秒,  平均执行时间:25秒
+2017-04-04 18:17:02
+总图片数:1,  Plates count:1,  未定位车牌:0,  检出率:100%  
+Recall:88.2833%, Precise:88.2833%, Fscore:88.2833%.
+0-error:0%,  1-error:100%,  Chinese-precise:100%  
+总共时间: 23秒,  平均执行时间:23秒
+2017-04-04 19:10:48
+总图片数:1,  Plates count:1,  未定位车牌:0,  检出率:100%  
+Recall:88.2833%, Precise:88.2833%, Fscore:88.2833%.
+0-error:0%,  1-error:100%,  Chinese-precise:100%  
+总共时间: 7秒,  平均执行时间:7秒
+2017-04-04 19:12:13
+总图片数:1,  Plates count:1,  未定位车牌:0,  检出率:100%  
+Recall:88.2833%, Precise:88.2833%, Fscore:88.2833%.
+0-error:0%,  1-error:100%,  Chinese-precise:100%  
+总共时间: 9秒,  平均执行时间:9秒
+2017-04-04 19:13:04
+总图片数:1,  Plates count:1,  未定位车牌:0,  检出率:100%  
+Recall:88.2833%, Precise:88.2833%, Fscore:88.2833%.
+0-error:0%,  1-error:100%,  Chinese-precise:100%  
+总共时间: 14秒,  平均执行时间:14秒

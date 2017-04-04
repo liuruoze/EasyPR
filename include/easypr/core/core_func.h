@@ -116,6 +116,33 @@ Rect rectEnlarge(const Rect& src, const int mat_width, const int mat_height);
 
 // write images to temp folder
 void writeTempImage(const Mat& outImg, const string path);
+
+//! non-maximum surpresion for 1d array
+template<typename T>
+void NMSfor1D(const vector<T>& arr, vector<int>& index) {
+  // prepare
+  int size = (int)arr.size();
+  index.resize(size);
+  for (int j = 0; j < size; j++)
+    index.at(j) = 0;
+
+  // nms
+  int i = 1;
+  while (i < size - 1) {
+    if (arr.at(i) > arr.at(i + 1)) {
+      if (arr.at(i) >= arr.at(i - 1))
+        index.at(i) = 1;
+    }
+    else {
+      while (i < size - 1 && arr.at(i) <= arr.at(i + 1))
+        i = i + 1;
+      if (i < size - 1)
+        index.at(i) = 1;
+    }
+    i = i + 2;
+  }
+}
+
 } /*! \namespace easypr*/
 
 #endif  // EASYPR_CORE_COREFUNC_H_

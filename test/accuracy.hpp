@@ -101,7 +101,7 @@ namespace easypr {
 
       // parameters
       const bool filesNatureSort = true;
-      const int max_plates = 4;
+      const int max_plates = 1;
       const int isGenerateGT = 1;
 
       // set the parameters of CPlateRecognize

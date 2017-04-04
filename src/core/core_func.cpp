@@ -660,7 +660,6 @@ Mat ProjectedHistogram(Mat img, int t, int threshold) {
   return mhist;
 }
 
-
 Mat showHistogram(const Mat& hist) {
   int height = 32;
   int width = hist.cols;
@@ -672,7 +671,6 @@ Mat showHistogram(const Mat& hist) {
         show.at<char>(j, i) = (char)255;
     }
   }
-
   return show;
 }
 

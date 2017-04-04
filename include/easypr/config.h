@@ -98,8 +98,8 @@ private:\
   kDebug = param
 
 // Display the image.
-#define SHOW_IMAGE(imgName) \
-  if (kDebug) { \
+#define SHOW_IMAGE(imgName, debug) \
+  if (debug) { \
     imshow("imgName", imgName); \
     waitKey(0); \
     destroyWindow("imgName"); \
