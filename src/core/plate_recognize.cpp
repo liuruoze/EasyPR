@@ -63,12 +63,12 @@ int CPlateRecognize::plateRecognize(const Mat& src, std::vector<CPlate> &plateVe
         plateVecOut.push_back(item);
       }
       else {
-        /*std::string license = plateColor;
+        std::string license = plateColor;
         item.setPlateStr(license);
         plateVecOut.push_back(item);
         if (0) {
           std::cout << "resultCR:" << resultCR << std::endl;
-        }*/
+        }
       }
     }
     if (getResultShow()) {

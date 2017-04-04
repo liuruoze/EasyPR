@@ -84,11 +84,26 @@ static const int kCharsTotalNumber = 65;
 
 static bool kDebug = false;
 
+static const int   kGrayCharWidth = 20;
+static const int   kGrayCharHeight = 32;
+
 // Disable the copy and assignment operator for this class.
 #define DISABLE_ASSIGN_AND_COPY(className) \
 private:\
   className& operator=(const className&); \
   className(const className&)
+
+// Display the image.
+#define SET_DEBUG(param) \
+  kDebug = param
+
+// Display the image.
+#define SHOW_IMAGE(imgName) \
+  if (kDebug) { \
+    imshow("imgName", imgName); \
+    waitKey(0); \
+    destroyWindow("imgName"); \
+  }
 
 }
 

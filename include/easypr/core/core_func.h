@@ -102,12 +102,6 @@ bool calcSafeRect(const RotatedRect& roi_rect, const Mat& src,
 bool calcSafeRect(const RotatedRect &roi_rect, const int width, const int height,
   Rect_<float> &safeBoundRect);
 
-// shift an image
-Mat translateImg(Mat img, int offsetx, int offsety);
-
-// rotate an image
-Mat rotateImg(Mat source, float angle);
-
 // uniform resize all the image to same size for the next process
 Mat uniformResize(const Mat &result, float& scale);
 

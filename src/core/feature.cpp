@@ -208,9 +208,6 @@ Mat charFeatures2(Mat in, int sizeData) {
   int numCols = vhist.cols + hhist.cols + lowData.cols * lowData.cols;
 
   Mat out = Mat::zeros(1, numCols, CV_32F);
-  // Asign values to
-
-  // feature,ANN的样本特征为水平、垂直直方图和低分辨率图像所组成的矢量
 
   int j = 0;
   for (int i = 0; i < vhist.cols; i++) {
@@ -233,6 +230,42 @@ Mat charFeatures2(Mat in, int sizeData) {
   return out;
 }
 
+void getGrayCharFeatures(const Mat& grayChar, Mat& features) {
+  SET_DEBUG(true);
+  // TODO: check channnels == 1
+  SHOW_IMAGE(grayChar);
+
+  // resize to uniform size, like 20x32
+  Mat char_mat;
+  char_mat.create(kGrayCharHeight, kGrayCharWidth, CV_32FC1);
+  resize(grayChar, char_mat, char_mat.size(), 0, 0, INTER_LINEAR);
+  SHOW_IMAGE(char_mat);
+
+  // convert to float
+  bool useConvert = false;
+  if (useConvert) {
+    Mat float_img;
+    float scale = 1.f / 255;
+    char_mat.convertTo(float_img, CV_32FC1, scale, 0);
+    SHOW_IMAGE(float_img);
+  }
+
+  // cut from mean, it can be optional
+  bool useMean = true;
+  if (useMean) {
+    char_mat -= mean(char_mat);
+    SHOW_IMAGE(char_mat);
+  }
+
+  // use lbp to get features, it can be changed to other
+  Mat lbpimage = libfacerec::olbp(char_mat);
+  SHOW_IMAGE(lbpimage);
+
+  Mat lbp_hist = libfacerec::spatial_histogram(lbpimage, 32, 4, 4);
+
+  // return back
+  features = lbp_hist;
+}
 
 void getLBPplusHistFeatures(const Mat& image, Mat& features) {
   // TODO

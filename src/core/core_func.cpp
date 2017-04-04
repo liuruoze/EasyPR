@@ -2230,23 +2230,6 @@ Mat adaptive_image_from_points(const std::vector<Point>& points,
   return result;
 }
 
-// shift an image
-Mat translateImg(Mat img, int offsetx, int offsety){
-  Mat dst;
-  Mat trans_mat = (Mat_<double>(2, 3) << 1, 0, offsetx, 0, 1, offsety);
-  warpAffine(img, dst, trans_mat, img.size());
-  return dst;
-}
-
-// rotate an image
-Mat rotateImg(Mat source, float angle){
-  Point2f src_center(source.cols / 2.0F, source.rows / 2.0F);
-  Mat rot_mat = getRotationMatrix2D(src_center, angle, 1.0);
-  Mat dst;
-  warpAffine(source, dst, rot_mat, source.size());
-  return dst;
-}
-
 //  calc safe Rect
 //  if not exit, return false
 

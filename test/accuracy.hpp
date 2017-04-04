@@ -404,7 +404,7 @@ namespace easypr {
       cout << "------------------" << endl;
       cout << endl;
       cout << kv->get("summaries") << ":" << endl;
-      cout << kv->get("sum_pictures") << ":" << count_all << ",  ";
+      cout << kv->get("sum_pictures") << ": " << count_all << ",  ";
       cout << "Plates count" << ":" << all_plate_count << ",  ";
 
       float count_detect = float(all_plate_count - count_nodetect);
@@ -438,18 +438,20 @@ namespace easypr {
       }
 
       //cout << "Detect quality evalution result:" << endl;
-      cout << "Recall" << ":" << recall_2003_result * 100 << "%" << ", ";
-      cout << "Precise" << ":" << precise_2003_result * 100 << "%" << ", ";
-      cout << "Fscore" << ":" << fscore_2003_result * 100 << "%" << "." << endl;
+      cout << kv->get("detect_quality") << ": ";
+      cout << "Recall" << "," << recall_2003_result * 100 << "%" << "; ";
+      cout << "Precise" << "," << precise_2003_result * 100 << "%" << "; ";
+      cout << "Fscore" << "," << fscore_2003_result * 100 << "%" << ";" << endl;
 
-      cout << "0-error" << ":" << non_error_rate * 100 << "%,  ";
-      cout << "1-error" << ":" << one_error_rate * 100 << "%,  ";
-      cout << "Chinese-precise" << ":" << (1 - chinese_error_rate) * 100 << "%  " << endl;
+      cout << kv->get("char_recongize") << ": ";
+      cout << "0-error" << "," << non_error_rate * 100 << "%;  ";
+      cout << "1-error" << "," << one_error_rate * 100 << "%;  ";
+      cout << "Chinese-precise" << "," << (1 - chinese_error_rate) * 100 << "%  " << endl;
 
       double seconds = difftime(end, begin);
       double avgsec = seconds / double(count_all);
 
-      cout << kv->get("seconds") << ":" << seconds << kv->get("sec") << ",  ";
+      cout << kv->get("seconds") << ": " << seconds << kv->get("sec") << ",  ";
       cout << kv->get("seconds_average") << ":" << avgsec << kv->get("sec") << endl;
 
       // set the result.
@@ -494,7 +496,8 @@ namespace easypr {
         myfile << "0-error" << ":" << non_error_rate * 100 << "%,  ";
         myfile << "1-error" << ":" << one_error_rate * 100 << "%,  ";
         myfile << "Chinese-precise" << ":" << (1 - chinese_error_rate) * 100 << "%  " << endl;
-        myfile << kv->get("seconds") << ":" << seconds << kv->get("sec") << ",  ";
+
+        myfile << kv->get("seconds") << ": " << seconds << kv->get("sec") << ",  ";
         myfile << kv->get("seconds_average") << ":" << avgsec << kv->get("sec") << endl;
         myfile.close();
       }
@@ -587,17 +590,10 @@ namespace easypr {
           myfile << result << std::endl;
           myfile.close();
         }
-      }
-      
+      }    
       return 0;
     }
-
-
-
   }
-
-
-
 }
 
 #endif  // EASYPR_ACCURACY_HPP

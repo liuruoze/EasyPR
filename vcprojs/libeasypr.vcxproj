@@ -158,7 +158,9 @@
     <ClCompile Include="..\src\core\plate_judge.cpp" />
     <ClCompile Include="..\src\core\plate_locate.cpp" />
     <ClCompile Include="..\src\core\plate_recognize.cpp" />
+    <ClCompile Include="..\src\train\annCh_train.cpp" />
     <ClCompile Include="..\src\train\ann_train.cpp" />
+    <ClCompile Include="..\src\train\create_data.cpp" />
     <ClCompile Include="..\src\train\svm_train.cpp" />
     <ClCompile Include="..\src\train\train.cpp" />
     <ClCompile Include="..\src\util\kv.cpp" />
@@ -186,7 +188,9 @@
     <ClInclude Include="..\include\easypr\core\plate_judge.h" />
     <ClInclude Include="..\include\easypr\core\plate_locate.h" />
     <ClInclude Include="..\include\easypr\core\plate_recognize.h" />
+    <ClInclude Include="..\include\easypr\train\annCh_train.h" />
     <ClInclude Include="..\include\easypr\train\ann_train.h" />
+    <ClInclude Include="..\include\easypr\train\create_data.h" />
     <ClInclude Include="..\include\easypr\train\svm_train.h" />
     <ClInclude Include="..\include\easypr\train\train.h" />
     <ClInclude Include="..\include\easypr\util\program_options.h" />
@@ -207,8 +211,6 @@
   </ItemGroup>
   <ItemGroup>
     <Xml Include="..\resources\model\ann.xml" />
-    <Xml Include="..\resources\model\haarcascade_frontalface_alt_tree.xml" />
-    <Xml Include="..\resources\model\haarcascade_frontalface_default.xml" />
     <Xml Include="..\resources\model\svm.xml">
       <SubType>Designer</SubType>
     </Xml>
