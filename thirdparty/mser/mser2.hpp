@@ -33,6 +33,7 @@ namespace cv
 
     CV_WRAP virtual void detectRegions(InputArray _src, vector<vector<Point>>& msers_blue, vector<Rect>& bboxes_blue,
       vector<vector<Point>>& msers_yellow, vector<Rect>& bboxes_yellow) = 0;
+    CV_WRAP virtual void detectRegions(InputArray _src, vector<vector<Point>>& msers, vector<Rect>& bboxes, int type) = 0;
 
     CV_WRAP virtual void setDelta(int delta) = 0;
     CV_WRAP virtual int getDelta() const = 0;

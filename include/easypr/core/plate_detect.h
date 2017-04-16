@@ -107,7 +107,7 @@ class CPlateDetect {
 
   int m_maxPlates;
 
-  SceneMode m_mode;
+  //SceneMode m_mode;
 
   CPlateLocate* m_plateLocate;
 

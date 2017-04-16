@@ -48,15 +48,12 @@ int CCharsRecognise::charsRecognise(Mat plate, std::string& plateLicense) {
   return result;
 }
 
-int char_index = 0;
-int plate_index = 0;
+
 int CCharsRecognise::charsRecognise(CPlate& plate, std::string& plateLicense) {
   std::vector<Mat> matChars;
   std::vector<Mat> grayChars;
   Mat plateMat = plate.getPlateMat();
-  if (1) {
-    writeTempImage(plateMat, "plateMat/plate");
-  }
+  if (1) writeTempImage(plateMat, "plateMat/plate");
   Color color;
   if (plate.getPlateLocateType() == CMSER) {
     color = plate.getPlateColor();
@@ -68,38 +65,39 @@ int CCharsRecognise::charsRecognise(CPlate& plate, std::string& plateLicense) {
     color = getPlateType(tmpMat, true);
   }
   
-  int result = m_charsSegment->charsSegmentUsingProject(plateMat, matChars, grayChars,color);
-  //std::cout << "charsSegment:" << result << std::endl;
-  if (result == 0) {
+  int result = m_charsSegment->charsSegmentUsingProject(plateMat, matChars, grayChars, color);
 
+  if (result == 0) {
     int num = matChars.size();
     for (int j = 0; j < num; j++)
     {
       Mat charMat = matChars.at(j);
-      Mat grayChar = grayChars.at(j);
       bool isChinses = false;   
 
       std::pair<std::string, std::string> character;
       float maxVal;
-      if (j == 0) {
+      if (0 == j) {
         isChinses = true;
         bool judge = true;
-        character = CharsIdentify::instance()->identifyChinese(charMat, maxVal, judge);
+        Mat grayChar = grayChars.at(j);
+        //character = CharsIdentify::instance()->identifyChinese(charMat, maxVal, judge);
+        if (color != Color::BLUE)
+          grayChar = 255 - grayChar;
+        character = CharsIdentify::instance()->identifyChineseGray(grayChar, maxVal, judge);
         plateLicense.append(character.second);
-        //time_t t = time(0);  // get time now
-        //struct tm* now = localtime(&t);
-        //char buf[80];
-        //strftime(buf, sizeof(buf), "%Y-%m-%d %H_%M_%S", now);
-        //if (1) {
-        //  std::stringstream ss(std::stringstream::in | std::stringstream::out);
-        //  ss << "resources/image/tmp/grayChars/" << character.first << "/chars_" << char_index++ << "_" << std::string(buf) << ".jpg";
-        //  imwrite(ss.str(), grayChar);
-        //}
-        if (1) {
-          writeTempImage(grayChar, "grayChars/" + character.first + "/chars_");
-        }
+
+        // set plate chinese mat and str
+        plate.setChineseMat(grayChar);
+        plate.setChineseKey(character.first);
+        if (0) writeTempImage(grayChar, "grayChars/" + character.first + "/chars_");
       }
-      else {
+      else if (1 == j) {
+        isChinses = false;
+        bool isAbc = true;
+        character = CharsIdentify::instance()->identify(charMat, isChinses, isAbc);
+        plateLicense.append(character.second);
+      }
+      else {     
         isChinses = false;
         character = CharsIdentify::instance()->identify(charMat, isChinses);
         plateLicense.append(character.second);

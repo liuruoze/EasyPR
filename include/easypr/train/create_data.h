@@ -13,12 +13,12 @@ Namespace where all the C++ EasyPR functionality resides
 namespace easypr {
 
   // shift an image
-  Mat translateImg(Mat img, int offsetx, int offsety);
+  Mat translateImg(Mat img, int offsetx, int offsety, int bk = 0);
   // rotate an image
-  Mat rotateImg(Mat source, float angle);
+  Mat rotateImg(Mat source, float angle, int bk = 0);
 
   // crop the image
-  Mat cropImg(Mat src, int x, int y, int shift);
+  Mat cropImg(Mat src, int x, int y, int shift, int bk = 0);
 
   Mat generateSyntheticImage(const Mat& image, int use_swap = 1);
 

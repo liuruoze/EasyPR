@@ -3,8 +3,7 @@
 #include "easypr/core/core_func.h"
 #include "easypr/core/params.h"
 #include "easypr/config.h"
-
-using namespace std;
+#include "thirdparty/mser/mser2.hpp"
 
 namespace easypr {
 
@@ -73,64 +72,66 @@ Mat CCharsSegment::preprocessChar(Mat in) {
 
 //! choose the bese threshold method for chinese
 void CCharsSegment::judgeChinese(Mat in, Mat& out, Color plateType) {
-  
-  Mat auxRoi = in;
-  float valOstu = -1.f, valAdap = -1.f;
-  Mat roiOstu, roiAdap;
-  bool isChinese = true;
-  if (1) {
-    if (BLUE == plateType) {
-      threshold(auxRoi, roiOstu, 0, 255, CV_THRESH_BINARY + CV_THRESH_OTSU);
+    Mat auxRoi = in;
+    float valOstu = -1.f, valAdap = -1.f;
+    Mat roiOstu, roiAdap;
+    bool isChinese = true;
+    if (1) {
+      if (BLUE == plateType) {
+        threshold(auxRoi, roiOstu, 0, 255, CV_THRESH_BINARY + CV_THRESH_OTSU);
+      }
+      else if (YELLOW == plateType) {
+        threshold(auxRoi, roiOstu, 0, 255, CV_THRESH_BINARY_INV + CV_THRESH_OTSU);
+      }
+      else if (WHITE == plateType) {
+        threshold(auxRoi, roiOstu, 0, 255, CV_THRESH_BINARY_INV + CV_THRESH_OTSU);
+      }
+      else {
+        threshold(auxRoi, roiOstu, 0, 255, CV_THRESH_OTSU + CV_THRESH_BINARY);
+      }
+      roiOstu = preprocessChar(roiOstu);
+      if (0) {
+        imshow("roiOstu", roiOstu);
+        waitKey(0);
+        destroyWindow("roiOstu");
+      }
+      auto character = CharsIdentify::instance()->identifyChinese(roiOstu, valOstu, isChinese);
     }
-    else if (YELLOW == plateType) {
-      threshold(auxRoi, roiOstu, 0, 255, CV_THRESH_BINARY_INV + CV_THRESH_OTSU);
+    if (1) {
+      if (BLUE == plateType) {
+        adaptiveThreshold(auxRoi, roiAdap, 255, ADAPTIVE_THRESH_MEAN_C, THRESH_BINARY, 3, 0);
+      }
+      else if (YELLOW == plateType) {
+        adaptiveThreshold(auxRoi, roiAdap, 255, ADAPTIVE_THRESH_MEAN_C, THRESH_BINARY_INV, 3, 0);
+      }
+      else if (WHITE == plateType) {
+        adaptiveThreshold(auxRoi, roiAdap, 255, ADAPTIVE_THRESH_MEAN_C, THRESH_BINARY_INV, 3, 0);
+      }
+      else {
+        adaptiveThreshold(auxRoi, roiAdap, 255, ADAPTIVE_THRESH_MEAN_C, THRESH_BINARY, 3, 0);
+      }
+      roiAdap = preprocessChar(roiAdap);
+      auto character = CharsIdentify::instance()->identifyChinese(roiAdap, valAdap, isChinese);
     }
-    else if (WHITE == plateType) {
-      threshold(auxRoi, roiOstu, 0, 255, CV_THRESH_BINARY_INV + CV_THRESH_OTSU);
+
+    //std::cout << "valOstu: " << valOstu << std::endl;
+    //std::cout << "valAdap: " << valAdap << std::endl;
+
+    if (valOstu >= valAdap) {
+      out = roiOstu;
     }
     else {
-      threshold(auxRoi, roiOstu, 0, 255, CV_THRESH_OTSU + CV_THRESH_BINARY);
+      out = roiAdap;
     }
-    roiOstu = preprocessChar(roiOstu);
-    if (0) {
-      imshow("roiOstu", roiOstu);
-      waitKey(0);
-      destroyWindow("roiOstu");
-    }
-    auto character = CharsIdentify::instance()->identifyChinese(roiOstu, valOstu, isChinese);
-  }
-  if (1) {
-    if (BLUE == plateType) {
-      adaptiveThreshold(auxRoi, roiAdap, 255, ADAPTIVE_THRESH_MEAN_C, THRESH_BINARY, 3, 0);
-    }
-    else if (YELLOW == plateType) {
-      adaptiveThreshold(auxRoi, roiAdap, 255, ADAPTIVE_THRESH_MEAN_C, THRESH_BINARY_INV, 3, 0);
-    }
-    else if (WHITE == plateType) {
-      adaptiveThreshold(auxRoi, roiAdap, 255, ADAPTIVE_THRESH_MEAN_C, THRESH_BINARY_INV, 3, 0);
-    }
-    else {
-      adaptiveThreshold(auxRoi, roiAdap, 255, ADAPTIVE_THRESH_MEAN_C, THRESH_BINARY, 3, 0);
-    }
-    roiAdap = preprocessChar(roiAdap);
-    auto character = CharsIdentify::instance()->identifyChinese(roiAdap, valAdap, isChinese);
-  }
-
-  std::cout << "valOstu: " << valOstu << std::endl;
-  std::cout << "valAdap: " << valAdap << std::endl;
-
-  if (valOstu >= valAdap) {
-    out = roiOstu;
-  }
-  else {
-    out = roiAdap;
-  }
-
 }
+
+  void CCharsSegment::judgeChineseGray(Mat in, Mat& out, Color plateType) {
+    out = in;
+  }
 
 bool slideChineseWindow(Mat& image, Rect mr, Mat& newRoi, Color plateType, float slideLengthRatio, bool useAdapThreshold) {
   std::vector<CCharacter> charCandidateVec;
-  
+
   Rect maxrect = mr;
   Point tlPoint = mr.tl();
 
@@ -139,7 +140,7 @@ bool slideChineseWindow(Mat& image, Rect mr, Mat& newRoi, Color plateType, float
   int slideStep = 1;
   int fromX = 0;
   fromX = tlPoint.x;
-  
+
   for (int slideX = -slideLength; slideX < slideLength; slideX += slideStep) {
     float x_slide = 0;
 
@@ -213,17 +214,72 @@ bool slideChineseWindow(Mat& image, Rect mr, Mat& newRoi, Color plateType, float
 
   if (charCandidateVec.size() >= 1) {
     std::sort(charCandidateVec.begin(), charCandidateVec.end(),
-      [](const CCharacter& r1, const CCharacter& r2) {
-      return r1.getCharacterScore() > r2.getCharacterScore();
-    });
+              [](const CCharacter& r1, const CCharacter& r2) {
+                return r1.getCharacterScore() > r2.getCharacterScore();
+              });
 
     newRoi = charCandidateVec.at(0).getCharacterMat();
     return true;
   }
 
   return false;
-
 }
+
+  bool slideChineseGrayWindow(const Mat& image, Rect& mr, Mat& newRoi, Color plateType, float slideLengthRatio) {
+    std::vector<CCharacter> charCandidateVec;
+
+    Rect maxrect = mr;
+    Point tlPoint = mr.tl();
+
+    bool isChinese = true;
+    int slideLength = int(slideLengthRatio * maxrect.width);
+    int slideStep = 1;
+    int fromX = 0;
+    fromX = tlPoint.x;
+
+    for (int slideX = -slideLength; slideX < slideLength; slideX += slideStep) {
+      float x_slide = 0;
+      x_slide = float(fromX + slideX);
+
+      float y_slide = (float)tlPoint.y;
+
+      int chineseWidth = int(maxrect.width);
+      int chineseHeight = int(maxrect.height);
+
+      Rect rect(Point2f(x_slide, y_slide), Size(chineseWidth, chineseHeight));
+
+      if (rect.tl().x < 0 || rect.tl().y < 0 || rect.br().x >= image.cols || rect.br().y >= image.rows)
+        continue;
+
+      Mat auxRoi = image(rect);
+      Mat grayChinese;
+      grayChinese.create(kGrayCharHeight, kGrayCharWidth, CV_8UC1);
+      resize(auxRoi, grayChinese, grayChinese.size(), 0, 0, INTER_LINEAR);
+
+      CCharacter charCandidateOstu;
+      charCandidateOstu.setCharacterPos(rect);
+      charCandidateOstu.setCharacterMat(grayChinese);
+      charCandidateOstu.setIsChinese(isChinese);
+      charCandidateVec.push_back(charCandidateOstu);
+    }
+
+    CharsIdentify::instance()->classifyChineseGray(charCandidateVec);
+
+    double overlapThresh = 0.1;
+    NMStoCharacter(charCandidateVec, overlapThresh);
+
+    if (charCandidateVec.size() >= 1) {
+      std::sort(charCandidateVec.begin(), charCandidateVec.end(),
+                [](const CCharacter& r1, const CCharacter& r2) {
+                  return r1.getCharacterScore() > r2.getCharacterScore();
+                });
+
+      newRoi = charCandidateVec.at(0).getCharacterMat();
+      mr = charCandidateVec.at(0).getCharacterPos();
+      return true;
+    }
+    return false;
+  }
 
 
 int CCharsSegment::charsSegment(Mat input, vector<Mat>& resultVec, Color color) {
@@ -411,11 +467,191 @@ int CCharsSegment::projectSegment(const Mat& input, Color color, vector<int>& ou
   return 0;
 }
 
+bool verifyCharRectSizes(Rect r) {
+  // Char sizes 45x90
+  float aspect = 45.0f / 90.0f;
+  float charAspect = (float)r.width / (float)r.height;
+  float error = 0.35f;
+  float minHeight = 25.f;
+  float maxHeight = 50.f;
+  // We have a different aspect ratio for number 1, and it can be ~0.2
+  float minAspect = 0.05f;
+  float maxAspect = aspect + aspect * error;
+
+  int ch = r.tl().y + r.height / 2;
+  int min_ch = int(kPlateResizeHeight * 0.3f);
+  int max_ch = int(kPlateResizeHeight * 0.7f);
+  if (ch > max_ch || ch < min_ch)
+    return false;
+  if (charAspect < minAspect || charAspect > maxAspect)
+    return false;
+
+  return true;
+}
+
+Mat preprocessCharMat(Mat in, int char_size) {
+  // Remap image
+  int h = in.rows;
+  int w = in.cols;
+
+  int charSize = char_size;
+
+  Mat transformMat = Mat::eye(2, 3, CV_32F);
+  int m = max(w, h);
+  transformMat.at<float>(0, 2) = float(m / 2 - w / 2);
+  transformMat.at<float>(1, 2) = float(m / 2 - h / 2);
+
+  Mat warpImage(m, m, in.type());
+  warpAffine(in, warpImage, transformMat, warpImage.size(), INTER_LINEAR,
+    BORDER_CONSTANT, Scalar(0));
+
+  Mat out;
+  cv::resize(warpImage, out, Size(charSize, charSize));
+
+  return out;
+}
+
+int CCharsSegment::charsSegmentUsingMSER(Mat input, vector<Mat>& resultVec, vector<Mat>& grayChars, Color color) {
+  Mat grayImage;
+  cvtColor(input, grayImage, CV_BGR2GRAY);
+  std::vector<cv::Mat> bgrSplit;
+  split(input, bgrSplit);
+
+  // generate all channgel images;
+  vector<Mat> channelImages;
+  bool useThreeChannel = false;
+  channelImages.push_back(grayImage);
+  if (useThreeChannel) {
+    for (int i = 0; i < 3; i++)
+      channelImages.push_back(bgrSplit.at(i));
+  }
+  int csize = channelImages.size();
+
+  //TODO three channels
+  std::vector<std::vector<Point>> all_contours;
+  std::vector<Rect> all_boxes;
+  all_contours.reserve(32);
+  all_boxes.reserve(32);
+
+  const int imageArea = input.rows * input.cols;
+  const int delta = 1;
+  const int minArea = 30;
+  const double maxAreaRatio = 0.2;
+
+  int type = -1;
+  if (Color::BLUE == color) type = 0;
+  if (Color::YELLOW == color) type = 1;
+  if (Color::WHITE == color) type = 1;
+  if (Color::UNKNOWN == color) type = 0;
+
+  for (int c_index = 0; c_index < csize; c_index++) {
+    Mat cimage = channelImages.at(c_index);
+    Mat showImage = cimage.clone();
+    cvtColor(showImage, showImage, CV_GRAY2BGR);
+
+    string candidateLicense;
+
+    //TODO mser+ mser-
+    Ptr<MSER2> mser;
+    mser = MSER2::create(delta, minArea, int(maxAreaRatio * imageArea));
+    mser->detectRegions(cimage, all_contours, all_boxes, type);
+
+    std::vector<CCharacter> charVec;
+    charVec.reserve(16);
+    size_t size = all_contours.size();
+
+    int char_index = 0;
+    int char_size = 20;
+    const int char_max_count = 7;
+
+    // verify char size and output to rects;
+    for (size_t index = 0; index < size; index++) {
+      Rect rect = all_boxes[index];
+      vector<Point> &contour = all_contours[index];
+      
+      // find character
+      if (verifyCharRectSizes(rect)) {
+        Mat mserMat = adaptive_image_from_points(contour, rect, Size(char_size, char_size));
+        Mat charInput = preprocessCharMat(mserMat, char_size);
+        Rect charRect = rect;
+
+        Point center(charRect.tl().x + charRect.width / 2, charRect.tl().y + charRect.height / 2);
+        Mat tmpMat;
+        double ostu_level = cv::threshold(cimage(charRect), tmpMat, 0, 255, CV_THRESH_BINARY | CV_THRESH_OTSU);
+
+        // use judegMDOratio2 function to
+        // remove the small lines in character like "zh-cuan"
+        if (judegMDOratio2(cimage, rect, contour, cimage)) {
+          CCharacter charCandidate;
+          charCandidate.setCharacterPos(charRect);
+          charCandidate.setCharacterMat(charInput);
+          charCandidate.setOstuLevel(ostu_level);
+          charCandidate.setCenterPoint(center);
+          charCandidate.setIsChinese(false);
+          charVec.push_back(charCandidate);
+        }
+      }
+    }
+
+    CharsIdentify::instance()->classify(charVec);
+    // use nms to remove the character are not likely to be true.
+    double overlapThresh = 0.2;
+    NMStoCharacter(charVec, overlapThresh);
+    charVec.shrink_to_fit();
+
+    vector<Rect> sortedRect;
+    for (auto charCandidate : charVec) 
+      sortedRect.push_back(charCandidate.getCharacterPos());
+    std::sort(sortedRect.begin(), sortedRect.end(),
+      [](const Rect& r1, const Rect& r2) { return r1.x < r2.x; });
+
+    // find chinese rect
+    size_t specIndex = 0;
+    specIndex = GetSpecificRect(sortedRect);
+    Rect chineseRect;
+    if (specIndex < sortedRect.size())
+      chineseRect = GetChineseRect(sortedRect[specIndex]);
+
+    vector<Rect> newSortedRect;
+    newSortedRect.push_back(chineseRect);
+    RebuildRect(sortedRect, newSortedRect, specIndex);
+
+    for (size_t i = 0; i < newSortedRect.size(); i++) {
+      Rect mr = rectEnlarge(newSortedRect[i], cimage.cols, cimage.rows);
+      Mat auxRoi(cimage, mr);
+      Mat newRoi;
+      if (i == 0) {
+        Mat grayChar(cimage, mr);
+        Mat chineseRoi;
+        float slideLengthRatio = 0.1f;
+        slideChineseGrayWindow(cimage, mr, chineseRoi, color, slideLengthRatio);
+        grayChars.push_back(chineseRoi);
+      }
+      else {
+        switch (color) {
+        case BLUE:   threshold(auxRoi, newRoi, 0, 255, CV_THRESH_BINARY + CV_THRESH_OTSU); break;
+        case YELLOW:   threshold(auxRoi, newRoi, 0, 255, CV_THRESH_BINARY_INV + CV_THRESH_OTSU); break;
+        case WHITE:  threshold(auxRoi, newRoi, 0, 255, CV_THRESH_OTSU + CV_THRESH_BINARY_INV); break;
+        default: threshold(auxRoi, newRoi, 0, 255, CV_THRESH_OTSU + CV_THRESH_BINARY); break;
+        }
+        newRoi = preprocessChar(newRoi);
+      }
+      rectangle(showImage, mr, Scalar(0, 0, 255), 1);
+      resultVec.push_back(newRoi);
+    }  
+    SHOW_IMAGE(showImage, 1);
+  }
+
+  return 0;
+}
+
+
 int CCharsSegment::charsSegmentUsingProject(Mat input, vector<Mat>& resultVec, vector<Mat>& grayChars, Color color) {  
   if (!input.data) return 0x01;
 
-  vector<int> out_indexs;
-  projectSegment(input, color, out_indexs);
+  //vector<int> out_indexs;
+  //projectSegment(input, color, out_indexs);
+  //charsSegmentUsingMSER(input, resultVec, grayChars, color);
 
   Color plateType = color;
   Mat input_grey;
@@ -481,21 +717,27 @@ int CCharsSegment::charsSegmentUsingProject(Mat input, vector<Mat>& resultVec, v
 
   for (size_t i = 0; i < newSortedRect.size(); i++) {
     Rect mr = newSortedRect[i];
-    Rect large_mr = rectEnlarge(mr, input_grey.cols, input_grey.rows);
-    Mat grayChar(input_grey, large_mr);
-
     Mat auxRoi(input_grey, mr);
     Mat newRoi;
+
     if (i == 0) {
+      // genenrate gray chinese char
+      Rect large_mr = rectEnlarge(mr, input_grey.cols, input_grey.rows);
+      Mat grayChar(input_grey, large_mr);
+      Mat grayChinese;
+      grayChinese.create(kGrayCharHeight, kGrayCharWidth, CV_8UC1);
+      resize(grayChar, grayChinese, grayChinese.size(), 0, 0, INTER_LINEAR);
+
+      Mat newChineseRoi;
       if (useSlideWindow) {
         float slideLengthRatio = 0.1f;
-        //float slideLengthRatio = CParams::instance()->getParam1f();
-        if (!slideChineseWindow(input_grey, mr, newRoi, plateType, slideLengthRatio, useAdapThreshold))
-          judgeChinese(auxRoi, newRoi, plateType);
+        if (!slideChineseGrayWindow(input_grey, large_mr, newChineseRoi, plateType, slideLengthRatio))
+          judgeChineseGray(grayChinese, newChineseRoi, plateType);
       }
       else {
         judgeChinese(auxRoi, newRoi, plateType);
       }
+      grayChars.push_back(newChineseRoi);
     }
     else {
       switch (plateType) {
@@ -506,24 +748,8 @@ int CCharsSegment::charsSegmentUsingProject(Mat input, vector<Mat>& resultVec, v
       }
       newRoi = preprocessChar(newRoi);
     }
-
-    if (0) {
-      if (i == 0) {
-        imshow("input_grey", input_grey);
-        waitKey(0);
-        destroyWindow("input_grey");
-      }
-      if (i == 0) {
-        imshow("newRoi", newRoi);
-        waitKey(0);
-        destroyWindow("newRoi");
-      }
-    }
-
-    grayChars.push_back(grayChar);
     resultVec.push_back(newRoi);
   }
-
   return 0;
 }
 

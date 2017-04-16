@@ -1,6 +1,8 @@
 #ifndef EASYPR_CONFIG_H_
 #define EASYPR_CONFIG_H_
 
+#define CV_VERSION_THREE_ZERO
+
 namespace easypr {
 
   enum Color { BLUE, YELLOW, WHITE, UNKNOWN };
@@ -9,7 +11,13 @@ namespace easypr {
 
   enum CharSearchDirection { LEFT, RIGHT };
 
-  enum SceneMode { UNCONSTRAINED, CAMERPOHNE, PARKING, HIGHWAY };
+  enum
+  {
+    PR_MODE_UNCONSTRAINED,
+    PR_MODE_CAMERPOHNE,
+    PR_MODE_PARKING,
+    PR_MODE_HIGHWAY
+  };
 
   enum
   {
@@ -24,6 +32,7 @@ static const char* kHistSvmPath = "resources/model/svm_hist.xml";
 
 static const char* kDefaultAnnPath = "resources/model/ann.xml";
 static const char* kChineseAnnPath = "resources/model/ann_chinese.xml";
+static const char* kGrayAnnPath = "resources/model/annCh.xml";
 
 typedef enum {
   kForward = 1, // correspond to "has plate"
@@ -84,8 +93,13 @@ static const int kCharsTotalNumber = 65;
 
 static bool kDebug = false;
 
-static const int   kGrayCharWidth = 20;
-static const int   kGrayCharHeight = 32;
+static const int kGrayCharWidth = 20;
+static const int kGrayCharHeight = 32;
+  static const int kCharLBPGridX = 5;
+  static const int kCharLBPGridY = 8;
+  static const int kCharLBPPatterns = 32;
+
+  static const int kCharHiddenNeurans = 48;
 
 // Disable the copy and assignment operator for this class.
 #define DISABLE_ASSIGN_AND_COPY(className) \
@@ -100,10 +114,25 @@ private:\
 // Display the image.
 #define SHOW_IMAGE(imgName, debug) \
   if (debug) { \
+    namedWindow("imgName", WINDOW_AUTOSIZE); \
+    moveWindow("imgName", 500, 500); \
     imshow("imgName", imgName); \
     waitKey(0); \
     destroyWindow("imgName"); \
   }
+
+// Load model. compatitable withe 3.0, 3.1 and 3.2
+#ifdef CV_VERSION_THREE_TWO
+  #define LOAD_SVM_MODEL(model, path) \
+    model = ml::SVM::load(path);
+  #define LOAD_ANN_MODEL(model, path) \
+    model = ml::ANN_MLP::load(path);
+#else
+  #define LOAD_SVM_MODEL(model, path) \
+    model = ml::SVM::load<ml::SVM>(path);
+  #define LOAD_ANN_MODEL(model, path) \
+    model = ml::ANN_MLP::load<ml::ANN_MLP>(path);
+#endif
 
 }
 

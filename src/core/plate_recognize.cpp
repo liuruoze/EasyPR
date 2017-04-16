@@ -32,6 +32,7 @@ int CPlateRecognize::plateRecognize(const Mat& src, std::vector<CPlate> &plateVe
     for (size_t j = 0; j < num; j++) {
       CPlate item = plateVec.at(j);
       Mat plateMat = item.getPlateMat();
+
       if (0) {
         imshow("plate", plateMat);
         waitKey(0);

@@ -17,7 +17,7 @@ resources/image/native_test/*.py
 resources/image/phone_test
 *.vsp
 *.psess
-
+*.DStore
 #ignore thumbnails created by windows
 Thumbs.db
 #Ignore files build by Visual Studio

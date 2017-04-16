@@ -1,10 +1,12 @@
 #include "easypr/train/svm_train.h"
 #include "easypr/util/util.h"
+#include "easypr/config.h"
 
 #ifdef OS_WINDOWS
 #include <ctime>
 #endif
 
+using namespace cv;
 using namespace cv::ml;
 
 namespace easypr {
@@ -55,7 +57,7 @@ void SvmTrain::train() {
 void SvmTrain::test() {
   // 1.4 bug fix: old 1.4 ver there is no null judge
   // if (NULL == svm_)
-    svm_ = cv::ml::SVM::load<cv::ml::SVM>(svm_xml_);
+  LOAD_SVM_MODEL(svm_, svm_xml_);
 
   if (test_file_list_.empty()) {
     this->prepare();
@@ -70,7 +72,6 @@ void SvmTrain::test() {
   for (auto item : test_file_list_) {
     auto image = cv::imread(item.file);
     if (!image.data) {
-      
       std::cout << "no" << std::endl;
       continue;
     }

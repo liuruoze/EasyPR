@@ -12,7 +12,8 @@
 namespace easypr {
 
   AnnChTrain::AnnChTrain(const char* chars_folder, const char* xml)
-    : chars_folder_(chars_folder), ann_xml_(xml) {
+    : chars_folder_(chars_folder), ann_xml_(xml)
+  {
   ann_ = cv::ml::ANN_MLP::create();
   type = 1;
   kv_ = std::shared_ptr<Kv>(new Kv);
@@ -20,34 +21,63 @@ namespace easypr {
   extractFeature = getGrayCharFeatures;
 }
 
-  void AnnChTrain::train() {
-  int classNumber = 0;
-  int input_number = 0;
-  int hidden_number = 0;
-  int output_number = 0;
+  void AnnChTrain::train()
+  {
+    int classNumber = 0;
+    int input_number = 0;
+    int hidden_number = 0;
+    int output_number = 0;
+
+    bool useLBP = false;
+    if (useLBP)
+      input_number = kCharLBPPatterns * kCharLBPGridX * kCharLBPGridY;
+    else
+      input_number = kGrayCharHeight * kGrayCharWidth;
 
   classNumber = kChineseNumber;
-  input_number = kGrayCharHeight * kGrayCharWidth;
-  hidden_number = 64;
+  hidden_number = kCharHiddenNeurans;
   output_number = classNumber;
   cv::Mat layers;
-  layers.create(1, 3, CV_32SC1);
-  layers.at<int>(0) = input_number;
-  layers.at<int>(1) = hidden_number;
-  layers.at<int>(2) = output_number;
-  
+
+    int first_hidden_neurons = 48;
+    int second_hidden_neurons = 32;
+
+    int N = input_number;
+    int m = output_number;
+    //int first_hidden_neurons = int(std::sqrt((m + 2) * N) + 2 * std::sqrt(N / (m + 2)));
+    //int second_hidden_neurons = int(m * std::sqrt(N / (m + 2)));
+
+    bool useTLFN = false;
+    if (!useTLFN) {
+      layers.create(1, 3, CV_32SC1);
+      layers.at<int>(0) = input_number;
+      layers.at<int>(1) = hidden_number;
+      layers.at<int>(2) = output_number;
+    }
+    else {
+      fprintf(stdout, ">> Use two-layers neural networks,\n");
+      fprintf(stdout, ">> First_hidden_neurons: %d \n", first_hidden_neurons);
+      fprintf(stdout, ">> Second_hidden_neurons: %d \n", second_hidden_neurons);
+
+      layers.create(1, 4, CV_32SC1);
+      layers.at<int>(0) = input_number;
+      layers.at<int>(1) = first_hidden_neurons;
+      layers.at<int>(2) = second_hidden_neurons;
+      layers.at<int>(3) = output_number;
+    }
+
   ann_->setLayerSizes(layers);
   ann_->setActivationFunction(cv::ml::ANN_MLP::SIGMOID_SYM, 1, 1);
-  ann_->setTrainMethod(cv::ml::ANN_MLP::TrainingMethods::RPROP);
+  ann_->setTrainMethod(cv::ml::ANN_MLP::TrainingMethods::BACKPROP);
   ann_->setTermCriteria(cvTermCriteria(CV_TERMCRIT_ITER, 30000, 0.0001));
-  ann_->setBackpropWeightScale(0.05);
-  ann_->setBackpropMomentumScale(0.9);
+  ann_->setBackpropWeightScale(0.1);
+  ann_->setBackpropMomentumScale(0.1);
 
   // using raw data or raw + synthic data.
-  trainVal(350);
+  trainVal(3000);
 }
 
-std::pair<std::string, std::string> AnnChTrain::identifyChinese(cv::Mat input) {
+std::pair<std::string, std::string> AnnChTrain::identifyGrayChinese(cv::Mat input) {
   Mat feature;
   extractFeature(input, feature);
   float maxVal = -2;
@@ -58,7 +88,7 @@ std::pair<std::string, std::string> AnnChTrain::identifyChinese(cv::Mat input) {
 
   for (int j = 0; j < kChineseNumber; j++) {
     float val = output.at<float>(j);
-    // std::cout << "j:" << j << "val:" << val << std::endl;
+    //std::cout << "j:" << j << "val:" << val << std::endl;
     if (val > maxVal) {
       maxVal = val;
       result = j;
@@ -77,29 +107,10 @@ std::pair<std::string, std::string> AnnChTrain::identifyChinese(cv::Mat input) {
     //TODO
 }
 
-cv::Mat AnnChTrain::generateGraySyntheticImage(const Mat& image) {
-  int rand_type = rand();
-  Mat result = image.clone();
-
-  if (rand_type % 2 == 0) {
-    int ran_x = rand() % 5 - 2;
-    int ran_y = rand() % 5 - 2;
-
-    result = translateImg(result, ran_x, ran_y);
-  }
-  else if (rand_type % 2 != 0) {
-    float angle = float(rand() % 15 - 7);
-
-    result = rotateImg(result, angle);
-  }
-  
-  return result;
-}
-
 void AnnChTrain::trainVal(size_t number_for_count) {
   assert(chars_folder_);
   cv::Mat train_samples;
-  std::vector<cv::Mat>  val_images;
+  std::vector<cv::Mat>  train_images, val_images;
   std::vector<int> train_label, val_labels;
   float percentage = 0.7f;
   int classNumber = kChineseNumber;
@@ -108,43 +119,56 @@ void AnnChTrain::trainVal(size_t number_for_count) {
     auto char_key = kChars[i + kCharsTotalNumber - classNumber];
     char sub_folder[512] = { 0 };
     sprintf(sub_folder, "%s/%s", chars_folder_, char_key);
+    std::string test_char(char_key);
+    // if (test_char != "zh_yun") continue;
+
     fprintf(stdout, ">> Testing characters %s in %s \n", char_key, sub_folder);
     auto chars_files = utils::getFiles(sub_folder);
     size_t char_size = chars_files.size();
-    fprintf(stdout, ">> Characters count: %d \n", char_size);
+    fprintf(stdout, ">> Characters count: %d \n", (int)char_size);
 
     std::vector<cv::Mat> matVec;
     matVec.reserve(number_for_count);
     for (auto file : chars_files) {
-      auto img = cv::imread(file, IMREAD_GRAYSCALE);  // a grayscale image
-      matVec.push_back(img);
+      std::cout << file << std::endl;
+      auto img = cv::imread(file, IMREAD_GRAYSCALE);  // a grayscale image 
+      Mat img_resize;
+      img_resize.create(kGrayCharHeight, kGrayCharWidth, CV_8UC1);
+      resize(img, img_resize, img_resize.size(), 0, 0, INTER_LINEAR);
+      matVec.push_back(img_resize);
     }
     // genrate the synthetic images
-    /*for (int t = 0; t < (int)number_for_count - (int)char_size; t++) {
+    for (int t = 0; t < (int)number_for_count - (int)char_size; t++) {
       int rand_range = char_size + t;
       int ran_num = rand() % rand_range;
       auto img = matVec.at(ran_num);
-      auto simg = generateGraySyntheticImage(img);
+      SHOW_IMAGE(img, 0);
+      auto simg = generateSyntheticImage(img);
+      SHOW_IMAGE(simg, 0);
       matVec.push_back(simg);
-    }*/
-    fprintf(stdout, ">> Characters count: %d \n", matVec.size());
+    }
+    fprintf(stdout, ">> Characters count: %d \n", (int)matVec.size());
 
     // random sort the mat;
     srand(unsigned(time(NULL)));
-    //random_shuffle(matVec.begin(), matVec.end());
+    random_shuffle(matVec.begin(), matVec.end());
 
-    size_t split_index = size_t(matVec.size() * percentage);
-    for (size_t i = 0; i < matVec.size(); ++i) {
-      Mat img = matVec.at(i);
-      Mat feature;
-      extractFeature(img, feature);
-      if (i <= split_index) {
-        train_samples.push_back(feature);
-        train_label.push_back(i);
-      } 
-      else {
-        val_images.push_back(img);
-        val_labels.push_back(i);
+    int mat_size = (int)matVec.size();
+    int split_index = int((float)mat_size * percentage);
+    for (int j = mat_size - 1; j >= 0; j--) {
+      Mat img = matVec.at(j);
+      if (1) {
+        Mat feature;
+        extractFeature(img, feature);
+        if (j <= split_index) {
+          train_samples.push_back(feature);
+          train_images.push_back(img);
+          train_label.push_back(i);
+        }
+        else {
+          val_images.push_back(img);
+          val_labels.push_back(i);
+        }
       }
     }
   } 
@@ -164,18 +188,38 @@ void AnnChTrain::trainVal(size_t number_for_count) {
   std::cout << "Your ANN Model was saved to " << ann_xml_ << std::endl;
   std::cout << "Training done. Time elapse: " << (end - start) / (1000 * 60) << "minute" << std::endl;
 
-  // test the accuracy_rate
-  int corrects_all = 0, sum_all = val_images.size();
-  for (size_t i = 0; i < val_images.size(); ++i) {
-    cv::Mat img = val_images.at(i);
-    int label = val_labels.at(i);
-    auto char_key = kChars[i + kCharsTotalNumber - classNumber];
-    std::pair<std::string, std::string> ch = identifyChinese(img);
-    if (ch.first == char_key) 
-      corrects_all++;
+  // test the accuracy_rate in train
+  if (1) {
+    int corrects_all = 0, sum_all = train_images.size();
+    std::cout << "train_images size: " << sum_all << std::endl;
+    for (size_t i = 0; i < train_images.size(); ++i) {
+      cv::Mat img = train_images.at(i);
+      int label = train_label.at(i);
+      auto char_key = kChars[label + kCharsTotalNumber - classNumber];
+      std::pair<std::string, std::string> ch = identifyGrayChinese(img);
+      if (ch.first == char_key)
+        corrects_all++;
+    }
+    float accuracy_rate = (float)corrects_all / (float)sum_all;
+    std::cout << "Train error_rate: " << (1.f - accuracy_rate) * 100.f << "% "<< std::endl;
   }
-  float accuracy_rate = (float)corrects_all / (float)sum_all;
-  std::cout << "Accuracy_rate: " << accuracy_rate << std::endl;
+
+  // test the accuracy_rate in val
+  if (1) {
+    int corrects_all = 0, sum_all = val_images.size();
+    std::cout << "val_images: " << sum_all << std::endl;
+    for (size_t i = 0; i < val_images.size(); ++i) {
+      cv::Mat img = val_images.at(i);
+      int label = val_labels.at(i);
+      auto char_key = kChars[label + kCharsTotalNumber - classNumber];
+      std::pair<std::string, std::string> ch = identifyGrayChinese(img);
+      if (ch.first == char_key)
+        corrects_all++;
+    }
+    float accuracy_rate = (float)corrects_all / (float)sum_all;
+    std::cout << "Test error_rate: " << (1.f - accuracy_rate) * 100.f << "% "<< std::endl;
+  }
+
 }
 
 cv::Ptr<cv::ml::TrainData> AnnChTrain::tdata() {

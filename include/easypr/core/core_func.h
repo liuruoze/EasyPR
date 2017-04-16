@@ -117,6 +117,9 @@ Rect rectEnlarge(const Rect& src, const int mat_width, const int mat_height);
 // write images to temp folder
 void writeTempImage(const Mat& outImg, const string path);
 
+// remove the small lines in character like "zh-cuan"
+bool judegMDOratio2(const Mat &image, const Rect &rect, std::vector<Point> &contour, Mat &result);
+
 //! non-maximum surpresion for 1d array
 template<typename T>
 void NMSfor1D(const vector<T>& arr, vector<int>& index) {

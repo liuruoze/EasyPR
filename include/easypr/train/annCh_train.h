@@ -16,13 +16,12 @@ class AnnChTrain : public ITrain {
 
   virtual void test();
 
-  std::pair<std::string, std::string> identifyChinese(cv::Mat input);
-  cv::Mat AnnChTrain::generateGraySyntheticImage(const cv::Mat& image);
+  std::pair<std::string, std::string> identifyGrayChinese(cv::Mat input);
 
  private:
   virtual cv::Ptr<cv::ml::TrainData> tdata();
 
-  void AnnChTrain::trainVal(size_t number_for_count = 100);
+  void trainVal(size_t number_for_count = 100);
 
   cv::Ptr<cv::ml::ANN_MLP> ann_;
   const char* ann_xml_;

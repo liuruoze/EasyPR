@@ -252,7 +252,7 @@ cv::Ptr<cv::ml::TrainData> AnnTrain::sdata(size_t number_for_count) {
 
     auto chars_files = utils::getFiles(sub_folder);
     size_t char_size = chars_files.size();
-    fprintf(stdout, ">> Characters count: %d \n", char_size);
+    fprintf(stdout, ">> Characters count: %d \n", int(char_size));
 
     std::vector<cv::Mat> matVec;
     matVec.reserve(number_for_count);
@@ -274,7 +274,7 @@ cv::Ptr<cv::ml::TrainData> AnnTrain::sdata(size_t number_for_count) {
       }
     }
 
-    fprintf(stdout, ">> Characters count: %d \n", matVec.size());
+    fprintf(stdout, ">> Characters count: %d \n", (int)matVec.size());
 
     for (auto img : matVec) {
       auto fps = charFeatures2(img, kPredictSize);

@@ -571,9 +571,8 @@ namespace cv
       Rect rect;
     };
 
-    void detectRegions(InputArray _src, vector<vector<Point>>& msers_blue, vector<Rect>& bboxes_blue,
-      vector<vector<Point>>& msers_yellow, vector<Rect>& bboxes_yellow);
 
+ 
     void preprocess1(const Mat& img, int* level_size)
     {
       memset(level_size, 0, 256 * sizeof(level_size[0]));
@@ -776,6 +775,10 @@ namespace cv
     
     Params params;
 
+    void detectRegions(InputArray _src, vector<vector<Point>>& msers_blue, vector<Rect>& bboxes_blue,
+      vector<vector<Point>>& msers_yellow, vector<Rect>& bboxes_yellow);
+
+    void detectRegions(InputArray _src, vector<vector<Point>>& msers, vector<Rect>& bboxes, int type);
   };
 
   void MSER_Impl2::detectRegions(InputArray _src, vector<vector<Point>>& msers_blue, vector<Rect>& bboxes_blue,
@@ -783,17 +786,12 @@ namespace cv
   {
     Mat src = _src.getMat();
     size_t npix = src.total();
-
-    if (npix == 0)
-      return;
+    if (npix == 0) return;
 
     Size size = src.size();
-
-    if (src.type() == CV_8U)
-    {
+    if (src.type() == CV_8U) {
       int level_size[256];
-      if (!src.isContinuous())
-      {
+      if (!src.isContinuous()) {
         src.copyTo(tempsrc);
         src = tempsrc;
       }
@@ -807,6 +805,32 @@ namespace cv
       // brighter to darker (MSER-)
       preprocess2(src, level_size);
       pass(src, msers_blue, bboxes_blue, size, level_size, 255);
+    }
+  }
+
+  void MSER_Impl2::detectRegions(InputArray _src, vector<vector<Point>>& msers, vector<Rect>& bboxes, int type)
+  {
+    Mat src = _src.getMat();
+    size_t npix = src.total();
+    if (npix == 0) return;
+
+    Size size = src.size();
+    if (src.type() == CV_8U) {
+      int level_size[256];
+      if (!src.isContinuous()) {
+        src.copyTo(tempsrc);
+        src = tempsrc;
+      }
+
+      // darker to brighter (MSER+)
+      // dont need when plate is blue
+      preprocess1(src, level_size);
+      if (type) 
+        pass(src, msers, bboxes, size, level_size, 0);
+
+      // brighter to darker (MSER-)
+      preprocess2(src, level_size);
+      pass(src, msers, bboxes, size, level_size, 255);
     }
   }
 

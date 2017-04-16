@@ -32,6 +32,8 @@ namespace easypr {
 
     CPlate(const CPlate& other) {
       m_plateMat = other.m_plateMat;
+      m_chineseMat = other.m_chineseMat;
+      m_chineseKey = other.m_chineseKey;
       m_score = other.m_score;
       m_platePos = other.m_platePos;
       m_plateStr = other.m_plateStr;
@@ -53,6 +55,8 @@ namespace easypr {
     CPlate& operator=(const CPlate& other) {
       if (this != &other) {
         m_plateMat = other.m_plateMat;
+        m_chineseMat = other.m_chineseMat;
+        m_chineseKey = other.m_chineseKey;
         m_score = other.m_score;
         m_platePos = other.m_platePos;
         m_plateStr = other.m_plateStr;
@@ -75,6 +79,12 @@ namespace easypr {
 
     inline void setPlateMat(Mat param) { m_plateMat = param; }
     inline Mat getPlateMat() const { return m_plateMat; }
+
+    inline void setChineseMat(Mat param) { m_chineseMat = param; }
+    inline Mat getChineseMat() const { return m_chineseMat; }
+
+    inline void setChineseKey(String param) { m_chineseKey = param; }
+    inline String getChineseKey() const { return m_chineseKey; }
 
     inline void setPlatePos(RotatedRect param) { m_platePos = param; }
     inline RotatedRect getPlatePos() const { return m_platePos; }
@@ -168,6 +178,12 @@ namespace easypr {
     std::vector<CCharacter> m_reutCharVec;
 
     int m_charCount;
+
+    //! chinese mat;
+    Mat m_chineseMat;
+
+    //! chinese key;
+    String m_chineseKey;
 
     //! distVec
     Vec2i m_distVec;

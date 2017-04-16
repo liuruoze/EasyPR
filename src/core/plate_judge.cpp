@@ -17,11 +17,11 @@ namespace easypr {
   PlateJudge::PlateJudge() { 
     bool useLBP = false;
     if (useLBP) {
-      svm_ = ml::SVM::load<ml::SVM>(kLBPSvmPath);
+      LOAD_SVM_MODEL(svm_, kLBPSvmPath);
       extractFeature = getLBPFeatures;
     }
     else {
-      svm_ = ml::SVM::load<ml::SVM>(kHistSvmPath);
+      LOAD_SVM_MODEL(svm_, kHistSvmPath);
       extractFeature = getHistomPlusColoFeatures;
     }
   }
@@ -30,7 +30,7 @@ namespace easypr {
     if (path != std::string(kDefaultSvmPath)) {
       if (!svm_->empty())
         svm_->clear();
-      svm_ = ml::SVM::load<ml::SVM>(path);
+      LOAD_SVM_MODEL(svm_, path);
     }
   }
 

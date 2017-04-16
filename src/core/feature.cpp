@@ -233,37 +233,56 @@ Mat charFeatures2(Mat in, int sizeData) {
 void getGrayCharFeatures(const Mat& grayChar, Mat& features) {
   // TODO: check channnels == 1
   SHOW_IMAGE(grayChar, 0);
+  SHOW_IMAGE(255 - grayChar, 0);
 
   // resize to uniform size, like 20x32
+  bool useResize = false;
+  bool useConvert = true;
+  bool useMean = true;
+  bool useLBP = false;
+
   Mat char_mat;
-  char_mat.create(kGrayCharHeight, kGrayCharWidth, CV_32FC1);
-  resize(grayChar, char_mat, char_mat.size(), 0, 0, INTER_LINEAR);
+  if (useResize) {
+    char_mat.create(kGrayCharHeight, kGrayCharWidth, CV_8UC1);
+    resize(grayChar, char_mat, char_mat.size(), 0, 0, INTER_LINEAR);
+  } else {
+    char_mat = grayChar;
+  }
   SHOW_IMAGE(char_mat, 0);
 
   // convert to float
-  bool useConvert = false;
+  Mat float_img;
   if (useConvert) {
-    Mat float_img;
     float scale = 1.f / 255;
     char_mat.convertTo(float_img, CV_32FC1, scale, 0);
-    SHOW_IMAGE(float_img, 0);
+  } else {
+    float_img = char_mat;
   }
+  SHOW_IMAGE(float_img, 0);
 
   // cut from mean, it can be optional
-  bool useMean = true;
+
+  Mat mean_img;
   if (useMean) {
-    char_mat -= mean(char_mat);
-    SHOW_IMAGE(char_mat, 0);
+    float_img -= mean(float_img);
+    mean_img = float_img;
+  } else {
+    mean_img = float_img;
   }
+  SHOW_IMAGE(mean_img, 0);
 
   // use lbp to get features, it can be changed to other
-  Mat lbpimage = libfacerec::olbp(char_mat);
-  SHOW_IMAGE(lbpimage, 0);
-
-  Mat lbp_hist = libfacerec::spatial_histogram(lbpimage, 32, 4, 4);
+  Mat feautreImg;
+  if (useLBP) {
+    Mat lbpimage = libfacerec::olbp(char_mat);
+    SHOW_IMAGE(lbpimage, 0);
+    feautreImg = libfacerec::spatial_histogram(lbpimage, kCharLBPPatterns, kCharLBPGridX, kCharLBPGridY);
+  } else {
+    feautreImg = mean_img.reshape(1, 1);
+  }
 
   // return back
-  features = lbp_hist;
+  features = feautreImg;
 }
 
 void getLBPplusHistFeatures(const Mat& image, Mat& features) {
