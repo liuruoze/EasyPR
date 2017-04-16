@@ -108,22 +108,9 @@ namespace easypr {
       CPlateRecognize pr;
       pr.setResultShow(false);
       pr.setLifemode(true);
-
-      int mode = PR_MODE_UNCONSTRAINED;
-      //int mode = PR_MODE_CAMERPOHNE;
-      //int mode = -1;
-      if (PR_MODE_UNCONSTRAINED == mode) {
-        pr.setDetectType(PR_DETECT_COLOR | PR_DETECT_CMSER);
-        pr.setMaxPlates(4);
-      } else if (PR_MODE_CAMERPOHNE == mode) {
-        pr.setDetectType(PR_DETECT_COLOR | PR_DETECT_CMSER);
-        pr.setMaxPlates(1);
-      } else {
-        pr.setDetectType(PR_DETECT_CMSER );
-        pr.setMaxPlates(1);
-      }
-
-      //pr.setDetectType(PR_DETECT_COLOR | PR_DETECT_SOBEL);
+      pr.setDetectType(PR_DETECT_COLOR | PR_DETECT_CMSER);
+      pr.setMaxPlates(4);
+ 
       // load the maching learning model
       //pr.LoadSVM("resources/model/svm.xml");
       pr.LoadANN("resources/model/ann.xml");

@@ -11,16 +11,8 @@ CCharsRecognise::~CCharsRecognise() { SAFE_RELEASE(m_charsSegment); }
 
 int CCharsRecognise::charsRecognise(Mat plate, std::string& plateLicense) {
   std::vector<Mat> matChars;
-
   int result = m_charsSegment->charsSegment(plate, matChars);
-
-  //std::cout << "charsSegment:" << result << std::endl;
-
   if (result == 0) {
-    //for (auto block : matChars) {
-    //  auto character = CharsIdentify::instance()->identify(block);
-    //  plateLicense.append(character.second);
-    //}
     int num = matChars.size();
     for (int j = 0; j < num; j++)
     {
