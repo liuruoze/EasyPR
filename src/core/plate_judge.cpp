@@ -15,8 +15,8 @@ namespace easypr {
   }
 
   PlateJudge::PlateJudge() { 
-    svm_ = ml::SVM::load<ml::SVM>(kDefaultSvmPath); 
-    //svm_ = ml::SVM::load<ml::SVM>(kLBPSvmPath);   
+    svm_ = ml::SVM::load(kDefaultSvmPath); 
+    //svm_ = ml::SVM::load(kLBPSvmPath);   
     extractFeature = getLBPFeatures;
   }
 
@@ -26,7 +26,7 @@ namespace easypr {
       if (!svm_->empty())
         svm_->clear();
 
-      svm_ = ml::SVM::load<ml::SVM>(path);
+      svm_ = ml::SVM::load(path);
     }
   }
 

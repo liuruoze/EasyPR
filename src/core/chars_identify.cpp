@@ -17,8 +17,8 @@ namespace easypr {
   }
 
   CharsIdentify::CharsIdentify() {
-    ann_ = ml::ANN_MLP::load<ml::ANN_MLP>(kDefaultAnnPath);
-    annChinese_ = ml::ANN_MLP::load<ml::ANN_MLP>(kChineseAnnPath);
+    ann_ = ml::ANN_MLP::load(kDefaultAnnPath);
+    annChinese_ = ml::ANN_MLP::load(kChineseAnnPath);
     kv_ = std::shared_ptr<Kv>(new Kv);
     kv_->load("etc/province_mapping");
   }
@@ -29,7 +29,7 @@ namespace easypr {
       if (!ann_->empty())
         ann_->clear();
 
-      ann_ = ml::ANN_MLP::load<ml::ANN_MLP>(path);
+      ann_ = ml::ANN_MLP::load(path);
     }
   }
 
@@ -39,7 +39,7 @@ namespace easypr {
       if (!annChinese_->empty())
         annChinese_->clear();
 
-      annChinese_ = ml::ANN_MLP::load<ml::ANN_MLP>(path);
+      annChinese_ = ml::ANN_MLP::load(path);
     }
   }
 
