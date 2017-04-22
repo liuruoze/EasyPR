@@ -407,6 +407,51 @@ namespace easypr {
     return true;
   }
 
+
+void clearBorder(const Mat &img, Rect& cropRect) {
+  int r = img.rows;
+  int c = img.cols;
+  Mat boder = Mat::zeros(1, r, CV_8UC1);
+  const int noJunpCount_thresh = int(0.15f * c);
+
+  // if nojumpcount >
+  for (int i = 0; i < r; i++) {
+    int nojumpCount = 0;
+    int isBorder = 0;
+    for (int j = 0; j < c - 1; j++) {
+      if (img.at<char>(i, j) == img.at<char>(i, j + 1))
+        nojumpCount++;
+      if (nojumpCount > noJunpCount_thresh) {
+        nojumpCount = 0;
+        isBorder = 1;
+        break;
+      }
+    }
+    boder.at<char>(i) = (char) isBorder;
+  }
+
+  const int mintop = int(0.1f * r);
+  const int maxtop = int(0.9f * r);
+
+  int minMatTop = 0;
+  int maxMatTop = r - 1;
+
+  for (int i = 0; i < mintop; i++) {
+    if (boder.at<char>(i) == 1) {
+      minMatTop = i;
+    }
+  }
+
+  for (int i = r - 1; i > maxtop; i--) {
+    if (boder.at<char>(i) == 1) {
+      maxMatTop = i;
+    }
+  }
+
+  cropRect = Rect(0, minMatTop, c, maxMatTop - minMatTop + 1);
+
+}
+
   void clearLiuDing(Mat mask, int &top, int &bottom) {
     const int x = 7;
 
@@ -1217,23 +1262,31 @@ namespace easypr {
   }
 
 
-  bool judegMDOratio2(const Mat &image, const Rect &rect, std::vector<Point> &contour, Mat &result) {
+  bool judegMDOratio2(const Mat &image, const Rect &rect, std::vector<Point> &contour, Mat &result, const float thresh,
+    bool useExtendHeight) {
+
     Mat mser = image(rect);
     Mat mser_mat;
-    threshold(mser, mser_mat, 0, 255, CV_THRESH_BINARY | CV_THRESH_OTSU);
+    cv::threshold(mser, mser_mat, 0, 255, CV_THRESH_BINARY | CV_THRESH_OTSU);
 
-    Rect normalRect = adaptive_charrect_from_rect(rect, image.cols, image.rows);
+    Rect normalRect = adaptive_charrect_from_rect(rect, image.cols, image.rows, useExtendHeight);
     Mat region = image(normalRect);
     Mat thresh_mat;
-    threshold(region, thresh_mat, 0, 255, CV_THRESH_BINARY | CV_THRESH_OTSU);
+    cv::threshold(region, thresh_mat, 0, 255, CV_THRESH_BINARY | CV_THRESH_OTSU);
 
     // count mser diff ratio
-    int countdiff = countNonZero(thresh_mat) - countNonZero(mser_mat);
+    int countdiff = abs(countNonZero(thresh_mat) - countNonZero(mser_mat));
 
     float MserDiffOstuRatio = float(countdiff) / float(rect.area());
 
-    if (MserDiffOstuRatio > 1) {
-      //cv::rectangle(result, rect, Scalar(0, 0, 0), 2);
+    if (MserDiffOstuRatio > thresh) {
+      //std::cout << "MserDiffOstuRatio:" << MserDiffOstuRatio << std::endl;
+      /*imshow("tmpMat", mser_mat);
+      waitKey(0);
+      imshow("tmpMat", thresh_mat);
+      waitKey(0);*/
+
+      cv::rectangle(result, normalRect, Scalar(0, 0, 0), 2);
       return false;
     }
 
@@ -2152,21 +2205,25 @@ namespace easypr {
     }
   }
 
-  Rect adaptive_charrect_from_rect(const Rect &rect, int maxwidth, int maxheight) {
+  Rect adaptive_charrect_from_rect(const Rect &rect, int maxwidth, int maxheight, bool useExtendHeight) {
     int expendWidth = 0;
+    int extendHeight = 0;
 
     if (rect.height > 3 * rect.width) {
-      expendWidth = (rect.height / 2 - rect.width) / 2;
+      expendWidth = int((int(rect.height * 0.5f) - rect.width) * 0.5f);
+      if (useExtendHeight) {
+        extendHeight = int(rect.height * 0.3f);
+      }
     }
 
     //Rect resultRect(rect.tl().x - expendWidth, rect.tl().y,
     //  rect.width + expendWidth * 2, rect.height);
 
     int tlx = rect.tl().x - expendWidth > 0 ? rect.tl().x - expendWidth : 0;
-    int tly = rect.tl().y;
+    int tly = rect.tl().y - extendHeight > 0 ? rect.tl().y - extendHeight : 0;
 
     int brx = rect.br().x + expendWidth < maxwidth ? rect.br().x + expendWidth : maxwidth;
-    int bry = rect.br().y;
+    int bry = rect.br().y + extendHeight < maxheight ? rect.br().y + extendHeight : maxheight;
 
     Rect resultRect(tlx, tly, brx - tlx, bry - tly);
     return resultRect;

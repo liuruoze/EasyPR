@@ -24,7 +24,7 @@ int CCharsRecognise::charsRecognise(Mat plate, std::string& plateLicense) {
         isChinses = true;
         auto character = CharsIdentify::instance()->identifyChinese(charMat, maxVal, judge);
         plateLicense.append(character.second);
-      } 
+      }
       else {
         isChinses = false;
         auto character = CharsIdentify::instance()->identify(charMat, isChinses);
@@ -45,7 +45,7 @@ int CCharsRecognise::charsRecognise(CPlate& plate, std::string& plateLicense) {
   std::vector<Mat> matChars;
   std::vector<Mat> grayChars;
   Mat plateMat = plate.getPlateMat();
-  if (1) writeTempImage(plateMat, "plateMat/plate");
+  if (0) writeTempImage(plateMat, "plateMat/plate");
   Color color;
   if (plate.getPlateLocateType() == CMSER) {
     color = plate.getPlateColor();
@@ -56,15 +56,15 @@ int CCharsRecognise::charsRecognise(CPlate& plate, std::string& plateLicense) {
     Mat tmpMat = plateMat(Rect_<double>(w * 0.1, h * 0.1, w * 0.8, h * 0.8));
     color = getPlateType(tmpMat, true);
   }
-  
-  int result = m_charsSegment->charsSegmentUsingProject(plateMat, matChars, grayChars, color);
+
+  int result = m_charsSegment->charsSegmentUsingMSER(plateMat, matChars, grayChars, color);
 
   if (result == 0) {
     int num = matChars.size();
     for (int j = 0; j < num; j++)
     {
       Mat charMat = matChars.at(j);
-      bool isChinses = false;   
+      bool isChinses = false;
 
       std::pair<std::string, std::string> character;
       float maxVal;
@@ -72,7 +72,6 @@ int CCharsRecognise::charsRecognise(CPlate& plate, std::string& plateLicense) {
         isChinses = true;
         bool judge = true;
         Mat grayChar = grayChars.at(j);
-        //character = CharsIdentify::instance()->identifyChinese(charMat, maxVal, judge);
         if (color != Color::BLUE)
           grayChar = 255 - grayChar;
         character = CharsIdentify::instance()->identifyChineseGray(grayChar, maxVal, judge);
@@ -89,8 +88,9 @@ int CCharsRecognise::charsRecognise(CPlate& plate, std::string& plateLicense) {
         character = CharsIdentify::instance()->identify(charMat, isChinses, isAbc);
         plateLicense.append(character.second);
       }
-      else {     
+      else {
         isChinses = false;
+        SHOW_IMAGE(charMat, 0);
         character = CharsIdentify::instance()->identify(charMat, isChinses);
         plateLicense.append(character.second);
       }
@@ -105,7 +105,7 @@ int CCharsRecognise::charsRecognise(CPlate& plate, std::string& plateLicense) {
       return -1;
     }
   }
-  
+
   return result;
 }
 

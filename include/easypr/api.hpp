@@ -44,14 +44,10 @@ static std::vector<std::string> plate_recognize(const char* image,
   assert(!img.empty());
 
   CPlateRecognize pr;
-  pr.setResultShow(true);
+  pr.setResultShow(false);
   pr.setLifemode(true);
   pr.setMaxPlates(1);
   pr.setDetectType(PR_DETECT_CMSER | PR_DETECT_COLOR);
-
-  pr.LoadSVM("resources/model/svm.xml");
-  pr.LoadANN("resources/model/ann.xml");
-  pr.LoadChineseANN("resources/model/ann_chinese.xml");
 
   std::vector<std::string> results;
   std::vector<CPlate> plates;
@@ -59,6 +55,15 @@ static std::vector<std::string> plate_recognize(const char* image,
 
   for (auto plate : plates) {
     results.push_back(plate.getPlateStr());
+
+  }
+
+  if (plates.size() == 1) {
+    if (1) {
+      std::stringstream ss(std::stringstream::in | std::stringstream::out);
+      ss << "result.jpg";
+      imwrite(ss.str(), plates.at(0).getPlateMat());
+    }
   }
 
   return std::move(results);

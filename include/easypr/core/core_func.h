@@ -94,7 +94,7 @@ Mat adaptive_image_from_points(const std::vector<Point>& points,
   const Scalar& forgroundColor = Scalar(255, 255, 255), bool gray = true);
 
 // Calculate a rect have same length and width and remains the center
-Rect adaptive_charrect_from_rect(const Rect& rect, int maxwidth, int maxheight);
+Rect adaptive_charrect_from_rect(const Rect& rect, int maxwidth, int maxheight, bool useExtendHeight = false);
 
 // calc safe rect
 bool calcSafeRect(const RotatedRect& roi_rect, const Mat& src,
@@ -117,8 +117,12 @@ Rect rectEnlarge(const Rect& src, const int mat_width, const int mat_height);
 // write images to temp folder
 void writeTempImage(const Mat& outImg, const string path);
 
-// remove the small lines in character like "zh-cuan"
-bool judegMDOratio2(const Mat &image, const Rect &rect, std::vector<Point> &contour, Mat &result);
+// remove small hor lines in the plate
+bool judegMDOratio2(const Mat &image, const Rect &rect, std::vector<Point> &contour, Mat &result, const float thresh = 1.f,
+                    bool useExtendHeight = false);
+
+// clear top and bottom borders
+void clearBorder(const Mat &img, Rect& cropRect);
 
 //! non-maximum surpresion for 1d array
 template<typename T>

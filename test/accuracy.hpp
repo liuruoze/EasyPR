@@ -101,16 +101,20 @@ namespace easypr {
 
       // parameters
       const bool filesNatureSort = true;
-      const int max_plates = 1;
+      const int max_plates = 4;
       const int isGenerateGT = 1;
 
       // set the parameters of CPlateRecognize
       CPlateRecognize pr;
       pr.setResultShow(false);
       pr.setLifemode(true);
-      pr.setDetectType(PR_DETECT_COLOR | PR_DETECT_CMSER);
-      pr.setMaxPlates(4);
- 
+      //  pr.setDetectType(PR_DETECT_COLOR | PR_DETECT_CMSER | PR_DETECT_SOBEL );
+      //  pr.setMaxPlates(4);
+
+        pr.setDetectType(PR_DETECT_COLOR | PR_DETECT_CMSER);
+        pr.setMaxPlates(1);
+
+      //pr.setDetectType(PR_DETECT_COLOR | PR_DETECT_SOBEL);
       // load the maching learning model
       //pr.LoadSVM("resources/model/svm.xml");
       pr.LoadANN("resources/model/ann.xml");
@@ -156,6 +160,11 @@ namespace easypr {
       icdar2003_recall_all.reserve(size * max_plates);
       vector<float> icdar2003_precise_all;
       icdar2003_precise_all.reserve(size * max_plates);
+
+      // use to generate the plate trainging data, for training end2end chars recognize model
+      std::stringstream plate_ss(std::stringstream::in | std::stringstream::out);
+      int batch_i = 3;
+      int plate_out_i = 0;
 
       time_t begin, end;
       time(&begin);
@@ -274,6 +283,13 @@ namespace easypr {
               // if isGenerateG, then writes the text string of plate license 
               if (isGenerateGT) {
                 rectangleNode.updateText(matchPlate->getPlateStr().c_str());
+
+                // use to generate the plate trainging data, for training end2end chars recognize model
+                std::stringstream ss(std::stringstream::in | std::stringstream::out);
+                ss << "resources/image/tmp/plateMat/plate_" << batch_i << "_" << plate_out_i << ".jpg";
+                imwrite(ss.str(), matchPlate->getPlateMat());
+                plate_ss << "plate_" << batch_i << "_" << plate_out_i << ".jpg" << ":" << license << endl;
+                plate_out_i++;
               }
 
               int diff = utils::levenshtein_distance(license, matchLicense);
@@ -502,6 +518,19 @@ namespace easypr {
       else {
         cout << "Unable to open file";
       }
+
+      // use to generate the plate trainging data, for training end2end chars recognize model
+      if(isGenerateGT) {
+        ofstream myfile("result/plateGroundTruth.txt", ios::app);
+        if (myfile.is_open()) {
+          myfile << plate_ss.str();
+          myfile.close();
+        }
+        else {
+          cout << "Unable to open file";
+        }
+      }
+
       return 0;
     }
 

@@ -22,6 +22,7 @@ int CPlateRecognize::plateRecognize(const Mat& src, std::vector<CPlate> &plateVe
     std::stringstream ss(std::stringstream::in | std::stringstream::out);
     ss << "resources/image/tmp/phone/phone_img_" << img_index << ".jpg";
     imwrite(ss.str(), img);
+    return -1;
   }
 
   // 1. plate detect
@@ -32,12 +33,7 @@ int CPlateRecognize::plateRecognize(const Mat& src, std::vector<CPlate> &plateVe
     for (size_t j = 0; j < num; j++) {
       CPlate item = plateVec.at(j);
       Mat plateMat = item.getPlateMat();
-
-      if (0) {
-        imshow("plate", plateMat);
-        waitKey(0);
-        destroyWindow("plate");
-      }
+      //SHOW_IMAGE(plateMat, 1);
 
       // scale the rect to src;
       item.setPlateScale(scale);

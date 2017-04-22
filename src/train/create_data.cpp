@@ -25,6 +25,7 @@ namespace easypr {
   // shift an image
   Mat translateImg(Mat img, int offsetx, int offsety, int bk){
     Mat dst;
+    Mat test = Mat_<double>(2, 3) << 2;
     //cout << test << endl;
     Mat trans_mat = (Mat_<double>(2, 3) << 1, 0, offsetx, 0, 1, offsety);
     //cout << trans_mat << endl;

@@ -72,62 +72,62 @@ Mat CCharsSegment::preprocessChar(Mat in) {
 
 //! choose the bese threshold method for chinese
 void CCharsSegment::judgeChinese(Mat in, Mat& out, Color plateType) {
-    Mat auxRoi = in;
-    float valOstu = -1.f, valAdap = -1.f;
-    Mat roiOstu, roiAdap;
-    bool isChinese = true;
-    if (1) {
-      if (BLUE == plateType) {
-        threshold(auxRoi, roiOstu, 0, 255, CV_THRESH_BINARY + CV_THRESH_OTSU);
-      }
-      else if (YELLOW == plateType) {
-        threshold(auxRoi, roiOstu, 0, 255, CV_THRESH_BINARY_INV + CV_THRESH_OTSU);
-      }
-      else if (WHITE == plateType) {
-        threshold(auxRoi, roiOstu, 0, 255, CV_THRESH_BINARY_INV + CV_THRESH_OTSU);
-      }
-      else {
-        threshold(auxRoi, roiOstu, 0, 255, CV_THRESH_OTSU + CV_THRESH_BINARY);
-      }
-      roiOstu = preprocessChar(roiOstu);
-      if (0) {
-        imshow("roiOstu", roiOstu);
-        waitKey(0);
-        destroyWindow("roiOstu");
-      }
-      auto character = CharsIdentify::instance()->identifyChinese(roiOstu, valOstu, isChinese);
+  Mat auxRoi = in;
+  float valOstu = -1.f, valAdap = -1.f;
+  Mat roiOstu, roiAdap;
+  bool isChinese = true;
+  if (1) {
+    if (BLUE == plateType) {
+      threshold(auxRoi, roiOstu, 0, 255, CV_THRESH_BINARY + CV_THRESH_OTSU);
     }
-    if (1) {
-      if (BLUE == plateType) {
-        adaptiveThreshold(auxRoi, roiAdap, 255, ADAPTIVE_THRESH_MEAN_C, THRESH_BINARY, 3, 0);
-      }
-      else if (YELLOW == plateType) {
-        adaptiveThreshold(auxRoi, roiAdap, 255, ADAPTIVE_THRESH_MEAN_C, THRESH_BINARY_INV, 3, 0);
-      }
-      else if (WHITE == plateType) {
-        adaptiveThreshold(auxRoi, roiAdap, 255, ADAPTIVE_THRESH_MEAN_C, THRESH_BINARY_INV, 3, 0);
-      }
-      else {
-        adaptiveThreshold(auxRoi, roiAdap, 255, ADAPTIVE_THRESH_MEAN_C, THRESH_BINARY, 3, 0);
-      }
-      roiAdap = preprocessChar(roiAdap);
-      auto character = CharsIdentify::instance()->identifyChinese(roiAdap, valAdap, isChinese);
+    else if (YELLOW == plateType) {
+      threshold(auxRoi, roiOstu, 0, 255, CV_THRESH_BINARY_INV + CV_THRESH_OTSU);
     }
-
-    //std::cout << "valOstu: " << valOstu << std::endl;
-    //std::cout << "valAdap: " << valAdap << std::endl;
-
-    if (valOstu >= valAdap) {
-      out = roiOstu;
+    else if (WHITE == plateType) {
+      threshold(auxRoi, roiOstu, 0, 255, CV_THRESH_BINARY_INV + CV_THRESH_OTSU);
     }
     else {
-      out = roiAdap;
+      threshold(auxRoi, roiOstu, 0, 255, CV_THRESH_OTSU + CV_THRESH_BINARY);
     }
+    roiOstu = preprocessChar(roiOstu);
+    if (0) {
+      imshow("roiOstu", roiOstu);
+      waitKey(0);
+      destroyWindow("roiOstu");
+    }
+    auto character = CharsIdentify::instance()->identifyChinese(roiOstu, valOstu, isChinese);
+  }
+  if (1) {
+    if (BLUE == plateType) {
+      adaptiveThreshold(auxRoi, roiAdap, 255, ADAPTIVE_THRESH_MEAN_C, THRESH_BINARY, 3, 0);
+    }
+    else if (YELLOW == plateType) {
+      adaptiveThreshold(auxRoi, roiAdap, 255, ADAPTIVE_THRESH_MEAN_C, THRESH_BINARY_INV, 3, 0);
+    }
+    else if (WHITE == plateType) {
+      adaptiveThreshold(auxRoi, roiAdap, 255, ADAPTIVE_THRESH_MEAN_C, THRESH_BINARY_INV, 3, 0);
+    }
+    else {
+      adaptiveThreshold(auxRoi, roiAdap, 255, ADAPTIVE_THRESH_MEAN_C, THRESH_BINARY, 3, 0);
+    }
+    roiAdap = preprocessChar(roiAdap);
+    auto character = CharsIdentify::instance()->identifyChinese(roiAdap, valAdap, isChinese);
+  }
+
+  //std::cout << "valOstu: " << valOstu << std::endl;
+  //std::cout << "valAdap: " << valAdap << std::endl;
+
+  if (valOstu >= valAdap) {
+    out = roiOstu;
+  }
+  else {
+    out = roiAdap;
+  }
 }
 
-  void CCharsSegment::judgeChineseGray(Mat in, Mat& out, Color plateType) {
-    out = in;
-  }
+void CCharsSegment::judgeChineseGray(Mat in, Mat& out, Color plateType) {
+  out = in;
+}
 
 bool slideChineseWindow(Mat& image, Rect mr, Mat& newRoi, Color plateType, float slideLengthRatio, bool useAdapThreshold) {
   std::vector<CCharacter> charCandidateVec;
@@ -225,61 +225,61 @@ bool slideChineseWindow(Mat& image, Rect mr, Mat& newRoi, Color plateType, float
   return false;
 }
 
-  bool slideChineseGrayWindow(const Mat& image, Rect& mr, Mat& newRoi, Color plateType, float slideLengthRatio) {
-    std::vector<CCharacter> charCandidateVec;
+bool slideChineseGrayWindow(const Mat& image, Rect& mr, Mat& newRoi, Color plateType, float slideLengthRatio) {
+  std::vector<CCharacter> charCandidateVec;
 
-    Rect maxrect = mr;
-    Point tlPoint = mr.tl();
+  Rect maxrect = mr;
+  Point tlPoint = mr.tl();
 
-    bool isChinese = true;
-    int slideLength = int(slideLengthRatio * maxrect.width);
-    int slideStep = 1;
-    int fromX = 0;
-    fromX = tlPoint.x;
+  bool isChinese = true;
+  int slideLength = int(slideLengthRatio * maxrect.width);
+  int slideStep = 1;
+  int fromX = 0;
+  fromX = tlPoint.x;
 
-    for (int slideX = -slideLength; slideX < slideLength; slideX += slideStep) {
-      float x_slide = 0;
-      x_slide = float(fromX + slideX);
+  for (int slideX = -slideLength; slideX < slideLength; slideX += slideStep) {
+    float x_slide = 0;
+    x_slide = float(fromX + slideX);
 
-      float y_slide = (float)tlPoint.y;
+    float y_slide = (float)tlPoint.y;
 
-      int chineseWidth = int(maxrect.width);
-      int chineseHeight = int(maxrect.height);
+    int chineseWidth = int(maxrect.width);
+    int chineseHeight = int(maxrect.height);
 
-      Rect rect(Point2f(x_slide, y_slide), Size(chineseWidth, chineseHeight));
+    Rect rect(Point2f(x_slide, y_slide), Size(chineseWidth, chineseHeight));
 
-      if (rect.tl().x < 0 || rect.tl().y < 0 || rect.br().x >= image.cols || rect.br().y >= image.rows)
-        continue;
+    if (rect.tl().x < 0 || rect.tl().y < 0 || rect.br().x >= image.cols || rect.br().y >= image.rows)
+      continue;
 
-      Mat auxRoi = image(rect);
-      Mat grayChinese;
-      grayChinese.create(kGrayCharHeight, kGrayCharWidth, CV_8UC1);
-      resize(auxRoi, grayChinese, grayChinese.size(), 0, 0, INTER_LINEAR);
+    Mat auxRoi = image(rect);
+    Mat grayChinese;
+    grayChinese.create(kGrayCharHeight, kGrayCharWidth, CV_8UC1);
+    resize(auxRoi, grayChinese, grayChinese.size(), 0, 0, INTER_LINEAR);
 
-      CCharacter charCandidateOstu;
-      charCandidateOstu.setCharacterPos(rect);
-      charCandidateOstu.setCharacterMat(grayChinese);
-      charCandidateOstu.setIsChinese(isChinese);
-      charCandidateVec.push_back(charCandidateOstu);
-    }
-
-    CharsIdentify::instance()->classifyChineseGray(charCandidateVec);
-
-    double overlapThresh = 0.1;
-    NMStoCharacter(charCandidateVec, overlapThresh);
-
-    if (charCandidateVec.size() >= 1) {
-      std::sort(charCandidateVec.begin(), charCandidateVec.end(),
-                [](const CCharacter& r1, const CCharacter& r2) {
-                  return r1.getCharacterScore() > r2.getCharacterScore();
-                });
-
-      newRoi = charCandidateVec.at(0).getCharacterMat();
-      mr = charCandidateVec.at(0).getCharacterPos();
-      return true;
-    }
-    return false;
+    CCharacter charCandidateOstu;
+    charCandidateOstu.setCharacterPos(rect);
+    charCandidateOstu.setCharacterMat(grayChinese);
+    charCandidateOstu.setIsChinese(isChinese);
+    charCandidateVec.push_back(charCandidateOstu);
   }
+
+  CharsIdentify::instance()->classifyChineseGray(charCandidateVec);
+
+  double overlapThresh = 0.1;
+  NMStoCharacter(charCandidateVec, overlapThresh);
+
+  if (charCandidateVec.size() >= 1) {
+    std::sort(charCandidateVec.begin(), charCandidateVec.end(),
+              [](const CCharacter& r1, const CCharacter& r2) {
+                return r1.getCharacterScore() > r2.getCharacterScore();
+              });
+
+    newRoi = charCandidateVec.at(0).getCharacterMat();
+    mr = charCandidateVec.at(0).getCharacterPos();
+    return true;
+  }
+  return false;
+}
 
 
 int CCharsSegment::charsSegment(Mat input, vector<Mat>& resultVec, Color color) {
@@ -383,7 +383,7 @@ int CCharsSegment::charsSegment(Mat input, vector<Mat>& resultVec, Color color) 
         judgeChinese(auxRoi, newRoi, plateType);
     }
     else {
-      if (BLUE == plateType) {  
+      if (BLUE == plateType) {
         threshold(auxRoi, newRoi, 0, 255, CV_THRESH_BINARY + CV_THRESH_OTSU);
       }
       else if (YELLOW == plateType) {
@@ -398,7 +398,7 @@ int CCharsSegment::charsSegment(Mat input, vector<Mat>& resultVec, Color color) 
 
       newRoi = preprocessChar(newRoi);
     }
-     
+
     if (0) {
       if (i == 0) {
         imshow("input_grey", input_grey);
@@ -472,16 +472,21 @@ bool verifyCharRectSizes(Rect r) {
   float aspect = 45.0f / 90.0f;
   float charAspect = (float)r.width / (float)r.height;
   float error = 0.35f;
-  float minHeight = 25.f;
-  float maxHeight = 50.f;
+  float minHeight = kPlateResizeHeight * 0.6f;
+  float maxHeight = kPlateResizeHeight * 1.f;
   // We have a different aspect ratio for number 1, and it can be ~0.2
-  float minAspect = 0.05f;
-  float maxAspect = aspect + aspect * error;
+  float minAspect = 0.05f; //0.2f;
+
+  float maxAspect = aspect + aspect * error; //0.8f;
 
   int ch = r.tl().y + r.height / 2;
   int min_ch = int(kPlateResizeHeight * 0.3f);
   int max_ch = int(kPlateResizeHeight * 0.7f);
   if (ch > max_ch || ch < min_ch)
+   return false;
+
+  float h = (float)r.height;
+  if (h > maxHeight || h < minHeight)
     return false;
   if (charAspect < minAspect || charAspect > maxAspect)
     return false;
@@ -503,7 +508,7 @@ Mat preprocessCharMat(Mat in, int char_size) {
 
   Mat warpImage(m, m, in.type());
   warpAffine(in, warpImage, transformMat, warpImage.size(), INTER_LINEAR,
-    BORDER_CONSTANT, Scalar(0));
+             BORDER_CONSTANT, Scalar(0));
 
   Mat out;
   cv::resize(warpImage, out, Size(charSize, charSize));
@@ -511,16 +516,32 @@ Mat preprocessCharMat(Mat in, int char_size) {
   return out;
 }
 
+Mat clearLiuDingAndBorder(const Mat& grayImage, Color color) {
+  SHOW_IMAGE(grayImage, 1);
+  Mat img_threshold;
+  img_threshold = grayImage.clone();
+  spatial_ostu(img_threshold, 1, 1, color);
+  clearLiuDing(img_threshold);
+  Rect cropRect;
+  clearBorder(img_threshold, cropRect);
+  Mat cropedGrayImage;
+  resize(grayImage(cropRect), cropedGrayImage, Size(kPlateResizeWidth, kPlateResizeHeight));
+  SHOW_IMAGE(cropedGrayImage, 1);
+  return cropedGrayImage;
+}
+
 int CCharsSegment::charsSegmentUsingMSER(Mat input, vector<Mat>& resultVec, vector<Mat>& grayChars, Color color) {
   Mat grayImage;
   cvtColor(input, grayImage, CV_BGR2GRAY);
   std::vector<cv::Mat> bgrSplit;
   split(input, bgrSplit);
+  Mat grayChannel = grayImage; //clearLiuDingAndBorder(grayImage, color);
 
+  // Mat cropedGrayImage = grayImage;
   // generate all channgel images;
   vector<Mat> channelImages;
   bool useThreeChannel = false;
-  channelImages.push_back(grayImage);
+  channelImages.push_back(grayChannel);
   if (useThreeChannel) {
     for (int i = 0; i < 3; i++)
       channelImages.push_back(bgrSplit.at(i));
@@ -548,7 +569,7 @@ int CCharsSegment::charsSegmentUsingMSER(Mat input, vector<Mat>& resultVec, vect
     Mat cimage = channelImages.at(c_index);
     Mat showImage = cimage.clone();
     cvtColor(showImage, showImage, CV_GRAY2BGR);
-
+    Mat mdoImage = cimage.clone();
     string candidateLicense;
 
     //TODO mser+ mser-
@@ -564,11 +585,14 @@ int CCharsSegment::charsSegmentUsingMSER(Mat input, vector<Mat>& resultVec, vect
     int char_size = 20;
     const int char_max_count = 7;
 
+    Mat showMSERImage = cimage.clone();
+    cvtColor(showMSERImage, showMSERImage, CV_GRAY2BGR);
     // verify char size and output to rects;
     for (size_t index = 0; index < size; index++) {
       Rect rect = all_boxes[index];
       vector<Point> &contour = all_contours[index];
-      
+      rectangle(showMSERImage, rect, Scalar(0,0,255));
+
       // find character
       if (verifyCharRectSizes(rect)) {
         Mat mserMat = adaptive_image_from_points(contour, rect, Size(char_size, char_size));
@@ -581,8 +605,9 @@ int CCharsSegment::charsSegmentUsingMSER(Mat input, vector<Mat>& resultVec, vect
 
         // use judegMDOratio2 function to
         // remove the small lines in character like "zh-cuan"
-        if (judegMDOratio2(cimage, rect, contour, cimage)) {
+        if (judegMDOratio2(cimage, rect, contour, mdoImage, 1.2f, true)) {
           CCharacter charCandidate;
+          //cout << contour.size() << endl;
           charCandidate.setCharacterPos(charRect);
           charCandidate.setCharacterMat(charInput);
           charCandidate.setOstuLevel(ostu_level);
@@ -592,18 +617,26 @@ int CCharsSegment::charsSegmentUsingMSER(Mat input, vector<Mat>& resultVec, vect
         }
       }
     }
+    //SHOW_IMAGE(showMSERImage, 1);
+    SHOW_IMAGE(mdoImage, 0);
 
     CharsIdentify::instance()->classify(charVec);
     // use nms to remove the character are not likely to be true.
     double overlapThresh = 0.2;
     NMStoCharacter(charVec, overlapThresh);
     charVec.shrink_to_fit();
+    std::sort(charVec.begin(), charVec.end(),
+              [](const CCharacter& r1, const CCharacter& r2) { return r1.getCharacterPos().x < r2.getCharacterPos().x; });
 
+    string predictLicense = "";
     vector<Rect> sortedRect;
-    for (auto charCandidate : charVec) 
+    for (auto charCandidate : charVec) {
       sortedRect.push_back(charCandidate.getCharacterPos());
+      predictLicense.append(charCandidate.getCharacterStr());
+    }
+    cout << "predictLicense: " << predictLicense << endl;
     std::sort(sortedRect.begin(), sortedRect.end(),
-      [](const Rect& r1, const Rect& r2) { return r1.x < r2.x; });
+              [](const Rect& r1, const Rect& r2) { return r1.x < r2.x; });
 
     // find chinese rect
     size_t specIndex = 0;
@@ -617,36 +650,41 @@ int CCharsSegment::charsSegmentUsingMSER(Mat input, vector<Mat>& resultVec, vect
     RebuildRect(sortedRect, newSortedRect, specIndex);
 
     for (size_t i = 0; i < newSortedRect.size(); i++) {
-      Rect mr = rectEnlarge(newSortedRect[i], cimage.cols, cimage.rows);
+      Rect mr = newSortedRect[i];
+      //mr = rectEnlarge(newSortedRect[i], cimage.cols, cimage.rows);
       Mat auxRoi(cimage, mr);
       Mat newRoi;
       if (i == 0) {
-        Mat grayChar(cimage, mr);
+        //mr = rectEnlarge(newSortedRect[i], cimage.cols, cimage.rows);
         Mat chineseRoi;
         float slideLengthRatio = 0.1f;
-        slideChineseGrayWindow(cimage, mr, chineseRoi, color, slideLengthRatio);
-        grayChars.push_back(chineseRoi);
+        if(!slideChineseGrayWindow(cimage, mr, chineseRoi, color, slideLengthRatio))
+          chineseRoi = cimage(mr);
+
+        Mat resizedChinese;
+        resize(chineseRoi, resizedChinese, Size(kGrayCharWidth, kGrayCharHeight));
+        grayChars.push_back(resizedChinese);
       }
       else {
         switch (color) {
-        case BLUE:   threshold(auxRoi, newRoi, 0, 255, CV_THRESH_BINARY + CV_THRESH_OTSU); break;
-        case YELLOW:   threshold(auxRoi, newRoi, 0, 255, CV_THRESH_BINARY_INV + CV_THRESH_OTSU); break;
-        case WHITE:  threshold(auxRoi, newRoi, 0, 255, CV_THRESH_OTSU + CV_THRESH_BINARY_INV); break;
-        default: threshold(auxRoi, newRoi, 0, 255, CV_THRESH_OTSU + CV_THRESH_BINARY); break;
+          case BLUE:   threshold(auxRoi, newRoi, 0, 255, CV_THRESH_BINARY + CV_THRESH_OTSU); break;
+          case YELLOW:   threshold(auxRoi, newRoi, 0, 255, CV_THRESH_BINARY_INV + CV_THRESH_OTSU); break;
+          case WHITE:  threshold(auxRoi, newRoi, 0, 255, CV_THRESH_OTSU + CV_THRESH_BINARY_INV); break;
+          default: threshold(auxRoi, newRoi, 0, 255, CV_THRESH_OTSU + CV_THRESH_BINARY); break;
         }
         newRoi = preprocessChar(newRoi);
       }
       rectangle(showImage, mr, Scalar(0, 0, 255), 1);
       resultVec.push_back(newRoi);
-    }  
-    SHOW_IMAGE(showImage, 1);
+    }
+    SHOW_IMAGE(showImage, 0);
   }
 
   return 0;
 }
 
 
-int CCharsSegment::charsSegmentUsingProject(Mat input, vector<Mat>& resultVec, vector<Mat>& grayChars, Color color) {  
+int CCharsSegment::charsSegmentUsingProject(Mat input, vector<Mat>& resultVec, vector<Mat>& grayChars, Color color) {
   if (!input.data) return 0x01;
 
   //vector<int> out_indexs;
@@ -669,16 +707,16 @@ int CCharsSegment::charsSegmentUsingProject(Mat input, vector<Mat>& resultVec, v
 
   vector<vector<Point> > contours;
   findContours(img_contours,
-    contours,               // a vector of contours
-    CV_RETR_EXTERNAL,       // retrieve the external contours
-    CV_CHAIN_APPROX_NONE);  // all pixels of each contours
+               contours,               // a vector of contours
+               CV_RETR_EXTERNAL,       // retrieve the external contours
+               CV_CHAIN_APPROX_NONE);  // all pixels of each contours
 
   vector<vector<Point> >::iterator itc = contours.begin();
   vector<Rect> vecRect;
   while (itc != contours.end()) {
     Rect mr = boundingRect(Mat(*itc));
     Mat auxRoi(img_threshold, mr);
-    if (verifyCharSizes(auxRoi)) 
+    if (verifyCharSizes(auxRoi))
       vecRect.push_back(mr);
     ++itc;
   }
@@ -687,7 +725,7 @@ int CCharsSegment::charsSegmentUsingProject(Mat input, vector<Mat>& resultVec, v
 
   vector<Rect> sortedRect(vecRect);
   std::sort(sortedRect.begin(), sortedRect.end(),
-    [](const Rect& r1, const Rect& r2) { return r1.x < r2.x; });
+            [](const Rect& r1, const Rect& r2) { return r1.x < r2.x; });
 
   size_t specIndex = 0;
   specIndex = GetSpecificRect(sortedRect);
@@ -741,10 +779,10 @@ int CCharsSegment::charsSegmentUsingProject(Mat input, vector<Mat>& resultVec, v
     }
     else {
       switch (plateType) {
-      case BLUE:   threshold(auxRoi, newRoi, 0, 255, CV_THRESH_BINARY + CV_THRESH_OTSU); break;
-      case YELLOW:   threshold(auxRoi, newRoi, 0, 255, CV_THRESH_BINARY_INV + CV_THRESH_OTSU); break;
-      case WHITE:  threshold(auxRoi, newRoi, 0, 255, CV_THRESH_OTSU + CV_THRESH_BINARY_INV); break;
-      default: threshold(auxRoi, newRoi, 0, 255, CV_THRESH_OTSU + CV_THRESH_BINARY); break;
+        case BLUE:   threshold(auxRoi, newRoi, 0, 255, CV_THRESH_BINARY + CV_THRESH_OTSU); break;
+        case YELLOW:   threshold(auxRoi, newRoi, 0, 255, CV_THRESH_BINARY_INV + CV_THRESH_OTSU); break;
+        case WHITE:  threshold(auxRoi, newRoi, 0, 255, CV_THRESH_OTSU + CV_THRESH_BINARY_INV); break;
+        default: threshold(auxRoi, newRoi, 0, 255, CV_THRESH_OTSU + CV_THRESH_BINARY); break;
       }
       newRoi = preprocessChar(newRoi);
     }
