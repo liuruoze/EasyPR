@@ -99,7 +99,13 @@ static const int kGrayCharHeight = 32;
   static const int kCharLBPGridY = 8;
   static const int kCharLBPPatterns = 32;
 
-  static const int kCharHiddenNeurans = 48;
+  static const int kCharHiddenNeurans = 64;
+
+  static const int kCharsCountInOnePlate = 7;
+  static const int kSymbolsCountInChinesePlate = 6;
+
+  static const float kPlateMaxSymbolCount = 7.5f;
+  static const int kSymbolIndex = 2;
 
 // Disable the copy and assignment operator for this class.
 #define DISABLE_ASSIGN_AND_COPY(className) \
@@ -114,8 +120,6 @@ private:\
 // Display the image.
 #define SHOW_IMAGE(imgName, debug) \
   if (debug) { \
-    namedWindow("imgName", WINDOW_AUTOSIZE); \
-    moveWindow("imgName", 500, 500); \
     imshow("imgName", imgName); \
     waitKey(0); \
     destroyWindow("imgName"); \

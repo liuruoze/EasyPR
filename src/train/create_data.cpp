@@ -25,7 +25,6 @@ namespace easypr {
   // shift an image
   Mat translateImg(Mat img, int offsetx, int offsety, int bk){
     Mat dst;
-    Mat test = Mat_<double>(2, 3) << 2;
     //cout << test << endl;
     Mat trans_mat = (Mat_<double>(2, 3) << 1, 0, offsetx, 0, 1, offsety);
     //cout << trans_mat << endl;
@@ -67,19 +66,19 @@ namespace easypr {
     int rd = rand();
     int bkColor = getBoderColor(image);
     Mat result = image.clone();
-    if (1 && (rd >> 6 & 1)) {
+    if (0 && (rd >> 6 & 1)) {
       int shift = 2;
       int ran_x = rand() % shift;
       int ran_y = rand() % shift;
       result = cropImg(result, ran_x, ran_y, shift, bkColor);
     }
-    if (1 && (rd >> 4 & 1)) {
+    if (0 && (rd >> 4 & 1)) {
       int ran_x = rand() % 2 - 1;
       int ran_y = rand() % 2 - 1;
       result = translateImg(result, ran_x, ran_y, bkColor);
     }
     if (1 && (rd >> 2 & 1)) {
-      float angle = float(rand() % 500) * 0.01f - 2.5f;
+      float angle = float(rand() % 100) * 0.1f - 5.f;
       result = rotateImg(result, angle, bkColor);
     }
 

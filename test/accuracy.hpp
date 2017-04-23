@@ -7,6 +7,7 @@
 #include <list>
 #include <memory>
 #include <numeric>
+#include <unordered_map>
 #include "easypr/core/core_func.h"
 #include "easypr/util/util.h"
 #include "thirdparty/xmlParser/xmlParser.h"
@@ -112,7 +113,7 @@ namespace easypr {
       //  pr.setMaxPlates(4);
 
         pr.setDetectType(PR_DETECT_COLOR | PR_DETECT_CMSER);
-        pr.setMaxPlates(1);
+        pr.setMaxPlates(4);
 
       //pr.setDetectType(PR_DETECT_COLOR | PR_DETECT_SOBEL);
       // load the maching learning model
@@ -533,6 +534,231 @@ namespace easypr {
 
       return 0;
     }
+
+
+    // the batch test function for chars recognize
+    int accuracyCharRecognizeTest(const char* test_path) {
+     // find text mapping, for compatiable withe utf-8 and GBK
+      std::shared_ptr<easypr::Kv> kv(new easypr::Kv);
+      kv->load("etc/chinese_mapping");
+
+      // parameters
+      const bool filesNatureSort = false;
+      const int maxExtractCount = 700;
+
+      // set the parameters of CCharsRecognise
+      CCharsRecognise cr;
+
+      // find all the test files (images)
+      // then sort them by image index
+      cout << "Processing, please wait..." << endl;
+      auto files = Utils::getFiles(test_path);
+      if (filesNatureSort)
+        std::sort(files.begin(), files.end(), nature_sort_file);
+
+      int size = files.size();
+      if (0 == size) {
+        cout << "No File Found in general_test/native_test!" << endl;
+        return 0;
+      }
+      cout << "Begin to test the easypr accuracy!" << endl;
+
+      int count_all = 0;
+      int count_err = 0;
+      int count_nodetect = 0;
+      int count_norecogn = 0;
+
+      std::list<std::string> not_recognized_files;
+
+      // all the ground-truth plates
+      float all_plate_count = 0;
+
+      // all the characters are right
+      float non_error_count = 0;
+      float non_error_rate = 0;
+
+      // only one character is wrong
+      float one_error_count = 0;
+      float one_error_rate = 0;
+
+      // chinese character is wrong
+      float chinese_error_count = 0;
+      float chinese_error_rate = 0;
+
+      // initial hashmap
+      std::unordered_map<string, int> map;
+      for (int j = 0; j < kCharsTotalNumber; j++) {
+        map.insert(std::make_pair(kChars[j], 0));
+      }
+
+      time_t begin, end;
+      time(&begin);
+
+      int process_size = 50000;
+      // use openmp to paraller process these test images
+#pragma omp parallel for
+      for (int i = 0; i < size; i++) {
+        string filepath = files[i].c_str();
+        Mat src = imread(filepath);
+        if (!src.data) continue;
+        float scale = 0.f;
+        Mat resizedPlate = uniformResizePlates(src, scale);
+
+        int all_plate_count_s = 0;
+        int non_error_count_s = 0;
+        int one_error_count_s = 0;
+        int chinese_error_count_s = 0;
+        int count_norecogn_s = 0;
+        int count_nodetect_s = 0;
+
+        std::stringstream img_ss(std::stringstream::in | std::stringstream::out);
+        img_ss << "------------------" << endl;
+        string imageName = Utils::getFileName(filepath);
+        img_ss << kv->get("original_image") << ":" << imageName << endl;
+        //get the right plateLicense
+        vector<string> spilt_name = Utils::splitString(imageName, '_');
+        if (spilt_name.size() != 2)
+          continue;
+        string plateLicense = spilt_name.at(0);
+        if (plateLicense.size() < kCharsCountInOnePlate)
+          continue;
+
+        // because the chinese may be GBK or utf-8, so its count need to be calculate
+        int chineseCharCount = plateLicense.size() - kSymbolsCountInChinesePlate;
+        img_ss << "Chinese:" << plateLicense.substr(0, chineseCharCount) << endl;
+
+        // core method, detect and recognize the plates
+        CPlate plate;
+        plate.setPlateMat(resizedPlate);
+        string plateIdentify;
+        int result = cr.charsRecognise(plate, plateIdentify);
+
+        if (0 == result) {
+          string license = plateLicense;
+          img_ss << plateLicense << " (g)" << endl;
+          all_plate_count_s++;
+
+          plate.setPlateStr(plateIdentify);
+          string matchPlateLicense = plate.getPlateStr();
+
+          //output grayChars
+          if (1) {
+            bool chineseError = (license.substr(0, chineseCharCount) != matchPlateLicense.substr(0, chineseCharCount));
+            if (!chineseError) {
+              string key = plate.getChineseKey();
+#pragma omp critical
+              {
+                if (map[key] < maxExtractCount) {
+                  writeTempImage(plate.getChineseMat(), "chars_data/" + key + "/chars_", i);
+                  map[key]++;
+                }
+              }
+            }
+
+            std::vector<CCharacter> chars = plate.getCopyOfReutCharacters();
+            if (chars.size() == kCharsCountInOnePlate) {
+              int chars_i = 1;
+              for (int c_i = chineseCharCount; c_i < int(plateLicense.size()); c_i++) {
+                string charGT = plateLicense.substr(c_i, 1);
+                // << "charGT:" << charGT << endl;
+                CCharacter thisChar = chars.at(chars_i);
+                string charRG = thisChar.getCharacterStr();
+                //cout << "charRG:" << charRG << endl;
+                if (charGT == charRG) {
+                  string key = charGT;
+#pragma omp critical
+                  {
+                    if (map[key] < maxExtractCount) {
+                      writeTempImage(thisChar.getCharacterGrayMat(), "chars_data/" + key + "/chars_", i);
+                      map[key]++;
+                    }
+                  }
+                }
+                chars_i++;
+              }
+            }         
+          }
+
+          // calculate the result
+          if (1) {
+            string matchLicense = matchPlateLicense;
+            // output the detected and matched plate
+            img_ss << matchPlateLicense << " (d)" << endl;
+
+            int diff = utils::levenshtein_distance(license, matchLicense);
+            if (diff == 0) {
+              non_error_count_s++;
+              one_error_count_s++;
+            }
+            else if (diff == 1) {
+              one_error_count_s++;
+            }
+            img_ss << kv->get("diff") << ":" << diff << kv->get("char");
+
+            bool chineseError = (license.substr(0, chineseCharCount) != matchLicense.substr(0, chineseCharCount));
+            if (chineseError) {
+            }
+            img_ss << "  chineseError:" << chineseError << endl;
+          }
+          else {
+            img_ss << "No string" << " (d)" << endl;
+            count_norecogn_s++;
+          }
+        }
+        else {
+          img_ss << kv->get("empty_plate") << endl;
+        }
+#pragma omp critical
+        {
+          cout << img_ss.str();
+        }
+#pragma omp critical
+        {
+          all_plate_count += all_plate_count_s;
+          non_error_count += non_error_count_s;
+          one_error_count += one_error_count_s;
+          chinese_error_count += chinese_error_count_s;
+          count_norecogn += count_norecogn_s;
+          count_nodetect += count_nodetect_s;
+          count_all++;
+        }
+      }
+      time(&end);
+
+      cout << "------------------" << endl;
+      cout << "Easypr accuracy test end!" << endl;
+      cout << "------------------" << endl;
+      cout << endl;
+      cout << kv->get("summaries") << ":" << endl;
+      cout << kv->get("sum_pictures") << ": " << count_all << ",  ";
+      cout << "Plates count" << ":" << all_plate_count << ",  ";
+
+      float count_detect = float(all_plate_count - count_nodetect);
+      float count_rate = count_detect / all_plate_count;
+      cout << kv->get("locate_rate") << ":" << count_rate * 100 << "%  " << endl;
+
+      float count_recogin = float(count_detect - count_norecogn);
+
+      if (count_recogin > 0) {
+        non_error_rate = non_error_count / count_recogin;
+        one_error_rate = one_error_count / count_recogin;
+        chinese_error_rate = chinese_error_count / count_recogin;
+      }
+
+      cout << kv->get("char_recongize") << ": ";
+      cout << "0-error" << "," << non_error_rate * 100 << "%;  ";
+      cout << "1-error" << "," << one_error_rate * 100 << "%;  ";
+      cout << "Chinese-precise" << "," << (1 - chinese_error_rate) * 100 << "%  " << endl;
+
+      double seconds = difftime(end, begin);
+      double avgsec = seconds / double(count_all);
+
+      cout << kv->get("seconds") << ": " << seconds << kv->get("sec") << ",  ";
+      cout << kv->get("seconds_average") << ":" << avgsec << kv->get("sec") << endl;
+      cout << "------------------" << endl;
+      return 0;
+    }
+
 
     int gridSearchTest(const char* test_path) {
 

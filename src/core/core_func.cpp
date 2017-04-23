@@ -15,7 +15,7 @@ namespace easypr {
     const float max_sv = 255;
     const float minref_sv = 64;
 
-    const float minabs_sv = 95;
+    const float minabs_sv = 95; //95;
 
     // H range of blue 
 
@@ -2337,30 +2337,62 @@ void clearBorder(const Mat &img, Rect& cropRect) {
       resize(result, result_resize, Size(), scale, scale, CV_INTER_AREA);
 
     } else if (nCols > img_window.cols && nRows > img_window.rows) {
-      Mat result_middle;
-      scale = float(img_window.cols) / float(nCols);
-      resize(result, result_middle, Size(), scale, scale, CV_INTER_AREA);
-
-      if (result_middle.rows > img_window.rows) {
-        scale = float(img_window.rows) / float(result_middle.rows);
-        resize(result_middle, result_resize, Size(), scale, scale, CV_INTER_AREA);
-      } else {
-        result_resize = result_middle;
-      }
+      float scale1 = float(img_window.cols) / float(nCols);
+      float scale2 = float(img_window.rows) / float(nRows);
+      scale = scale1 < scale2 ? scale1 : scale2;
+      resize(result, result_resize, Size(), scale, scale, CV_INTER_AREA);
     } else {
       result_resize = result;
     }
     return result_resize;
   }
 
+  Mat uniformResizePlates (const Mat &result, float &scale) {
+    const int RESULTWIDTH = kPlateResizeWidth;   // 640 930
+    const int RESULTHEIGHT = kPlateResizeHeight;  // 540 710
+
+    Mat img_window;
+    img_window.create(RESULTHEIGHT, RESULTWIDTH, CV_8UC3);
+
+    int nRows = result.rows;
+    int nCols = result.cols;
+
+    Mat result_resize;
+    if (nCols <= img_window.cols && nRows <= img_window.rows) {
+      result_resize = result;
+    }
+    else if (nCols > img_window.cols && nRows <= img_window.rows) {
+      scale = float(img_window.cols) / float(nCols);
+      resize(result, result_resize, Size(), scale, scale, CV_INTER_AREA);
+
+    }
+    else if (nCols <= img_window.cols && nRows > img_window.rows) {
+      scale = float(img_window.rows) / float(nRows);
+      resize(result, result_resize, Size(), scale, scale, CV_INTER_AREA);
+
+    }
+    else if (nCols > img_window.cols && nRows > img_window.rows) {
+      float scale1 = float(img_window.cols) / float(nCols);
+      float scale2 = float(img_window.rows) / float(nRows);
+      scale = scale1 < scale2 ? scale1 : scale2;
+      resize(result, result_resize, Size(), scale, scale, CV_INTER_AREA);
+    }
+    else {
+      result_resize = result;
+    }
+    return result_resize;
+  }
+
+
+
   void showDectectResults(const Mat &img, const vector<CPlate> &plateVec, size_t num) {
     int index = 0;
     if (1) {
       Mat result;
       img.copyTo(result);
-      for (size_t j = 0; j < num; j++) {
+      for (size_t j = 0; j < plateVec.size(); j++) {
         // add plates to left corner
-        CPlate item = plateVec[j];
+        const CPlate& item = plateVec.at(j);
         Mat plateMat = item.getPlateMat();
 
         int height = 36;
@@ -2372,7 +2404,10 @@ void clearBorder(const Mat &img, Rect& cropRect) {
         index++;
 
         // draw the bouding box
-        RotatedRect minRect = item.getPlatePos();
+        RotatedRect theRect = item.getPlatePos();
+        float scale = item.getPlateScale();
+        RotatedRect minRect = scaleBackRRect(theRect, scale);
+
         Point2f rect_points[4];
         minRect.points(rect_points);
         Scalar lineColor = Scalar(255, 255, 255);
@@ -2412,17 +2447,12 @@ void clearBorder(const Mat &img, Rect& cropRect) {
       resize(result, result_resize, Size(), scale, scale, CV_INTER_AREA);
 
     } else if (nCols > img_window.cols && nRows > img_window.rows) {
-      Mat result_middle;
-      float scale = float(img_window.cols) / float(nCols);
-      resize(result, result_middle, Size(), scale, scale, CV_INTER_AREA);
-
-      if (result_middle.rows > img_window.rows) {
-        float scale = float(img_window.rows) / float(result_middle.rows);
-        resize(result_middle, result_resize, Size(), scale, scale, CV_INTER_AREA);
-      } else {
-        result_resize = result_middle;
-      }
-    } else {
+      float scale1 = float(img_window.cols) / float(nCols);
+      float scale2 = float(img_window.rows) / float(nRows);
+      float scale = scale1 < scale2 ? scale1 : scale2;
+      resize(result, result_resize, Size(), scale, scale, CV_INTER_AREA);
+    }
+    else {
       result_resize = result;
     }
 
@@ -2484,13 +2514,56 @@ void clearBorder(const Mat &img, Rect& cropRect) {
 
   }
 
-  void writeTempImage(const Mat &outImg, const string path) {
+  Rect rectFit(const Rect &src, const int mat_width, const int mat_height) {
+    float w = (float)src.width;
+    float h = (float)src.height;
+    float new_w = h * 0.5f;
+    float new_h = h * 1.05f;
+
+    if (new_w <= w || new_h <= h) {
+      return src;
+    }
+
+    float ex_w = (new_w - w) * 0.5f;
+    float ex_h = (new_h - h) * 0.5f;
+
+    Rect_<float> boudRect;
+    boudRect.x = (float)src.x - ex_w;
+    boudRect.y = (float)src.y - ex_h;
+    boudRect.width = new_w;
+    boudRect.height = new_h;
+
+    float tl_x = boudRect.x > 0 ? boudRect.x : 0;
+    float tl_y = boudRect.y > 0 ? boudRect.y : 0;
+
+    float br_x = boudRect.x + boudRect.width - 1 <= mat_width - 1
+      ? boudRect.x + boudRect.width - 1
+      : mat_width - 1;
+    float br_y = boudRect.y + boudRect.height - 1 < mat_height - 1
+      ? boudRect.y + boudRect.height - 1
+      : mat_height - 1;
+
+    float roi_width = br_x - tl_x + 1;
+    float roi_height = br_y - tl_y + 1;
+
+    Rect dst(0, 0, 0, 0);
+    if (roi_width <= 2 || roi_height <= 2)
+      return src;
+
+    //! a new rect not out the range of mat
+    dst = Rect_<float>(tl_x, tl_y, roi_width - 1, roi_height - 1);
+    return dst;
+
+  }
+
+
+  void writeTempImage(const Mat &outImg, const string path, int index) {
     std::stringstream ss(std::stringstream::in | std::stringstream::out);
     time_t t = time(0);  // get time now
     struct tm *now = localtime(&t);
     char buf[80];
     strftime(buf, sizeof(buf), "%Y-%m-%d %H_%M_%S", now);
-    ss << "resources/image/tmp/" << path << "_" << std::string(buf) << ".jpg";
+    ss << "resources/image/tmp/" << path << "_" << std::string(buf) << "_" << index << ".jpg";
     imwrite(ss.str(), outImg);
   }
 }

@@ -835,7 +835,7 @@ namespace cv
   }
 
 
-  Ptr<MSER2> MSER2::create(int _delta, int _min_area, int _max_area,
+  Ptr<MSER2> MSER2::create(int _delta, int _min_area, int _max_area, bool useBetter,
     double _max_variation, double _min_diversity,
     int _max_evolution, double _area_threshold,
     double _min_margin, int _edge_blur_size)
@@ -843,10 +843,10 @@ namespace cv
 
     //printf("better mser 2 \n");
 
-    bool useOpt = true;
-    bool subPath = true;
-    bool realMSER = true;
-    bool usePrune = true;
+    bool useOpt = useBetter;
+    bool subPath = useBetter;
+    bool realMSER = useBetter;
+    bool usePrune = useBetter;
 
     return makePtr<MSER_Impl2>(
       MSER_Impl2::Params(useOpt, subPath, realMSER, usePrune, _delta, _min_area, _max_area,

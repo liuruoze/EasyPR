@@ -26,7 +26,7 @@ namespace cv
   {
   public:
     //! the full constructor
-    CV_WRAP static Ptr<MSER2> create(int _delta = 5, int _min_area = 60, int _max_area = 14400,
+    CV_WRAP static Ptr<MSER2> create(int _delta = 5, int _min_area = 60, int _max_area = 14400, bool useBetter = true,
       double _max_variation = 0.25, double _min_diversity = .2,
       int _max_evolution = 200, double _area_threshold = 1.01,
       double _min_margin = 0.003, int _edge_blur_size = 5);

@@ -44,7 +44,7 @@ namespace easypr {
       m_rightPoint = other.m_rightPoint;
       m_mergeCharRect = other.m_mergeCharRect;
       m_maxCharRect = other.m_maxCharRect;
-
+      m_scale = other.m_scale;
       m_distVec = other.m_distVec;
 
       m_mserCharVec = other.m_mserCharVec;

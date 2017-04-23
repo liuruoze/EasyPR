@@ -16,6 +16,9 @@ typedef void (*svmCallback)(const cv::Mat& image, cv::Mat& features);
 //! convert from images to features used by gray char ann
 typedef void (*annCallback)(const cv::Mat& image, cv::Mat& features);
 
+//! gray and project feature
+void getGrayPlusProject(const cv::Mat& grayChar, cv::Mat& features);
+
 //!  EasyPR的getFeatures回调函数
 //! 本函数是获取垂直和水平的直方图图值
 void getHistogramFeatures(const cv::Mat& image, cv::Mat& features);
@@ -47,7 +50,6 @@ void getLBPplusHistFeatures(const cv::Mat& image, cv::Mat& features);
 
 //! grayChar feauter
 void getGrayCharFeatures(const cv::Mat& grayChar, cv::Mat& features);
-
 } /*! \namespace easypr*/
 
 #endif  // EASYPR_CORE_FEATURE_H_

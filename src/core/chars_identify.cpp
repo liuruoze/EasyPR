@@ -24,6 +24,7 @@ CharsIdentify::CharsIdentify() {
   LOAD_ANN_MODEL(annGray_, kGrayAnnPath);
   kv_ = std::shared_ptr<Kv>(new Kv);
   kv_->load("etc/province_mapping");
+
   extractFeature = getGrayCharFeatures;
 }
 

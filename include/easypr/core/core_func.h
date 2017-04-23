@@ -105,6 +105,9 @@ bool calcSafeRect(const RotatedRect &roi_rect, const int width, const int height
 // uniform resize all the image to same size for the next process
 Mat uniformResize(const Mat &result, float& scale);
 
+// uniform resize all the plates to same size for the next process
+Mat uniformResizePlates(const Mat &result, float& scale);
+
 // show detect results
 void showDectectResults(const Mat& img, const std::vector<CPlate> &plateVec, size_t num);
 
@@ -113,9 +116,10 @@ Mat showResult(const Mat &result, int img_index = 0);
 
 // enlarge the char rect
 Rect rectEnlarge(const Rect& src, const int mat_width, const int mat_height);
+Rect rectFit(const Rect &src, const int mat_width, const int mat_height);
 
 // write images to temp folder
-void writeTempImage(const Mat& outImg, const string path);
+void writeTempImage(const Mat& outImg, const string path, int index = 0);
 
 // remove small hor lines in the plate
 bool judegMDOratio2(const Mat &image, const Rect &rect, std::vector<Point> &contour, Mat &result, const float thresh = 1.f,

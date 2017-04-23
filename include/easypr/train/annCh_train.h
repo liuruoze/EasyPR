@@ -18,6 +18,10 @@ class AnnChTrain : public ITrain {
 
   std::pair<std::string, std::string> identifyGrayChinese(cv::Mat input);
 
+  inline void setNumberForCount(int n) {
+    m_number_for_count = n;
+  }
+
  private:
   virtual cv::Ptr<cv::ml::TrainData> tdata();
 
@@ -29,6 +33,8 @@ class AnnChTrain : public ITrain {
 
   std::shared_ptr<Kv> kv_;
   int type;
+
+  int m_number_for_count;
 
   annCallback extractFeature;
 };

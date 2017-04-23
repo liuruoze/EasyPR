@@ -18,7 +18,7 @@ namespace easypr {
   type = 1;
   kv_ = std::shared_ptr<Kv>(new Kv);
   kv_->load("etc/province_mapping");
-  extractFeature = getGrayCharFeatures;
+  extractFeature = getGrayPlusProject;
 }
 
   void AnnChTrain::train()
@@ -33,6 +33,8 @@ namespace easypr {
       input_number = kCharLBPPatterns * kCharLBPGridX * kCharLBPGridY;
     else
       input_number = kGrayCharHeight * kGrayCharWidth;
+
+    input_number += 64;
 
   classNumber = kChineseNumber;
   hidden_number = kCharHiddenNeurans;
@@ -74,7 +76,7 @@ namespace easypr {
   ann_->setBackpropMomentumScale(0.1);
 
   // using raw data or raw + synthic data.
-  trainVal(3000);
+  trainVal(m_number_for_count);
 }
 
 std::pair<std::string, std::string> AnnChTrain::identifyGrayChinese(cv::Mat input) {

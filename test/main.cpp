@@ -30,22 +30,85 @@ int accuracyTestMain() {
       std::cin >> select;
       isRepeat = false;
       switch (select) {
-        case 1:
-          accuracyTest("resources/image/general_test", result);
-          break;
-        case 2:
-          accuracyTest("resources/image/native_test", result);
-          break;
-        case 3:
-          gridSearchTest("resources/image/general_test");
-          break;
-        case 4:
-          isExit = true;
-          break;
-        default:
-          std::cout << kv->get("input_error") << ":";
-          isRepeat = true;
-          break;
+      case 1:
+        accuracyTest("resources/image/general_test", result);
+        break;
+      case 2:
+        accuracyTest("resources/image/native_test", result);
+        break;
+      case 3:
+        gridSearchTest("resources/image/general_test");
+        break;
+      case 4:
+        isExit = true;
+        break;
+      default:
+        std::cout << kv->get("input_error") << ":";
+        isRepeat = true;
+        break;
+      }
+    }
+  }
+  return 0;
+}
+
+int trainChineseMain() {
+  std::shared_ptr<easypr::Kv> kv(new easypr::Kv);
+  kv->load("etc/chinese_mapping");
+
+  bool isExit = false;
+  while (!isExit) {
+    easypr::Utils::print_file_lines("etc/train_menu");
+    std::cout << kv->get("make_a_choice") << ":";
+
+    int select = -1;
+    bool isRepeat = true;
+    while (isRepeat) {
+      std::cin >> select;
+      isRepeat = false;
+      switch (select) {
+      case 1:
+          {
+            easypr::AnnChTrain ann("tmp/annCh", "tmp/annCh.xml");
+            ann.setNumberForCount(100);
+            ann.train();
+          }
+        break;
+      case 2:
+          {
+            easypr::AnnChTrain ann("tmp/annCh", "tmp/annCh.xml");
+            ann.setNumberForCount(350);
+            ann.train();
+          }
+        break;
+      case 3:
+          {
+            easypr::AnnChTrain ann("tmp/annCh", "tmp/annCh.xml");
+            ann.setNumberForCount(700);
+            ann.train();
+          }
+        break;
+      case 4:
+          {
+            easypr::AnnChTrain ann("tmp/annCh", "tmp/annCh.xml");
+            ann.setNumberForCount(1000);
+            ann.train();
+          }
+        break;
+      case 5:
+          {
+            easypr::AnnChTrain ann("tmp/annCh", "tmp/annCh.xml");
+            ann.setNumberForCount(1500);
+            ann.train();
+          }
+        break;
+      case 6:
+        isExit = true;
+        break;
+      default:
+        std::cout << kv->get("input_error") << ":";
+        isRepeat = true;
+        break;
       }
     }
   }
@@ -391,13 +454,11 @@ int main(int argc, const char* argv[]) {
           }
           break;
         case 5:
-          {
-            easypr::AnnChTrain ann("tmp/annCh", "tmp/annCh.xml");
-            ann.train();
-          }
+          easypr::demo::trainChineseMain();
           break;
         case 6: {
-          easypr::Utils::print_file_lines("etc/dev_team");
+          //TODO: genenrate gray characters
+          easypr::demo::accuracyCharRecognizeTest("resources/image/tmp/plates_200k");
           break;
         }
         case 7: {

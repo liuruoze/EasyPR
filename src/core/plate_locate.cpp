@@ -112,15 +112,11 @@ int CPlateLocate::colorSearch(const Mat &src, const Color r, Mat &out,
   Mat match_grey;
 
   // width is important to the final results;
-
   const int color_morph_width = 10;
   const int color_morph_height = 2;
 
   colorMatch(src, match_grey, r, false);
-
-  //if (m_debug) {
-  //  utils::imwrite("resources/image/tmp/match_grey.jpg", match_grey);
-  //}
+  SHOW_IMAGE(match_grey, 0);
 
   Mat src_threshold;
   threshold(match_grey, src_threshold, 0, 255,

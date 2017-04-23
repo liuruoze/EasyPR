@@ -17,7 +17,7 @@ int CPlateRecognize::plateRecognize(const Mat& src, std::vector<CPlate> &plateVe
   // TODO: groungTruth affect
   float scale = 1.f;
   Mat img = uniformResize(src, scale);
-
+  //Mat img = src;
   if (0) {
     std::stringstream ss(std::stringstream::in | std::stringstream::out);
     ss << "resources/image/tmp/phone/phone_img_" << img_index << ".jpg";
@@ -31,9 +31,9 @@ int CPlateRecognize::plateRecognize(const Mat& src, std::vector<CPlate> &plateVe
   if (resultPD == 0) {
     size_t num = plateVec.size();
     for (size_t j = 0; j < num; j++) {
-      CPlate item = plateVec.at(j);
+      CPlate& item = plateVec.at(j);
       Mat plateMat = item.getPlateMat();
-      //SHOW_IMAGE(plateMat, 1);
+      SHOW_IMAGE(plateMat, 0);
 
       // scale the rect to src;
       item.setPlateScale(scale);
@@ -58,14 +58,13 @@ int CPlateRecognize::plateRecognize(const Mat& src, std::vector<CPlate> &plateVe
         std::string license = plateColor + ":" + plateIdentify;
         item.setPlateStr(license);
         plateVecOut.push_back(item);
+        if (0) std::cout << "resultCR:" << resultCR << std::endl;
       }
       else {
         std::string license = plateColor;
         item.setPlateStr(license);
         plateVecOut.push_back(item);
-        if (0) {
-          std::cout << "resultCR:" << resultCR << std::endl;
-        }
+        if (0) std::cout << "resultCR:" << resultCR << std::endl;
       }
     }
     if (getResultShow()) {

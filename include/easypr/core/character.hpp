@@ -24,27 +24,34 @@ namespace easypr {
     CCharacter()
     {
       m_characterMat = Mat();
+      m_characterGrayMat = Mat();
       m_characterPos = Rect();
       m_characterStr = "";
       m_score = 0;
       m_isChinese = false;
       m_ostuLevel = 125;
       m_center = Point(0, 0);
+      m_index = 0;
     }
 
     CCharacter(const CCharacter& other)
     {
       m_characterMat = other.m_characterMat;
+      m_characterGrayMat = other.m_characterGrayMat;
       m_characterPos = other.m_characterPos;
       m_characterStr = other.m_characterStr;
       m_score = other.m_score;
       m_isChinese = other.m_isChinese;
       m_ostuLevel = other.m_ostuLevel;
       m_center = other.m_center;
+      m_index = other.m_index;
     }
 
     inline void setCharacterMat(Mat param) { m_characterMat = param; }
     inline Mat getCharacterMat() const { return m_characterMat; }
+
+    inline void setCharacterGrayMat(Mat param) { m_characterGrayMat = param; }
+    inline Mat getCharacterGrayMat() const { return m_characterGrayMat; }
 
     inline void setCharacterPos(Rect param) { m_characterPos = param; }
     inline Rect getCharacterPos() const { return m_characterPos; }
@@ -64,6 +71,9 @@ namespace easypr {
     inline void setCenterPoint(Point param) { m_center = param; }
     inline Point getCenterPoint() const { return m_center; }
 
+    inline void setIndex(int param) { m_index = param; }
+    inline int getIndex() const { return m_index; }
+
     inline bool getIsStrong() const { return m_score >= 0.9; }
     inline bool getIsWeak() const { return m_score < 0.9 && m_score >= 0.5; }
     inline bool getIsLittle() const { return m_score < 0.5; }
@@ -82,6 +92,9 @@ namespace easypr {
     //! character mat
     Mat m_characterMat;
 
+    //! character gray mat
+    Mat m_characterGrayMat;
+
     //! character rect
     Rect m_characterPos;
 
@@ -99,6 +112,9 @@ namespace easypr {
 
     //! center point
     Point m_center;
+
+    //! the postion in the plate, from 1 to 7 normal
+    int m_index;
 
     ////!  m_score >= 0.9
     //bool isStrong;

@@ -57,30 +57,30 @@ int CCharsRecognise::charsRecognise(CPlate& plate, std::string& plateLicense) {
     color = getPlateType(tmpMat, true);
   }
 
-  int result = m_charsSegment->charsSegmentUsingMSER(plateMat, matChars, grayChars, color);
+  int result = m_charsSegment->charsSegmentUsingProject(plateMat, matChars, grayChars, color);
 
   if (result == 0) {
     int num = matChars.size();
     for (int j = 0; j < num; j++)
     {
       Mat charMat = matChars.at(j);
-      bool isChinses = false;
+      Mat grayChar = grayChars.at(j);
+      if (color != Color::BLUE)
+        grayChar = 255 - grayChar;
 
+      bool isChinses = false;
       std::pair<std::string, std::string> character;
       float maxVal;
       if (0 == j) {
         isChinses = true;
         bool judge = true;
-        Mat grayChar = grayChars.at(j);
-        if (color != Color::BLUE)
-          grayChar = 255 - grayChar;
         character = CharsIdentify::instance()->identifyChineseGray(grayChar, maxVal, judge);
         plateLicense.append(character.second);
 
         // set plate chinese mat and str
         plate.setChineseMat(grayChar);
         plate.setChineseKey(character.first);
-        if (0) writeTempImage(grayChar, "grayChars/" + character.first + "/chars_");
+        if (0) writeTempImage(grayChar, "char_data/" + character.first + "/chars_");
       }
       else if (1 == j) {
         isChinses = false;
@@ -97,7 +97,11 @@ int CCharsRecognise::charsRecognise(CPlate& plate, std::string& plateLicense) {
 
       CCharacter charResult;
       charResult.setCharacterMat(charMat);
-      charResult.setCharacterStr(character.second);
+      charResult.setCharacterGrayMat(grayChar);
+      if (isChinses)
+        charResult.setCharacterStr(character.first);
+      else
+        charResult.setCharacterStr(character.second);
 
       plate.addReutCharacter(charResult);
     }
