@@ -25,7 +25,7 @@ CharsIdentify::CharsIdentify() {
   kv_ = std::shared_ptr<Kv>(new Kv);
   kv_->load("etc/province_mapping");
 
-  extractFeature = getGrayCharFeatures;
+  extractFeature = getGrayPlusProject;
 }
 
 void CharsIdentify::LoadModel(std::string path) {

@@ -18,7 +18,7 @@ namespace easypr {
   type = 1;
   kv_ = std::shared_ptr<Kv>(new Kv);
   kv_->load("etc/province_mapping");
-  extractFeature = getGrayPlusProject;
+  extractFeature = getGrayCharFeatures;
 }
 
   void AnnChTrain::train()
@@ -34,7 +34,7 @@ namespace easypr {
     else
       input_number = kGrayCharHeight * kGrayCharWidth;
 
-    input_number += 64;
+    //input_number += 64;
 
   classNumber = kChineseNumber;
   hidden_number = kCharHiddenNeurans;
