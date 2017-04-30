@@ -14,16 +14,8 @@ CPlateRecognize::CPlateRecognize() {
 // 2. chars recognize
 int CPlateRecognize::plateRecognize(const Mat& src, std::vector<CPlate> &plateVecOut, int img_index) {
   // resize to uniform sizes
-  // TODO: groungTruth affect
   float scale = 1.f;
   Mat img = uniformResize(src, scale);
-  //Mat img = src;
-  if (0) {
-    std::stringstream ss(std::stringstream::in | std::stringstream::out);
-    ss << "resources/image/tmp/phone/phone_img_" << img_index << ".jpg";
-    imwrite(ss.str(), img);
-    return -1;
-  }
 
   // 1. plate detect
   std::vector<CPlate> plateVec;

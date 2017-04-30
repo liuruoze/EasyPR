@@ -3,6 +3,8 @@
 
 #include "opencv2/opencv.hpp"
 
+using namespace cv;
+
 namespace easypr {
 
 //! 获得车牌的特征数
@@ -50,6 +52,8 @@ void getLBPplusHistFeatures(const cv::Mat& image, cv::Mat& features);
 
 //! grayChar feauter
 void getGrayCharFeatures(const cv::Mat& grayChar, cv::Mat& features);
+
+void getGrayPlusLBP(const Mat& grayChar, Mat& features);
 } /*! \namespace easypr*/
 
 #endif  // EASYPR_CORE_FEATURE_H_

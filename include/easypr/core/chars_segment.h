@@ -15,8 +15,8 @@ class CCharsSegment {
   //! using ostu algotithm the segment chars in plate
   int charsSegment(Mat input, std::vector<Mat>& resultVec, Color color = BLUE);
 
-  //! using project the segment chars in plate
-  int charsSegmentUsingProject(Mat input, std::vector<Mat>& resultVec, std::vector<Mat>& grayChars, Color color = BLUE);
+  //! using methods to segment chars in plate
+  int charsSegmentUsingOSTU(Mat input, std::vector<Mat>& resultVec, std::vector<Mat>& grayChars, Color color = BLUE);
   int charsSegmentUsingMSER(Mat input, vector<Mat>& resultVec, vector<Mat>& grayChars, Color color = BLUE);
 
   //! using project 

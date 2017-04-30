@@ -517,7 +517,7 @@ Mat preprocessCharMat(Mat in, int char_size) {
 }
 
 Mat clearLiuDingAndBorder(const Mat& grayImage, Color color) {
-  SHOW_IMAGE(grayImage, 1);
+  SHOW_IMAGE(grayImage, 0);
   Mat img_threshold;
   img_threshold = grayImage.clone();
   spatial_ostu(img_threshold, 1, 1, color);
@@ -526,7 +526,7 @@ Mat clearLiuDingAndBorder(const Mat& grayImage, Color color) {
   clearBorder(img_threshold, cropRect);
   Mat cropedGrayImage;
   resize(grayImage(cropRect), cropedGrayImage, Size(kPlateResizeWidth, kPlateResizeHeight));
-  SHOW_IMAGE(cropedGrayImage, 1);
+  SHOW_IMAGE(cropedGrayImage, 0);
   return cropedGrayImage;
 }
 
@@ -543,16 +543,22 @@ void NMStoCharacterByRatio(std::vector<CCharacter> &inVec, double overlap, const
 
     float iou = computeIOU(rect, groundRect);
 
-    float w_ratio = (float)w / (float)gw;
-    float h_ratio = (float)h / (float)gh;
+    int w_diff = abs(w - gw);
+    int h_diff = abs(h - gh);
+
+    //float w_ratio = (float)w / (float)gw;
+    //float h_ratio = (float)h / (float)gh;
+
+    float w_ratio = 1 - (float)w_diff / (float)gw;
+    float h_ratio = 1 - (float)h_diff / (float)gh;
 
     float a = 0.5f;
     float b = 0.5f;
     //cout << "str:" << character.getCharacterStr() << endl;
     // if the charater is '1', its probalilty is redcued by its iou
     if ("1" == character.getCharacterStr()) {
-      a = 0.2f;
-      b = 0.8f;
+      a = 0.3f; //0.2f;
+      b = 0.7f; //0.8f;
     }
     float c = 0.1f;
     //float weighted_score = a * (float)score + b * w_ratio + c * h_ratio;
@@ -608,7 +614,9 @@ int CCharsSegment::charsSegmentUsingMSER(Mat input, vector<Mat>& resultVec, vect
   cvtColor(input, grayImage, CV_BGR2GRAY);
   std::vector<cv::Mat> bgrSplit;
   split(input, bgrSplit);
-  Mat grayChannel = grayImage; //clearLiuDingAndBorder(grayImage, color);
+
+  //Mat grayChannel = clearLiuDingAndBorder(grayImage, color); //clearLiuDingAndBorder(grayImage, color);
+  Mat grayChannel = grayImage;
 
   // Mat cropedGrayImage = grayImage;
   // generate all channgel images;
@@ -709,20 +717,28 @@ int CCharsSegment::charsSegmentUsingMSER(Mat input, vector<Mat>& resultVec, vect
       // find character
       if (verifyCharRectSizes(rect)) {
         Mat mserMat = adaptive_image_from_points(contour, rect, Size(char_size, char_size));
-        Mat charInput = preprocessCharMat(mserMat, char_size);
-        Rect charRect = rect;
+        Mat mserInput = preprocessCharMat(mserMat, char_size);
 
+        Rect charRect = rect;
         Point center(charRect.tl().x + charRect.width / 2, charRect.tl().y + charRect.height / 2);
         Mat tmpMat;
         double ostu_level = cv::threshold(cimage(charRect), tmpMat, 0, 255, CV_THRESH_BINARY | CV_THRESH_OTSU);
-
+        Mat grayCharMat = cimage(charRect);
+        Mat ostuMat;
+        switch (color) {
+          case BLUE:   threshold(grayCharMat, ostuMat, 0, 255, CV_THRESH_BINARY + CV_THRESH_OTSU); break;
+          case YELLOW:   threshold(grayCharMat, ostuMat, 0, 255, CV_THRESH_BINARY_INV + CV_THRESH_OTSU); break;
+          case WHITE:  threshold(grayCharMat, ostuMat, 0, 255, CV_THRESH_OTSU + CV_THRESH_BINARY_INV); break;
+          default: threshold(grayCharMat, ostuMat, 0, 255, CV_THRESH_OTSU + CV_THRESH_BINARY); break;
+        }
+        Mat ostuInput = preprocessChar(ostuMat);
         // use judegMDOratio2 function to
         // remove the small lines in character like "zh-cuan"
         if (judegMDOratio2(cimage, rect, contour, mdoImage, 1.2f, true)) {
           CCharacter charCandidate;
           //cout << contour.size() << endl;
           charCandidate.setCharacterPos(charRect);
-          charCandidate.setCharacterMat(charInput);
+          charCandidate.setCharacterMat(ostuInput);   //charInput or ostuInput
           charCandidate.setOstuLevel(ostu_level);
           charCandidate.setCenterPoint(center);
           int pos = getNearestIndex(center, groundCenters);
@@ -736,62 +752,68 @@ int CCharsSegment::charsSegmentUsingMSER(Mat input, vector<Mat>& resultVec, vect
         SHOW_IMAGE(showMSERImage(rect), 0);
       }
     }
-    SHOW_IMAGE(showMSERImage, 1);
-    SHOW_IMAGE(mdoImage, 1);
+    SHOW_IMAGE(showMSERImage, 0);
+    SHOW_IMAGE(mdoImage, 0);
 
     // classify all the images;
     CharsIdentify::instance()->classify(charVec);
-    for (auto charCandidate : charVec) {
-      int pos = charCandidate.getIndex();
-      charsVecVec.at(pos).push_back(charCandidate);
-    }
+    Rect maxrect = groundRects.at(0);
 
     // NMS to the seven groud truth rect 
-    charVec.clear();
-    Rect maxrect = groundRects.at(0);
-    for (size_t c = 0; c < charsVecVec.size(); c++) {
-      Mat testImage_2 = cimage.clone();
-      cvtColor(testImage_2, testImage_2, CV_GRAY2BGR);
-      vector<CCharacter>& charPosVec = charsVecVec.at(c);
-      for (auto character : charPosVec) {
-        rectangle(testImage_2, character.getCharacterPos(), Scalar(0, 255, 0));
+    bool useGround = true;
+    if (useGround) {
+      for (auto charCandidate : charVec) {
+        int pos = charCandidate.getIndex();
+        charsVecVec.at(pos).push_back(charCandidate);
       }
-      SHOW_IMAGE(testImage_2, 0);
+      charVec.clear();
+      for (size_t c = 0; c < charsVecVec.size(); c++) {
+        Mat testImage_2 = cimage.clone();
+        cvtColor(testImage_2, testImage_2, CV_GRAY2BGR);
+        vector<CCharacter>& charPosVec = charsVecVec.at(c);
+        for (auto character : charPosVec) {
+          rectangle(testImage_2, character.getCharacterPos(), Scalar(0, 255, 0));
+        }
+        SHOW_IMAGE(testImage_2, 0);
 
-      double overlapThresh = 0.;
-      NMStoCharacterByRatio(charPosVec, overlapThresh, groundRects.at(c));
-      charPosVec.shrink_to_fit();
+        double overlapThresh = 0.;
+        NMStoCharacterByRatio(charPosVec, overlapThresh, groundRects.at(c));
+        charPosVec.shrink_to_fit();
 
-      Mat testImage_3 = cimage.clone();
-      cvtColor(testImage_3, testImage_3, CV_GRAY2BGR);
-      for (auto character : charPosVec) {
-        rectangle(testImage_3, character.getCharacterPos(), Scalar(0, 255, 0));
-      }
+        Mat testImage_3 = cimage.clone();
+        cvtColor(testImage_3, testImage_3, CV_GRAY2BGR);
+        for (auto character : charPosVec) {
+          rectangle(testImage_3, character.getCharacterPos(), Scalar(0, 255, 0));
+        }
 
-      // only the last group will contain more than one candidate character
-      if (charsVecVec.size() - 1 == c) {
-        for (auto charPos : charPosVec) 
-          charVec.push_back(charPos);     
+        // only the last group will contain more than one candidate character
+        if (charsVecVec.size() - 1 == c) {
+          for (auto charPos : charPosVec)
+            charVec.push_back(charPos);
+        }
+        else {
+          if (charPosVec.size() != 0) {
+            CCharacter& inputChar = charPosVec.at(0);
+            charVec.push_back(inputChar);
+            Mat charMat = inputChar.getCharacterMat();
+            SHOW_IMAGE(charMat, 0);
+          }
+        }
+        for (auto charPos : charPosVec) {
+          Rect r = charPos.getCharacterPos();
+          if (r.area() > maxrect.area())
+            maxrect = r;
+        }
+        SHOW_IMAGE(testImage_3, 0);
       }
-      else {
-        if (charPosVec.size() != 0)
-          charVec.push_back(charPosVec.at(0));
-      }
-      for (auto charPos : charPosVec) {
-        Rect r = charPos.getCharacterPos();
-        if (r.area() > maxrect.area())
-          maxrect = r;
-      }
-
-      SHOW_IMAGE(testImage_3, 0);
+    }
+    else {
+      NMStoCharacterByRatio(charVec, 0.2f, maxrect);
     }
 
-    if (charVec.size() < kCharsCountInOnePlate)
-      return -1;
+    if (charVec.size() < kCharsCountInOnePlate) return 0x03;
+    std::sort(charVec.begin(), charVec.end(),[](const CCharacter& r1, const CCharacter& r2) { return r1.getCharacterPos().x < r2.getCharacterPos().x; });
 
-    NMStoCharacterByRatio(charVec, 0.2f, maxrect);
-    std::sort(charVec.begin(), charVec.end(),
-              [](const CCharacter& r1, const CCharacter& r2) { return r1.getCharacterPos().x < r2.getCharacterPos().x; });
     string predictLicense = "";
     vector<Rect> sortedRect;
     for (auto charCandidate : charVec) {
@@ -805,16 +827,18 @@ int CCharsSegment::charsSegmentUsingMSER(Mat input, vector<Mat>& resultVec, vect
     // find chinese rect
     size_t specIndex = 0;
     specIndex = GetSpecificRect(sortedRect);
-    //if (specIndex == 0)
-    //  specIndex = 1;
-    SHOW_IMAGE(showImage(sortedRect[specIndex]), 1);
+    SHOW_IMAGE(showImage(sortedRect[specIndex]), 0);
 
     Rect chineseRect;
     if (specIndex < sortedRect.size())
       chineseRect = GetChineseRect(sortedRect[specIndex]);
+    else
+      return 0x04;
 
     vector<Rect> newSortedRect;
     newSortedRect.push_back(chineseRect);
+    if (newSortedRect.size() == 0) return 0x05;
+
     SHOW_IMAGE(showImage(chineseRect), 0);
     RebuildRect(sortedRect, newSortedRect, specIndex);
 
@@ -825,18 +849,8 @@ int CCharsSegment::charsSegmentUsingMSER(Mat input, vector<Mat>& resultVec, vect
       Mat auxRoi(theImage, mr);
       Mat newRoi;
       if (i == 0) {
-        //mr = rectEnlarge(newSortedRect[i], cimage.cols, cimage.rows);
-        /*
-        Mat chineseRoi;
-        float slideLengthRatio = 0.1f;
-        if(!slideChineseGrayWindow(cimage, mr, chineseRoi, color, slideLengthRatio))
-          chineseRoi = cimage(mr);
-
-        Mat resizedChinese;
-        resize(chineseRoi, resizedChinese, Size(kGrayCharWidth, kGrayCharHeight));
-        grayChars.push_back(resizedChinese);
-        */
-        Rect large_mr = rectEnlarge(mr, theImage.cols, theImage.rows);
+        //Rect large_mr = rectEnlarge(mr, theImage.cols, theImage.rows);
+        Rect large_mr = mr;
         Mat grayChar(theImage, large_mr);
         Mat grayChinese;
         grayChinese.create(kGrayCharHeight, kGrayCharWidth, CV_8UC1);
@@ -866,19 +880,15 @@ int CCharsSegment::charsSegmentUsingMSER(Mat input, vector<Mat>& resultVec, vect
       rectangle(showImage, mr, Scalar(0, 0, 255), 1);
       resultVec.push_back(newRoi);
     }
-    SHOW_IMAGE(showImage, 1);
+    SHOW_IMAGE(showImage, 0);
   }
 
   return 0;
 }
 
 
-int CCharsSegment::charsSegmentUsingProject(Mat input, vector<Mat>& resultVec, vector<Mat>& grayChars, Color color) {
+int CCharsSegment::charsSegmentUsingOSTU(Mat input, vector<Mat>& resultVec, vector<Mat>& grayChars, Color color) {
   if (!input.data) return 0x01;
-
-  //vector<int> out_indexs;
-  //projectSegment(input, color, out_indexs);
-  //charsSegmentUsingMSER(input, resultVec, grayChars, color);
 
   Color plateType = color;
   Mat input_grey;

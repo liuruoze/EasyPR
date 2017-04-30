@@ -18,7 +18,7 @@ namespace easypr {
   type = 1;
   kv_ = std::shared_ptr<Kv>(new Kv);
   kv_->load("etc/province_mapping");
-  extractFeature = getGrayCharFeatures;
+  extractFeature = getGrayPlusProject;
 }
 
   void AnnChTrain::train()
@@ -34,7 +34,7 @@ namespace easypr {
     else
       input_number = kGrayCharHeight * kGrayCharWidth;
 
-    //input_number += 64;
+    input_number += 64;
 
   classNumber = kChineseNumber;
   hidden_number = kCharHiddenNeurans;
@@ -74,6 +74,14 @@ namespace easypr {
   ann_->setTermCriteria(cvTermCriteria(CV_TERMCRIT_ITER, 30000, 0.0001));
   ann_->setBackpropWeightScale(0.1);
   ann_->setBackpropMomentumScale(0.1);
+
+  auto files = Utils::getFiles(chars_folder_);
+  if (files.size() == 0) {
+    fprintf(stdout, "No file found in the train folder!\n");
+    fprintf(stdout, "You should create a folder named \"tmp\" in EasyPR main folder.\n");
+    fprintf(stdout, "Copy train data folder(like \"annCh\") under \"tmp\". \n");
+    return;
+  }
 
   // using raw data or raw + synthic data.
   trainVal(m_number_for_count);

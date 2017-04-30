@@ -32,6 +32,12 @@ void SvmTrain::train() {
   svm_->setP(0.1);
   svm_->setTermCriteria(cvTermCriteria(CV_TERMCRIT_ITER, 20000, 0.0001));
 
+  if (train_file_list_.size() == 0) {
+    fprintf(stdout, "No file found in the train folder!\n");
+    fprintf(stdout, "You should create a folder named \"tmp\" in EasyPR main folder.\n");
+    fprintf(stdout, "Copy train data folder(like \"SVM\") under \"tmp\". \n");
+    return;
+  }
   auto train_data = tdata();
 
   fprintf(stdout, ">> Training SVM model, please wait...\n");
@@ -184,8 +190,7 @@ cv::Ptr<cv::ml::TrainData> SvmTrain::tdata() {
   samples.convertTo(samples_, CV_32FC1);
   cv::Mat(responses).copyTo(responses_);
 
-  return cv::ml::TrainData::create(samples_, cv::ml::SampleTypes::ROW_SAMPLE,
-                                   responses_);
+  return cv::ml::TrainData::create(samples_, cv::ml::SampleTypes::ROW_SAMPLE, responses_);
 }
 
 }  // namespace easypr

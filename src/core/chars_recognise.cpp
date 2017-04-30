@@ -57,7 +57,7 @@ int CCharsRecognise::charsRecognise(CPlate& plate, std::string& plateLicense) {
     color = getPlateType(tmpMat, true);
   }
 
-  int result = m_charsSegment->charsSegmentUsingProject(plateMat, matChars, grayChars, color);
+  int result = m_charsSegment->charsSegmentUsingOSTU(plateMat, matChars, grayChars, color);
 
   if (result == 0) {
     int num = matChars.size();

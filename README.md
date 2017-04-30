@@ -10,38 +10,28 @@ EasyPR是一个开源的中文车牌识别系统，其目标是成为一个简�
 
 ### 更新
 
-当前master版本修订了两个小问题：
+本次更新版本是1.6alpha版本，主要有以下几点更新：
 
-1.train_auto异常的问题。
+1. 代码优化与bug修复
 
-2.opencv3.2的编译问题。现在opencv3.2的接口与3.1和3.0略有变动，如果想要用3.2版本需要参照这个[issue](https://github.com/liuruoze/EasyPR/issues/152)里讨论的修改。
+2. 增加了一些数据集，例如灰度字符供训练
 
-3.增加灰度character数据
-
-4.增加灰度中文数据，以及训练代码
-
-5.新的分割方法，groundER分割
-
-6.大量bug修正与代码改进
-
-下个版本会尝试继续优化整体系统与算法。
-
-
-一个无需配置opencv的[懒人版](http://git.oschina.net/easypr/EasyPR/attach_files)。仅仅支持vs2013，也只能在debug和x86下运行，其他情况的话还是得配置opencv。感谢范文捷同学的帮助。页面里的两个文件都要下载，下载后用[7zip](http://www.7-zip.org/)解压。
-
-关于1.5版本改动的具体内容可以看博客中的[介绍](http://www.cnblogs.com/subconscious/p/5637735.html)。
+3. 其他改动可见changlog.
 
 ### 跨平台
 
 目前除了windows平台以外，还有以下其他平台的EasyPR版本。一些平台的版本可能会暂时落后于主平台。
 
+现在有一个无需配置opencv的1.5版本的[懒人版](http://git.oschina.net/easypr/EasyPR/attach_files)。仅仅支持vs2013，也只能在debug和x86下运行，其他情况的话还是得配置opencv。感谢范文捷同学的帮助。页面里的两个文件都要下载，下载后用[7zip](http://www.7-zip.org/)解压。
+
 |版本 | 开发者 | 版本 | 地址 
 |------|-------|-------|-------
 | android |  goldriver  |  1.4  |  [linuxxx/EasyPR_Android](https://github.com/linuxxx/EasyPR_Android)
-| linux | Micooz  |  1.5  |  已跟EasyPR整合
+| linux | Micooz  |  1.6  |  已跟EasyPR整合
 | ios | zhoushiwei |  1.3  |  [zhoushiwei/EasyPR-iOS](https://github.com/zhoushiwei/EasyPR-iOS)
-| mac | zhoushiwei,Micooz |  1.5  | 已跟EasyPR整合
+| mac | zhoushiwei,Micooz |  1.6  | 已跟EasyPR整合
 | java | fan-wenjie |  1.2  | [fan-wenjie/EasyPR-Java](https://github.com/fan-wenjie/EasyPR-Java)
+| 懒人版 | fan-wenjie |  1.5  | [git/oschina](http://git.oschina.net/easypr/EasyPR/attach_files)
 
 ### 兼容性
 
@@ -163,6 +153,7 @@ EasyPR的resources/image/general_test文件夹下的图片数据遵循[GDSL协�
 | resources/train | 训练数据与说明
 | resources/image | 测试用的图片
 | resources/doc | 相关文档
+| tmp | 需要自建，训练数据读取目录
 
 以下表格是resources/image目录中子目录的解释:
 
@@ -205,6 +196,15 @@ EasyPR的resources/image/general_test文件夹下的图片数据遵循[GDSL协�
 | chars.hpp | 字符识别相关
 | plate.hpp | 车牌识别相关
 
+以下表格是train目录下文件的解释:
+
+|文件 | 解释
+|------|----------
+| ann_train.cpp | 训练二值化字符
+| annCh_train.hpp | 训练中文灰度字符
+| svm_train.hpp | 训练车牌判断
+| create_data.hpp | 生成合成数据
+
 ### 使用
 
 请参考[这里](Usage.md)
@@ -235,6 +235,8 @@ EasyPR讨论QQ群号是：一群：366392603(已满)，二群：583022188， 加
 
 * fan-wenjie：1.5版opencv整合版提供者
 
+* Free：1.6版数据提供者
+
 ### 鸣谢
 
-taotao1233，邱锦山，唐大侠，jsxyhelu，如果有一天(zhoushiwei)，学习奋斗，袁承志，圣城小石匠，goldriver，Micooz，梦里时光，Rain Wang，任薛纪，ahccom，星夜落尘，海豚嘎嘎(车主之家)，刘超，以及所有对EasyPR贡献数据的热心同学。
+taotao1233，邱锦山，唐大侠，jsxyhelu，如果有一天(zhoushiwei)，学习奋斗，袁承志，圣城小石匠，goldriver，Micooz，梦里时光，Rain Wang，任薛纪，ahccom，星夜落尘，海豚嘎嘎(车主之家)，刘超，Free大神，以及所有对EasyPR贡献数据的热心同学。

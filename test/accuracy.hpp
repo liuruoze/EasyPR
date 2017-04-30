@@ -154,6 +154,7 @@ namespace easypr {
       // chinese character is wrong
       float chinese_error_count = 0;
       float chinese_error_rate = 0;
+      float chinese_precise_rate = 0;
 
       // calucate the detect precise and recall
       // use icdar 2003 evalution protoocal
@@ -432,6 +433,7 @@ namespace easypr {
         non_error_rate = non_error_count / count_recogin;
         one_error_rate = one_error_count / count_recogin;
         chinese_error_rate = chinese_error_count / count_recogin;
+        chinese_precise_rate = (count_recogin - chinese_error_count) / count_recogin;
       }
 
       double recall_2003_result = 0;
@@ -459,9 +461,10 @@ namespace easypr {
       cout << "Fscore" << "," << fscore_2003_result * 100 << "%" << ";" << endl;
 
       cout << kv->get("char_recongize") << ": ";
+      //cout << "Recongtion rate:" << "," << (count_recogin / count_detect) * 100 << "%;  " << endl;
       cout << "0-error" << "," << non_error_rate * 100 << "%;  ";
       cout << "1-error" << "," << one_error_rate * 100 << "%;  ";
-      cout << "Chinese-precise" << "," << (1 - chinese_error_rate) * 100 << "%  " << endl;
+      cout << "Chinese-precise" << "," << chinese_precise_rate * 100 << "%  " << endl;
 
       double seconds = difftime(end, begin);
       double avgsec = seconds / double(count_all);
@@ -510,7 +513,7 @@ namespace easypr {
 
         myfile << "0-error" << ":" << non_error_rate * 100 << "%,  ";
         myfile << "1-error" << ":" << one_error_rate * 100 << "%,  ";
-        myfile << "Chinese-precise" << ":" << (1 - chinese_error_rate) * 100 << "%  " << endl;
+        myfile << "Chinese-precise" << ":" << chinese_precise_rate * 100 << "%  " << endl;
 
         myfile << kv->get("seconds") << ": " << seconds << kv->get("sec") << ",  ";
         myfile << kv->get("seconds_average") << ":" << avgsec << kv->get("sec") << endl;

@@ -14,7 +14,9 @@ namespace easypr {
 AnnTrain::AnnTrain(const char* chars_folder, const char* xml)
     : chars_folder_(chars_folder), ann_xml_(xml) {
   ann_ = cv::ml::ANN_MLP::create();
-  type = 1;
+  // type=0, all characters
+  // type=1, only chinese
+  type = 0;
   kv_ = std::shared_ptr<Kv>(new Kv);
   kv_->load("etc/province_mapping");
 }
@@ -56,6 +58,7 @@ void AnnTrain::train() {
     layers.at<int>(2) = output_number;
   }
   else {
+    // Two-layers neural networks is hard to train, So do not try it
     fprintf(stdout, ">> Use two-layers neural networks,\n");
     fprintf(stdout, ">> First_hidden_neurons: %d \n", first_hidden_neurons);
     fprintf(stdout, ">> Second_hidden_neurons: %d \n", second_hidden_neurons);
@@ -74,8 +77,15 @@ void AnnTrain::train() {
   ann_->setBackpropWeightScale(0.1);
   ann_->setBackpropMomentumScale(0.1);
 
+  auto files = Utils::getFiles(chars_folder_);
+  if (files.size() == 0) {
+    fprintf(stdout, "No file found in the train folder!\n");
+    fprintf(stdout, "You should create a folder named \"tmp\" in EasyPR main folder.\n");
+    fprintf(stdout, "Copy train data folder(like \"ann\") under \"tmp\". \n");
+    return;
+  }
+
   //using raw data or raw + synthic data.
-  //auto traindata = tdata();
   auto traindata = sdata(350);
 
   std::cout << "Training ANN model, please wait..." << std::endl;

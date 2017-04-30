@@ -384,6 +384,62 @@ void getGrayPlusProject(const Mat& grayChar, Mat& features)
   hconcat(feautreImg.reshape(1, 1), projectFeature.reshape(1, 1), features);
 }
 
+
+void getGrayPlusLBP(const Mat& grayChar, Mat& features)
+{
+  // TODO: check channnels == 1
+  SHOW_IMAGE(grayChar, 0);
+  SHOW_IMAGE(255 - grayChar, 0);
+
+  // resize to uniform size, like 20x32
+  bool useResize = false;
+  bool useConvert = true;
+  bool useMean = true;
+  bool useLBP = true;
+
+  Mat char_mat;
+  if (useResize) {
+    char_mat.create(kGrayCharHeight, kGrayCharWidth, CV_8UC1);
+    resize(grayChar, char_mat, char_mat.size(), 0, 0, INTER_LINEAR);
+  }
+  else {
+    char_mat = grayChar;
+  }
+  SHOW_IMAGE(char_mat, 0);
+
+  // convert to float
+  Mat float_img;
+  if (useConvert) {
+    float scale = 1.f / 255;
+    char_mat.convertTo(float_img, CV_32FC1, scale, 0);
+  }
+  else {
+    float_img = char_mat;
+  }
+  SHOW_IMAGE(float_img, 0);
+
+  // cut from mean, it can be optional
+
+  Mat mean_img;
+  if (useMean) {
+    float_img -= mean(float_img);
+    mean_img = float_img;
+  }
+  else {
+    mean_img = float_img;
+  }
+  SHOW_IMAGE(mean_img, 0);
+
+  // use lbp to get features, it can be changed to other
+  Mat originImage = mean_img.clone();
+  Mat lbpimage = libfacerec::olbp(mean_img);
+  SHOW_IMAGE(lbpimage, 0);
+  lbpimage = libfacerec::spatial_histogram(lbpimage, kCharLBPPatterns, kCharLBPGridX, kCharLBPGridY);
+
+  // 32x20 + 16x16
+  hconcat(mean_img.reshape(1, 1), lbpimage.reshape(1, 1), features);
+}
+
 void getLBPplusHistFeatures(const Mat& image, Mat& features) {
   // TODO
   Mat grayImage;

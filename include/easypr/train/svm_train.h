@@ -35,6 +35,7 @@ class SvmTrain : public ITrain {
   std::vector<TrainItem> test_file_list_;
 
   svmCallback extractFeature;
+  bool isPrepared = true;
 };
 }
 

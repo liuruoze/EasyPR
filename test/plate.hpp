@@ -107,7 +107,7 @@ int test_plate_recognize() {
   CPlateRecognize pr;
   pr.setLifemode(true);
   pr.setDebug(false);
-  pr.setMaxPlates(4);
+  pr.setMaxPlates(1);
   //pr.setDetectType(PR_DETECT_COLOR | PR_DETECT_SOBEL);
   pr.setDetectType(easypr::PR_DETECT_CMSER);
 
