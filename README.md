@@ -18,6 +18,8 @@ EasyPR是一个开源的中文车牌识别系统，其目标是成为一个简�
 
 3. 其他改动可见changlog.
 
+对于Opencv3.2版本，可以在config.h中增加宏定义#define CV_VERSION_THREE_TWO解决不兼容问题
+
 ### 跨平台
 
 目前除了windows平台以外，还有以下其他平台的EasyPR版本。一些平台的版本可能会暂时落后于主平台。
