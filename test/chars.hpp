@@ -77,7 +77,6 @@ int test_chars_recognise() {
 
   cv::Mat src = cv::imread("resources/image/chars_recognise.jpg");
   CCharsRecognise cr;
-  return 0;
   std::string plateLicense = "";
   int result = cr.charsRecognise(src, plateLicense);
   if (result == 0)
