@@ -6,18 +6,11 @@ set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 if (CMAKE_SYSTEM_NAME MATCHES "Darwin")
-  set(CMAKE_PREFIX_PATH ${CMAKE_PREFIX_PATH} "/usr/local/opt/opencv3")
+    set(CMAKE_PREFIX_PATH ${CMAKE_PREFIX_PATH} "/usr/local/opt/opencv-3.1.0")
 endif ()
 
 # OpenVC3 required
 find_package(OpenCV 3.1.0 REQUIRED)
-
-# optional OpenMP
-find_package(OpenMP)
-if (OPENMP_FOUND)
-    set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${OpenMP_C_FLAGS}")
-    set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${OpenMP_CXX_FLAGS}")
-endif()
 
 # where to find header files
 include_directories(.)
@@ -41,12 +34,10 @@ set(SOURCE_FILES
         src/core/params.cpp
 
         src/train/ann_train.cpp
+        src/train/annCh_train.cpp
         src/train/svm_train.cpp
         src/train/train.cpp
-
-        src/preprocess/deface.cpp
-        src/preprocess/gdts.cpp
-        src/preprocess/mc_data.cpp
+        src/train/create_data.cpp
 
         src/util/util.cpp
         src/util/program_options.cpp
@@ -57,12 +48,17 @@ set(SOURCE_FILES
 add_library(easypr STATIC ${SOURCE_FILES})
 
 if (CMAKE_SYSTEM_NAME MATCHES "Darwin")
-  set(EXECUTABLE_NAME "demo_darwin_amd64")
+    set(EXECUTABLE_NAME "demo")
 elseif (CMAKE_SYSTEM_NAME MATCHES "Linux")
-  set(EXECUTABLE_NAME "demo_linux_amd64")
+    set(EXECUTABLE_NAME "demo")
 endif ()
+
+# set to be releas mode
+# set(CMAKE_BUILD_TYPE Release)
 
 # test cases
 add_executable(${EXECUTABLE_NAME} test/main.cpp)
 # link opencv libs
 target_link_libraries(${EXECUTABLE_NAME} easypr thirdparty ${OpenCV_LIBS})
+# MESSAGE(${CMAKE_BINARY_DIR}/../)
+SET_TARGET_PROPERTIES(${EXECUTABLE_NAME} PROPERTIES RUNTIME_OUTPUT_DIRECTORY  "${CMAKE_BINARY_DIR}/../")

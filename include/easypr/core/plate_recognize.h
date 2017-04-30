@@ -39,6 +39,10 @@ namespace easypr {
     void LoadANN(std::string path);
     void LoadChineseANN(std::string path);
 
+    //v1.6 added
+    void LoadGrayChANN(std::string path);
+    void LoadChineseMapping(std::string path);
+
   private:
     // show the detect and recognition result image
     bool m_showResult;

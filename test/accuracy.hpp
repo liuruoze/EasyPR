@@ -92,7 +92,7 @@ namespace easypr {
 
       // find text mapping, for compatiable withe utf-8 and GBK
       std::shared_ptr<easypr::Kv> kv(new easypr::Kv);
-      kv->load("etc/chinese_mapping");
+      kv->load("resources/text/chinese_mapping");
 
       // find groundTruth, for compatiable withe utf-8(Linux/Mac) and GBK(Windows)
       map<string, vector<CPlate>> xmlMap;
@@ -109,16 +109,17 @@ namespace easypr {
       CPlateRecognize pr;
       pr.setResultShow(false);
       pr.setLifemode(true);
-      //  pr.setDetectType(PR_DETECT_COLOR | PR_DETECT_CMSER | PR_DETECT_SOBEL );
-      //  pr.setMaxPlates(4);
+      pr.setDetectType(PR_DETECT_COLOR | PR_DETECT_CMSER);
+      pr.setMaxPlates(4);
 
-        pr.setDetectType(PR_DETECT_COLOR | PR_DETECT_CMSER);
-        pr.setMaxPlates(4);
-
-      //pr.setDetectType(PR_DETECT_COLOR | PR_DETECT_SOBEL);
       // load the maching learning model
-      //pr.LoadSVM("resources/model/svm.xml");
-      pr.LoadANN("resources/model/ann.xml");
+      pr.LoadSVM("model/svm_hist.xml");
+      pr.LoadANN("model/ann.xml");
+      pr.LoadChineseANN("model/ann_chinese.xml");
+
+      // new in v1.6
+      pr.LoadGrayChANN("model/annCh.xml");
+      pr.LoadChineseMapping("model/province_mapping");
 
       // find all the test files (images)
       // then sort them by image index
@@ -543,7 +544,7 @@ namespace easypr {
     int accuracyCharRecognizeTest(const char* test_path) {
      // find text mapping, for compatiable withe utf-8 and GBK
       std::shared_ptr<easypr::Kv> kv(new easypr::Kv);
-      kv->load("etc/chinese_mapping");
+      kv->load("resources/text/chinese_mapping");
 
       // parameters
       const bool filesNatureSort = false;
@@ -561,7 +562,7 @@ namespace easypr {
 
       int size = files.size();
       if (0 == size) {
-        cout << "No File Found in general_test/native_test!" << endl;
+        cout << "No File Found in \"resources/image/tmp/plates_200k\"!" << endl;
         return 0;
       }
       cout << "Begin to test the easypr accuracy!" << endl;

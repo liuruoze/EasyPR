@@ -18,7 +18,7 @@ AnnTrain::AnnTrain(const char* chars_folder, const char* xml)
   // type=1, only chinese
   type = 0;
   kv_ = std::shared_ptr<Kv>(new Kv);
-  kv_->load("etc/province_mapping");
+  kv_->load("resources/text/province_mapping");
 }
 
 void AnnTrain::train() {

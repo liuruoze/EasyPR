@@ -33,15 +33,24 @@ public:
 
   void LoadModel(std::string path);
   void LoadChineseModel(std::string path);
-  void LoadGrayModel(std::string path);
+  void LoadGrayChANN(std::string path);
+  void LoadChineseMapping(std::string path);
 
 private:
   CharsIdentify();
   annCallback extractFeature;
   static CharsIdentify* instance_;
+
+  // binary character classifer
   cv::Ptr<cv::ml::ANN_MLP> ann_;
+
+  // binary character classifer, only for chinese
   cv::Ptr<cv::ml::ANN_MLP> annChinese_;
+
+  // gray classifer, only for chinese
   cv::Ptr<cv::ml::ANN_MLP> annGray_;
+
+  // used for chinese mapping
   std::shared_ptr<Kv> kv_;
 };
 }

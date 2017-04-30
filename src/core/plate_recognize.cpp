@@ -83,6 +83,14 @@ void CPlateRecognize::LoadChineseANN(std::string path) {
   CharsIdentify::instance()->LoadChineseModel(path);
 }
 
+void CPlateRecognize::LoadGrayChANN(std::string path) {
+  CharsIdentify::instance()->LoadGrayChANN(path);
+}
+
+void CPlateRecognize::LoadChineseMapping(std::string path) {
+  CharsIdentify::instance()->LoadChineseMapping(path);
+}
+
 // deprected
 int CPlateRecognize::plateRecognize(const Mat& src, std::vector<std::string> &licenseVec) {
   vector<CPlate> plates;

@@ -22,8 +22,9 @@ CharsIdentify::CharsIdentify() {
   LOAD_ANN_MODEL(ann_, kDefaultAnnPath);
   LOAD_ANN_MODEL(annChinese_, kChineseAnnPath);
   LOAD_ANN_MODEL(annGray_, kGrayAnnPath);
+
   kv_ = std::shared_ptr<Kv>(new Kv);
-  kv_->load("etc/province_mapping");
+  kv_->load(kChineseMappingPath);
 
   extractFeature = getGrayPlusProject;
 }
@@ -44,12 +45,17 @@ void CharsIdentify::LoadChineseModel(std::string path) {
   }
 }
 
-void CharsIdentify::LoadGrayModel(std::string path) {
+void CharsIdentify::LoadGrayChANN(std::string path) {
   if (path != std::string(kGrayAnnPath)) {
     if (!annGray_->empty())
       annGray_->clear();
     LOAD_ANN_MODEL(annGray_, path);
   }
+}
+
+void CharsIdentify::LoadChineseMapping(std::string path) {
+  kv_->clear();
+  kv_->load(path);
 }
 
 void CharsIdentify::classify(cv::Mat featureRows, std::vector<int>& out_maxIndexs,

@@ -17,7 +17,7 @@ namespace easypr {
   ann_ = cv::ml::ANN_MLP::create();
   type = 1;
   kv_ = std::shared_ptr<Kv>(new Kv);
-  kv_->load("etc/province_mapping");
+  kv_->load("resources/text/province_mapping");
   extractFeature = getGrayPlusProject;
 }
 
