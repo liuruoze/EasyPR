@@ -88,7 +88,7 @@ namespace easypr {
 #endif
       // result xml
       XMLNode xMainNode = XMLNode::createXMLTopNode("tagset");
-      std::string path_result = "result/Result.xml";
+      std::string path_result = "resources/result/Result.xml";
 
       // find text mapping, for compatiable withe utf-8 and GBK
       std::shared_ptr<easypr::Kv> kv(new easypr::Kv);
@@ -493,7 +493,7 @@ namespace easypr {
       
       cout << "------------------" << endl;
 
-      ofstream myfile("result/accuracy.txt", ios::app);
+      ofstream myfile("resources/result/accuracy.txt", ios::app);
       if (myfile.is_open()) {
         time_t t = time(0);  // get time now
         struct tm* now = localtime(&t);
@@ -526,7 +526,7 @@ namespace easypr {
 
       // use to generate the plate trainging data, for training end2end chars recognize model
       if(isGenerateGT) {
-        ofstream myfile("result/plateGroundTruth.txt", ios::app);
+        ofstream myfile("resources/result/plateGroundTruth.txt", ios::app);
         if (myfile.is_open()) {
           myfile << plate_ss.str();
           myfile.close();
@@ -836,7 +836,7 @@ namespace easypr {
       for (auto result : all_results) {
         std::cout << result << std::endl;
  
-        ofstream myfile("result/gridSearch.txt", ios::app);
+        ofstream myfile("resources/result/gridSearch.txt", ios::app);
         if (myfile.is_open()) {
           time_t t = time(0);  // get time now
           struct tm* now = localtime(&t);

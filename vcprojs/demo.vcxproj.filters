@@ -43,7 +43,11 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="..\result\gridSearch.txt" />
-    <Text Include="..\result\accuracy.txt" />
+    <Text Include="..\resources\result\accuracy.txt">
+      <Filter>资源文件</Filter>
+    </Text>
+    <Text Include="..\CMakeLists.txt">
+      <Filter>资源文件</Filter>
+    </Text>
   </ItemGroup>
 </Project>
