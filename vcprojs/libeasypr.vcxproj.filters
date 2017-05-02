@@ -212,9 +212,6 @@
     <None Include="..\README.md" />
   </ItemGroup>
   <ItemGroup>
-    <Text Include="..\关于版权.txt" />
-  </ItemGroup>
-  <ItemGroup>
     <Xml Include="..\resources\model\ann.xml">
       <Filter>资源文件\model</Filter>
     </Xml>
