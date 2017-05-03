@@ -1,6 +1,6 @@
 # EasyPR
 
-EasyPR是一个开源的中文车牌识别系统，其目标是成为一个简单、高效、准确的车牌识别库。
+EasyPR是一个开源的中文车牌识别系统，其目标是成为一个简单、高效、准确的非限制场景(unconstrained situation)下的车牌识别库。
 
 相比于其他的车牌识别系统，EasyPR有如下特点：
 
@@ -217,7 +217,7 @@ EasyPR的resources/image/general_test文件夹下的图片数据遵循[GDSL协�
 
 如果你在使用过程中遇到任何问题，请在[这里](https://github.com/liuruoze/EasyPR/issues)告诉我们。
 
-EasyPR讨论QQ群号是：一群：366392603(已满)，二群：583022188， 加前请注明EasyPR学习讨论。
+EasyPR讨论QQ群号是：一群：366392603，二群：583022188，三群：637614031, 加前请注明EasyPR学习讨论。
 
 ### Contributors
 
