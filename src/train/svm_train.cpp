@@ -32,6 +32,8 @@ void SvmTrain::train() {
   svm_->setP(0.1);
   svm_->setTermCriteria(cvTermCriteria(CV_TERMCRIT_ITER, 20000, 0.0001));
 
+  this->prepare();
+
   if (train_file_list_.size() == 0) {
     fprintf(stdout, "No file found in the train folder!\n");
     fprintf(stdout, "You should create a folder named \"tmp\" in EasyPR main folder.\n");
@@ -167,8 +169,6 @@ void SvmTrain::prepare() {
 }
 
 cv::Ptr<cv::ml::TrainData> SvmTrain::tdata() {
-  this->prepare();
-
   cv::Mat samples;
   std::vector<int> responses;
 
