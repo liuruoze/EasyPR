@@ -22,6 +22,7 @@ AnnTrain::AnnTrain(const char* chars_folder, const char* xml)
 }
 
 void AnnTrain::train() {
+  
   int classNumber = 0;
 
   cv::Mat layers;
@@ -93,17 +94,16 @@ void AnnTrain::train() {
   ann_->train(traindata);
   long end = utils::getTimestamp();
   ann_->save(ann_xml_);
- 
+  
   test();
   std::cout << "Your ANN Model was saved to " << ann_xml_ << std::endl;
-  std::cout << "Training done. Time elapse: " << (end - start) / (1000 * 60) << "minute"
-    << std::endl;
+  std::cout << "Training done. Time elapse: " << (end - start) / (1000 * 60) << "minute" << std::endl;
 }
 
 std::pair<std::string, std::string> AnnTrain::identifyChinese(cv::Mat input) {
   cv::Mat feature = charFeatures2(input, kPredictSize);
   float maxVal = -2;
-  int result = -1;
+  int result = 0;
 
   cv::Mat output(1, kChineseNumber, CV_32FC1);
   ann_->predict(feature, output);
@@ -129,14 +129,15 @@ std::pair<std::string, std::string> AnnTrain::identifyChinese(cv::Mat input) {
 std::pair<std::string, std::string> AnnTrain::identify(cv::Mat input) {
   cv::Mat feature = charFeatures2(input, kPredictSize);
   float maxVal = -2;
-  int result = -1;
+  int result = 0;
 
+  //std::cout << feature << std::endl;
   cv::Mat output(1, kCharsTotalNumber, CV_32FC1);
   ann_->predict(feature, output);
-
+  //std::cout << output << std::endl;
   for (int j = 0; j < kCharsTotalNumber; j++) {
     float val = output.at<float>(j);
-    // std::cout << "j:" << j << "val:" << val << std::endl;
+    //std::cout << "j:" << j << "val:" << val << std::endl;
     if (val > maxVal) {
       maxVal = val;
       result = j;
@@ -177,6 +178,10 @@ void AnnTrain::test() {
 
     for (auto file : chars_files) {
       auto img = cv::imread(file, 0);  // a grayscale image
+      if (!img.data) {
+        //cout << "Null pointer!" << endl;
+        continue;
+      }
       std::pair<std::string, std::string> ch;
 
       if (type == 0) ch = identify(img);
@@ -186,8 +191,7 @@ void AnnTrain::test() {
         ++corrects;
         ++corrects_all;
       } else {
-        error_files.push_back(
-            std::make_pair(utils::getFileName(file), ch.second));
+        error_files.push_back(std::make_pair(utils::getFileName(file), ch.second));
       }
       ++sum;
       ++sum_all;

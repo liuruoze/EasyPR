@@ -91,7 +91,7 @@ std::pair<std::string, std::string> AnnChTrain::identifyGrayChinese(cv::Mat inpu
   Mat feature;
   extractFeature(input, feature);
   float maxVal = -2;
-  int result = -1;
+  int result = 0;
 
   cv::Mat output(1, kChineseNumber, CV_32FC1);
   ann_->predict(feature, output);

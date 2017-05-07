@@ -67,7 +67,7 @@ void CharsIdentify::classify(cv::Mat featureRows, std::vector<int>& out_maxIndex
 
   for (int output_index = 0; output_index < rowNum; output_index++) {
     Mat output_row = output.row(output_index);
-    int result = -1;
+    int result = 0;
     float maxVal = -2.f;
     bool isChinses = isChineseVec[output_index];
     if (!isChinses) {
@@ -118,7 +118,7 @@ void CharsIdentify::classify(std::vector<CCharacter>& charVec){
     CCharacter& character = charVec[output_index];
     Mat output_row = output.row(output_index);
 
-    int result = -1;
+    int result = 0;
     float maxVal = -2.f;
     std::string label = "";
 
@@ -180,7 +180,7 @@ void CharsIdentify::classifyChineseGray(std::vector<CCharacter>& charVec){
     bool isChinese = true;
 
     float maxVal = -2;
-    int result = -1;
+    int result = 0;
 
     for (int j = 0; j < kChineseNumber; j++) {
       float val = output_row.at<float>(j);
@@ -234,7 +234,7 @@ void CharsIdentify::classifyChinese(std::vector<CCharacter>& charVec){
     bool isChinese = true;
 
     float maxVal = -2;
-    int result = -1;
+    int result = 0;
 
     for (int j = 0; j < kChineseNumber; j++) {
       float val = output_row.at<float>(j);
@@ -267,7 +267,7 @@ void CharsIdentify::classifyChinese(std::vector<CCharacter>& charVec){
 }
 
 int CharsIdentify::classify(cv::Mat f, float& maxVal, bool isChinses, bool isAlphabet){
-  int result = -1;
+  int result = 0;
 
   cv::Mat output(1, kCharsTotalNumber, CV_32FC1);
   ann_->predict(f, output);
@@ -342,7 +342,7 @@ bool CharsIdentify::isCharacter(cv::Mat input, std::string& label, float& maxVal
 std::pair<std::string, std::string> CharsIdentify::identifyChinese(cv::Mat input, float& out, bool& isChinese) {
   cv::Mat feature = charFeatures(input, kChineseSize);
   float maxVal = -2;
-  int result = -1;
+  int result = 0;
 
   cv::Mat output(1, kChineseNumber, CV_32FC1);
   annChinese_->predict(feature, output);
@@ -379,7 +379,7 @@ std::pair<std::string, std::string> CharsIdentify::identifyChineseGray(cv::Mat i
   cv::Mat feature;
   extractFeature(input, feature);
   float maxVal = -2;
-  int result = -1;
+  int result = 0;
   cv::Mat output(1, kChineseNumber, CV_32FC1);
   annGray_->predict(feature, output);
 
