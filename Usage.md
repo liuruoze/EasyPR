@@ -114,7 +114,7 @@ $ ./demo ? // 查看CLI帮助
 
     # 利用提供的SVM和ANN模型来识别一张图片里面的所有车牌
     
-    $ ./demo recognize -p resources/image/plate_recognize.jpg --svm resources/model/svm.xml --ann resources/model/ann.xml
+    $ ./demo recognize -p resources/image/plate_recognize.jpg --svm model/svm.xml --ann model/ann.xml
     
     # 或者更简单一些(注意模型路径)
     $ ./demo recognize -p resources/image/plate_recognize.jpg
@@ -138,13 +138,13 @@ $ ./demo ? // 查看CLI帮助
 
 则可以执行 $ demo svm --plates=tmp/svm --svm=tmp/svm.xml，生成得到的tmp文件夹下面的svm.xml就是训练好的模型，
 
-替换resources/model/svm.xml就可以达到替换新模型的目的，替换前请先备份原始模型。
+替换model/svm.xml就可以达到替换新模型的目的，替换前请先备份原始模型。
 
 **ANN训练**
 
 先准备好字符图片集合，可从项目resources/train/ann.7z中解压得到。
 
-每类字符都存放在以其名称命名的子文件夹中，命名规则请参考  `etc/province_mapping`。
+每类字符都存放在以其名称命名的子文件夹中，命名规则请参考  `resources/text/province_mapping`。
 
 一切准备就绪后，运行下面这条命令即可：
 
@@ -154,4 +154,4 @@ $ ./demo ? // 查看CLI帮助
 
 则可以执行 $ demo ann --chars=tmp/ann --ann=tmp/ann.xml，生成得到的tmp文件夹下面的svm.xml就是训练好的模型，
 
-替换resources/model/ann.xml就可以达到替换新模型的目的，替换前请先备份原始模型。
+替换model/ann.xml就可以达到替换新模型的目的，替换前请先备份原始模型。
