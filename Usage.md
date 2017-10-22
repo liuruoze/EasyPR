@@ -31,7 +31,9 @@ EasyPR支持当前主流的操作系统，通常不需要对源代码进行更�
 
 **Note**: 预编译的 **OpenCV3.1** 已经不支持较低版本的Visual Studio，请选择vs2013及以上的版本。
 
-**方法一（推荐）**
+**方法一**
+
+*注意*: python方法仅针对v1.5以下的版本。在1.6及以上版本中，由于架构变化，不推荐使用。可以加群看群里的配置方法。
 
 1. 确保将Python的安装目录添加到系统环境变量PATH中。
 2. 执行 `python configure.py` ，根据提示填写相关信息。
@@ -134,9 +136,9 @@ $ ./demo ? // 查看CLI帮助
     # 这个只可在 include/easypr/config.h 修改。
     # 将训练好的模型存放在 save/to/svm.xml。
 	
-假设你在easypr的主目录下面新建了一个tmp文件夹，并且把svm.7z解压得到的svm文件夹移动到tmp文件夹下面，
+首先在easypr的主目录下面新建了一个tmp文件夹，并且把svm.7z解压得到的svm文件夹移动到tmp文件夹下面，
 
-则可以执行 $ demo svm --plates=tmp/svm --svm=tmp/svm.xml，生成得到的tmp文件夹下面的svm.xml就是训练好的模型，
+执行 $ demo svm --plates=tmp/svm --svm=tmp/svm.xml，生成得到的tmp文件夹下面的svm.xml就是训练好的模型，
 
 替换model/svm.xml就可以达到替换新模型的目的，替换前请先备份原始模型。
 
@@ -150,8 +152,8 @@ $ ./demo ? // 查看CLI帮助
 
     $ ./demo ann --chars=path/to/chars --ann=save/to/ann.xml
 	
-假设你在easypr的主目录下面新建了一个tmp文件夹，并且把ann.7z解压得到的ann文件夹移动到tmp文件夹下面，
+首先在easypr的主目录下面新建了一个tmp文件夹，并且把ann.7z解压得到的ann文件夹移动到tmp文件夹下面，
 
-则可以执行 $ demo ann --chars=tmp/ann --ann=tmp/ann.xml，生成得到的tmp文件夹下面的svm.xml就是训练好的模型，
+执行 $ demo ann --chars=tmp/ann --ann=tmp/ann.xml，生成得到的tmp文件夹下面的svm.xml就是训练好的模型，
 
 替换model/ann.xml就可以达到替换新模型的目的，替换前请先备份原始模型。
