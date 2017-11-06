@@ -243,16 +243,13 @@ EasyPR的resources/image/general_test文件夹下的图片数据遵循[GDSL协�
 
 如果想评估车牌定位的指标。需要生成GroundTruth_windows.xml和GroundTruth_others.xml。
 
-可以参考general_test下的同名文件来了解下这个文件的格式该如何定义。例如下面的一个xml节点
+可以参考general_test下的同名文件来了解下这个文件的格式该如何定义。例如下面的一个xml节点：
 
 ```xml
-<imageName>京A88731</imageName>
-<taggedRectangles>
-	<taggedRectangle x="170" y="184" width="96" height="27" rotation="-1" locateType="1">蓝牌:京A88731</taggedRectangle>
-</taggedRectangles>
+<taggedRectangle x="170" y="184" width="96" height="27" rotation="-1" locateType="1">蓝牌:京A88731</taggedRectangle>
 ```
 
-imageName是图片名字。taggedRectangle对应一个车牌，属性x和y表示的是车牌外接矩形的中心点的坐标。
+taggedRectangle对应一个车牌，属性x和y表示的是车牌外接矩形的中心点的坐标。
 
 width和height是宽度和高度。另外两个属性目前没用到。
 
