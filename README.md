@@ -235,33 +235,28 @@ EasyPR的resources/image/general_test文件夹下的图片数据遵循[GDSL协�
 
 当成功运行EasyPR后，首先运行批量测试功能。如果最后的指标跟readme一致，说明EasyPR安装成功。
 
-可以在accuracy.hpp中修改 `pr.setResultShow(false);` 为 `pr.setResultShow(true);`， 让批量测试显示出车牌定位的效果，如readme里图片显示。
+可以在accuracy.hpp中修改 `pr.setResultShow(false)` 为 `pr.setResultShow(true)`， 让批量测试显示出车牌定位的效果。
 
 在批量测试下有一个选项，native_test。可以把自己的图片放到resources/image/native_test下测试用的。
 
 如果你自己的图片没有ground_truth，无法计算准确率指标。但是可以打开车牌定位的效果。
 
-如果想评估车牌定位的指标。需要生成GroundTruth_windows.xml这个文件（windows），osx和linux则是GroundTruth_others.xml。
+如果想评估车牌定位的指标。需要生成GroundTruth_windows.xml和GroundTruth_others.xml。
 
 可以参考general_test下的同名文件来了解下这个文件的格式该如何定义。例如下面的一个xml节点
 
 ```xml
-<image>
-	<imageName>京A88731</imageName>
-	<taggedRectangles>
-		<taggedRectangle x="170" y="184" width="96" height="27" rotation="-1" locateType="1">蓝牌:京A88731</taggedRectangle>
-	</taggedRectangles>
-</image>
+<imageName>京A88731</imageName>
+<taggedRectangles>
+	<taggedRectangle x="170" y="184" width="96" height="27" rotation="-1" locateType="1">蓝牌:京A88731</taggedRectangle>
+</taggedRectangles>
 ```
 
-imageName是图片名字。taggedRectangle对应一个车牌，属性x和y表示的是车牌外接矩形的中心点的坐标，不是左上角的坐标。
+imageName是图片名字。taggedRectangle对应一个车牌，属性x和y表示的是车牌外接矩形的中心点的坐标。
 
 width和height是宽度和高度。另外两个属性目前没用到。
 
-GroundTruth_windows.xml的编码设置为ANSI，而GroundTruth_others.xml的编码要设置为UTF-8，否则会出现乱码。
-
-之后放到native_test下面，应该可以看到评估指标出现了。如果没有，可以加群询问或者提issue。
-
+GroundTruth_windows.xml的编码需要设置为ANSI，而GroundTruth_others.xml的编码要设置为UTF-8，否则会出现乱码。
 
 ### 获取帮助
 
