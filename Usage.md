@@ -92,7 +92,7 @@ EasyPR使用CMake在Linux及Mac OS下进行构建，确保系统安装了最新�
 项目提供了一键编译shell，在项目根目录下执行：
 
 ```
-$ ./build
+$ ./build.sh
 ```
 
 即可。
@@ -106,7 +106,49 @@ $ ./build
 ```
 $ ./demo // 进入菜单交互界面
 $ ./demo ? // 查看CLI帮助
+
 ```
+### 如何开始
+
+当进入交互界面以后，首先是主目录，下面是主目录各个功能的解释：
+
+|    名称   |    说明    
+|-------------|-----------
+| `测试` | 单例测试。分别测试EasyPR中的车牌识别中每个环节的功能，要想更改测试的图片，可以替换resources/image下的图片即可；
+| `批量测试` | 批量测试。重要功能。作用是跑完整个general_test下的所有图片，最后输出准确率等指标，用于评估EasyPR的效果；
+| `SVM训练` | 用SVM训练车牌判断模型，具体功能可以看下面的解释；
+| `ANN训练` | 用ANN模型进行训练，训练的是字符识别模型和中文识别模型，分别对应ann.xml和ann_chinese.xml；
+| `中文字符训练` | 1.6版新增的功能，也是用ANN模型进行训练，不过是训练的灰度中文字符识别模型，生成文件为annCh.xml；
+| `生成字符` | 这个功能需要配合plates_200k这个数据集才能发挥作用，如果没有的话，可以忽略它；
+| `感谢名单` | 包括所有为EasyPR做出贡献的大家的名字，没有社区的帮助是没有EasyPR的今天的！感谢大家的帮助。
+
+**Note**: 当你成功运行EasyPR以后，首先跑下批量测试功能！在新版本中更加推荐首先运行这个。因为最后的指标如果跟readme中一致，说明EasyPR运行正确无误，可以开始你的阅读和修改代码之旅了。
+
+如果不一致的话，需要好好检查下是哪边出了问题，之后再写自己的代码，或者把其作为库加入你的系统中。
+
+另外，可以在accuracy.hpp中修改 `pr.setResultShow(false);` 为 `pr.setResultShow(true);`， 让运行批量测试时显示出每个图片中车牌定位的效果，就像readme里图片显示的那样。这是一个重要的debug工具。
+
+在批量测试下有一个选项，native_test。这个是让你把自己的图片放到resources/image/native_test下测试用的。由于你自己的图片没有添加ground_truth，也就是预先标定的位置，因此计算准确率指标。
+
+但是你可以打开显示效果，看看具体车牌定位的情况。如果想评估自己的图片的车牌定位的指标。需要生成GroundTruth_windows.xml这个文件（如果你在windows下，osx和linux则是GroundTruth_others.xml）。
+
+你可以参考general_test下的同名文件来了解下这个文件的格式该如何定义。例如下面的一个xml节点
+
+```xml
+	<image>
+		<imageName>京A88731</imageName>
+		<taggedRectangles>
+			<taggedRectangle x="170" y="184" width="96" height="27" rotation="-1" locateType="1">蓝牌:京A88731</taggedRectangle>
+		</taggedRectangles>
+	</image>
+```
+
+简单说就是图片名字，其中每个车牌对应一个taggedRectangle，其中的属性x和y表示的是车牌外接矩形的中心点的坐标，注意，不是左上角的坐标。其余width和height的意思就是宽度和高度。
+
+另外两个属性可以填0，目前的计算指标中为了简便，其实没用到。但实际上真正的groundTruth想做的是一个可旋转矩形。但是这样子给标定带来了困难（所以这可以解释为什么x和y是中心点的坐标了，为了方便传入opencv的RotatedRect类中）。
+
+所以只需要把车牌的最小外接矩形的信息填入即可。另外需要说明的是，GroundTruth_windows.xml的编码要设置为ANSI，而GroundTruth_others.xml的编码需要设置为UTF-8，否则会出现乱码。
+
 
 ### 命令行示例
 

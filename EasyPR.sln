@@ -7,6 +7,11 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "demo", "vcprojs\demo.vcxpro
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libeasypr", "vcprojs\libeasypr.vcxproj", "{2791E339-04FB-44EF-9F92-C90131FE7772}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{FA4945DA-3C0F-44C5-90DF-A492614B8B4D}"
+	ProjectSection(SolutionItems) = preProject
+		Usage.md = Usage.md
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
