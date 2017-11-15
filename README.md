@@ -10,25 +10,12 @@ EasyPR是一个开源的中文车牌识别系统，其目标是成为一个简�
 
 ### 更新
 
-本次更新版本是1.6alpha版本，主要有以下几点更新：
+本次更新版本是1.6正式版本，主要有以下几点更新：
 
-1. 采用灰度字符训练以及新的特征，使中文字符正确率上升到了86%，比上个版本提升了近14个百分点。
+1. 修正了多项readme的文本提示。
 
-2. 借助于字符分割与识别算法的优化，在general_test上的完整识别率(0-error)从原先的59%首次上升到现在的70%，1-error则提升到了82%。
+2. 增加了C#调用EasyPR的一个项目的链接，感谢 @zhang-can 同学。
 
-3. 在车牌判断模块中，使用了新的SVM特征（颜色+投影），从而在保持鲁棒性的同时，提升了正确率。定位指标中FScore从76%提升到82%.
-
-4. 新增一种新的字符分割方法，groundMSER字符分割方法。
-
-5. 提供了近万张中文字符灰度图数据供训练，并且在主界面中提供了一个方法从free大神的车牌集里提取中文与英文字符。
-
-6. 提供了两万两千张的字符灰度图数据，供训练灰度字符模型使用。
-
-7. 代码优化与升级，许多bug修复。
-
-8. Opencv3.2版本的支持，编译前仅需要将config.h中将#define CV_VERSION_THREE_ZERO改为#define CV_VERSION_THREE_TWO即可。
-
-9. 更加友好的linux与mac版本支持，使用CMake即可顺利编译，单独的utf-8与gbk的文件供分别的系统使用。
 
 **注意**
 
@@ -50,6 +37,7 @@ EasyPR是一个开源的中文车牌识别系统，其目标是成为一个简�
 
 |版本 | 开发者 | 版本 | 地址 
 |------|-------|-------|-------
+| C# |  zhang-can  |  1.5  |  [zhang-can/EasyPR-DLL-CSharp](https://github.com/zhang-can/EasyPR-DLL-CSharp)
 | android |  goldriver  |  1.4  |  [linuxxx/EasyPR_Android](https://github.com/linuxxx/EasyPR_Android)
 | linux | Micooz  |  1.6  |  已跟EasyPR整合
 | ios | zhoushiwei |  1.3  |  [zhoushiwei/EasyPR-iOS](https://github.com/zhoushiwei/EasyPR-iOS)
