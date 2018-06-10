@@ -1,8 +1,6 @@
 #ifndef EASYPR_CONFIG_H_
 #define EASYPR_CONFIG_H_
 
-#define CV_VERSION_THREE_ZERO
-
 namespace easypr {
 
   enum Color { BLUE, YELLOW, WHITE, UNKNOWN };
@@ -131,7 +129,7 @@ private:\
   }
 
 // Load model. compatitable withe 3.0, 3.1 and 3.2
-#ifdef CV_VERSION_THREE_TWO
+#if (CV_VERSION_MAJOR >= 3) && (CV_VERSION_MINOR >= 2)
   #define LOAD_SVM_MODEL(model, path) \
     model = ml::SVM::load(path);
   #define LOAD_ANN_MODEL(model, path) \
