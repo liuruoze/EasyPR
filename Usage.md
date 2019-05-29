@@ -31,7 +31,9 @@ EasyPR支持当前主流的操作系统，通常不需要对源代码进行更�
 
 **Note**: 预编译的 **OpenCV3.1** 已经不支持较低版本的Visual Studio，请选择vs2013及以上的版本。
 
-**方法一（推荐）**
+**方法一**
+
+**注意**: python方法仅针对v1.5以下的版本。在1.6及以上版本中，由于架构变化，不推荐使用。可以加群看群里的配置方法。
 
 1. 确保将Python的安装目录添加到系统环境变量PATH中。
 2. 执行 `python configure.py` ，根据提示填写相关信息。
@@ -90,7 +92,7 @@ EasyPR使用CMake在Linux及Mac OS下进行构建，确保系统安装了最新�
 项目提供了一键编译shell，在项目根目录下执行：
 
 ```
-$ ./build
+$ ./build.sh
 ```
 
 即可。
@@ -104,7 +106,38 @@ $ ./build
 ```
 $ ./demo // 进入菜单交互界面
 $ ./demo ? // 查看CLI帮助
+
 ```
+### 如何开始
+
+当进入交互界面以后，首先是主目录，下面是主目录各个功能的解释：
+
+| 名称   |    说明    
+|-------------|-----------
+| 测试 | 分别测试车牌识别中每个环节。要想更改测试的图片，可以替换resources/image下的图片；
+| 批量测试 | 跑完整个general_test下所有图片，输出准确率等指标，用于评估EasyPR的效果；
+| SVM训练 | 用SVM训练车牌判断模型；
+| ANN训练 | 用ANN训练字符识别和中文识别模型，对应ann.xml和ann_chinese.xml；
+| 中文训练 | 1.6版新增，用ANN模型训练灰度中文字符，生成annCh.xml；
+| 生成字符 | 需要配合plates_200k这个数据集才能作用；
+
+当成功运行EasyPR后，首先运行批量测试功能。如果最后的指标跟readme一致，说明EasyPR安装成功。
+
+可以在accuracy.hpp中修改 `pr.setResultShow(false)` 为 `pr.setResultShow(true)`， 让批量测试显示出车牌定位的效果。
+
+**Note**:
+
+在批量测试下有一个选项，native_test。可以把自己的图片放到resources/image/native_test下测试用的。如果你自己的图片没有ground_truth，无法计算准确率指标。但是可以打开车牌定位的效果。
+
+如果想评估车牌定位的指标。需要生成GroundTruth_windows.xml和GroundTruth_others.xml。可以参考general_test下的同名文件来了解下这个文件的格式该如何定义。例如下面的一个xml节点：
+
+```xml
+<taggedRectangle x="170" y="184" width="96" height="27" rotation="-1" locateType="1">蓝牌:京A88731</taggedRectangle>
+```
+
+taggedRectangle对应一个车牌，属性x和y表示的是车牌外接矩形的中心点的坐标。width和height是宽度和高度。另外两个属性目前没用到。
+
+GroundTruth_windows.xml的编码需要设置为ANSI，而GroundTruth_others.xml的编码要设置为UTF-8，否则会出现乱码。
 
 ### 命令行示例
 
@@ -134,9 +167,9 @@ $ ./demo ? // 查看CLI帮助
     # 这个只可在 include/easypr/config.h 修改。
     # 将训练好的模型存放在 save/to/svm.xml。
 	
-假设你在easypr的主目录下面新建了一个tmp文件夹，并且把svm.7z解压得到的svm文件夹移动到tmp文件夹下面，
+首先在easypr的主目录下面新建了一个tmp文件夹，并且把svm.7z解压得到的svm文件夹移动到tmp文件夹下面，
 
-则可以执行 $ demo svm --plates=tmp/svm --svm=tmp/svm.xml，生成得到的tmp文件夹下面的svm.xml就是训练好的模型，
+执行 $ demo svm --plates=tmp/svm --svm=tmp/svm.xml，生成得到的tmp文件夹下面的svm.xml就是训练好的模型，
 
 替换model/svm.xml就可以达到替换新模型的目的，替换前请先备份原始模型。
 
@@ -150,8 +183,18 @@ $ ./demo ? // 查看CLI帮助
 
     $ ./demo ann --chars=path/to/chars --ann=save/to/ann.xml
 	
-假设你在easypr的主目录下面新建了一个tmp文件夹，并且把ann.7z解压得到的ann文件夹移动到tmp文件夹下面，
+首先在easypr的主目录下面新建了一个tmp文件夹，并且把ann.7z解压得到的ann文件夹移动到tmp文件夹下面，
 
-则可以执行 $ demo ann --chars=tmp/ann --ann=tmp/ann.xml，生成得到的tmp文件夹下面的svm.xml就是训练好的模型，
+执行 $ demo ann --chars=tmp/ann --ann=tmp/ann.xml，生成得到的tmp文件夹下面的svm.xml就是训练好的模型，
 
 替换model/ann.xml就可以达到替换新模型的目的，替换前请先备份原始模型。
+
+**注意**
+
+train文件夹下有3个ann压缩包，解释一下：
+
+|    文件   |    用途    
+|-------------|-----------
+| ann.7z | 包括黑白的字符和中文数据，ann以及ann_chinese.xml由这个训练得到；
+| annCh.7z | 仅仅包括中文的灰度数据，annCh.xml由这个训练得到；
+| annGray.7z | 包括了灰度的字符数据，目前没有任何模型由这个训练得到，主要是为未来的CNN做准备

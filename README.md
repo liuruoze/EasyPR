@@ -10,31 +10,24 @@ EasyPR是一个开源的中文车牌识别系统，其目标是成为一个简�
 
 ### 更新
 
-本次更新版本是1.6alpha版本，主要有以下几点更新：
+本次更新版本是1.6正式版本，主要有以下几点更新：
 
-1. 采用灰度字符训练以及新的特征，使中文字符正确率上升到了86%，比上个版本提升了近14个百分点。
+1. 修正了多项readme的文本提示。
 
-2. 借助于字符分割与识别算法的优化，在general_test上的完整识别率(0-error)从原先的59%首次上升到现在的70%，1-error则提升到了82%。
+2. 增加了C#调用EasyPR的一个项目的链接，感谢 @zhang-can 同学。
 
-3. 在车牌判断模块中，使用了新的SVM特征（颜色+投影），从而在保持鲁棒性的同时，提升了正确率。定位指标中FScore从76%提升到82%.
 
-4. 新增一种新的字符分割方法，groundMSER字符分割方法。
+**注意**
 
-5. 提供了近万张中文字符灰度图数据供训练，并且在主界面中提供了一个方法从free大神的车牌集里提取中文与英文字符。
+1. 对于Opencv3.2或以上版本，如果碰到编译问题，例如“ANN_MLP”相关的错误，尝试将config.h中将#define CV_VERSION_THREE_ZERO改为#define CV_VERSION_THREE_TWO试试.
 
-6. 提供了两万两千张的字符灰度图数据，供训练灰度字符模型使用。
+2. linux系统推荐使用Opencv3.2以上版本。3.2以下的版本例如3.0和3.1在识别时可能会出现车牌识别结果为空的情况。稳妥起见，建议都升级到最新的3.2版本。Windows版本没有这个问题。
 
-7. 代码优化与升级，许多bug修复。
-
-8. Opencv3.2版本的支持，编译前仅需要将config.h中将#define CV_VERSION_THREE_ZERO改为#define CV_VERSION_THREE_TWO即可。
-
-9. 更加友好的linux与mac版本支持，使用CMake即可顺利编译，单独的utf-8与gbk的文件供分别的系统使用。
-
-两点注意：
-
-1. 对于目前的linux版本，推荐使用Opencv3.2版本。3.2以下的版本例如3.0和3.1在识别时可能会出现车牌识别结果为空的情况。稳妥起见，建议都升级到最新的3.2版本。Windows版本没有这个问题。
-
-2. 对于Opencv3.2版本，可以在config.h中增加宏定义#define CV_VERSION_THREE_TWO解决编译时的错误, 这是因为接口不兼容导致的.
+## 待做的工作
+- [ ] 完成一个CNN框架
+- [ ] 替换ANN为CNN
+- [ ] 增加新能源车的识别（待定）
+- [ ] 增加两行车牌的识别（待定）
 
 ### 跨平台
 
@@ -44,6 +37,7 @@ EasyPR是一个开源的中文车牌识别系统，其目标是成为一个简�
 
 |版本 | 开发者 | 版本 | 地址 
 |------|-------|-------|-------
+| C# |  zhang-can  |  1.5  |  [zhang-can/EasyPR-DLL-CSharp](https://github.com/zhang-can/EasyPR-DLL-CSharp)
 | android |  goldriver  |  1.4  |  [linuxxx/EasyPR_Android](https://github.com/linuxxx/EasyPR_Android)
 | linux | Micooz  |  1.6  |  已跟EasyPR整合
 | ios | zhoushiwei |  1.3  |  [zhoushiwei/EasyPR-iOS](https://github.com/zhoushiwei/EasyPR-iOS)
@@ -233,7 +227,7 @@ EasyPR的resources/image/general_test文件夹下的图片数据遵循[GDSL协�
 
 如果你在使用过程中遇到任何问题，请在[这里](https://github.com/liuruoze/EasyPR/issues)告诉我们。
 
-EasyPR讨论QQ群号是：一群：366392603，二群：583022188，三群：637614031，加前请注明EasyPR学习讨论。
+EasyPR讨论QQ群号是：一群：366392603，二群：583022188，三群：637614031，四群：548362608，加前请注明EasyPR学习讨论。
 
 ### Contributors
 
