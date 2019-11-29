@@ -17,7 +17,7 @@ namespace easypr {
 
     const float minabs_sv = 95; //95;
 
-    // H range of blue 
+    // H range of blue
 
     const int min_blue = 100;  // 100
     const int max_blue = 140;  // 140
@@ -526,7 +526,7 @@ void clearBorder(const Mat &img, Rect& cropRect) {
       avgValue += i * histogram[i];
     }
 
-    int thresholdV;
+    int thresholdV = 0;
     float maxVariance = 0;
     float w = 0, u = 0;
     for (int i = 0; i < 256; i++) {
@@ -2137,7 +2137,7 @@ void clearBorder(const Mat &img, Rect& cropRect) {
 
   }
 
-// this spatial_ostu algorithm are robust to 
+// this spatial_ostu algorithm are robust to
 // the plate which has the same light shine, which is that
 // the light in the left of the plate is strong than the right.
   void spatial_ostu(InputArray _src, int grid_x, int grid_y, Color type) {
