@@ -74,7 +74,7 @@ void AnnTrain::train() {
   ann_->setLayerSizes(layers);
   ann_->setActivationFunction(cv::ml::ANN_MLP::SIGMOID_SYM, 1, 1);
   ann_->setTrainMethod(cv::ml::ANN_MLP::TrainingMethods::BACKPROP);
-  ann_->setTermCriteria(cvTermCriteria(CV_TERMCRIT_ITER, 30000, 0.0001));
+  ann_->setTermCriteria(TermCriteria(cv::TermCriteria::MAX_ITER, 30000, 0.0001));
   ann_->setBackpropWeightScale(0.1);
   ann_->setBackpropMomentumScale(0.1);
 

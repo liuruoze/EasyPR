@@ -33,12 +33,12 @@ Mat getHistogram(Mat in) {
 
 void getHistogramFeatures(const Mat& image, Mat& features) {
   Mat grayImage;
-  cvtColor(image, grayImage, CV_RGB2GRAY);
+  cvtColor(image, grayImage, COLOR_RGB2GRAY);
 
   //grayImage = histeq(grayImage);
 
   Mat img_threshold;
-  threshold(grayImage, img_threshold, 0, 255, CV_THRESH_OTSU + CV_THRESH_BINARY);
+  threshold(grayImage, img_threshold, 0, 255, cv::THRESH_OTSU + cv::THRESH_BINARY);
   //Mat img_threshold = grayImage.clone();
   //spatial_ostu(img_threshold, 8, 2, getPlateType(image, false));
 
@@ -50,7 +50,7 @@ void getColorFeatures(const Mat& src, Mat& features) {
   Mat src_hsv;
 
   //grayImage = histeq(grayImage);
-  cvtColor(src, src_hsv, CV_BGR2HSV);
+  cvtColor(src, src_hsv, COLOR_BGR2HSV);
   int channels = src_hsv.channels();
   int nRows = src_hsv.rows;
 
@@ -108,7 +108,7 @@ void getSIFTFeatures(const Mat& image, Mat& features) {
 //HOG Features
 void getHOGFeatures(const Mat& image, Mat& features) {
   //HOG descripter
-  HOGDescriptor hog(cvSize(128, 64), cvSize(16, 16), cvSize(8, 8), cvSize(8, 8), 3); //these parameters work well
+  HOGDescriptor hog(cv::Size(128, 64), cv::Size(16, 16), cv::Size(8, 8), cv::Size(8, 8), 3); //these parameters work well
 	std::vector<float> descriptor;
 
   // resize input image to (128,64) for compute
@@ -133,7 +133,7 @@ void getHSVHistFeatures(const Mat& image, Mat& features) {
 void getLBPFeatures(const Mat& image, Mat& features) {
 
   Mat grayImage;
-  cvtColor(image, grayImage, CV_RGB2GRAY);
+  cvtColor(image, grayImage, COLOR_RGB2GRAY);
 
   Mat lbpimage;
   lbpimage = libfacerec::olbp(grayImage);
@@ -377,7 +377,7 @@ void getGrayPlusProject(const Mat& grayChar, Mat& features)
   }
   SHOW_IMAGE(grayChar, 0);
   Mat binaryChar;
-  threshold(grayChar, binaryChar, 0, 255, CV_THRESH_OTSU + CV_THRESH_BINARY);
+  threshold(grayChar, binaryChar, 0, 255, cv::THRESH_OTSU + cv::THRESH_BINARY);
   SHOW_IMAGE(binaryChar, 0);
   Mat projectFeature = charProjectFeatures(binaryChar, 32);
 
@@ -442,7 +442,7 @@ void getGrayPlusLBP(const Mat& grayChar, Mat& features)
 
 void getLBPplusHistFeatures(const Mat& image, Mat& features) {
   Mat grayImage;
-  cvtColor(image, grayImage, CV_RGB2GRAY);
+  cvtColor(image, grayImage, COLOR_RGB2GRAY);
 
   Mat lbpimage;
   lbpimage = libfacerec::olbp(grayImage);
@@ -450,12 +450,12 @@ void getLBPplusHistFeatures(const Mat& image, Mat& features) {
   //features = lbp_hist.reshape(1, 1);
 
   Mat greyImage;
-  cvtColor(image, greyImage, CV_RGB2GRAY);
+  cvtColor(image, greyImage, COLOR_RGB2GRAY);
 
   //grayImage = histeq(grayImage);
   Mat img_threshold;
   threshold(greyImage, img_threshold, 0, 255,
-    CV_THRESH_OTSU + CV_THRESH_BINARY);
+    cv::THRESH_OTSU + cv::THRESH_BINARY);
   Mat histomFeatures = getHistogram(img_threshold);
 
   hconcat(lbp_hist.reshape(1, 1), histomFeatures.reshape(1, 1), features);

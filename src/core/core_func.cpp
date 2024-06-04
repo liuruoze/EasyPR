@@ -4,6 +4,7 @@
 #include "easypr/config.h"
 #include "easypr/core/params.h"
 #include "thirdparty/mser/mser2.hpp"
+#include <opencv2/highgui/highgui_c.h>
 #include <ctime>
 
 namespace easypr {

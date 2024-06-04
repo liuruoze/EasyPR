@@ -1,7 +1,7 @@
 #ifndef EASYPR_CONFIG_H_
 #define EASYPR_CONFIG_H_
 
-#define CV_VERSION_THREE_ZERO
+#define CV_VERSION_TWO
 
 namespace easypr {
 
@@ -133,14 +133,14 @@ private:\
 // Load model. compatitable withe 3.0, 3.1 and 3.2
 #ifdef CV_VERSION_THREE_TWO
   #define LOAD_SVM_MODEL(model, path) \
-    model = ml::SVM::load(path);
+    model = Algorithm::load<SVM>(path);
   #define LOAD_ANN_MODEL(model, path) \
-    model = ml::ANN_MLP::load(path);
+    model = Algorithm::load<ANN_MLP>(path);
 #else
   #define LOAD_SVM_MODEL(model, path) \
-    model = ml::SVM::load<ml::SVM>(path);
+    model = Algorithm::load<ml::SVM>(path);
   #define LOAD_ANN_MODEL(model, path) \
-    model = ml::ANN_MLP::load<ml::ANN_MLP>(path);
+    model = Algorithm::load<ml::ANN_MLP>(path);
 #endif
 
 }

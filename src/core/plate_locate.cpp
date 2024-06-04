@@ -2,6 +2,7 @@
 #include "easypr/core/core_func.h"
 #include "easypr/util/util.h"
 #include "easypr/core/params.h"
+#include<opencv2/imgproc/types_c.h>
 
 using namespace std;
 
@@ -120,7 +121,7 @@ int CPlateLocate::colorSearch(const Mat &src, const Color r, Mat &out,
 
   Mat src_threshold;
   threshold(match_grey, src_threshold, 0, 255,
-            CV_THRESH_OTSU + CV_THRESH_BINARY);
+            cv::THRESH_OTSU + cv::THRESH_BINARY);
 
   Mat element = getStructuringElement(
       MORPH_RECT, Size(color_morph_width, color_morph_height));
@@ -313,7 +314,7 @@ int CPlateLocate::sobelOper(const Mat &in, Mat &out, int blurSize, int morphW,
 
   Mat mat_gray;
   if (mat_blur.channels() == 3)
-    cvtColor(mat_blur, mat_gray, CV_RGB2GRAY);
+    cvtColor(mat_blur, mat_gray, COLOR_RGB2GRAY);
   else
     mat_gray = mat_blur;
 
@@ -333,7 +334,7 @@ int CPlateLocate::sobelOper(const Mat &in, Mat &out, int blurSize, int morphW,
 
   Mat mat_threshold;
   double otsu_thresh_val =
-      threshold(grad, mat_threshold, 0, 255, CV_THRESH_OTSU + CV_THRESH_BINARY);
+      threshold(grad, mat_threshold, 0, 255, cv::THRESH_OTSU + cv::THRESH_BINARY);
 
 
   Mat element = getStructuringElement(MORPH_RECT, Size(morphW, morphH));
@@ -346,7 +347,7 @@ int CPlateLocate::sobelOper(const Mat &in, Mat &out, int blurSize, int morphW,
 
 void deleteNotArea(Mat &inmat, Color color = UNKNOWN) {
   Mat input_grey;
-  cvtColor(inmat, input_grey, CV_BGR2GRAY);
+  cvtColor(inmat, input_grey, COLOR_BGR2GRAY);
 
   int w = inmat.cols;
   int h = inmat.rows;
@@ -368,7 +369,7 @@ void deleteNotArea(Mat &inmat, Color color = UNKNOWN) {
     Mat tmp = input_grey(Rect_<double>(w * 0.15, h * 0.15, w * 0.7, h * 0.7));
     int threadHoldV = ThresholdOtsu(tmp);
 
-    threshold(input_grey, img_threshold, threadHoldV, 255, CV_THRESH_BINARY);
+    threshold(input_grey, img_threshold, threadHoldV, 255, cv::THRESH_BINARY);
     // threshold(input_grey, img_threshold, 5, 255, CV_THRESH_OTSU +
     // CV_THRESH_BINARY);
 
@@ -380,7 +381,7 @@ void deleteNotArea(Mat &inmat, Color color = UNKNOWN) {
     int threadHoldV = ThresholdOtsu(tmp);
 
     threshold(input_grey, img_threshold, threadHoldV, 255,
-              CV_THRESH_BINARY_INV);
+              cv::THRESH_BINARY_INV);
 
     utils::imwrite("resources/image/tmp/inputgray2.jpg", img_threshold);
 
@@ -388,7 +389,7 @@ void deleteNotArea(Mat &inmat, Color color = UNKNOWN) {
     // CV_THRESH_BINARY_INV);
   } else
     threshold(input_grey, img_threshold, 10, 255,
-              CV_THRESH_OTSU + CV_THRESH_BINARY);
+              cv::THRESH_OTSU + cv::THRESH_BINARY);
 
   //img_threshold = input_grey.clone();
   //spatial_ostu(img_threshold, 8, 2, plateType);

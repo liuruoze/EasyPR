@@ -30,7 +30,7 @@ void SvmTrain::train() {
   svm_->setC(1);
   svm_->setNu(0.1);
   svm_->setP(0.1);
-  svm_->setTermCriteria(cvTermCriteria(CV_TERMCRIT_ITER, 20000, 0.0001));
+  svm_->setTermCriteria(TermCriteria(cv::TermCriteria::MAX_ITER, 20000, 0.0001));
 
   this->prepare();
 

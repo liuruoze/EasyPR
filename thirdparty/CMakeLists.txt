@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.1.0)
 project(thirdparty)
 
 # OpenVC3 required
-find_package(OpenCV 3.1.0 REQUIRED)
+find_package(OpenCV 4.5.0 REQUIRED)
 
 # where to find header files
 include_directories(${OpenCV_INCLUDE_DIRS})
