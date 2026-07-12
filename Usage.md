@@ -54,7 +54,7 @@ OpenCV for Windows 通常会将使用VS编译好二进制文件放到 `opencv\bu
 
 **demo**
 
-|    配置项   |    值    
+|    配置项   |    值
 |-------------|-----------
 | `C/C++`-`附加包含目录` | **[opencv的include目录]**;$(SolutionDir)include
 | `链接器`-`附加库目录` | **[opencv的lib目录]**
@@ -64,7 +64,7 @@ OpenCV for Windows 通常会将使用VS编译好二进制文件放到 `opencv\bu
 
 **libeasypr**
 
-|    配置项   |    值    
+|    配置项   |    值
 |-------------|-----------
 | `C/C++`-`附加包含目录` | **[opencv的include目录]**;$(SolutionDir)include
 
@@ -112,7 +112,7 @@ $ ./demo ? // 查看CLI帮助
 
 当进入交互界面以后，首先是主目录，下面是主目录各个功能的解释：
 
-| 名称   |    说明    
+| 名称   |    说明
 |-------------|-----------
 | 测试 | 分别测试车牌识别中每个环节。要想更改测试的图片，可以替换resources/image下的图片；
 | 批量测试 | 跑完整个general_test下所有图片，输出准确率等指标，用于评估EasyPR的效果；
@@ -146,9 +146,9 @@ GroundTruth_windows.xml的编码需要设置为ANSI，而GroundTruth_others.xml�
 **车牌识别**
 
     # 利用提供的SVM和ANN模型来识别一张图片里面的所有车牌
-    
+
     $ ./demo recognize -p resources/image/plate_recognize.jpg --svm model/svm.xml --ann model/ann.xml
-    
+
     # 或者更简单一些(注意模型路径)
     $ ./demo recognize -p resources/image/plate_recognize.jpg
 
@@ -160,13 +160,13 @@ GroundTruth_windows.xml的编码需要设置为ANSI，而GroundTruth_others.xml�
     #    是车牌的放在plates/has/
     #    不是车牌的放在plates/no/
     #    车牌可从项目resources/train/svm.7z中解压得到。
-    
+
     $ ./demo svm --plates=path/to/your/plates --svm=save/to/svm.xml
-    
+
     # 该命令将70%的车牌作为训练数据，另外30%的车牌作为测试数据，
     # 这个只可在 include/easypr/config.h 修改。
     # 将训练好的模型存放在 save/to/svm.xml。
-	
+
 首先在easypr的主目录下面新建了一个tmp文件夹，并且把svm.7z解压得到的svm文件夹移动到tmp文件夹下面，
 
 执行 $ demo svm --plates=tmp/svm --svm=tmp/svm.xml，生成得到的tmp文件夹下面的svm.xml就是训练好的模型，
@@ -182,7 +182,7 @@ GroundTruth_windows.xml的编码需要设置为ANSI，而GroundTruth_others.xml�
 一切准备就绪后，运行下面这条命令即可：
 
     $ ./demo ann --chars=path/to/chars --ann=save/to/ann.xml
-	
+
 首先在easypr的主目录下面新建了一个tmp文件夹，并且把ann.7z解压得到的ann文件夹移动到tmp文件夹下面，
 
 执行 $ demo ann --chars=tmp/ann --ann=tmp/ann.xml，生成得到的tmp文件夹下面的svm.xml就是训练好的模型，
@@ -193,7 +193,7 @@ GroundTruth_windows.xml的编码需要设置为ANSI，而GroundTruth_others.xml�
 
 train文件夹下有3个ann压缩包，解释一下：
 
-|    文件   |    用途    
+|    文件   |    用途
 |-------------|-----------
 | ann.7z | 包括黑白的字符和中文数据，ann以及ann_chinese.xml由这个训练得到；
 | annCh.7z | 仅仅包括中文的灰度数据，annCh.xml由这个训练得到；

@@ -35,7 +35,7 @@ EasyPR是一个开源的中文车牌识别系统，其目标是成为一个简�
 
 现在有一个无需配置opencv的1.5版本的[懒人版](http://git.oschina.net/easypr/EasyPR/attach_files)。仅仅支持vs2013，也只能在debug和x86下运行，其他情况的话还是得配置opencv。感谢范文捷同学的帮助。页面里的两个文件都要下载，下载后用[7zip](http://www.7-zip.org/)解压。
 
-|版本 | 开发者 | 版本 | 地址 
+|版本 | 开发者 | 版本 | 地址
 |------|-------|-------|-------
 | C# |  zhang-can  |  1.5  |  [zhang-can/EasyPR-DLL-CSharp](https://github.com/zhang-can/EasyPR-DLL-CSharp)
 | android |  goldriver  |  1.4  |  [linuxxx/EasyPR_Android](https://github.com/linuxxx/EasyPR_Android)
@@ -70,7 +70,7 @@ EasyPR的调用非常简单，下面是一段示例代码:
 	CPlateRecognize pr;
 	pr.setResultShow(false);
 	pr.setDetectType(PR_DETECT_CMSER);
-     
+
 	vector<CPlate> plateVec;
 	Mat src = imread(filepath);
 	int result = pr.plateRecognize(src, plateVec);

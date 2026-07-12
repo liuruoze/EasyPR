@@ -9,7 +9,7 @@ Menlo Park, California, U.S.A. All rights reserved.
     Software Foundation <http://www.gnu.org/>. Its terms are
     substantially different from those of the GNU Licenses. If you are
     familiar with the GNU Licenses, please read this license with extra
-    care. 
+    care.
 
 Aladdin Enterprises hereby grants to anyone the permission to apply this
 License to their own work, as long as the entire License (including the
@@ -25,10 +25,10 @@ country.
 
     0. Subject Matter
 
-This License applies to the computer program known as "XMLParser library". 
+This License applies to the computer program known as "XMLParser library".
 The "Program", below, refers to such program. The Program
 is a copyrighted work whose copyright is held by Frank Vanden Berghen
-(the "Licensor"). 
+(the "Licensor").
 
 A "work based on the Program" means either the Program or any derivative
 work of the Program, as defined in the United States Copyright Act of
@@ -53,10 +53,10 @@ License with the Program:
 (a)
     You may copy and distribute literal (i.e., verbatim) copies of the
     Program's source code as you receive it throughout the world, in any
-    medium. 
+    medium.
 (b)
     You may modify the Program, create works based on the Program and
-    distribute copies of such throughout the world, in any medium. 
+    distribute copies of such throughout the world, in any medium.
 
 
     2. Restrictions.
@@ -86,7 +86,7 @@ This license is subject to the following restrictions:
         example of a service that does not fall under this section is an
         on-line service that is operated by a company and that is only
         available to customers of that company. (This is not an
-        exhaustive enumeration.) 
+        exhaustive enumeration.)
     (ii)
         Distributing the Program on removable computer-readable media,
         provided that the files containing the Program are reproduced
@@ -98,7 +98,7 @@ This license is subject to the following restrictions:
         CD-ROM, magnetic tape, and optical storage media. (This is not
         intended to be an exhaustive list.) An example of a distribution
         that does not fall under this section is a CD-ROM included in a
-        book or magazine. (This is not an exhaustive enumeration.) 
+        book or magazine. (This is not an exhaustive enumeration.)
 
 (b)
     Activities other than copying, distribution and modification of the
@@ -106,7 +106,7 @@ This license is subject to the following restrictions:
     scope. Functional use (running) of the Program is not restricted,
     and any output produced through the use of the Program is subject to
     this license only if its contents constitute a work based on the
-    Program (independent of having been made by running the Program). 
+    Program (independent of having been made by running the Program).
 (c)
     You must meet all of the following conditions with respect to any
     work that you distribute or publish that in whole or in part
@@ -119,10 +119,10 @@ This license is subject to the following restrictions:
         Program's files and the date of any change. In each source file
         that you have modified, you must include a prominent notice that
         you have modified the file, including your name, your e-mail
-        address (if any), and the date and purpose of the change; 
+        address (if any), and the date and purpose of the change;
     (ii)
         You must cause the Work to be licensed as a whole and at no
-        charge to all third parties under the terms of this License; 
+        charge to all third parties under the terms of this License;
     (iii)
         If the Work normally reads commands interactively when run, you
         must cause it, at each time the Work commences operation, to
@@ -137,7 +137,7 @@ This license is subject to the following restrictions:
         box", the Work is required to print or display the notice only
         under the same circumstances; if the Program itself is
         interactive but does not normally print such an announcement,
-        the Work is not required to print an announcement.); 
+        the Work is not required to print an announcement.);
     (iv)
         You must accompany the Work with the complete corresponding
         machine-readable source code, delivered on a medium customarily
@@ -152,17 +152,17 @@ This license is subject to the following restrictions:
         components (compiler, kernel, and so on) of the operating system
         on which the executable runs, you must also distribute the
         source code of that component if you have it and are allowed to
-        do so; 
+        do so;
     (v)
         If you distribute any written or printed material at all with
         the Work, such material must include either a written copy of
         this License, or a prominent written indication that the Work is
         covered by this License and written instructions for printing
         and/or displaying the copy of the License on the distribution
-        medium; 
+        medium;
     (vi)
         You may not impose any further restrictions on the recipient's
-        exercise of the rights granted herein. 
+        exercise of the rights granted herein.
 
 If distribution of executable or object code is made by offering the
 equivalent ability to copy from a designated place, then offering
@@ -216,7 +216,7 @@ POSSIBILITY OF SUCH DAMAGES. *
 
       6. General.
 
-This License is governed by the laws of Belgium., excluding choice of 
+This License is governed by the laws of Belgium., excluding choice of
 law rules.
 
 If any part of this License is found to be in conflict with the law,
@@ -238,4 +238,4 @@ following apply:
     computer software" and "commercial computer software documentation"
     respectively and, pursuant to FAR Section 12.212, the Government is
     acquiring the Program and its documentation in accordance with the
-    terms of this License. 
+    terms of this License.
