@@ -256,7 +256,7 @@ taotao1233，邱锦山，唐大侠，jsxyhelu，如果有一天(zhoushiwei)，�
 
 ### 被哪些工作使用
 
-EasyPR 常被用作中文车牌识别研究中的实验平台或对比基线。以下是我们在已发表文献中见到的使用实例（并非完整清单，如有遗漏，欢迎提 issue 告知，我们会补上）：
+EasyPR 常被用作车牌识别相关研究的实验平台或对比基线，也见于车联网等相邻领域的工作。以下是我们在已发表文献中见到的使用实例（并非完整清单，如有遗漏，欢迎提 issue 告知，我们会补上）：
 
 * 朱孝羽, 唐鹏, 张浩臣, 邱卫东, 黄征. 车牌识别系统中基于特征不变量的对抗检测[J]. 网络与信息安全学报, 2024, 10(6): 59-70. 该工作将所提对抗样本检测方法部署于 HyperLPR 与 EasyPR，在 CCPD 数据集上开展实验。
 * WANG J, ZHENG Q, MEI F, et al. A novel method to enable the awareness ability of non-V2V-equipped vehicles in vehicular networks[J]. Sensors, 2019, 19(9): 2187. DOI: 10.3390/s19092187. 该工作在车联网场景中使用 EasyPR 完成车牌号识别。
