@@ -252,3 +252,28 @@ EasyPR讨论QQ群号是：一群：366392603，二群：583022188，三群：637
 ### 鸣谢
 
 taotao1233，邱锦山，唐大侠，jsxyhelu，如果有一天(zhoushiwei)，学习奋斗，袁承志，圣城小石匠，goldriver，Micooz，梦里时光，Rain Wang，任薛纪，ahccom，星夜落尘，海豚嘎嘎(车主之家)，刘超，Free大神，以及所有对EasyPR贡献数据的热心同学。
+
+
+### 被哪些工作使用
+
+EasyPR 常被用作中文车牌识别研究中的实验平台或对比基线。以下是我们在已发表文献中见到的使用实例（并非完整清单，如有遗漏，欢迎提 issue 告知，我们会补上）：
+
+* 朱孝羽, 唐鹏, 张浩臣, 邱卫东, 黄征. 车牌识别系统中基于特征不变量的对抗检测[J]. 网络与信息安全学报, 2024, 10(6): 59-70. 该工作将所提对抗样本检测方法部署于 HyperLPR 与 EasyPR，在 CCPD 数据集上开展实验。
+* A Novel Method to Enable the Awareness Ability of Non-V2V-Equipped Vehicles in Vehicular Networks. 该工作在车联网场景中使用 EasyPR 完成车牌号识别（PMC6540225）。
+
+### 引用
+
+如果在论文、报告或课程资料中使用了 EasyPR，欢迎按以下格式引用：
+
+刘若泽. EasyPR: 一个开源中文车牌识别系统[CP/OL]. (2014)[引用日期]. https://github.com/liuruoze/EasyPR
+
+```bibtex
+@misc{easypr,
+  author       = {Ruo-Ze Liu},
+  title        = {{EasyPR}: An Open Source Chinese License Plate Recognition System},
+  year         = {2014},
+  publisher    = {GitHub},
+  howpublished = {\url{https://github.com/liuruoze/EasyPR}},
+  note         = {Version 1.6}
+}
+```
