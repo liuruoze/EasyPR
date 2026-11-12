@@ -254,12 +254,19 @@ EasyPR讨论QQ群号是：一群：366392603，二群：583022188，三群：637
 taotao1233，邱锦山，唐大侠，jsxyhelu，如果有一天(zhoushiwei)，学习奋斗，袁承志，圣城小石匠，goldriver，Micooz，梦里时光，Rain Wang，任薛纪，ahccom，星夜落尘，海豚嘎嘎(车主之家)，刘超，Free大神，以及所有对EasyPR贡献数据的热心同学。
 
 
-### 被哪些工作使用
+### 相关工作与使用
 
-EasyPR 常被用作车牌识别相关研究的实验平台或对比基线，也见于车联网等相邻领域的工作。以下是我们在已发表文献中见到的使用实例（并非完整清单，如有遗漏，欢迎提 issue 告知，我们会补上）：
+以下为据公开资料整理的 EasyPR 使用情况，非完整清单；如有遗漏或需更正，欢迎提 issue 告知。
 
-* 朱孝羽, 唐鹏, 张浩臣, 邱卫东, 黄征. 车牌识别系统中基于特征不变量的对抗检测[J]. 网络与信息安全学报, 2024, 10(6): 59-70. 该工作将所提对抗样本检测方法部署于 HyperLPR 与 EasyPR，在 CCPD 数据集上开展实验。
-* WANG J, ZHENG Q, MEI F, et al. A novel method to enable the awareness ability of non-V2V-equipped vehicles in vehicular networks[J]. Sensors, 2019, 19(9): 2187. DOI: 10.3390/s19092187. 该工作在车联网场景中使用 EasyPR 完成车牌号识别。
+**列入参考文献**
+
+1. WANG X, MAN Z, YOU M, et al. Adversarial generation of training examples: applications to moving vehicle license plate recognition[EB/OL]. arXiv:1707.03124, 2017.
+
+**研究中采用**
+
+1. 朱孝羽, 唐鹏, 张浩臣, 等. 车牌识别系统中基于特征不变量的对抗检测[J]. 网络与信息安全学报, 2024, 10(6): 59-70.
+2. WANG J, ZHENG Q, MEI F, et al. A novel method to enable the awareness ability of non-V2V-equipped vehicles in vehicular networks[J]. Sensors, 2019, 19(9): 2187.
+3. WANG X, WANG M, GUO H, et al. License plate recognition system for complex scenarios based on improved YOLOv5s and LPRNet[J]. Scientific Reports, 2025.
 
 ### 引用
 
