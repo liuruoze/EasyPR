@@ -261,12 +261,15 @@ taotao1233，邱锦山，唐大侠，jsxyhelu，如果有一天(zhoushiwei)，�
 **列入参考文献**
 
 1. WANG X, MAN Z, YOU M, et al. Adversarial generation of training examples: applications to moving vehicle license plate recognition[EB/OL]. arXiv:1707.03124, 2017.
+2. GONG Y, DENG L, TAO S, et al. Unified Chinese license plate detection and recognition with high efficiency[J]. Journal of Visual Communication and Image Representation, 2022, 86: 103541.
 
 **研究中采用**
 
 1. 朱孝羽, 唐鹏, 张浩臣, 等. 车牌识别系统中基于特征不变量的对抗检测[J]. 网络与信息安全学报, 2024, 10(6): 59-70.
 2. WANG J, ZHENG Q, MEI F, et al. A novel method to enable the awareness ability of non-V2V-equipped vehicles in vehicular networks[J]. Sensors, 2019, 19(9): 2187.
-3. WANG X, WANG M, GUO H, et al. License plate recognition system for complex scenarios based on improved YOLOv5s and LPRNet[J]. Scientific Reports, 2025.
+3. WANG X, WANG M, GUO H, et al. License plate recognition system for complex scenarios based on improved YOLOv5s and LPRNet[J]. Scientific Reports, 2025. DOI: 10.1038/s41598-025-18311-4.
+4. ZHU L, WANG S, LI C, et al. License plate recognition in urban road based on vehicle tracking and result integration[J]. Journal of Intelligent Systems, 2019. DOI: 10.1515/jisys-2018-0446.
+5. WANG G, CHEN Y. Lightweight license plate recognition based on OpenCV and Python[C]//2025 3rd International Conference on Mobile Internet, Cloud Computing and Information Security (MICCIS). 2025. DOI: 10.1109/miccis66057.2025.00053.
 
 ### 引用
 
